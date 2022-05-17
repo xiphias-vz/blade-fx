@@ -82,15 +82,17 @@ class CategoryHandlerPlugin extends AbstractPlugin
         /**@var \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories $item */
         $content = "store;category;url;products_db;products_search";
         foreach ($data as $item) {
-            $content .= PHP_EOL;
-            $content .= sprintf(
-                '%s;%s;%s;%d;%d',
-                $item->getStoreName(),
-                $item->getCategoryName(),
-                $item->getCategoryUrl(),
-                $item->getNumberOfProductsDb(),
-                $item->getNumberOfProductsSearch()
-            );
+            if ($item->getNumberOfProductsDb() !== $item->getNumberOfProductsSearch()) {
+                $content .= PHP_EOL;
+                $content .= sprintf(
+                    '%s;%s;%s;%d;%d',
+                    $item->getStoreName(),
+                    $item->getCategoryName(),
+                    $item->getCategoryUrl(),
+                    $item->getNumberOfProductsDb(),
+                    $item->getNumberOfProductsSearch()
+                );
+            }
         }
 
         return $content;

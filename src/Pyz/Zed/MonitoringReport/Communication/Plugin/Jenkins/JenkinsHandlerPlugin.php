@@ -129,7 +129,7 @@ class JenkinsHandlerPlugin extends AbstractPlugin
                             $returnResult[$jobName]['check'] = true;
                         }
                         break;
-                    } else {
+                    } elseif ($result === "FAILURE") {
                         $returnResult[$jobName]['lastFailure'] = $lastExecutionTime;
                     }
                 }
