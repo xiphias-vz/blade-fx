@@ -344,8 +344,6 @@ $header-sticky-height: rem(69, number);
                 width: rem(327);
                 height: calc(100vh - #{$header-height});
                 box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-globus-lightGray;
-                // Move scrollbar to the left side
-                transform: scaleX(-1);
             }
 
             @include helper-media-ie() {
@@ -392,8 +390,6 @@ $header-sticky-height: rem(69, number);
                 width: rem(345);
                 height: calc(100vh - #{$header-height});
                 box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-globus-lightGray;
-                // Move scrollbar to the left side
-                transform: scaleX(-1);
             }
 
             @include helper-media-ie() {
