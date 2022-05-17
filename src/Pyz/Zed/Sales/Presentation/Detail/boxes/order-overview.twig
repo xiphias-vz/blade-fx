@@ -74,7 +74,7 @@
                                 <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;">
                                     <form method="POST" action="" style="display: flex;">
                                         <input type="hidden" name="isTimeslotsFormSubmit" value="true">
-                                        <input type="date" id="pickup-time-window" name="pickupDate" style="outline: none;height: 30px;margin-right: 10px;"/>
+                                        <input type="date" id="pickup-time-window" name="pickupDate" value="{{ deliveryDate }}" style="outline: none;height: 30px;margin-right: 10px;" required />
                                         <select class="form-control input-sm" name="pickupTimeSlot" style="width:140px;height: 30px;margin-right: 10px;">
                                             {% for timeSlot in timeSlotsData %}
                                                 <option value="{{ timeSlot.time_slot }}">{{ timeSlot.time_slot }}</option>
