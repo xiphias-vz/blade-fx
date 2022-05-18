@@ -60,6 +60,8 @@ BEGIN
         END as popNameExtension
          , json_extract(sp.`attributes`, '$.quality') as Quality
          , '' as ValidUntil
+         , null as Incomplete
+         , null as SapWgr
     FROM spy_product sp
         INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
         INNER JOIN spy_product_abstract_localized_attributes spala on sp.fk_product_abstract = spala.fk_product_abstract
