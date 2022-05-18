@@ -42,7 +42,7 @@ $header-sticky-height: rem(69, number);
         &__meta-navigation-top {
             height: rem(35);
             background: $setting-color-globus-darkGray-3;
-            font-size: 11px;
+            font-size: rem(11);
             margin: 0;
             color:$setting-color-globus-white;
 
@@ -110,11 +110,11 @@ $header-sticky-height: rem(69, number);
         }
 
         &__icon_left {
-            width: 18px;
-            height: 18px;
+            width: rem(18);
+            height: rem(18);
             vertical-align:bottom;
-            margin-right: 2px;
-            margin-left: 10px;
+            margin-right: rem(2);
+            margin-left: rem(10);
             text-decoration: none;
 
             @include helper-breakpoint-media-max($sm-max) {
@@ -129,11 +129,11 @@ $header-sticky-height: rem(69, number);
         }
 
         &__icon_right {
-            width: 16px;
-            height: 16px;
+            width: rem(16);
+            height: rem(16);
             vertical-align:bottom;
-            margin-right: 2px;
-            margin-left: 10px;
+            margin-right: rem(2);
+            margin-left: rem(10);
         }
 
         &__link_black {
@@ -188,7 +188,6 @@ $header-sticky-height: rem(69, number);
                 min-height: $header-sticky-height;
             }
         }
-
 
         &__middle {
             padding: rem(14) 0;
@@ -282,8 +281,6 @@ $header-sticky-height: rem(69, number);
                 top: 75%;
                 display:flex;
                 margin-top: 0;
-                /*padding-left: rem(10);
-                padding-right: rem(10);*/
             }
         }
 
@@ -312,12 +309,13 @@ $header-sticky-height: rem(69, number);
             bottom: 0;
             background: $setting-color-white;
             z-index: $setting-zi-header + 1;
-            box-shadow: 0 rem(4) rem(4) $setting-color-globus-lightGray;
+            box-shadow: 0 rem(4) rem(4) rgba(0, 0, 0, 0.25);
+
             display: flex;
             flex-direction: column;
 
             @include helper-breakpoint-media-max($lg-max) {
-                margin-top: rem(38);
+                margin-top: rem(48);
             }
 
             @include helper-breakpoint-media-max($sm-max) {
@@ -338,23 +336,15 @@ $header-sticky-height: rem(69, number);
 
             @include helper-breakpoint-media-min($xl-min) {
                 position: absolute;
-                left: 13%;
-                top: 68%;
+                left: rem(20);
                 bottom: auto;
                 display: block;
-                width: rem(327);
-                height: calc(100vh - #{$header-height});
-                box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-globus-lightGray;
+                width: rem(300);
+                padding: rem(5) 0 rem(10) rem(10);
             }
 
             @include helper-media-ie() {
                 transform: none;
-            }
-
-            #{$name}__middle--sticky & {
-                @include helper-breakpoint-media-min($xl-min) {
-                    height: calc(100vh - #{$header-sticky-height});
-                }
             }
         }
 
@@ -389,18 +379,10 @@ $header-sticky-height: rem(69, number);
                 bottom: auto;
                 display: block;
                 width: rem(345);
-                height: calc(100vh - #{$header-height});
-                box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-globus-lightGray;
             }
 
             @include helper-media-ie() {
                 transform: none;
-            }
-
-            #{$name}__middle--sticky & {
-                @include helper-breakpoint-media-min($xl-min) {
-                    height: calc(100vh - #{$header-sticky-height});
-                }
             }
         }
 

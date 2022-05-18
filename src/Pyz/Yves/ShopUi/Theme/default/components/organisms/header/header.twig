@@ -200,6 +200,16 @@
                 <div class="{{ config.name }}__middle {{ config.jsName }}__middle">
                     {% block contentHolder %}
                         <div class="container {{ config.name }}__container">
+
+                            {% if data.showNavigation %}
+                                <div
+                                    class="{{ config.name }}__navigation-main{{ app.currentCodeBucket == 'DE' ? '' : '-CZ' }} {{ config.jsName }}__navigation-target is-hidden is-hidden-sm-lg">
+                                    {% block mainNavigation %}
+                                        {% cms_slot 'slt-desktop-header' %}
+                                    {% endblock %}
+                                </div>
+                            {% endif %}
+
                             <div
                                 class="{{ config.name }}__row {{ config.name }}__navigation-top {{ config.name }}__search-bar grid grid--middle grid--justify js-suggest-search--target">
                                 {% if data.showNavigation %}
@@ -293,13 +303,6 @@
                         </div>
 
                         {% if data.showNavigation %}
-                            <div
-                                class="{{ config.name }}__navigation-main{{ app.currentCodeBucket == 'DE' ? '' : '-CZ' }} {{ config.jsName }}__navigation-target is-hidden is-hidden-sm-lg">
-                                {% block mainNavigation %}
-                                    {% cms_slot 'slt-desktop-header' %}
-                                {% endblock %}
-                            </div>
-
                             <div
                                 class="{{ config.name }}__navigation-main {{ config.jsName }}__navigation-target is-hidden is-hidden-xl-only">
                                 <h4 class="{{ config.name }}__navigation-title title title--{{ app.currentCodeBucket == 'DE' ? 'h6' : 'heading-CZ' }}">
