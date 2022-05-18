@@ -46,6 +46,7 @@ class GlobusRestApiClient
                 'APIKey: ' . GlobusRestApiConfig::getGlobusApiKey(),
                 'APISecret: ' . GlobusRestApiConfig::getGlobusApiSecretKey(),
                 'Content-Type: application/json',
+                'X-Forwarded-For: ' . $_SERVER['REMOTE_ADDR'],
                 $authorization,
             ],
         ]);
@@ -83,6 +84,7 @@ class GlobusRestApiClient
             'APIKey: ' . GlobusRestApiConfig::getGlobusApiKey(),
             'APISecret: ' . GlobusRestApiConfig::getGlobusApiSecretKey(),
             'Content-Type: application/json',
+            'X-Forwarded-For: ' . $_SERVER['REMOTE_ADDR'],
         ];
         if (!empty($bearerToken)) {
             $header[] = 'Authorization: Bearer ' . $bearerToken;
