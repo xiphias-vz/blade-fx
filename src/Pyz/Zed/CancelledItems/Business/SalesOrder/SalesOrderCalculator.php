@@ -104,10 +104,10 @@ class SalesOrderCalculator
         $remainingItemsCount = 0;
         foreach ($orderTransfer->getItems() as $itemTransfer) {
             if (in_array($itemTransfer->getIdSalesOrderItem(), $salesOrderItemIds)) {
-                $itemTransfer->setCanceledAmount($itemTransfer->getCanceledAmount() + $itemTransfer->getRefundableAmount());
+                $itemTransfer->setCanceledAmount($itemTransfer->getCanceledAmount() + $itemTransfer->getUnitPrice());
             }
 
-            if ($itemTransfer->getCanceledAmount() < $itemTransfer->getRefundableAmount()) {
+            if ($itemTransfer->getCanceledAmount() < $itemTransfer->getUnitPrice()) {
                 $remainingItemsCount++;
             }
         }

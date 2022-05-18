@@ -1221,7 +1221,7 @@ class PickingHeaderTransferData
                 $spySalesOrderTotalsEntity = SpySalesOrderTotalsQuery::create()
                     ->filterByFkSalesOrder($orderId)
                     ->findOneOrCreate();
-                $spySalesOrderTotalsEntity->setCanceledTotal($spySalesOrderTotalsEntity->getCanceledTotal() - $newPickedItem->getPriceToPayAggregation());
+                $spySalesOrderTotalsEntity->setCanceledTotal($spySalesOrderTotalsEntity->getCanceledTotal() - $newPickedItem->getPrice());
                 $spySalesOrderTotalsEntity->setGrandTotal($spySalesOrderTotalsEntity->getGrandTotal() + $newPickedItem->getPriceToPayAggregation());
                 $spySalesOrderTotalsEntity->setRefundTotal($spySalesOrderTotalsEntity->getRefundTotal() + $newPickedItem->getPriceToPayAggregation());
                 $spySalesOrderTotalsEntity->setTaxTotal($spySalesOrderTotalsEntity->getTaxTotal() + $taxAmount);
