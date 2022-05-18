@@ -107,11 +107,10 @@
             }
         }
 
-        &--footer {
-            width: rem(90);
-            height: rem(108);
-
-        }
+        //&--footer {
+        //    width: rem(90);
+        //    height: rem(108);
+        //}
 
         @content;
     }
