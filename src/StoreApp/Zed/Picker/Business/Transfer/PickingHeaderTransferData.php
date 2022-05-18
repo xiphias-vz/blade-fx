@@ -805,8 +805,6 @@ class PickingHeaderTransferData
             $transfer->addOrderItemToTransfer($orderItem);
         }
 
-        $transfer->removeNotPausedIfPausedExists();
-
         return $transfer;
     }
 
