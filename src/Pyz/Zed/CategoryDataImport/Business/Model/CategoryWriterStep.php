@@ -287,7 +287,9 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             }
 
             $convertCallback = function ($value) {
-                return mb_strtolower(mb_ereg_replace(' ', '-', $value));
+                $value = mb_strtolower(mb_ereg_replace(' ', '-', $value));
+
+                return mb_strtolower(mb_ereg_replace('%', '', $value));
             };
             $urlPathParts = array_map($convertCallback, $urlPathParts);
             $url = '/' . implode('/', $urlPathParts);
