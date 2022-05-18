@@ -46,6 +46,7 @@ class OrdersTable extends SprykerOrdersTable
     protected const TIMESLOT_DELIMITER_REPLACEMENT = ' ';
     protected const TIMESLOT_SEARCHABLE_FIELD_PATTERN = 'REPLACE(%s, \'%s\', \'%s\')';
     protected const COL_CUSTOMER_CELL_PHONE = 'customer_cell_phone';
+    protected const TIMEZONE = 'Europe/Berlin';
 
     /**
      * @var \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface
@@ -328,6 +329,7 @@ class OrdersTable extends SprykerOrdersTable
         if ($dateFrom && $dateTo) {
             $query = $this->queryBuilder->applyFilterDateBetween($query, new DateTime($dateFrom), new DateTime($dateTo));
         } elseif ($dateFrom == '' && $dateTo == '') {
+            date_default_timezone_set(static::TIMEZONE);
             $query = $this->queryBuilder->applyFilterDateBetween($query, new DateTime(), new DateTime());
         }
 
