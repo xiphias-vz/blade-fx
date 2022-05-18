@@ -24,13 +24,12 @@ $(document).ready(function() {
 
     function sendStoreDataToIndexController(storeName) {
         let url = "";
-        const originUrlTwo = 'https://backoffice.shop.globus.local/picking-zone-order-export/picking-zone-order-items-export';
+        let originUrlTwo = window.location.origin + '/picking-zone-order-export/picking-zone-order-items-export';
         if(window.location.href === originUrlTwo){
             url = window.location.href + "/change-time-slots-by-user-select";
         } else {
             url = window.location.href + "/index/change-time-slots-by-user-select";
         }
-        console.log(url)
         const dataToSend = {};
         dataToSend.storeName = storeName;
         url = url.trim();
