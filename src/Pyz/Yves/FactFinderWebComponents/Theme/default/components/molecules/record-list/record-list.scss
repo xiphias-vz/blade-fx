@@ -106,10 +106,17 @@
             }
         }
 
-            @include helper-breakpoint-media-min($lg-min){
+            @include helper-breakpoint-media-min($lg-min) {
+                .col--lg-3 {
+                    width: 31%;
+                    min-width: 31%;
+                }
+            }
+
+            @include helper-breakpoint-media-min($min: 1025px){
             .col--lg-3{
-                width: 22.5%;
-                min-width: 22.5%;
+                width: 23.7%;
+                min-width: 23.7%;
             }
         }
 
@@ -426,6 +433,7 @@
         }
 
         &__record-product-name{
+            cursor: pointer;
             text-decoration: none;
             font-weight: 700;
             font-size: rem(20);

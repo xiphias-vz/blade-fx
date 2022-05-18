@@ -17,7 +17,7 @@
         {% if app.currentCodeBucket == 'DE' %}
             <a href="{{ addAjaxUrl }}"
                rel="nofollow"
-               onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name  | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier | escape('js') }}')"
+               onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name  | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier is defined ? data.product.attributes.supplier | escape('js') : "" }}')"
                class="button button--middle-icon button--center-align button--backgroundcolor-DE
                       js-product-color-group__image-{{ data.product.idProductAbstract }}
                       js-image-animation__link

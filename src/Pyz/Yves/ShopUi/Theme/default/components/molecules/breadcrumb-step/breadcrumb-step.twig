@@ -39,8 +39,12 @@
     {%- endif -%}
 
     {% if data.withChevron %}
-        <span class="{{ config.name }}__separator">
-            <svg class="infoIcon icon button__icon"><use xlink:href="#:left-arrow"></use></svg>
-        </span>
+        {% include atom('icon') with {
+            modifiers: ['xsmall'],
+            class: config.name ~ '__separator',
+            data: {
+                name: 'arrow-right',
+            },
+        } only %}
     {% endif %}
 {% endblock %}

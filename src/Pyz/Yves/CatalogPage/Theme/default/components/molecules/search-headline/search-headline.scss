@@ -10,6 +10,7 @@
             color: $setting-color-tentgray;
             font-size: rem(24);
             font-weight: fw(semibold);
+            margin-top: rem(0.5);
             @include helper-breakpoint-media-max($md-min) {
                 font-size: rem(20);
             }

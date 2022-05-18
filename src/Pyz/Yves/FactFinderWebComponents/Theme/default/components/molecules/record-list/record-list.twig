@@ -170,7 +170,7 @@
                         </div>
                         </a>
                         {% block contentContainer %}
-                            <div class="col--sm-9 col--lg-12 {{ config.name }}__record-product-info">
+                            <div class="col--sm-9 col--lg-12 {{ config.name }}__record-product-info" onclick="productClicked('{{ productUrl | trim }}', '{{ sku | trim }}', '{{ productName | trim }}', '{{ price | trim }}', '{{ sku | trim }}', '{{ position | trim }}' )">
                                 <div class="{{ config.name }}__record-product-brand">{{ brand }}</div>
                                 <div class="{{ config.name }}__record-product-name">
                                     {% set productTitle = productName  %}
