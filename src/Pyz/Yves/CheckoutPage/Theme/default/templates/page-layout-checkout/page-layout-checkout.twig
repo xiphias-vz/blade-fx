@@ -18,11 +18,11 @@
                     {% endblock %}
 
                     {% if app.currentCodeBucket == 'DE' %}
-                        <a href="{{ url('cart') }}" class="button button--hollow-gray">
+                        <a href="{{ url('cart') }}" class="button button--hollow-gray button--checkout">
                             {{ 'header.back_to_cart_link' | trans }}
                         </a>
                     {% else %}
-                        <a href="{{ url('cart') }}" class="button button--hollow-gray-CZ button--font-CZ">
+                        <a href="{{ url('cart') }}" class="button button--hollow-gray-CZ button--font-CZ button--checkout">
                             {{ 'header.back_to_cart_link' | trans }}
                         </a>
                     {% endif %}

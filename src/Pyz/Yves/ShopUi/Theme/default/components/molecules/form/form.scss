@@ -37,6 +37,11 @@ $review-rating-field-width: rem(154);
         &__actions {
             text-align: right;
             padding-top: rem(35);
+            float: right;
+
+            @include helper-breakpoint-media-max($lg-min){
+               float: unset;
+            }
 
             &--profile {
                 padding: rem(8) 0;

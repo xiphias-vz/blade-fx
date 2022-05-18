@@ -36,7 +36,7 @@
         &:active {
             background: $setting-color-fresh-orange;
             color: $setting-color-white;
-            box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange !important;
+            box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2 !important;
         }
 
         &:focus {
@@ -389,7 +389,12 @@
         }
 
         &--large {
-            width: 100%;
+            padding: rem(12) rem(86);
+
+            @include helper-breakpoint-media-max($lg-min){
+                width: 100%;
+                padding: rem(12) rem(24);
+            }
         }
 
         &--expand {
@@ -403,10 +408,6 @@
                 }
             }
 
-        }
-
-        &--checkout {
-            width: 55%
         }
 
         &--bigfont {
@@ -659,6 +660,12 @@
             border-radius: 50%;
             min-width: 0;
             padding: rem(6);
+        }
+
+        &--checkout {
+            @include helper-breakpoint-media-max(440px) {
+                width: 50%;
+            }
         }
 
         @content;

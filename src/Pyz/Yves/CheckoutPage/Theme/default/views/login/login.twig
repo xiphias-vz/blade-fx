@@ -183,7 +183,7 @@
             display: none;
             position: absolute;
             bottom: 21px;
-            right: 20px;
+            right: 23px;
             width: 25px;
             height: 35px;
             background: transparent;
@@ -241,6 +241,11 @@
 
         #hiddenGuestForm {
             display: none;
+        }
+
+        .btnContainer {
+            display: flex;
+            padding-top: 20px;
         }
 
         #btnCancelLogin {
@@ -325,6 +330,12 @@
             grid-template-columns: 1fr 1fr;
             padding: 8px 14px;
             row-gap: 14px;
+        }
+
+        @media only screen and (max-width: 575px) {
+            .checkbox-wrapper {
+                grid-template-columns: auto;
+            }
         }
 
         input[type='checkbox'] {
@@ -531,7 +542,14 @@
                                                     <div class="form__field col col--sm-12">
                                                         <label for="startRegistrationForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.emailField.labelCreate' | trans }}</label>
                                                         <input id="startRegistrationForm_customer_email" name="startRegistrationForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholderCreate' | trans }}" class="input input--expand inputGray" type="email" >
-                                                        <span id="startRegister_emailCheckIcon" class="icon-check"></span>
+                                                        <span id="startRegister_emailCheckIcon">
+                                                            {% include atom('icon') with {
+                                                                class: 'check-codex',
+                                                                data: {
+                                                                    name: 'check-codex',
+                                                                },
+                                                            } only %}
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div id="startRegister_customerPasswordDiv" class="form__fields grid grid--top">
@@ -582,7 +600,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form__actions">
+                                    <div class="btnContainer">
                                         <button id="btnCancelLogin" type="button" class="button button--hollow-ghost button--expand col col--middle">{{ 'general.cancel.button' | trans }}</button>
                                         <button id="btnContinueRegistration" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
                                     </div>
@@ -610,7 +628,14 @@
                                                 <div class="form__field col col--sm-12">
                                                     <label for="customLoginForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.emailField.label' | trans }}</label>
                                                     <input id="customLoginForm_customer_email" name="customLoginForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholder' | trans }}" class="input input--expand inputGray" type="email" >
-                                                    <span id="emailCheckIcon" class="icon-check"></span>
+                                                    <span id="emailCheckIcon">
+                                                        {% include atom('icon') with {
+                                                            class: 'check-codex',
+                                                            data: {
+                                                                name: 'check-codex',
+                                                            },
+                                                        } only %}
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div id="customerPasswordDiv" class="form__fields grid grid--top" >
@@ -658,7 +683,7 @@
                                     <a class="helpLink"  href="#">{{ 'global.recover.password' | trans }}?</a>
                                 </div>
 
-                                <div class="form__actions">
+                                <div class="btnContainer">
                                     <button id="btnCancelLogin" onclick="cancelLogin()" type="button" class="button button--hollow-ghost button--expand col col--middle">
                                         {{ 'general.cancel.button' | trans }}
                                     </button>
@@ -727,7 +752,7 @@
 
                         <div id="customerRegistrationFormButtons" class="{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }}">
                             {% block submitButton %}
-                                <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large submitBtn">
+                                <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet submitBtn">
                                     {{'checkout.customer.submit_as_guest' | trans}}
                                 </button>
                             {% endblock %}

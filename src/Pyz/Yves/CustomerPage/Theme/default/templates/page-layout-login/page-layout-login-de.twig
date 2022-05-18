@@ -183,6 +183,11 @@
             display: none;
         }
 
+        .btnContainer {
+            display: flex;
+            padding-top: 20px;
+        }
+
         #btnCancelLogin {
             text-decoration: none;
         }
@@ -278,7 +283,7 @@
             row-gap: 14px;
         }
 
-        @media only screen and (max-width: 769px) {
+        @media only screen and (max-width: 575px) {
             .checkbox-wrapper {
                 grid-template-columns: auto;
             }
@@ -408,7 +413,7 @@
                             </div>
                         </div>
 
-                        <div class="form__actions">
+                        <div class="btnContainer">
                             <button id="btnCancelLogin" type="button" class="button button--hollow-ghost button--expand col col--middle">{{ 'general.cancel.button' | trans }}</button>
                             <button id="btnContinueRegistration" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
                         </div>
@@ -488,7 +493,7 @@
                             <a class="helpLink"  href="#">{{ 'global.recover.password' | trans }}?</a>
                         </div>
 
-                        <div class="form__actions">
+                        <div class="btnContainer">
                             <button id="btnCancelLogin" onclick="cancelLogin()" type="button" class="button button--hollow-ghost button--expand col col--middle">
                                 {{ 'general.cancel.button' | trans }}
                             </button>
