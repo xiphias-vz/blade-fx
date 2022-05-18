@@ -37,6 +37,10 @@
             border: 1px solid $setting-color-gray-15;
             border-radius: 0;
             padding: rem(11) rem(30) rem(11) rem(11);
+
+            @include helper-breakpoint-media-max($lg-max) {
+                width: rem(135);
+            }
         }
 
         &__select--side-drawer {
@@ -53,7 +57,6 @@
             padding: rem(22) rem(12);
             background: $setting-color-globus-white;
             height: auto;
-           /* border: rem(1) solid $setting-color-input-border-tentgray;*/
             border-radius: rem(24);
 
             .select2-selection__rendered {
@@ -132,7 +135,6 @@
 
                 @include helper-breakpoint-media-max($lg-max) {
                     color: $setting-color-tentgray;
-                    right: rem(58);
                 }
             }
 
@@ -194,11 +196,9 @@
             color: $setting-color-globus-lightOrange;
             position: relative;
 
-            &::before {
+            &::after {
                 content: '';
-                position: absolute;
                 top: 50%;
-                right: rem(10);
                 width: rem(12);
                 height: rem(12);
                 margin-top: rem(-6);
