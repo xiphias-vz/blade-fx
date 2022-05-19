@@ -145,7 +145,7 @@
         <div class="container">
             {% block topSection %}
                 <div class="{{ config.name }}__row grid grid--no-wrap grid--justify grid--middle">
-                    <div class="{{ config.name }}__logo-container">
+                    <div class="{{ config.name }}__logo-container col col--md-1">
                     <div class="col col--for-truncate grid grid--no-wrap grid--middle {{ config.name }}__logo-content">
                         {% block logo %}
                             {% include molecule('logo') with {
@@ -154,7 +154,9 @@
                             } only %}
                         {% endblock %}
                           {% if app.currentCodeBucket == 'DE' %}
-                              <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
+                              <a class="{{ config.name }}__logo_text_link" href="/">
+                                  <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
+                              </a>
                         {% endif %}
                     </div>
                     </div>
@@ -240,7 +242,9 @@
                                                         src: publicPath('images/logo-new-globus.png'),
                                                     },
                                                 } only %}
-                                                <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
+                                                <a class="{{ config.name }}__logo_text_link" href="/">
+                                                    <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
+                                                </a>
                                             </div>
                                         {% else %}
                                             <div class="{{ config.name }}__logo">

@@ -13,6 +13,9 @@ $header-sticky-height: rem(69, number);
         @include helper-breakpoint-media-min($xl-min) {
             height: auto;
         }
+        &__logo_text_link {
+            text-decoration: none;
+        }
 
         &__logo-text {
             color: $setting-color-fresh-orange;
@@ -458,7 +461,7 @@ $header-sticky-height: rem(69, number);
             }
 
             @include helper-breakpoint-media-max($sm-max) {
-                align-items: flex-start;
+                align-items: center;
                 margin-left: 0;
             }
 
