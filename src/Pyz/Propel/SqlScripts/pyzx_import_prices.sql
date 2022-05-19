@@ -309,7 +309,7 @@ BEGIN
         , spps.price_data = '[]'
         , spps.price_per_kg = tmp.price_per_kg
         , spps.promotion = null
-    where (spps.gross_price <> tmp.price or spps.price_per_kg <> tmp.price_per_kg)
+    where (spps.gross_price <> tmp.price or ifnull(spps.price_per_kg, 0) <> tmp.price_per_kg)
       and tmp.isDefault = 1
       and tmp.promotion is null;
 
