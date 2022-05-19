@@ -359,6 +359,7 @@
                                     js-ajax-change-quantity__link
                                     js-quantity-counter-product__decr add-bin"
                                    data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                   data-product-sku="{{ sku | trim }}"
                                 >
                                     -
                                 </a>
