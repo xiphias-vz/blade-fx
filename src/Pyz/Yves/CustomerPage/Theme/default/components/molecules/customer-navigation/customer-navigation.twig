@@ -20,29 +20,29 @@
 
 {% block body %}
     <ul class="{{ component.renderClass('menu', modifiers) }}">
-        <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('overview', data.activePage)}} icon-overview-user-menu">
-            <a class="{{ component.renderClass('menu__link', modifiers) }}" href="{{ path('customer/overview') }}"
+        <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('overview', data.activePage)}}">
+            <a class="{{ component.renderClass('menu__link', modifiers) }} icon-overview-user-menu" href="{{ path('customer/overview') }}"
                data-id="sidebar-overview">{{ 'customer.account.overview' | trans }}</a>
         </li>
         {% if data.currentCodeBucket == 'CZ' %}
-            <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('profile', data.activePage)}} icon-profile-user-menu">
-                <a class="{{ component.renderClass('menu__link', modifiers) }}" href="{{ path('customer/profile') }}"
+            <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('profile', data.activePage)}}">
+                <a class="{{ component.renderClass('menu__link', modifiers) }} icon-profile-user-menu" href="{{ path('customer/profile') }}"
                    data-id="sidebar-profile">{{ 'customer.account.profile_data' | trans }}</a>
             </li>
         {% else %}
-            <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('profile', data.activePage)}} icon-profile-user-menu">
-                <a class="{{ component.renderClass('menu__link', modifiers) }}" href="{{ data.customerProfileUrl }}"
+            <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('profile', data.activePage)}}">
+                <a class="{{ component.renderClass('menu__link', modifiers) }} icon-profile-user-menu" href="{{ data.customerProfileUrl }}"
                    target="_blank" data-id="sidebar-profile">{{ 'customer.account.profile_data' | trans }}</a>
             </li>
         {% endif %}
         {% if data.currentCodeBucket != 'CZ' %}
-            <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('password-change', data.activePage)}} icon-password-user-menu">
-                <a class="{{ component.renderClass('menu__link', modifiers) }}" href="{{ path('password/change') }}"
+            <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('password-change', data.activePage)}}">
+                <a class="{{ component.renderClass('menu__link', modifiers) }} icon-password-user-menu" href="{{ path('password/change') }}"
                    data-id="sidebar-address">{{ 'customer.account.passwordChange' | trans }}</a>
             </li>
         {% endif %}
-        <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('order', data.activePage)}} icon-order-user-menu">
-            <a class="{{ component.renderClass('menu__link', modifiers) }}" href="{{ path('customer/order') }}"
+        <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('order', data.activePage)}}">
+            <a class="{{ component.renderClass('menu__link', modifiers) }} icon-order-user-menu" href="{{ path('customer/order') }}"
                data-id="sidebar-order">{{ 'customer.account.order_history' | trans }}</a>
         </li>
         {% block wishlistNavigation %}

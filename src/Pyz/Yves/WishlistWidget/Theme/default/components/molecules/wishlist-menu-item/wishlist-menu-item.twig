@@ -22,11 +22,11 @@
 {%- import _self as macros -%}
 
 {% block extraClass %}
-    {{ component.renderClass('menu__item', modifiers) }} {{ itemClass }} icon-wishlist-user-menu
+    {{ component.renderClass('menu__item', modifiers) }} {{ itemClass }}
 {% endblock %}
 
 {% block body %}
-    <a class="{{ component.renderClass('menu__link', modifiers) }}" href="{{ path('wishlist/overview') }}" data-id="sidebar-wishlist">
+    <a class="{{ config.name }}__item {{ component.renderClass('menu__link', modifiers) }} icon-wishlist-user-menu" href="{{ path('wishlist/overview') }}" data-id="sidebar-wishlist">
         {{- 'wishlist.wishlist' | trans -}}
     </a>
     {% if hasWishlists %}
