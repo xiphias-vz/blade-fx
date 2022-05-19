@@ -67,13 +67,15 @@
                                     <span class="{{ config.name }}__text">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
                                 {% endif %}
 
-                                {% if (phoneNumber is not empty) and (phoneNumber|length > 4) %}
-                                    <span class="{{ config.name }}__text {{ config.name }}__margin-top">{{ 'customer.address.phone' | trans }}: {{ phoneNumber }}</span>
-                                {% endif %}
+                                <div class="{{ config.name }}__phone-section">
+                                    {% if (phoneNumber is not empty) and (phoneNumber|length > 4) %}
+                                        <span class="{{ config.name }}__text">{{ 'customer.address.phone' | trans }}: {{ phoneNumber }}</span>
+                                    {% endif %}
 
-                                {% if (mobileNumber is not empty) and (mobileNumber|length > 4) %}
-                                    <span class="{{ config.name }}__text">{{ 'customer.address.mobile_phone' | trans }}: {{ mobileNumber }}</span>
-                                {% endif %}
+                                    {% if (mobileNumber is not empty) and (mobileNumber|length > 4) %}
+                                        <span class="{{ config.name }}__text">{{ 'customer.address.mobile_phone' | trans }}: {{ mobileNumber }}</span>
+                                    {% endif %}
+                                </div>
 
                             {% else %}
                                 {% set address = data.billingAddress %}

@@ -28,18 +28,26 @@
                 display: flex;
                 flex-flow: row-reverse;
                 align-items: end;
-                justify-content: space-evenly;
+                justify-content: center;
+                gap: rem(50);
 
                 @include helper-breakpoint-media-max($sm-max) {
                     flex-direction: column;
+                    align-items: center;
                 }
 
                 .text-and-button {
-                    display: block;
-                    width: 20%;
+                    width: 90%;
+                    text-align: center;
 
-                    @include helper-breakpoint-media-max($sm-max) {
-                        width: 60%;
+                    @include helper-breakpoint-media-min($sm-max) {
+                        width: 35%;
+                        text-align: left;
+                    }
+
+                    @include helper-breakpoint-media-min($lg-max) {
+                        display: block;
+                        width: 20%;
                     }
 
                     .info {
@@ -47,28 +55,36 @@
                         color: $setting-color-tentgray;
                         font-size: 1.1rem;
                         @include helper-breakpoint-media-max($sm-max) {
-                            text-align: center;
+                            text-align: left;
                             font-size: 1rem;
                         }
                     }
 
                     .button {
                         width: 100%;
-                        margin-top: 2rem;
+                        margin-top: rem(10);
                         padding: 0.5rem 0;
                         font-size: 1.1rem;
                         border-radius: rem(20);
                         background: $setting-color-fresh-orange;
 
                         @include helper-breakpoint-media-max($md-max) {
-                            margin-top: 1rem;
+                            margin-bottom: rem(20);
+                        }
+
+                        @include helper-breakpoint-media-max($lg-max) {
+                            width: 75%;
+                        }
+
+                        @include helper-breakpoint-media-max($sm-max) {
+                            width: 100%;
                         }
                     }
                 }
 
                 .warenkorb-img {
                     height: auto;
-                    width: 45%;
+                    width: 30%;
                     margin-left: 20px;
                     @include helper-breakpoint-media-max($sm-max) {
                         width: 90%;
@@ -77,6 +93,10 @@
                 }
 
             }
+        }
+
+        &__main-title {
+            font-weight: 500;
         }
 
         &__col {

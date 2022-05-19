@@ -33,15 +33,6 @@
             margin-right: 10px;
         }
 
-        .supplier {
-            font-weight: 700;
-            color: #898F87;
-        }
-
-        .new_cart {
-            margin-right: 10px;
-        }
-
         &--catalog {
             padding-bottom: rem(15);
 
@@ -98,7 +89,8 @@
                 @include helper-breakpoint-media-max($md-max) {
                     flex-direction: row;
                     justify-content: flex-end;
-                    align-items: flex-end;
+                    align-items: baseline;
+                    min-height: auto;
                 }
             }
 
@@ -192,8 +184,8 @@
 
         &__name {
             text-decoration: none;
-            font-weight: fw(medium);
-            font-size: rem(14);
+            font-weight: 700;
+            font-size: rem(16);
             line-height: rem(24);
             letter-spacing: rem(0.1);
             color: $setting-color-tentgray;
@@ -337,25 +329,16 @@
 
                 a {
                     justify-content: center;
-                    width: 30px;
-                    min-width: 40px;
-                    padding: 15px;
-                    height: 40px;
-                    margin: 0 8px 6px 0;
+                    padding: rem(15);
+                    height: rem(40);
+                    margin: 0 rem(8) rem(6) 0;
                     .add-details-to-cart-text-holder {
-                        display: none;
                         font-weight: 900;
                     }
+                }
 
-                    .icon-basketplus {
-                        font-size: rem(24);
-                        margin-right: 0;
-                    }
-
-                    .icon {
-                        width: rem(15);
-                        margin: 0;
-                    }
+                .icon--product-item-new-cart {
+                    margin-right: rem(10);
                 }
             }
         }
@@ -377,7 +360,7 @@
                     font-size: rem(25);
                 }
                 &__amount--original{
-                    font-size: rem(12);
+                    font-size: rem(15);
                     font-weight: 400;
                     color: $setting-color-globus-black;
                     text-decoration-color: $setting-color-alt-4;

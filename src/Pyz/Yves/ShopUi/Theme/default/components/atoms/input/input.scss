@@ -11,8 +11,6 @@
     border-radius: rem(24);
     box-sizing: border-box;
     appearance: none;
-    margin: rem(8) 0;
-
 
     &::placeholder {
         @include helper-font-weight(regular);

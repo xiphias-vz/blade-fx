@@ -10,7 +10,7 @@
 
     <aside class="{{ component.renderClass(config.name ~ '__drawer', modifiers) }}">
         {% block topBar %}
-            <div class="{{ config.name }}__top-bar grid grid--middle spacing-left spacing-left--inner">
+            <div class="{{ config.name }}__top-bar grid spacing-left spacing-left--inner">
                 {% block widgets %}
                     {% widget 'StoreSwitcherWidget' %}{% endwidget %}
 

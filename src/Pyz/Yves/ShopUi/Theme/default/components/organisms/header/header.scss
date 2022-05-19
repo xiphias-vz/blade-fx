@@ -7,8 +7,14 @@ $header-sticky-height: rem(69, number);
         position: relative;
         z-index: $setting-zi-header;
 
-        @include helper-breakpoint-media-max($lg-max) {
-            margin-bottom: 3rem;
+        height: rem(130);
+        background-color: $setting-color-white;
+
+        @include helper-breakpoint-media-min($xl-min) {
+            height: auto;
+        }
+        &__logo_text_link {
+            text-decoration: none;
         }
 
         &__logo-text {
@@ -29,6 +35,12 @@ $header-sticky-height: rem(69, number);
             @include helper-breakpoint-media-max($lg-max) {
                 margin-bottom: rem(8);
             }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                font-size: rem(18);
+                margin: 0;
+            }
+
         }
 
         &__logo-container {
@@ -85,7 +97,6 @@ $header-sticky-height: rem(69, number);
         &__link_container {
             display: flex;
             height: 100%;
-            /*line-height: rem(19);*/
             font-size: rem(10);
             width: rem(150);
             align-items: center;
@@ -163,8 +174,6 @@ $header-sticky-height: rem(69, number);
         }
 
         &__row {
-            padding: 0 rem(20) 0 rem(20);
-            align-items: self-end;
 
             @include helper-breakpoint-media-max($lg-max) {
                 margin-right: 0;
@@ -172,9 +181,6 @@ $header-sticky-height: rem(69, number);
 
             @include helper-breakpoint-media-max($sm-max) {
                 height: rem(52);
-                left: unset;
-                margin-left: rem(10);
-                margin-bottom: rem(10);
                 display: flex;
                 flex-flow: wrap;
                 align-items: flex-end;
@@ -200,7 +206,7 @@ $header-sticky-height: rem(69, number);
             }
 
             @include helper-breakpoint-media-max($lg-max) {
-                padding: 0 rem(10);
+                padding: 0 rem(10) rem(15);
                 transition: top 0.3s;
                 top:-120px;
                 background: #FFFFFF;
@@ -234,13 +240,6 @@ $header-sticky-height: rem(69, number);
         &__container {
             position: relative;
             z-index: $setting-zi-header + 1;
-
-            @include helper-breakpoint-media-max($sm-max) {
-                margin-left: rem(0);
-                padding-left: rem(10);
-                padding-right: rem(10);
-                padding-bottom: rem(10);
-            }
         }
 
         &__top-nav {
@@ -253,11 +252,6 @@ $header-sticky-height: rem(69, number);
             z-index: $setting-zi-header + 3;
             display: flex;
 
-            @include helper-breakpoint-media-max($sm-max){
-                padding-bottom: rem(10);
-                padding-right: 0;
-            }
-
             &--checkout {
                 display: flex;
                 justify-content: flex-end;
@@ -269,18 +263,8 @@ $header-sticky-height: rem(69, number);
             width: 100%;
 
             @include helper-breakpoint-media-max($lg-max) {
-                position: absolute;
-                left: 0;
-                top: 100%;
-                right: 0;
-                padding: 0;
-                margin-top: rem(10);
-            }
-
-            @include helper-breakpoint-media-max($sm-max) {
-                top: 75%;
                 display:flex;
-                margin-top: 0;
+                margin-top: rem(10);
             }
         }
 
@@ -477,8 +461,14 @@ $header-sticky-height: rem(69, number);
             }
 
             @include helper-breakpoint-media-max($sm-max) {
-                align-items: flex-start;
+                align-items: center;
                 margin-left: 0;
+            }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
             }
         }
 
@@ -514,7 +504,6 @@ $header-sticky-height: rem(69, number);
             font-size: rem(12);
 
             @include helper-breakpoint-media-min($lg-max) {
-                /*margin-left: 0;*/
                 width: 90%;
             }
         }

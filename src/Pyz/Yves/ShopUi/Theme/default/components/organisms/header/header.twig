@@ -145,7 +145,7 @@
         <div class="container">
             {% block topSection %}
                 <div class="{{ config.name }}__row grid grid--no-wrap grid--justify grid--middle">
-                    <div class="{{ config.name }}__logo-container">
+                    <div class="{{ config.name }}__logo-container col col--md-1">
                     <div class="col col--for-truncate grid grid--no-wrap grid--middle {{ config.name }}__logo-content">
                         {% block logo %}
                             {% include molecule('logo') with {
@@ -154,7 +154,9 @@
                             } only %}
                         {% endblock %}
                           {% if app.currentCodeBucket == 'DE' %}
-                              <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
+                              <a class="{{ config.name }}__logo_text_link" href="/">
+                                  <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
+                              </a>
                         {% endif %}
                     </div>
                     </div>
@@ -210,44 +212,6 @@
                                 </div>
                             {% endif %}
 
-                            <div
-                                class="{{ config.name }}__row {{ config.name }}__navigation-top {{ config.name }}__search-bar grid grid--middle grid--justify js-suggest-search--target">
-                                {% if data.showNavigation %}
-
-                                    <div class="{{ config.name }}__all-products-button">
-                                            <button class="button button--global-products button--expand {{ app.currentCodeBucket == 'DE' ? '' : 'button--all-products-CZ' }} {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger button__all-products" style="box-shadow: none !important;">
-                                                {% include atom('icon') with {
-                                                    class: 'button__icon ' ~ config.jsName ~ '__navigation-target',
-                                                    modifiers: ['big', 'with-stroke', 'header'],
-                                                    data: {
-                                                        name: 'shop',
-                                                    },
-                                                } only %}
-                                                {% include atom('icon') with {
-                                                    class: 'button__icon is-hidden ' ~ config.jsName ~ '__navigation-target',
-                                                    modifiers: ['big', 'with-stroke', 'header'],
-                                                    data: {
-                                                        name: 'shop-filled',
-                                                    },
-                                                } only %}
-                                                <div class="{{ config.name }}__products-button-text">{{- 'global.all_products' | trans -}}</div>
-                                            </button>
-                                    </div>
-                                {% endif %}
-
-                                {% if data.showSearchForm %}
-                                    <div class="col col--expand col--sm-7">
-                                        {% include molecule('search-form') with {
-                                            class: config.name ~ '__search-form',
-                                            attributes: {
-                                                'data-search-id': 'desktop',
-                                            },
-                                        } only %}
-                                    </div>
-                                {% endif %}
-
-                            </div>
-
                             {% if data.showNavigation %}
                                 <div class="{{ config.name }}__row {{ config.name }}__navigation-top is-hidden-xl-only {{ config.name }}__top-nav">
                                     <button type="button" class="navigation-top-left-mobile__item tablet-style {{ hamburgerIcon.jsClass }} button--no-inner-events">
@@ -278,7 +242,9 @@
                                                         src: publicPath('images/logo-new-globus.png'),
                                                     },
                                                 } only %}
-                                                <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
+                                                <a class="{{ config.name }}__logo_text_link" href="/">
+                                                    <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
+                                                </a>
                                             </div>
                                         {% else %}
                                             <div class="{{ config.name }}__logo">
@@ -300,6 +266,43 @@
                                     } only %}
                                 </div>
                             {% endif %}
+
+                            <div class="{{ config.name }}__row {{ config.name }}__navigation-top {{ config.name }}__search-bar grid grid--middle grid--justify js-suggest-search--target">
+                                {% if data.showNavigation %}
+
+                                    <div class="{{ config.name }}__all-products-button">
+                                        <button class="button button--global-products button--expand {{ app.currentCodeBucket == 'DE' ? '' : 'button--all-products-CZ' }} {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger button__all-products" style="box-shadow: none !important;">
+                                            {% include atom('icon') with {
+                                                class: 'button__icon ' ~ config.jsName ~ '__navigation-target',
+                                                modifiers: ['big', 'with-stroke', 'header'],
+                                                data: {
+                                                    name: 'shop',
+                                                },
+                                            } only %}
+                                            {% include atom('icon') with {
+                                                class: 'button__icon is-hidden ' ~ config.jsName ~ '__navigation-target',
+                                                modifiers: ['big', 'with-stroke', 'header'],
+                                                data: {
+                                                    name: 'shop-filled',
+                                                },
+                                            } only %}
+                                            <div class="{{ config.name }}__products-button-text">{{- 'global.all_products' | trans -}}</div>
+                                        </button>
+                                    </div>
+                                {% endif %}
+
+                                {% if data.showSearchForm %}
+                                    <div class="col col--expand col--sm-7">
+                                        {% include molecule('search-form') with {
+                                            class: config.name ~ '__search-form',
+                                            attributes: {
+                                                'data-search-id': 'desktop',
+                                            },
+                                        } only %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
                         </div>
 
                         {% if data.showNavigation %}

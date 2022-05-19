@@ -38,13 +38,16 @@
     ] %}
 
     <nav>
-        <span class="my-market-title">{{ 'mein.markt.label' | trans }}:</span>
-        <ul class="grid grid--middle grid--justify">
+        <ul class="grid {{ config.name }}__top-grid">
             {% if data.showStoreSwitches %}
-                <div class="store-widget-holder">
-                    {% widget 'StoreSwitcherWidget' %}{% endwidget %}
+                <div class="store-select">
+                    <span class="my-market-title">{{ 'mein.markt.label' | trans }}:</span>
+                    <div class="store-widget-holder">
+                        {% widget 'StoreSwitcherWidget' %}{% endwidget %}
+                    </div>
                 </div>
             {% endif %}
+            <div class="test">
             {% for item in items if item.isVisibleForAuthorized ?? true %}
                 {% if item.isCart ?? false %}
                     {% embed molecule('navigation-top-mobile-item') with {
@@ -99,6 +102,7 @@
                     {% endembed %}
                 {% endif %}
             {% endfor %}
+            </div>
         </ul>
     </nav>
 {% endblock %}

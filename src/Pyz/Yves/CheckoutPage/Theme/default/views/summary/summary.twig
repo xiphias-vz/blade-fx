@@ -44,11 +44,11 @@
                     },
                 } only %}
                 {% if app.currentCodeBucket == 'DE' %}
-                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost button--checkout">
+                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost button--checkout-summary">
                         {{ 'general.back.button' | trans }}
                     </a>
                 {% else %}
-                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost-CZ button--checkout button--font-CZ">
+                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost-CZ button--checkout-summary button--font-CZ">
                         {{ 'general.back.button' | trans }}
                     </a>
                 {% endif %}
@@ -167,7 +167,7 @@
 
                                         {% if app.currentCodeBucket == 'DE' %}
                                             {% include molecule('money-price') with {
-                                                modifiers: ['cart'] | merge(modifiers),
+                                                modifiers: ['cart', 'summary'] | merge(modifiers),
                                                 class: component.renderClass(config.name ~ '__price', modifiers),
                                                 data: {
                                                     amount: productItemSubTotal | default(null),
@@ -176,7 +176,7 @@
                                             } only %}
                                         {% else %}
                                             {% include molecule('money-price') with {
-                                                modifiers: ['cart'] | merge(modifiers),
+                                                modifiers: ['cart', 'summary'] | merge(modifiers),
                                                 class: component.renderClass(config.name ~ '__price-cz', modifiers),
                                                 data: {
                                                     amount: productItemSubTotal | default(null),
@@ -204,7 +204,7 @@
                             </h3>
                         {% endif %}
                         {% embed molecule('form') with {
-                            modifiers: ['checkout-actions'],
+                            modifiers: ['checkout-actions', 'summary-actions'],
                             data: {
                                 form: data.forms.summary,
                                 submit: {
@@ -217,7 +217,7 @@
                                     url: data.backUrl,
                                     text: 'general.back.button' | trans,
                                     icon: '',
-                                    class: app.currentCodeBucket == 'DE' ? 'is-hidden-xl-only form__action--checkout button button--hollow-ghost button--expand' : 'is-hidden-xl-only form__action--checkout button button--hollow-ghost button--expand button--font-CZ',
+                                    class: app.currentCodeBucket == 'DE' ? 'is-hidden-xl-only form__action--checkout button button--hollow-ghost button--expand' : 'is-hidden-xl-only form__action--checkout button button--hollow-ghost-CZ button--expand button--font-CZ',
                                 },
                                 agbInputName: data.agbInputName,
                             },

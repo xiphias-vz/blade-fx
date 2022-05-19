@@ -12,13 +12,13 @@
             height: 100%;
 
             @include helper-breakpoint-media-max($sm-max) {
-                padding-bottom: 0;
+                padding: 0;
             }
 
         }
         @include helper-breakpoint-media-max($sm-max) {
             .icon {
-                width: rem(20);
+                width: rem(35);
                 height: rem(20);
             }
         }

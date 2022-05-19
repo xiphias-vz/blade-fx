@@ -49,7 +49,7 @@
 
                 {% set labels = labels | default([]) %}
 
-                {% if not data.product.id_product_labels is defined or data.product.id_product_labels|length >= 0 %}
+                {% if not data.product.id_product_labels is defined or data.product.id_product_labels|length <= 0 %}
                     {% set labels = labels | merge([{
                         text: '',
                         type: 'highlight',
@@ -362,7 +362,13 @@
                        data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
                        data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
                     >
-                        <span class="icon-basketplus"></span>
+                        {% include atom('icon') with {
+                            modifiers:['product-item-new-cart'],
+                            class: 'new_cart',
+                            data: {
+                                name: 'new_cart',
+                            },
+                        } only %}
                         <div class="add-details-to-cart-text-holder">
                             {{- 'page.detail.add-to-cart' | trans -}}
                         </div>

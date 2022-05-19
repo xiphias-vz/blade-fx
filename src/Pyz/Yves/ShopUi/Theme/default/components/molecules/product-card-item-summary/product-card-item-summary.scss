@@ -73,19 +73,19 @@
             }
 
             @include helper-breakpoint-media-max(440px) {
-                width: rem(192);
-            }
-
-            @include helper-breakpoint-media-max(415px) {
                 width: rem(160);
             }
 
+            @include helper-breakpoint-media-max(415px) {
+                width: rem(128);
+            }
+
             @include helper-breakpoint-media-max($xs-max) {
-                width: rem(112);
+                width: rem(96);
             }
 
             @include helper-breakpoint-media-max($xxs-max) {
-                width: rem(96);
+                width: rem(76);
             }
         }
 
