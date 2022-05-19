@@ -18,7 +18,7 @@
         }
         @include helper-breakpoint-media-max($sm-max) {
             .icon {
-                width: rem(20);
+                width: rem(35);
                 height: rem(20);
             }
         }

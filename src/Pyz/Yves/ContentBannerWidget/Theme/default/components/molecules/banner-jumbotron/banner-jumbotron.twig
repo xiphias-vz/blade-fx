@@ -13,7 +13,7 @@
 {% block body %}
     {% set backgroundImage = data.banner.imageUrl ? 'background-image: url(' ~ data.banner.imageUrl ~ ');' %}
 
-    <div class="{{ component.renderClass(config.name ~ '__container', modifiers) }} grid grid--center {% block bannerTextPosition %}grid--middle{% endblock %}" style="{{ backgroundImage }}">
+    <div class="{{ component.renderClass(config.name ~ '__container', modifiers) }} grid grid--center" style="{{ backgroundImage }}">
         {% if data.isBannerClickable %}
             <a href="{{ data.banner.clickUrl }}" class="{{ config.name }}__link"></a>
         {% endif %}

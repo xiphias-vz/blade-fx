@@ -44,9 +44,9 @@
             width: rem(40);
             height: rem(63);
 
-        @include helper-breakpoint-media-max($lg-max) {
-            margin-right: rem(10);
-        }
+            @include helper-breakpoint-media-max($lg-max) {
+                margin-right: rem(10);
+            }
 
             @include helper-breakpoint-media-max($sm-max) {
                 display: flex;
@@ -69,6 +69,10 @@
                 width: rem(25);
                 height: rem(25);
                 margin-bottom: rem(15);
+            }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                margin: 0;
             }
 
         }
@@ -106,12 +110,6 @@
                 height: rem(115);
             }
         }
-
-        //&--footer {
-        //    width: rem(90);
-        //    height: rem(108);
-        //}
-
         @content;
     }
 }

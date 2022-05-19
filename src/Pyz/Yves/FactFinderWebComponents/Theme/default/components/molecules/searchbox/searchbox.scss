@@ -37,8 +37,9 @@
             top: 0;
             bottom: 0;
             background: none;
-            padding-left: rem(16);
+            width: rem(35);
             z-index: $setting-zi-navigation-top;
+            cursor: pointer;
 
             @include helper-breakpoint-media-max($sm-max) {
                 left:unset;
