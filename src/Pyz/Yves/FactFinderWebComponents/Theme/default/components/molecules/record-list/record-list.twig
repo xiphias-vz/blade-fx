@@ -212,14 +212,20 @@
                         {% endverbatim %}
                     {% endset %}
 
+                {% set uvp %}
+                    {% verbatim %}
+                        {{ record.geoInformation.0.geoValues.Promotion }}
+                    {% endverbatim %}
+                {% endset %}
 
-                        {% block price %}
-                        {% if data.itemWeight is not null -%}
-                            {{ data.calculatedPrice }}
-                        {%- else -%}
-                            {% if originalAmount is not empty and originalAmount > amount -%}
-                                <span class="{{ config.name }}__amount {{ config.name }}__amount--original">{{ originalAmount | trim }}</span>
-                            {%- endif -%}
+                    {% block price %}
+                    {% if data.itemWeight is not null -%}
+                        {{ data.calculatedPrice }}
+                    {%- else -%}
+                        {% if originalAmount is not empty and originalAmount > amount -%}
+                            <span class="{{ config.name }}__uvp">{{ uvp }}</span>
+                            <span class="{{ config.name }}__amount {{ config.name }}__amount--original">{{ originalAmount }}</span>
+                        {%- endif -%}
 
                             {%- if amount is empty -%}
                                 {{ data.noPriceText }}

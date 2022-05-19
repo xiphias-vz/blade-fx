@@ -361,6 +361,17 @@
             margin: 0 rem(8) 0;
         }
 
+        &__uvp {
+            position: absolute;
+            right: rem(48);
+            margin-top: rem(20.32);
+            font-size: rem(12);
+
+            @include helper-breakpoint-media-max($md-min) {
+                right: rem(60.8);
+            }
+        }
+
         &__amount{
             font-family: $setting-font-family-additional;
             padding: 0 rem(10);
@@ -384,7 +395,7 @@
 
 
             @include helper-breakpoint-media-max($sm-max){
-                margin-top: rem(10);
+                margin-right: rem(12);
             }
         }
 

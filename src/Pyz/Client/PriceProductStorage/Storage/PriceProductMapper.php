@@ -14,6 +14,7 @@ class PriceProductMapper extends SprykerPriceProductMapper
 {
     protected const PRICE_PER_KG = 'PRICE_PER_KG';
     protected const DEFAULT = 'DEFAULT';
+    protected const PROMOTION = 'PROMOTION';
 
     /**
      * @param \Generated\Shared\Transfer\PriceProductTransfer[] $priceProductTransfers
@@ -46,6 +47,9 @@ class PriceProductMapper extends SprykerPriceProductMapper
 
                 $priceProductTransfer->getMoneyValue()->setNetAmount($priceValue);
                 $priceProductTransfer = $this->setPriceData($priceProductTransfer, $prices);
+                if (isset($prices[static::PROMOTION])) {
+                    $priceProductTransfer->getMoneyValue()->setPromotion($prices[static::PROMOTION]);
+                }
             }
         }
         if (isset($prices[static::PRICE_PER_KG][static::DEFAULT])) {

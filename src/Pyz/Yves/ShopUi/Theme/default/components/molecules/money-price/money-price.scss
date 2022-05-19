@@ -31,9 +31,22 @@
     }
     &__amount-red {
         color: $setting-color-globus-red;
+        float: left;
 
+        @include helper-breakpoint-media-max($lg-max) {
+            float: none;
+        }
     }
 
+    &__price-container {
+        display: flex;
+    }
+
+    &__uvp {
+        margin-right: rem(5);
+        font-size: rem(12);
+        color: #9ea1a7;
+    }
 
     &--align-right {
         @include helper-breakpoint-media-min($md-min) {

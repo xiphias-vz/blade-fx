@@ -543,6 +543,8 @@ class CartController extends SprykerCartController
                 ->setSku($productConcreteSku)
                 ->setQuantity($quantity);
 
+            $itemTransfer->setPromotion($productViewTransfer['promotion']);
+
             $depositProductOptions = $this->getFactory()
                 ->getDepositProductOptionClient()
                 ->getDepositProductOptionsByIdProductAbstract($productAbstractId, $productViewTransfer);

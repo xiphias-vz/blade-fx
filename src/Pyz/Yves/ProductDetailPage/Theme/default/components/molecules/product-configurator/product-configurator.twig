@@ -131,6 +131,7 @@
                             data: {
                                 amount: data.product.price,
                                 prefix: pefix,
+                                promotion: data.product.promotion,
                                 originalAmount: data.product.prices.ORIGINAL is not defined ? null : data.product.prices.ORIGINAL,
                             }
                         } only %}

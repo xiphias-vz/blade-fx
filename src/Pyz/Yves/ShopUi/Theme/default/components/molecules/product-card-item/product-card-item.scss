@@ -10,9 +10,6 @@ $additional-info-width: rem(350);
                 margin: 0;
                 padding: 0;
             }
-            @include helper-breakpoint-media-max($md-min) {
-                bottom: 0;
-            }
             @include helper-breakpoint-media-max($xs-max) {
                 margin-bottom: 0;
             }
@@ -249,10 +246,27 @@ $additional-info-width: rem(350);
         }
 
         &__price-col {
-
             display: flex;
             align-items: center;
             justify-content: center;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding: 0 rem(5);
+                width: 20%;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            @include helper-breakpoint-media-max($lg-max) {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            @include helper-breakpoint-media-max(420px) {
+                position: relative;
+                left: rem(50);
+            }
         }
 
         &__price-unit {
@@ -295,6 +309,19 @@ $additional-info-width: rem(350);
             &--summary {
                 padding: 0;
                 margin: 0;
+
+                display: flex;
+                flex-direction: column;
+                align-items: end;
+
+                .money-price__money_original_container {
+                    flex-direction: row-reverse;
+
+                    .money-price__uvp {
+                        margin-right: rem(5);
+                    }
+                }
+
             }
 
             &--with-actions {

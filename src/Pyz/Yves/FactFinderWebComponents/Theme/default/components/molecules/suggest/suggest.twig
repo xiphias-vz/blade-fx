@@ -68,6 +68,12 @@
                                 {% endverbatim %}
                             {% endset %}
 
+                            {% set uvp %}
+                                {% verbatim %}
+                                    {{ attributes.geoInformation.0.geoValues.Promotion }}
+                                {% endverbatim %}
+                            {% endset %}
+
                             <div class="{{ config.name }}__link">
                             {% if item.type == 'productName' %}
                                 <span class="suggestImage">
@@ -102,6 +108,7 @@
                                             {{ data.calculatedPrice }}
                                         {%- else -%}
                                             {% if originalAmount is not empty and originalAmount > amount -%}
+                                                <span class="{{ config.name }}__uvp">{{ uvp }}</span>
                                                 <span class="{{ config.name }}__amount {{ config.name }}__amount--original">
                                                     {{ originalAmount }}
                                                 </span>

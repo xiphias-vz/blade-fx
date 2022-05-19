@@ -119,6 +119,12 @@
             }
         }
 
+        &__uvp {
+            position: absolute;
+            margin-left: rem(45);
+            color: #111;
+        }
+
         &__hide {
             display: none;
         }

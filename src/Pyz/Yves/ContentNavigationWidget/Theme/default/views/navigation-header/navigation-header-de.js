@@ -560,7 +560,6 @@ function checkOriginalAndDefaultPrices(element, flag) {
             if(elOrig.innerText.length > 0) {
                 var p2 = parseFloat(elOrig.innerText).toFixed(2).toString();
                 elOrig.innerText = p2.replace('.', ',') + ' €';
-                elOrig.innerText = "UVP: " + elOrig.innerText;
                 elDef.style.color = "#E30613";
             } else {
                 elDef.style.color = "#373936";

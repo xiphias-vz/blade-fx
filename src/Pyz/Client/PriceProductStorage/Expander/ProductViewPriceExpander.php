@@ -25,6 +25,7 @@ class ProductViewPriceExpander extends SprykerProductViewPriceExpander
          * TODO: ADD METHOD INSTEAD OF ARRAY
          */
         $productViewTransfer['pricePerKg'] = $priceProductTransfers[0]['moneyValue']['pricePerKg'] ?? null;
+        $productViewTransfer['promotion'] = $priceProductTransfers[0]['moneyValue']['promotion'] ?? null;
 
         return $productViewTransfer;
     }
