@@ -172,7 +172,7 @@ class ProductController extends SprykerShopProductController
                 }
                 $title = $resultData['title'] ?? '';
 
-                $this->clickTrackingEvent($productSku, $masterId, $page, $position, $query, $title);
+                $this->clickTrackingEvent($productSku, $masterId, (int)$page, (int)$position, $query, $title);
             }
         }
 
