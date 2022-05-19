@@ -308,7 +308,7 @@
                 border: 2px solid $setting-color-fresh-orange;
                 background: $setting-color-fresh-orange-2;
                 color: $setting-color-fresh-orange;
-                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2 !important;
+                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2;
             }
         }
 
@@ -325,7 +325,7 @@
                 border: 2px solid $setting-color-forest-green;
                 background: $setting-color-forest-green-light;
                 color: $setting-color-forest-green;
-                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2 !important;
+                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2;
             }
         }
 
@@ -438,7 +438,6 @@
             border-radius: rem(30) rem(0) rem(0) rem(30);
             border-color: transparent;
             padding-left: rem(10);
-            height: 100%;
 
             @include helper-breakpoint-media-max($lg-max) {
                 padding-left: rem(10);

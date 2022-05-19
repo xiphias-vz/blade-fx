@@ -41,6 +41,10 @@
             z-index: $setting-zi-navigation-top;
             cursor: pointer;
 
+            &:hover {
+                cursor: pointer;
+            }
+
             @include helper-breakpoint-media-max($sm-max) {
                 left:unset;
                 right:rem(25);

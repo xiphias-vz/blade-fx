@@ -45,6 +45,12 @@
             font-size: rem(15);
             display: block;
             font-weight: 500;
+
+            @include helper-breakpoint-media-max(450px){
+                position: relative;
+                margin-left: rem(22);
+                margin-bottom: rem(18);
+            }
         }
     }
     &__amount-red {

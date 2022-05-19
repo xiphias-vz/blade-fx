@@ -36,12 +36,6 @@ $review-rating-field-width: rem(154);
 
         &__actions {
             text-align: right;
-            padding-top: rem(35);
-            float: right;
-
-            @include helper-breakpoint-media-max($lg-min){
-               float: unset;
-            }
 
             &--profile {
                 padding: rem(8) 0;
@@ -164,6 +158,7 @@ $review-rating-field-width: rem(154);
             #{$name}__actions {
                 display: flex;
                 align-items: flex-end;
+                float: right;
             }
 
             #{$name}__actions-guest {
@@ -350,6 +345,10 @@ $review-rating-field-width: rem(154);
             @media only screen and (max-width: 769px) {
                 margin-right: rem(8);
             }
+        }
+
+        .submit-button {
+            float: right;
         }
 
         @content;
