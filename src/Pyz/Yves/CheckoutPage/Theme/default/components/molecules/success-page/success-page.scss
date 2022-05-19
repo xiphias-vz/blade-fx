@@ -42,6 +42,8 @@
 
                 .payback-discovery {
                     margin-top: rem(30);
+                    font-weight: bolder;
+                    font-size: rem(12);
                 }
 
                 @include helper-breakpoint-media-max($l-max)  {
@@ -132,11 +134,17 @@
                     color: $setting-color-tentgray;
 
                     .support-link {
+                        font-weight: 900;
+                        text-decoration: none;
                         color: $setting-color-fresh-orange;
                     }
                 }
             }
 
+        }
+
+        &__button {
+            font-size: rem(12);
         }
 
         &__text {
