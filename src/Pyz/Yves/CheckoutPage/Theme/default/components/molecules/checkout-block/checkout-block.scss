@@ -6,8 +6,16 @@
         padding: rem(20) rem(15);
         font-family: $setting-font-family-additional;
 
-        .customer-info, .paragraph-text, .form__field .label, .abholstation-text, #addressesForm_cart_note, .substitution-text .checkbox__label, .submit-button#js-address__buttonSubmit {
+        .customer-info, .paragraph-text, .form__field .label, #addressesForm_cart_note, .substitution-text .checkbox__label, .submit-button#js-address__buttonSubmit {
             font-size: rem(16);
+        }
+
+        .abholstation-text {
+            font-size: rem(16);
+
+            @include helper-breakpoint-media-min($xl-max) {
+                white-space: nowrap;
+            }
         }
 
         @include helper-breakpoint-media-min($xl-min) {
@@ -202,6 +210,7 @@
 
         textarea {
             font-family: $setting-font-family-additional;
+            resize: none;
         }
 
         @content;

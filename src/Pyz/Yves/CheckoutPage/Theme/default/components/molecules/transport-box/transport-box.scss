@@ -31,12 +31,6 @@
             height: rem(270);
         }
 
-        &__image-div {
-            @include helper-breakpoint-media-max($sm-max) {
-                text-align: center;
-            }
-        }
-
         &__image {
             margin-top: rem(12);
             width: rem(177);
@@ -45,6 +39,10 @@
             @include helper-breakpoint-media-max($sm-max) {
                 max-width: 50%;
             }
+        }
+
+        &__image-container {
+            width: 30%;
         }
 
         &__text {

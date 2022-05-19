@@ -94,7 +94,7 @@
                             </div>
                             <br>
                             <div class="paragraph-title" id="phoneRequiredFields">
-                                {{ 'page.checkout.address.phone.paragraph3' | trans }}
+                                {{ 'page.checkout.address.phone.paragraph3' | trans }}<span>*</span>
                                 <br>
                             </div>
 
@@ -167,9 +167,9 @@
                 <div class="col col--sm-12 col--xl-6 spacing-x spacing-x--big spacing-x--inner">
                     <div {% if app.currentCodeBucket == 'DE' %}class="checkout-block" {% else %}class="checkout-block CZ"{% endif %}>
                         {% if app.currentCodeBucket == 'DE'%}
-                            <h2 class="title title--primary">{{ 'page.checkout.address.abhol-address' | trans }}</h2>
+                            <h2 class="title title--primary">{{ 'page.checkout.address.billing-address' | trans }}</h2>
                         {% else %}
-                            <h2 class="title title--primary CZ">{{ 'page.checkout.address.abhol-address' | trans }}</h2>
+                            <h2 class="title title--primary CZ">{{ 'page.checkout.address.billing-address' | trans }}</h2>
                         {% endif%}
 
                         <p class="spacing-bottom spacing-bottom--bigger abholstation-text">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
@@ -202,7 +202,7 @@
                                 </div>
                             {% endif %}
 
-                            <div class="title--primary" style="display: flex; width: 100%; margin-bottom: 0px">
+                            <div class="title--primary" style="display: flex; width: 100%; margin-bottom: 0px; padding-top: 20px">
                                 <p>{{ 'cart.checkout.address.abholstation.note.down' | trans }}</p>
                             </div>
                         {% else %}
