@@ -446,10 +446,6 @@
                 &:hover{
                     background-color: $setting-color-globusCZ-hover;
                 }
-                @include helper-breakpoint-media-max($sm-max){
-                    width: rem(48);
-                    height: 100%;
-                }
             }
 
         &--expand-mobile {

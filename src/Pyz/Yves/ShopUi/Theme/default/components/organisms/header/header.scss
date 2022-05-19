@@ -282,6 +282,8 @@ $header-sticky-height: rem(69, number);
 
             @include helper-breakpoint-media-max($sm-max) {
                 margin-right: rem(10);
+                position: unset;
+                margin-top: rem(8);
             }
         }
 

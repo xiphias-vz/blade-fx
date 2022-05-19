@@ -32,7 +32,7 @@
             <input name="q"
                    type="text"
                    class="input input--expand input--search suggest-search__input {{ config.name }}__input {{ config.jsName }}__input--{{ attributes['data-search-id'] }}"
-                   placeholder="{{ 'global.search' | trans }}"
+                   placeholder="{{ 'global.search' | trans }} {{ data.merchant }}"
                    value="{{ data.searchValue }}"
                    autocomplete="off">
         </ff-searchbox>

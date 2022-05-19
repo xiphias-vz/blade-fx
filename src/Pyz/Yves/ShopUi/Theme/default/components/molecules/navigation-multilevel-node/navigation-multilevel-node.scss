@@ -255,12 +255,6 @@
                         text-decoration: none;
                         border-left: rem(5) solid $setting-color-globusCZ-main-green;
                     }
-
-                    &#{$name}__link {
-                        &--header {
-                            transform: scaleX(-1);
-                        }
-                    }
                 }
 
                 @include helper-breakpoint-media-max($xl-min) {
@@ -389,7 +383,7 @@
             > #{$name}__menu {
                 @include helper-visibility-invisible;
                 position: absolute;
-                right: 100%;
+                left: 100%;
                 top: 0;
                 width: rem(345);
                 height: 100%;
@@ -399,11 +393,6 @@
                 box-shadow: 0 rem(27) 0 $setting-color-gray-14;
                 padding-bottom: rem(20);
 
-                @include helper-breakpoint-media-min($xl-min) {
-                    &--header {
-                        transform: scaleX(-1);
-                    }
-                }
                 // With position from the right and transform whole block moves outside the screen (IE11)
                 @include helper-media-ie() {
                     right: auto;
