@@ -34,18 +34,11 @@
     {% endif %}
 
     {% if data.cart.items is empty %}
-        <div>
-            {% if app.currentCodeBucket == 'DE' %}
-                <h1 class="title title--heading title--padding">{{ data.title }}</h1>
-            {% else %}
-                <h1 class="title title--heading-CZ title--padding">{{ data.title }}</h1>
-            {% endif %}
-        </div>
         <div class="page-layout-cart__empty text-center">
             {% if app.currentCodeBucket == 'DE' %}
-                <h1 class="spacing-top spacing-top--bigger">{{ 'cart.empty' | trans }}</h1>
+                <h1 class="spacing-top spacing-top--bigger page-layout-cart__main-title">{{ 'cart.empty' | trans }}</h1>
             {% else %}
-                <h1 class="spacing-top spacing-top--bigger title title--heading-CZ">{{ 'cart.empty' | trans }}</h1>
+                <h1 class="spacing-top spacing-top--bigger title title--heading-CZ page-layout-cart__main-title">{{ 'cart.empty' | trans }}</h1>
             {% endif %}
             <div class="warenkorb-content">
                 <div class="text-and-button">
