@@ -318,6 +318,15 @@
             border-style: solid;
             border-color: $setting-color-forest-green;
             color: $setting-color-forest-green;
+
+            &:hover,
+            &:focus,
+            &:active {
+                border: 2px solid $setting-color-forest-green;
+                background: $setting-color-forest-green-light;
+                color: $setting-color-forest-green;
+                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2 !important;
+            }
         }
 
 
@@ -408,6 +417,11 @@
                 }
             }
 
+        }
+
+        &--checkout-summary {
+            width: 55%;
+            margin-top: rem(60);
         }
 
         &--bigfont {

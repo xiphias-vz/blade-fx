@@ -104,6 +104,10 @@ $review-rating-field-width: rem(154);
                 border-radius: rem(30);
                 margin: 0;
 
+                @include helper-breakpoint-media-max($lg-max) {
+                    margin-top: rem(12);
+                }
+
                 &:not(:last-child) {
                     margin-top: rem(16);
                 }
@@ -169,6 +173,17 @@ $review-rating-field-width: rem(154);
                 @include helper-breakpoint-media-min($lg-min) {
                     display: block;
                     float: right;
+                }
+            }
+        }
+
+        &--summary-actions {
+            #{$name}__actions {
+                float: unset;
+
+                @include helper-breakpoint-media-max($lg-max) {
+                    display: block;
+                    padding-top: 0;
                 }
             }
         }
