@@ -10,7 +10,7 @@ namespace Pyz\Zed\GsoaRestApiClient\Communication\Console;
 use DateInterval;
 use DateTime;
 use Exception;
-use Orm\Zed\DataImport\Persistence\PyzImpSceduleQuery;
+use Orm\Zed\DataImport\Persistence\Base\PyzImpSceduleQuery;
 use Orm\Zed\Product\Persistence\Map\SpyProductTableMap;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider;
@@ -336,15 +336,16 @@ class GsoaProductConsole extends Console
                     if (empty($modifiedFrom)) {
                         $modifiedFrom = $this->getLastImportDate("product-price", $store);
                     }
-                    $result = $client->getProductPricesByHouseModified($store, $modifiedFrom, true);
+                    $result = $this->getModifiedArray($client->getProductsModified($modifiedFrom, true));
+                    $result =  array_merge(
+                        $result,
+                        $this->getModifiedArray($client->getProductPricesByHouseModified($store, $modifiedFrom, true))
+                    );
+                    $result = array_unique($result);
                     if (count($result) > 0) {
-                        $modifiedProducts = array_unique($result["modifiedProducts"]);
-                        $output->writeln("Modified product prices: " . count($modifiedProducts) . " from " . $modifiedFrom);
-
-                        if (count($modifiedProducts) > 0) {
-                            $this->generateProductPriceFile($output, $client, $store, $counter, $result, $modifiedProducts);
-                            $this->setLastImportDate("product-price", $store, $modifiedFrom, $dateTo);
-                        }
+                        $output->writeln("Modified product prices: " . count($result) . " from " . $modifiedFrom);
+                        $this->generateProductPriceFile($output, $client, $store, $counter, $result, $result);
+                        $this->setLastImportDate("product-price", $store, $modifiedFrom, $dateTo);
                     } else {
                         $result = [1];
                         $output->writeln("No modified product prices from " . $modifiedFrom);
@@ -354,15 +355,16 @@ class GsoaProductConsole extends Console
                     if (empty($modifiedFrom)) {
                         $modifiedFrom = $this->getLastImportDate("product-stock", $store);
                     }
-                    $result = $client->getProductStocksByHouseModified($store, $modifiedFrom, true);
-                    if (isset($result["modifiedProducts"])) {
-                        $modifiedProducts = array_unique($result["modifiedProducts"]);
-                        $output->writeln("Modified product stocks: " . count($modifiedProducts) . " from " . $modifiedFrom);
-
-                        if (count($modifiedProducts) > 0) {
-                            $this->generateProductStockFile($output, $client, $store, $counter, $result, $modifiedProducts);
-                            $this->setLastImportDate("product-stock", $store, $modifiedFrom, $dateTo);
-                        }
+                    $result = $this->getModifiedArray($client->getProductsModified($modifiedFrom, true));
+                    $result =  array_merge(
+                        $result,
+                        $this->getModifiedArray($client->getProductStocksByHouseModified($store, $modifiedFrom, true))
+                    );
+                    $result = array_unique($result);
+                    if (count($result) > 0) {
+                        $output->writeln("Modified product stocks: " . count($result) . " from " . $modifiedFrom);
+                        $this->generateProductStockFile($output, $client, $store, $counter, $result, $result);
+                        $this->setLastImportDate("product-stock", $store, $modifiedFrom, $dateTo);
                     } else {
                         $result = [1];
                         $output->writeln("Product stocks not modified since " . $modifiedFrom);
@@ -378,7 +380,7 @@ class GsoaProductConsole extends Console
                 $output->writeln('No data returned');
 
                 return Console::CODE_ERROR;
-            } elseif (count($result) >> 0) {
+            } elseif (count($result) > 0) {
                 $output->writeln("Data returned: " . count($result));
                 //$output->write(json_encode($result)); //TODO make optional parameter for console output
 
@@ -953,6 +955,7 @@ class GsoaProductConsole extends Console
             $date = $date->sub(DateInterval::createFromDateString('1 days'));
         } else {
             $date = $ent->getUpdatedAt();
+            $date = $date->sub(DateInterval::createFromDateString('3 hours'));
         }
 
         return $date->format('Y-m-d H:i');
@@ -979,5 +982,18 @@ class GsoaProductConsole extends Console
         $ent->setStore($store);
 
         return $ent->save();
+    }
+
+    /**
+     * @param array $result
+     *
+     * @return array
+     */
+    protected function getModifiedArray(array $result): array {
+        if (isset($result["modifiedProducts"])) {
+            return $result["modifiedProducts"];
+        }
+
+        return [];
     }
 }
