@@ -11,7 +11,7 @@
 
         &--cart {
             font-size: rem(16);
-            @include helper-breakpoint-media-max($xl-min){
+            @include helper-breakpoint-media-max($md-max){
                 display: none;
             }
         }

@@ -134,7 +134,7 @@
             {% block quantity %}
                 {% set removeUrl = path('cart/remove', {'sku': data.productItem.sku, 'groupKey': data.productItem.groupKey }) %}
                 <div
-                    class="{{ component.renderClass(config.name ~ '__quantity', modifiers) }} col--lg-2 col--md-2 col--sm-5">
+                    class="{{ component.renderClass(config.name ~ '__quantity', modifiers) }} col--lg-2 col--md-3 col--sm-5">
                     {% if canEditCart %}
                         <form method="POST"
                               action="{{ path('cart/change/quantity', {'sku': data.productItem.sku }) }}">
@@ -160,7 +160,7 @@
             {% endblock %}
 
             {% block unitPrice %}
-                <div class="{{ config.name }}__price-col col--lg-2 col--md-2 col--sm-2">
+                <div class="{{ config.name }}__price-col col--lg-2 col--md-1 col--sm-1">
                     {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.unitGrossPrice %}
                     {% set originalPrice = data.productItem.originalPrice is defined ? data.productItem.originalPrice %}
 
@@ -175,7 +175,7 @@
             {% endblock %}
 
             {% block price %}
-                <div class="{{ config.name }}__price-col col--lg-2 col--md-1 col--sm-2 col--xs-1">
+                <div class="{{ config.name }}__price-col {{ config.name }}__sum-price col--lg-2 col--md-1 col--sm-2 col--xs-1">
                     {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
                     {% set productItemSubTotal = data.productItem.quantity is not empty ? data.productItem.quantity * price : price %}
 

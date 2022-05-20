@@ -22,6 +22,10 @@
             display: flex;
             border-radius: 0 0 24px 0;
             background-color: $setting-color-light-tentgray-3;
+
+            .searchTermContainer {
+                width: 100%;
+            }
         }
 
         .containerCaption {

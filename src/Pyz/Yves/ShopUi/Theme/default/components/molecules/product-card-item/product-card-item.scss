@@ -21,14 +21,25 @@ $additional-info-width: rem(350);
         &__box {
             display: flex;
             flex-wrap: wrap;
-            @include helper-breakpoint-media-max($lg-max){
-                width: 100%;
-                padding-bottom: rem(0);
-            }
             height: fit-content;
             border-bottom: rem(3) solid $setting-color-gray-3;
             margin-bottom: rem(10);
             width: 100%;
+
+            @include helper-breakpoint-media-max($l-max){
+                justify-content: space-around;
+            }
+
+            @include helper-breakpoint-media-max($lg-max){
+                width: 100%;
+                padding-bottom: rem(0);
+            }
+
+            #{$name}__sum-price {
+                @include helper-breakpoint-media-max($md-max){
+                    display: none;
+                }
+            }
 
             &--mini-cart {
                 padding: rem(10) rem(10) rem(10) 0;
@@ -70,9 +81,11 @@ $additional-info-width: rem(350);
         }
 
         &__heading {
+            display: flex;
             font-size: rem(20);
             font-weight: 500;
             justify-content: center;
+            flex-direction: column;
 
             @include helper-breakpoint-media-max($xxs-max){
                 padding-right: rem(0);

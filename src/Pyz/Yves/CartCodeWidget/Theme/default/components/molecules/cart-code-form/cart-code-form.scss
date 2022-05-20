@@ -15,13 +15,17 @@
             display: none;
         }
 
+        .form__fields {
+            width: 65%;
+        }
+
         .form__field {
             padding: 0;
+            width: 100%;
         }
 
         .input {
-            border-radius: rem(20);
-            height: rem(48);
+            border-radius: rem(25);
         }
 
         .title {
@@ -33,12 +37,15 @@
         }
 
         .form__action {
-            margin: 0 0 rem(2) rem(-3);
             font-weight: fw(semibold);
+            font-size: rem(16);
+            width: 100%;
+            padding-right: 0;
+            padding-left: 0;
         }
 
         .form__actions {
-            margin: rem(5) 0 0 rem(5);
+            width: 45%;
         }
     }
 }

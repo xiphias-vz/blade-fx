@@ -69,7 +69,6 @@
             font-size: rem(17);
             font-weight: bold;
             background-color: transparent;
-            margin: rem(10) -10px 0 0;
         }
 
         &__content {
@@ -110,9 +109,10 @@
             position: relative;
             float: right;
             margin-right: rem(25);
-            top: rem(36);
+            top: rem(38);
             font-size: rem(20);
             cursor: pointer;
+            opacity: 0.5;
         }
 
         #register-now-link {
