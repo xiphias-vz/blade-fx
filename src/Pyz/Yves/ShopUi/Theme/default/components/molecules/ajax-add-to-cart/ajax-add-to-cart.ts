@@ -176,7 +176,7 @@ export default class AjaxAddToCart extends Component {
     protected sendAjaxRequestToRemoveItemFromCart(event: Event, decrementer) {
         event.preventDefault();
         clearTimeout(this.timer);
-        const quantityInput: HTMLInputElement = <HTMLInputElement>decrementer.nextElementSibling;
+        let quantityInput: HTMLInputElement = <HTMLInputElement>decrementer.nextElementSibling;
         let quantity: number = Number(quantityInput.value);
         quantity--;
         quantityInput.value = String(quantity);
@@ -197,6 +197,32 @@ export default class AjaxAddToCart extends Component {
         let productSku = link.dataset.productSku;
         let productPrice = link.dataset.productPrice * 100;
         let productTitle = link.dataset.productTitle;
+        let firstClickFlag = false;
+
+        let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+
+        if(productItemsForSyncCounter){
+            for (let i = 0; i < productItemsForSyncCounter.length; i++) {
+                if (productItemsForSyncCounter[i][0].includes(productSku)) {
+                    if(productItemsForSyncCounter[i][2] === false){
+                       firstClickFlag = true;
+                    } else {
+                        firstClickFlag = false
+                    }
+                } else {
+                    firstClickFlag = true;
+                }
+            }
+        } else {
+            firstClickFlag = true;
+        }
+
+        let baseURI = document.getElementsByTagName('ff-record-list')[0].baseURI;
+        let resultQuery = baseURI.substring(baseURI.indexOf('?') + 1, baseURI.indexOf('&'));
+        let resultPage = baseURI.substring(baseURI.indexOf('&') + 1);
+        let query = resultQuery.substring(resultQuery.indexOf('=') + 1);
+        let page = resultPage.substring(resultPage.indexOf('=') + 1);
+
 
         const formData = new FormData();
         formData.append('token', link.dataset.csrfToken);
@@ -214,7 +240,11 @@ export default class AjaxAddToCart extends Component {
                 productSku: productSku,
                 productPrice: productPrice,
                 productTitle: productTitle,
-                addedQuantity: that.quantityAdded
+                addedQuantity: that.quantityAdded,
+                firstClickFlag: firstClickFlag,
+                productPage: page,
+                productPosition: link.dataset.productPosition,
+                productQuery: query
             },
             success(data, status, xhr) {
                 if(data.error !== '') {
@@ -308,8 +338,7 @@ export default class AjaxAddToCart extends Component {
                     productSkuFromPOP = productUrl.split("/")[3];
                 }
             }
-            const itemAddedInCartWithQuantity = [[productSkuFromPOP, quantity]];
-
+            let itemAddedInCartWithQuantity = [[productSkuFromPOP, quantity, true]];
             if (localStorage.getItem('productItemsForSyncCounter')) {
                 let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
 

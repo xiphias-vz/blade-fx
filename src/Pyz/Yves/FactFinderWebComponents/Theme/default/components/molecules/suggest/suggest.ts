@@ -12,6 +12,7 @@ export default class Suggest extends Component {
     protected flashMessages: FlashMessage[];
     protected messagesTextHolders: HTMLElement[];
     protected notificationArea: HTMLElement;
+    private queryEL: any;
 
 
     protected readyCallback(): void {
@@ -48,7 +49,36 @@ export default class Suggest extends Component {
         let formData = new FormData(this.suggestAddToCartForm);
         let ajax_url = $("#addAjaxUrl").val();
         let isCartButtonClicked = document.getElementById("is-cart-button-clicked");
+        let productSku = document.getElementById("data-product-sku").value;
+        let productTitle = document.getElementById("data-product-name").value;
+        let queryEl = document.getElementsByClassName('ffw-query');
+        let query = "";
+
+        if(queryEl.length > 0){
+            query = queryEl[0].innerText;
+        }
+
         isCartButtonClicked.value = 'y';
+
+        let firstClickFlag = false;
+
+        let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+
+        if(productItemsForSyncCounter){
+            for (let i = 0; i < productItemsForSyncCounter.length; i++) {
+                if (productItemsForSyncCounter[i][0].includes(productSku)) {
+                    if(productItemsForSyncCounter[i][2] === false){
+                        firstClickFlag = true;
+                    } else {
+                        firstClickFlag = false
+                    }
+                } else {
+                    firstClickFlag = true;
+                }
+            }
+        } else {
+            firstClickFlag = true;
+        }
 
             $.ajax(ajax_url, {
                 type: 'POST',
@@ -56,7 +86,11 @@ export default class Suggest extends Component {
                 data: {
                     myToken: formData.get('token'),
                     myOperation: "ADD",
-                    myQuantity: 1
+                    myQuantity: 1,
+                    firstClickFlag: firstClickFlag,
+                    productSku: productSku,
+                    productTitle: productTitle,
+                    productQuery: query,
                 },
                 success(data, status, xhr) {
                     if(data.error !== '') {

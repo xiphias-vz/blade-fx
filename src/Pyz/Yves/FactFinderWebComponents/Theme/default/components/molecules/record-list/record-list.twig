@@ -327,6 +327,7 @@
                                data-product-sku="{{ sku | trim }}"
                                data-product-title="{{ productName | trim }}"
                                data-product-price="{{ price | trim }}"
+                               data-product-position="{{ position | trim }}"
                                data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
                             >
                                 {% include atom('icon') with {
@@ -378,9 +379,11 @@
                                 js-ajax-change-quantity__link
                                 js-quantity-counter-product__incr"
                                    data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                   data-product-id="{{ idProductAbstractRecord | trim }}"
                                    data-product-sku="{{ sku | trim }}"
                                    data-product-title="{{ productName | trim }}"
                                    data-product-price="{{ price | trim }}"
+                                   data-product-position="{{ position | trim}}"
                                 >
                                     +
                                 </a>

@@ -567,14 +567,43 @@ class CartController extends SprykerCartController
 
         if ($storeCodeBucket == 'DE') {
             $count = $_REQUEST['myQuantity'] ?? $quantity;
+            $firstClickFlag = $_REQUEST['firstClickFlag'] ?? false;
             $productSku = $_REQUEST['productSku'] ?? $productViewTransfer->getSku();
             $productPrice = $_REQUEST['productPrice'] ?? $productViewTransfer->getPrice();
             $productTitle = $_REQUEST['productTitle'] ?? $productViewTransfer->getName();
+            $productTitle = $this->removeCharsFromString($productTitle);
 
             $this->cartTrackingEvent($count, $productSku, $productPrice, $productTitle);
+
+            if(isset($firstClickFlag) && $firstClickFlag === "true"){
+                $masterId = $productSku;
+                $productPage = $_REQUEST['productPage'] ?? 1;
+                $productQuery = $_REQUEST['productQuery'] ?? "*";
+                $productPosition = $_REQUEST['productPosition'] ?? 1;
+                if ($productQuery == "%2a" || $productQuery == "") {
+                    $query = '*';
+                } else {
+                    $query = $productQuery;
+                }
+
+            $this->clickTrackingEvent($productSku, $masterId, (int)$productPage, (int)$productPosition, $query, $productTitle);
+            }
         }
 
         return $messageTransfers;
+    }
+
+    public function removeCharsFromString($productTitle)
+    {
+        $search = array(
+            "<span",
+            "class=",
+            '"ffw-query">',
+            "</",
+            "span>"
+        );
+
+        return str_replace($search, "", $productTitle);
     }
 
     /**
@@ -616,4 +645,30 @@ class CartController extends SprykerCartController
 
         return $cartItemsSku;
     }
+
+
+    /**
+     * @param $productSku
+     * @param $masterId
+     * @param $page
+     * @param $position
+     * @param $query
+     * @param $title
+     * @return array
+     */
+    public function clickTrackingEvent($productSku, $masterId, $page, $position, $query, $title): array
+    {
+        $data = [[
+            'id' => $productSku,
+            'masterId' => $masterId,
+            'page' => $page,
+            'pos' => $position,
+            'query' => $query,
+            'sid' => session_id(),
+            'title' => $title,
+        ]];
+
+        return FactFinderApiClient::postTrackClickData($data);
+    }
+
 }

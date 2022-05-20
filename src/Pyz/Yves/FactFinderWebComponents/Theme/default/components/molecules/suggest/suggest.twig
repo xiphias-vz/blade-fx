@@ -134,7 +134,7 @@
                                 </div>
                             </div>
 
-                            <button type="button" class="{{ config.name }}__button-suggest-cart"  onclick="addToCartItemClick('{{ IdProductAbstract | trim }}','{{ addAjaxUrl | trim }}', '{{ productSku | trim }}');event.stopPropagation();">
+                            <button type="button" class="{{ config.name }}__button-suggest-cart"  onclick="addToCartItemClick('{{ IdProductAbstract | trim }}','{{ addAjaxUrl | trim }}', '{{ productSku | trim }}', '{{ name | trim }}');event.stopPropagation();">
                                 {% include atom('icon') with {
                                     class: 'icon--color-orange',
                                     data: {
@@ -152,6 +152,8 @@
                     <input type="hidden" id="addAjaxUrl" />
                     <input type="hidden" name="is-cart-button-clicked" id="is-cart-button-clicked" value="n" />
                     <input type="hidden" name="data-product-id" id="data-product-id" value="" />
+                    <input type="hidden" name="data-product-sku" id="data-product-sku" value="" />
+                    <input type="hidden" name="data-product-name" id="data-product-name" value="" />
                     <input type="hidden" name="token" id="token" value="{{ csrf_token('add-to-cart-ajax') }}" />
                 </form>
             </section>
@@ -159,18 +161,25 @@
     </ff-suggest>
     <button type="button" id="callTs" class="hidden"></button>
     <script>
-        function addToCartItemClick(idProductAbstract, addAjaxUrl, productSku){
+        function addToCartItemClick(idProductAbstract, addAjaxUrl, productSku, name){
             let addAjaxUrlEl = document.getElementById("addAjaxUrl");
             addAjaxUrlEl.value = addAjaxUrl;
+
+            let productName = document.getElementById("data-product-name");
+            productName.value = name;
+
+            let addProductSku = document.getElementById("data-product-sku");
+            addProductSku.value = productSku;
 
             let form = document.getElementById("submit-suggested-search-product");
             form.action = addAjaxUrl;
             let product_id = document.getElementById("data-product-id");
             product_id.value = idProductAbstract;
 
+
             document.querySelector("#callTs").click();
 
-            const productSkuFromSuggestWithQuantity = [[productSku, 1]];
+            const productSkuFromSuggestWithQuantity = [[productSku, 1, true]];
             if (localStorage.getItem('productItemsForSyncCounter')) {
                 let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
 
