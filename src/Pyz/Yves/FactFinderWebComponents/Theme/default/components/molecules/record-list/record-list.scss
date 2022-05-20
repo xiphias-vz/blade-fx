@@ -46,7 +46,7 @@
 
         .fromTop {
             @include helper-breakpoint-media-max($md-min){
-                top: rem(-40.5);
+                top: rem(-33.6);
             }
         }
 

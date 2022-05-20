@@ -224,6 +224,8 @@
                 width: 90%;
                 display: flex;
                 justify-content: flex-end;
+                background-color: $setting-color-white;
+                border-radius: rem(25);
 
                 .message {
                     width: rem(190);
