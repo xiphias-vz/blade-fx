@@ -159,8 +159,8 @@ class ProductController extends SprykerShopProductController
 
                 $productSku = $resultData['product_sku'] ?? '';
                 $masterId = $resultData['master_id'] ?? '';
-                $page = $resultData['page'] ?? null;
-                $position = $resultData['position'] ?? null;
+                $page = $resultData['page'] ?? 1;
+                $position = $resultData['position'] ?? 1;
                 if (isset($resultData['query'])) {
                     if ($resultData['query'] == "%2a") {
                         $query = '*';
@@ -247,8 +247,8 @@ class ProductController extends SprykerShopProductController
         $data = [[
             'id' => $productSku,
             'masterId' => $masterId,
-            'page' => (int)$page,
-            'pos' => (int)$position,
+            'page' => $page,
+            'pos' => $position,
             'query' => $query,
             'sid' => session_id(),
             'title' => $title,

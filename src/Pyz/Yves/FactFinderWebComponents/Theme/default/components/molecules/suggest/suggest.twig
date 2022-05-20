@@ -9,7 +9,7 @@
     properties: {
         component: '',
         searchItems: [],
-        productItemType: ''
+        productItemType: '',
     },
     itemWeight: null,
     noPriceText: '---',
@@ -134,7 +134,7 @@
                                 </div>
                             </div>
 
-                            <button type="button" class="{{ config.name }}__button-suggest-cart"  onclick="addToCartItemClick('{{ IdProductAbstract | trim }}','{{ addAjaxUrl | trim }}', '{{ productSku | trim }}', '{{ name | trim }}');event.stopPropagation();">
+                            <button type="button" class="{{ config.name }}__button-suggest-cart" value="{{ productSku | trim }}"  onclick="addToCartItemClick('{{ IdProductAbstract | trim }}','{{ addAjaxUrl | trim }}', '{{ productSku | trim }}', '{{ name | trim }}');event.stopPropagation();">
                                 {% include atom('icon') with {
                                     class: 'icon--color-orange',
                                     data: {

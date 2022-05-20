@@ -217,11 +217,17 @@ export default class AjaxAddToCart extends Component {
             firstClickFlag = true;
         }
 
-        let baseURI = document.getElementsByTagName('ff-record-list')[0].baseURI;
-        let resultQuery = baseURI.substring(baseURI.indexOf('?') + 1, baseURI.indexOf('&'));
-        let resultPage = baseURI.substring(baseURI.indexOf('&') + 1);
-        let query = resultQuery.substring(resultQuery.indexOf('=') + 1);
-        let page = resultPage.substring(resultPage.indexOf('=') + 1);
+        let query = "";
+        let page = "1";
+
+        let recordList = document.getElementsByTagName('ff-record-list')[0];
+        if(recordList){
+            let baseURI = recordList.baseURI;
+            let resultQuery = baseURI.substring(baseURI.indexOf('?') + 1, baseURI.indexOf('&'));
+            let resultPage = baseURI.substring(baseURI.indexOf('&') + 1);
+            query = resultQuery.substring(resultQuery.indexOf('=') + 1);
+            page = resultPage.substring(resultPage.indexOf('=') + 1);
+        }
 
 
         const formData = new FormData();
