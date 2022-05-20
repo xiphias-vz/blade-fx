@@ -164,7 +164,6 @@
                                         {% block heading %}
                                             {{ parent() }}
                                         {% endblock %}
-
                                         {% if app.currentCodeBucket == 'DE' %}
                                             {% include molecule('money-price') with {
                                                 modifiers: ['cart', 'summary'] | merge(modifiers),
@@ -172,6 +171,7 @@
                                                 data: {
                                                     amount: productItemSubTotal | default(null),
                                                     originalAmount: productItemOriginalPrice,
+                                                    promotion: data.productItem.promotion ?? '',
                                                 },
                                             } only %}
                                         {% else %}
@@ -181,6 +181,7 @@
                                                 data: {
                                                     amount: productItemSubTotal | default(null),
                                                     originalAmount: productItemOriginalPrice,
+                                                    promotion: data.productItem.promotion ?? '',
                                                 },
                                             } only %}
                                         {% endif %}

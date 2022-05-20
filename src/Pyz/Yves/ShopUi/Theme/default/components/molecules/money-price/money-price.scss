@@ -40,12 +40,19 @@
 
     &__price-container {
         display: flex;
+        align-items: center;
     }
 
     &__uvp {
         margin-right: rem(5);
         font-size: rem(12);
         color: #9ea1a7;
+    }
+
+    &__uvp-cz {
+        margin-right: rem(5);
+        font-size: rem(12);
+        color: #111;
     }
 
     &--align-right {

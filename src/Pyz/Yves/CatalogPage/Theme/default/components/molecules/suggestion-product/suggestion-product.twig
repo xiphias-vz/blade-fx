@@ -6,7 +6,6 @@
 {% block body %}
 <div class="suggestion-product-slot" >
     <div class="suggested-product-link" >
-
         <a class="{{ config.name }}__link grid grid--middle grid--no-wrap js-suggest-search__item--navigable js-suggest-search__product-item--navigable"  href="{{ data.url }}">
             <span class="col">
                 {% if data.image %}
@@ -33,6 +32,7 @@
                     data: {
                         amount: data.price,
                         originalAmount: data.originalPrice ?? null,
+                        promotion: data.product.promotion ?? '',
                     },
                 } only %}
            </span>

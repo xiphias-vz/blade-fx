@@ -338,6 +338,7 @@
                         amount: data.product.prices.DEFAULT | default(null),
                         originalAmount: data.product.prices.ORIGINAL | default(null),
                         currencyIsoCode: data.currencyIsoCode,
+                        promotion: data.product.promotion ?? '',
                     },
                 } only %}
             </div>
