@@ -38,6 +38,20 @@
                     margin-right: rem(10);
                 }
 
+                .icon-svg-cz {
+                    width: rem(20);
+                    height: rem(14);
+                    margin-right: rem(10);
+
+                    @include helper-breakpoint-media-max($sm-max) {
+                        height: rem(30);
+                    }
+
+                    @include helper-breakpoint-media-max($xs-max) {
+                        margin-right: 0;
+                    }
+                }
+
                 .icon-basketplus {
                     font-size: rem(18);
                     margin-right: rem(10);

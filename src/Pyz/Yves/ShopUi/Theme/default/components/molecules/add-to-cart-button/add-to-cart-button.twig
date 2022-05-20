@@ -28,9 +28,6 @@
                data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
                data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
             >
-                <svg class="icon-svg">
-                    <use xlink:href="#:icon-basketplus"></use>
-                </svg>
 
                 <div class="add-details-to-cart-text-holder">
                     {{- 'customer.account.wishlist.add-to-cart' | trans -}}
@@ -40,7 +37,7 @@
             <a href="{{ addAjaxUrl }}"
                rel="nofollow"
                onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier | escape('js') }}')"
-               class="button button--middle-icon button--center-align button--backgroundcolor-CZ
+               class="button button--middle-icon button--center-align button--backgroundcolor-CZ button--pdp-height-CZ
                       js-product-color-group__image-{{ data.product.idProductAbstract }}
                       js-image-animation__link
                       js-ajax-add-to-cart__link"
@@ -50,7 +47,9 @@
                data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
                data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
             >
-                <span class="icon-basketplus"></span>
+                <svg class="icon-svg-cz">
+                    <use xlink:href="#:icon-basketplus"></use>
+                </svg>
                 <div class="add-details-to-cart-text-holder font-cz">
                     {{- 'customer.account.wishlist.add-to-cart' | trans -}}
                 </div>

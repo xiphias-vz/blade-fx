@@ -15,6 +15,22 @@
             color: $setting-color-gray-9;
         }
 
+        .wishlist-icon-CZ {
+            position: relative;
+            bottom: rem(60);
+            button {
+                background: $setting-color-forest-green;
+                svg {
+                    height: rem(20);
+                    width: rem(20);
+                }
+            }
+
+            @include helper-breakpoint-media-max($md-max) {
+                bottom: 0;
+            }
+        }
+
         .wishlist-icon {
             position: relative;
             bottom: rem(108);
@@ -30,6 +46,7 @@
                 bottom: 0;
             }
         }
+
 
         @content;
     }

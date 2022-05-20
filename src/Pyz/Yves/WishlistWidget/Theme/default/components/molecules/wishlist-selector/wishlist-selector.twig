@@ -62,9 +62,8 @@
                 <input type="hidden" name="token" value="{{ csrf_token('add-to-wishlist') }}"/>
                 <input type="hidden" name="quantity" class="wishlist-quantity__input"/>
             </div>
-
+            {% if data.currentCodeBucket=='DE' %}
             <div class="col col--sm-12 col--lg-2 text-right spacing-bottom wishlist-icon">
-                {% if data.currentCodeBucket=='DE' %}
                     <button type="submit" class="button button--hollow button--collapsed button--backgroundcolor-DE button--add-to-cart" {{ disableAddToWishlist ? 'disabled' }}>
                         {% include atom('icon') with {
                             modifiers: ['big'],
@@ -73,17 +72,20 @@
                             },
                         } only %}
                     </button>
-                {% else %}
-                    <button type="submit" class="button button--hollow button--collapsed button--backgroundcolor-CZ button--add-to-cart" {{ disableAddToWishlist ? 'disabled' }}>
-                        {% include atom('icon') with {
-                            modifiers: ['big'],
-                            data: {
-                                name: 'icon-wishlist',
-                            },
-                        } only %}
-                    </button>
-                {% endif %}
             </div>
+                {% else %}
+                    <div class="col col--sm-12 col--lg-2 text-right spacing-bottom wishlist-icon-CZ">
+                        <button type="submit" class="button button--hollow button--collapsed button--backgroundcolor-CZ button--add-to-cart" {{ disableAddToWishlist ? 'disabled' }}>
+                            {% include atom('icon') with {
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'icon-wishlist',
+                                },
+                            } only %}
+                        </button>
+                    </div>
+                {% endif %}
+
         </div>
     </form>
 {% endblock %}
