@@ -9,12 +9,15 @@ namespace Pyz\Zed\Product\Business;
 
 use Pyz\Zed\Product\Business\Product\ConcreteAttributesRetriever;
 use Pyz\Zed\Product\Business\Product\ConcreteAttributesRetrieverInterface;
+use Pyz\Zed\Product\Business\Product\PyzStoreRelation\ProductAbstractPyzStoreRelationReaderInterface;
 use Pyz\Zed\Product\Business\Product\Url\ProductUrlGenerator;
+use Pyz\Zed\Product\Business\Product\ProductAbstractManager;
+use Pyz\Zed\Product\Business\Product\PyzStoreRelation\ProductAbstractPyzStoreRelationReader;
 use Spryker\Zed\Product\Business\ProductBusinessFactory as SprykerProductBusinessFactory;
 
 /**
  * @method \Spryker\Zed\Product\ProductConfig getConfig()
- * @method \Spryker\Zed\Product\Persistence\ProductQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Product\Persistence\ProductQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Product\Persistence\ProductRepositoryInterface getRepository()
  */
 class ProductBusinessFactory extends SprykerProductBusinessFactory
@@ -37,5 +40,41 @@ class ProductBusinessFactory extends SprykerProductBusinessFactory
             $this->getLocaleFacade(),
             $this->getUtilTextService()
         );
+    }
+
+    /**
+     * @return \Spryker\Zed\Product\Business\Product\ProductAbstractManagerInterface
+     */
+    public function createProductAbstractManager()
+    {
+        $productAbstractManager = new ProductAbstractManager(
+            $this->getQueryContainer(),
+            $this->getTouchFacade(),
+            $this->getLocaleFacade(),
+            $this->createProductAbstractAssertion(),
+            $this->createSkuGenerator(),
+            $this->createAttributeEncoder(),
+            $this->createProductTransferMapper(),
+            $this->createProductAbstractStoreRelationReader(),
+            $this->createProductAbstractStoreRelationWriter()
+        );
+
+        $productAbstractManager->setEventFacade($this->getEventFacade());
+        $productAbstractManager->attachBeforeCreateObserver($this->createProductAbstractBeforeCreateObserverPluginManager());
+        $productAbstractManager->attachAfterCreateObserver($this->createProductAbstractAfterCreateObserverPluginManager());
+        $productAbstractManager->attachBeforeUpdateObserver($this->createProductAbstractBeforeUpdateObserverPluginManager());
+        $productAbstractManager->attachAfterUpdateObserver($this->createProductAbstractAfterUpdateObserverPluginManager());
+        $productAbstractManager->attachAfterUpdateObserver($this->createProductAbstractAfterUpdateUrlObserver());
+        $productAbstractManager->attachReadObserver($this->createProductAbstractReadObserverPluginManager());
+
+        return $productAbstractManager;
+    }
+
+    /**
+     * @return ProductAbstractPyzStoreRelationReaderInterface
+     */
+    public function createProductAbstractPyzStoreRelationReader():ProductAbstractPyzStoreRelationReaderInterface
+    {
+        return new ProductAbstractPyzStoreRelationReader($this->getQueryContainer());
     }
 }

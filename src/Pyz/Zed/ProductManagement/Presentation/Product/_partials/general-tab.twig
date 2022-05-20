@@ -10,8 +10,14 @@
 </div>
 
 {% if form.store_relation is defined %}
-    <div class="store-holder {{ additionalClass }}">
+    <div class="store-holder {{ additionalClass }}" style="display: none">
         {{ form_widget(form.store_relation) }}
+    </div>
+{% endif %}
+
+{% if form.pyz_store_relation is defined %}
+    <div class="store-holder {{ additionalClass }}">
+        {{ form_widget(form.pyz_store_relation) }}
     </div>
 {% endif %}
 

@@ -37,12 +37,13 @@ BEGIN
         `sequence` varchar(200),
         shelf varchar(200),
         shelf_field varchar(200),
-        shelf_floor varchar(200)
+        shelf_floor varchar(200),
+	    fk_store int
 	);
 
     insert into tmp_stock
-        (id, fk_product, fk_product_abstract, fk_stock, id_stock_product, instock, `sequence`, shelf, shelf_field, shelf_floor)
-    select id, id_product, fk_product_abstract, fk_stock, id_stock_product, instock, `sequence`, shelf, shelf_field, shelf_floor
+        (id, fk_product, fk_product_abstract, fk_stock, id_stock_product, instock, `sequence`, shelf, shelf_field, shelf_floor, fk_store)
+    select id, id_product, fk_product_abstract, fk_stock, id_stock_product, instock, `sequence`, shelf, shelf_field, shelf_floor, fk_store
     from (
          select pis.id
               , sp.id_product
@@ -56,6 +57,7 @@ BEGIN
               , COALESCE(pis.shelffield, ssp.shelf_field) as shelf_field
               , COALESCE(pis.shelffloor, ssp.shelf_floor) as shelf_floor
               , ROW_NUMBER() over(partition BY sp.id_product, sss.fk_stock order by pis.gtin desc) as nr
+              , ss.id_store as fk_store
          from pyz_imp_stock pis
                   inner join spy_store ss on pis.store = ss.name
                   inner join spy_stock_store sss on sss.fk_store = ss.id_store
@@ -75,6 +77,28 @@ BEGIN
     CREATE INDEX ix_tmp_stock ON tmp_stock (id);
     CREATE INDEX ix_tmp_stock_2 ON tmp_stock (fk_product, fk_stock);
     CREATE INDEX ix_tmp_stock_id_stock_product ON tmp_stock (id_stock_product);
+    CREATE INDEX ix_tmp_stock_3 ON tmp_stock (fk_product_abstract, fk_store);
+
+    insert into pyz_product_abstract_store
+        (fk_product_abstract, fk_store)
+    select distinct ts.fk_product_abstract, ts.fk_store
+    from tmp_stock ts
+        left outer join pyz_product_abstract_store ppas on ts.fk_product_abstract = ppas.fk_product_abstract and ts.fk_store = ppas.fk_store
+    where ts.id_stock_product is null
+        and ppas.id_product_abstract_store is null;
+
+    /*only for initial import*/
+    IF (EXISTS(select * from pyz_product_abstract_store) = 0) THEN
+        insert into pyz_product_abstract_store
+            (fk_product_abstract, fk_store)
+        select distinct fk_product_abstract, fk_store
+        from tmp_stock ts;
+    END IF;
+
+    update tmp_stock ts
+        left outer join pyz_product_abstract_store ppas on ts.fk_product_abstract = ppas.fk_product_abstract and ts.fk_store = ppas.fk_store
+    set ts.instock = 0
+    where ppas.id_product_abstract_store is null;
 
     INSERT INTO pyz_data_import_event
         (entity_id, event_name, created_at)

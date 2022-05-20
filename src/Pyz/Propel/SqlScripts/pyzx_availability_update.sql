@@ -69,6 +69,10 @@ BEGIN
                   or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(saa.quantity, 0.0))
               );
 
+    CREATE INDEX ix_tbl_availability ON tbl_availability (id_availability_abstract);
+    CREATE INDEX ix_tbl_availability2 ON tbl_availability (id_store, abstract_sku);
+    CREATE INDEX ix_tbl_availability3 ON tbl_availability (id_store, sku);
+
     insert into spy_availability_abstract
     (fk_store, abstract_sku, quantity)
     select id_store, abstract_sku, max(real_quantity)

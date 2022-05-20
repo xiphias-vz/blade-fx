@@ -10,6 +10,8 @@ namespace Pyz\Zed\ProductManagement\Communication;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\ProductManagement\Communication\Form\DataProvider\ProductFormEditDataProvider;
 use Pyz\Zed\ProductManagement\Communication\Form\ProductConcreteFormEdit;
+use Pyz\Zed\ProductManagement\Communication\Form\ProductFormAdd;
+use Pyz\Zed\ProductManagement\Communication\Form\ProductFormEdit;
 use Pyz\Zed\ProductManagement\Communication\Table\ProductTable;
 use Pyz\Zed\ProductManagement\Communication\Table\VariantTable;
 use Pyz\Zed\ProductManagement\ProductManagementDependencyProvider;
@@ -17,6 +19,11 @@ use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\ProductManagement\Communication\ProductManagementCommunicationFactory as SpyProductManagementCommunicationFactory;
 
+/**
+ * @method \Spryker\Zed\ProductManagement\Persistence\ProductManagementQueryContainerInterface getQueryContainer()
+ * @method \Spryker\Zed\ProductManagement\ProductManagementConfig getConfig()
+ * @method \Spryker\Zed\ProductManagement\Business\ProductManagementFacadeInterface getFacade()
+ */
 class ProductManagementCommunicationFactory extends SpyProductManagementCommunicationFactory
 {
     /**
@@ -104,5 +111,27 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
             $this->getConfig()->getImageUrlPrefix(),
             $this->getStore()
         );
+    }
+
+    /**
+     * @param array $formData
+     * @param array $formOptions
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createProductFormAdd(array $formData, array $formOptions = [])
+    {
+        return $this->getFormFactory()->create(ProductFormAdd::class, $formData, $formOptions);
+    }
+
+    /**
+     * @param array $formData
+     * @param array $formOptions
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createProductFormEdit(array $formData, array $formOptions = [])
+    {
+        return $this->getFormFactory()->create(ProductFormEdit::class, $formData, $formOptions);
     }
 }

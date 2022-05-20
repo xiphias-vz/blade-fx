@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="ProductAbstract">
+        <property name="pyzStoreRelation" type="StoreRelation"/>
+    </transfer>
+
+<!--    <transfer name="PyzStoreRelation">-->
+<!--        <property name="idEntity" type="int"/>-->
+<!--        <property name="idStores" type="int[]" singular="idStores"/>-->
+<!--        <property name="stores" type="Store[]" singular="stores"/>-->
+<!--    </transfer>-->
+
+</transfers>

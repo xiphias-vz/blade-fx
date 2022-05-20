@@ -9,6 +9,7 @@ namespace Pyz\Zed\ProductManagement\Communication\Controller;
 
 use Generated\Shared\Transfer\StoreTransfer;
 use Orm\Zed\Product\Persistence\SpyProductAbstractQuery;
+use Pyz\Shared\PropelExtension\PropelExtension;
 use Pyz\Zed\FactFinderExport\Business\Model\FactFinderEventManager;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Category\Business\Exception\CategoryUrlExistsException;
@@ -50,8 +51,7 @@ class EditController extends SprykerEditController
             ->createProductFormEdit(
                 $dataProvider->getDataExtended($idProductAbstract, $request->query->get(static::PARAM_PRICE_DIMENSION)),
                 $dataProvider->getOptions($idProductAbstract)
-            )
-            ->handleRequest($request);
+            )->handleRequest($request);
 
         $concreteProductCollection = $this->getFactory()
             ->getProductFacade()
@@ -64,6 +64,10 @@ class EditController extends SprykerEditController
                 $productAbstractTransfer = $this->getFactory()
                     ->createProductFormTransferGenerator()
                     ->buildProductAbstractTransfer($form, $idProductAbstract);
+
+                $pyzStoreRelation = implode(',', $form->getData()["pyz_store_relation"]["idStores"]);
+
+                PropelExtension::execute(sprintf("call pyzx_set_pyz_product_abstract_store(%d, '%s')", $idProductAbstract, $pyzStoreRelation));
 
                 $productAbstractTransfer->setIdProductAbstract($idProductAbstract);
 
