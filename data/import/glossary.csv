@@ -733,7 +733,7 @@ error.404,Error 404,cs_CZ
 error.404,Error 404,de_DE
 error.404,Error 404,en_US
 error_page.title,"Promiňte! Bohužel se něco pokazilo.",cs_CZ
-error_page.title,Entschuldigung! Da ist leider etwas schief gelaufen.,de_DE
+error_page.title,Ups...,de_DE
 error_page.title,Oops! Something went wrong.,en_US
 error_page.home_link,"zde",cs_CZ
 error_page.home_link,hier,de_DE

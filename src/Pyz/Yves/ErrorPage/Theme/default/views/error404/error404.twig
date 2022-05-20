@@ -35,7 +35,7 @@
             <a class="{{ data.buttonClass }} {{ config.name }}__button" style="margin-top: 2%" href="/">
                 {{ 'error_page.button_home' | trans}}
                 <div class="{{ config.name }}_btn-arrow">{% include atom('icon') with {
-                        modifiers: ['small'],
+                        modifiers: ['small', 'not-found-arrow'],
                         data: {
                             name: 'arrow-right',
                         },
@@ -46,7 +46,7 @@
             <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ" style="margin-top: 1%" href="/">
                 {{ 'error_page.button_home' | trans}}
                 <div class="{{ config.name }}_btn-arrow">{% include atom('icon') with {
-                        modifiers: ['small'],
+                        modifiers: ['small', 'not-found-arrow'],
                         data: {
                             name: 'arrow-right',
                         },
@@ -60,7 +60,7 @@
             <a class="{{ data.buttonClass }} {{ config.name }}__button" href="{{ data.customerContact }}" target="_blank">
                 {{ 'error_page.button_contact' | trans}}
                 <div class="{{ config.name }}_btn-arrow">{% include atom('icon') with {
-                    modifiers: ['small'],
+                    modifiers: ['small', 'not-found-arrow'],
                     data: {
                         name: 'arrow-right',
                     },
@@ -71,7 +71,7 @@
             <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ" style="margin-top: 1%" href="{{ data.customerContact_CZ }}">
                 {{ 'error_page.button_contact' | trans}}
                 <div class="{{ config.name }}_btn-arrow">{% include atom('icon') with {
-                        modifiers: ['small'],
+                        modifiers: ['small', 'not-found-arrow'],
                         data: {
                             name: 'arrow-right',
                         },

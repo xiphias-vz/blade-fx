@@ -11,6 +11,10 @@
         fill: $setting-color-white;
     }
 
+    &--not-found-arrow {
+        color: white;
+    }
+
     &--inherit {
         display: block;
         width: inherit;

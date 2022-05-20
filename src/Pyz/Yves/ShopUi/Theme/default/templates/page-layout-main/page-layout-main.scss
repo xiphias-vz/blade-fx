@@ -269,8 +269,6 @@
                 display: flex;
                 justify-content: space-between;
                 color: $setting-color-black;
-                border: 2px solid $setting-color-fresh-orange;
-                border-top-width: 5px;
 
                 @include helper-breakpoint-media-min($lg-min) {
                     margin: rem(92) auto;

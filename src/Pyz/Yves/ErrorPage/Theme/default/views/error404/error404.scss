@@ -31,8 +31,9 @@
         }
 
         &__container {
+            text-align: left;
             margin-top: rem(100);
-            width: 30%;
+            width: 65%;
             font-size: rem(20);
 
             @include helper-breakpoint-media-max($sm-max) {
@@ -47,6 +48,7 @@
         &__mobile-title {
             font-size: rem(60);
             width: 100%;
+            text-align: left;
 
             @include helper-breakpoint-media-min($sm-max) {
                 display: none;
@@ -66,12 +68,16 @@
             }
         }
         &__image {
-            width: rem(467);
-            height: rem(613);
+            width: 80%;
+            height: 90%;
 
             @include helper-breakpoint-media-max($sm-max) {
                 max-height: rem(400);
                 width: 80%;
+            }
+
+            @include helper-breakpoint-media-min($xxl-min) {
+                width: 75%;
             }
         }
     }
