@@ -23,10 +23,7 @@
             {% set bulletPoints =  data.product.attributes.bulletpoints|split(';') %}
             {% for key,bulletPoint in bulletPoints %}
                 <div class="bullet-point">
-{#                    <img src={{ publicPath("/images/check-circle.svg")}}  width="20px" height="20px" />#}
-                    <svg>
-                        <use xlink:href="#:globus-info"></use>
-                    </svg>
+                    <img class="{{ config.name }}__check-image" src={{ publicPath("/images/check-orange.svg")}}" />
                     <span>{{ bulletPoint }}</span>
                 </div>
             {% endfor %}

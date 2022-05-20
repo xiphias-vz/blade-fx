@@ -44,6 +44,29 @@
             color: $setting-color-white;
         }
 
+        &--add-to-cart {
+            width:50%;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+
+            @include helper-breakpoint-media-min($xxl-min) {
+                margin-left: rem(50);
+            }
+
+            @include helper-breakpoint-media-between($lg-min,$xl-max) {
+                margin-left: rem(40);
+            }
+
+            @include helper-breakpoint-media-max($xl-min) {
+                margin-left: rem(20);
+            }
+
+            @include helper-breakpoint-media-max($md-max) {
+                margin-left: 0;
+            }
+        }
+
         &__icon {
             flex-shrink: 0;
             margin-right: rem(10);
