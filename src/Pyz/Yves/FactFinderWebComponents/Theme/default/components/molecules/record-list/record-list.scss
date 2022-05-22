@@ -11,12 +11,6 @@
             -moz-appearance:textfield;
         }
 
-        &__content-wrapper {
-            @include helper-breakpoint-media-max($sm-max) {
-                height: 62.5%;
-            }
-        }
-
         &__image-wrap {
             text-align: center;
             background-color: $setting-color-white;
@@ -43,13 +37,6 @@
 
             }
         }
-
-        .fromTop {
-            @include helper-breakpoint-media-max($md-min){
-                top: rem(-33.6);
-            }
-        }
-
 
         .add-bin {
             background: url('../images/bin-new.svg') center no-repeat;
@@ -133,6 +120,11 @@
                 height: rem(480);
                 z-index: 0;
             }
+            @include helper-breakpoint-media-max($sm-max) {
+                        display: flex;
+                        flex-flow: column;
+                        justify-content: space-between;
+                   }
 
         }
         .myBtn{
@@ -214,8 +206,8 @@
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
-                height: 25%;
-                margin: auto;
+                width: 100%;
+                margin-bottom: 0;
 
 
                 .button_center_align {

@@ -533,16 +533,6 @@ function checkDiscountLabel(element) {
     if(parseInt(val) === 0) el.style.display = "none";
 }
 
-function changeTopPositionForDiscountAddToCart(element){
-    let discountPriceEl = element.getElementsByClassName('record-list__amount--original')[0];
-    let addToCartEl = element.getElementsByClassName('record-list__add-to-cart-btn')[0];
-    if(discountPriceEl && addToCartEl){
-        if(discountPriceEl.innerText !== ""){
-            addToCartEl.classList.add("fromTop");
-        }
-    }
-}
-
 function checkOriginalAndDefaultPrices(element, flag) {
     elOrig = flag === 'ff-record' ? element.getElementsByClassName('record-list__amount record-list__amount--original')[0] : element.getElementsByClassName('suggest__amount suggest__amount--original')[0];
     elDef = flag === 'ff-record' ? element.getElementsByClassName('record-list__amount record-list__amount-red')[0] : element.getElementsByClassName('suggest__amount suggest__amount-red')[0];
