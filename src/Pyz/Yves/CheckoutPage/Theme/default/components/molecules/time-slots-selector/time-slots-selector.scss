@@ -2,6 +2,26 @@
     #{$name} {
         position: relative;
 
+        /* width */
+        ::-webkit-scrollbar {
+            width: rem(3);
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: $setting-color-light-tentgray-3;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: $setting-color-fresh-orange;
+            height: rem(20);
+            border-bottom-left-radius: rem(1.5);
+            border-bottom-right-radius: rem(1.5);
+            border-top-left-radius: rem(1.5);
+            border-top-right-radius: rem(1.5);
+        }
+
         &__title {
             @include helper-breakpoint-media-min($xl-min) {
                 position: absolute;

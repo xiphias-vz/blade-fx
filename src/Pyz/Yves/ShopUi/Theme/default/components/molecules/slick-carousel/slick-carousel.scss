@@ -164,6 +164,13 @@
             #{$name}__column {
                 padding: rem(30) rem(26);
                 background: $setting-color-white;
+                height: rem(400);
+
+                @include helper-breakpoint-media-max($md-max) {
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                }
+
 
                 #{$name}__input {
                     display: none;
@@ -254,6 +261,12 @@
             #{$name}__column {
                 padding: rem(30) rem(26);
                 background: $setting-color-white;
+                height: rem(400);
+
+                @include helper-breakpoint-media-max($md-max) {
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                }
 
                 #{$name}__input {
                     display: none;
@@ -261,7 +274,7 @@
 
                 /* stylelint-disable selector-max-combinators, selector-max-compound-selectors */
                 #{$name}__input:checked + #{$name}__slot-label {
-                    border: rem(2) solid $setting-color-forest-green;
+                    border: rem(2) solid $setting-color-globusCZ-main-green;
                     color: $setting-color-light-tentgray-5;
                     background-color: $setting-color-globus-white;
                     position: relative;
@@ -295,7 +308,7 @@
 
                     &:hover {
                         cursor: pointer;
-                        border: rem(1) solid $setting-color-forest-green;
+                        border: rem(1) solid $setting-color-globusCZ-main-green;
                         background: $setting-color-white;
                     }
                 }
@@ -320,7 +333,7 @@
                 background: url('../images/right-chevron-green.svg') no-repeat center / rem(6);
                 background-color: $setting-color-white;
                 border-radius: 50%;
-                border: rem(2) solid $setting-color-forest-green;
+                border: rem(2) solid $setting-color-globusCZ-main-green;
 
                 &:hover {
                     background-color: $setting-color-white;
