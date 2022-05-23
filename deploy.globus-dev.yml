@@ -70,7 +70,7 @@ image:
             - newrelic
             - blackfire
         ini:
-            "memory_limit": 2048m
+            memory_limit: 2048M
 composer:
     mode: --no-dev
     autoload: --classmap-authoritative
