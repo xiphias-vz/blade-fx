@@ -156,6 +156,9 @@ $additional-info-width: rem(350);
         }
 
         &__remove {
+
+            padding: rem(5);
+
             @include helper-breakpoint-media-between($md-min,$md-max) {
                 bottom: rem(130);
                 left: rem(580);

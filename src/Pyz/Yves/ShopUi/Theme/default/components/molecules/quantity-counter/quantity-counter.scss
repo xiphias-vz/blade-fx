@@ -8,8 +8,6 @@
         &__container {
             padding: 0 rem(10);
             max-width: rem(136);
-            border: rem(1) solid $setting-color-input-border-tentgray;
-            border-radius: rem(20);
 
             &--quantity-large {
                 max-width: rem(170);
@@ -30,17 +28,28 @@
             justify-content: center;
             align-items: center;
             background-color: $setting-color-globus-white;
-            color: $setting-color-forest-green;
+            color: $setting-color-fresh-orange;
 
             &--decr {
-                border-radius: rem(20);
-                border: rem(2) solid $setting-color-forest-green;
-                align-items: normal;
+                border-radius: rem(25);
+                border: rem(2) solid $setting-color-fresh-orange;
+                align-items: center;
+
+                &:hover {
+                    border-color: $setting-color-forest-green;
+                }
             }
 
             &--incr {
-                border-radius: rem(20);
-                border: rem(2) solid $setting-color-forest-green;
+                border-radius: rem(25);
+                border: rem(2) solid $setting-color-fresh-orange;
+
+                &:hover {
+                    border-color: $setting-color-forest-green;
+                }
+            }
+            &:hover {
+                color: $setting-color-forest-green;
             }
         }
 
@@ -54,8 +63,7 @@
             width: 100%;
             height: rem(38);
             text-align: center;
-            border: rem(2) solid $setting-color-gray-10;
-            border-radius: 0;
+            border: none;
             /* stylelint-disable */
             -moz-appearance: textfield;
             /* stylelint-enable */
