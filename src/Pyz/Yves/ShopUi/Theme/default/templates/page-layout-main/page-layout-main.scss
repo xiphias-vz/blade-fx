@@ -256,7 +256,7 @@
         &--error {
 
             .title--general {
-                color: $setting-color-black;
+                color: $setting-color-tentgray;
             }
 
             #{$name}__main {
@@ -266,9 +266,8 @@
                 min-height: rem(352);
                 text-align: center;
                 padding: rem(20);
-                display: flex;
                 justify-content: space-between;
-                color: $setting-color-black;
+                color: $setting-color-tentgray;
 
                 @include helper-breakpoint-media-min($lg-min) {
                     margin: rem(92) auto;
