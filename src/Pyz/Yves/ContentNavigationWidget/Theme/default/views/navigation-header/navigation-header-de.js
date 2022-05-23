@@ -511,7 +511,6 @@ window.addEventListener("DOMNodeInserted", function (event) {
         checkBrandIsSet(event.relatedNode, 'ff-record');
         checkWeightPriceHasHyphen(event.relatedNode, 'ff-record');
         addParenthesisToGrundPreis(event.relatedNode, 'ff-record');
-        changeTopPositionForDiscountAddToCart(event.relatedNode, 'ff-record');
     } else if (event.relatedNode.localName == 'ff-suggest-item') {
         checkPictureAvailability(event.relatedNode);
         checkOriginalAndDefaultPrices(event.relatedNode, 'ff-suggest-item');
