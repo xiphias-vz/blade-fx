@@ -12,6 +12,14 @@
             margin: 0;
         }
         .add-bin {
+            background: url('../images/bin-new.svg') center no-repeat;
+
+            &:hover {
+                background: url('../images/bin-new.svg') center no-repeat;
+            }
+        }
+
+        .add-bin-cz {
             background: url('../images/bin-new-green.svg') center no-repeat;
 
             &:hover {
@@ -290,26 +298,26 @@
                     font-size: 16px;
                     padding: 5px 10px;
                     text-decoration: none;
-                    border: rem(2) solid $setting-color-forest-green;
+                    border: rem(2) solid $setting-color-fresh-orange;
                     border-radius: 100%;
 
                     &.js-quantity-counter-product__decr {
                         width: rem(40);
-                        color: $setting-color-forest-green;
+                        color: $setting-color-fresh-orange;
                         transition-duration: 0.25s;
                         &:hover {
-                            color:$setting-color-forest-green;
-                            background-color: $setting-color-globus-lightGreen-2;
+                            color: $setting-color-fresh-orange;
+                            background-color: $setting-color-fresh-orange-2;
                         }
                     }
                     &.js-quantity-counter-product__incr {
                         width: rem(40);
-                        background-color: $setting-color-forest-green;
+                        background-color: $setting-color-fresh-orange;
                         color: $setting-color-globus-white;
                         transition-duration: 0.25s;
                         &:hover {
-                            color:$setting-color-globus-darkGreen;
-                            background-color: $setting-color-globus-lightGreen-2;
+                            color: $setting-color-fresh-orange;
+                            background-color: $setting-color-fresh-orange-2;
                         }
                     }
 
@@ -360,6 +368,7 @@
 
                 &__amount{
                     font-size: rem(25);
+                    font-weight: 600;
                 }
                 &__amount--original{
                     font-size: rem(15);
