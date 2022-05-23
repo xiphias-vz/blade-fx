@@ -56,6 +56,7 @@ BEGIN
                       inner join spy_price_product_schedule spps on sppsl.id_price_product_schedule_list = spps.fk_price_product_schedule_list
              where sppsl.is_active = 1 and sppsl.name = 'UVP'
                and spps.is_current = 1
+             GROUP BY spps.fk_product_abstract, spps.fk_store, sppsl.name
          ) prom on spa.id_product_abstract = prom.fk_product_abstract AND sa.fk_store = prom.fk_store
     WHERE IFNULL(sa.quantity, 0) > 0
         AND sppsDef.gross_price > 0
