@@ -20,6 +20,22 @@
             font-family: $setting-font-family;
         }
 
+        .add-bin {
+            background: url('../images/bin-new.svg') center no-repeat;
+
+            &:hover {
+                background: url('../images/bin-new-green.svg') center no-repeat;
+            }
+        }
+
+        .add-bin-cz {
+            background: url('../images/bin-new-green.svg') center no-repeat;
+
+            &:hover {
+                background: url('../images/bin-new-green.svg') center no-repeat;
+            }
+        }
+
         .add-to-cart-btn {
             display: flex;
             flex-direction: column;
@@ -29,7 +45,7 @@
                 justify-content: center;
 
                 &:hover {
-                    background-color: $setting-color-globus-darkGreen;
+                    background-color: $setting-color-globus-white;
                 }
 
                 .icon-svg {
@@ -132,7 +148,7 @@
                 }
 
                 .txt-product-quantity {
-                    width: 60%;
+                    width: 82%;
                     text-align: center;
                     outline: none;
                     border: none;
@@ -145,34 +161,33 @@
                 }
 
                 .js-ajax-change-quantity__link {
-                    background: $setting-color-lightest;
                     display: inline-block;
                     text-align: center;
-                    font-size: 16px;
-                    padding: 5px 10px;
+                    font-size: rem(16);
+                    padding: rem(5) rem(10);
                     text-decoration: none;
+                    border: rem(2) solid $setting-color-fresh-orange;
+                    border-radius: 100%;
 
                     &.js-quantity-counter-product__decr {
-                        width: 60px;
-                        border-right: 1px solid $setting-color-lightest;
-                        color: $setting-color-globus-darkGreen;
-                        border-radius: 5px;
+                        width: rem(40);
+                        color: $setting-color-fresh-orange;
                         transition-duration: 0.25s;
                         &:hover {
-                            color:$setting-color-globus-darkGreen;
-                            background-color: $setting-color-globus-lightGreen-2;
+                            color:$setting-color-forest-green;
+                            border: rem(2) solid $setting-color-forest-green;
+                            background-color: $setting-color-globus-white;
                         }
                     }
                     &.js-quantity-counter-product__incr {
-                        width: 60px;
-                        border-left: 1px solid $setting-color-lightest;
-                        background-color: $setting-color-globus-darkGreen;
+                        width: rem(40);
+                        background-color: $setting-color-fresh-orange;
                         color: $setting-color-globus-white;
-                        border-radius: 5px;
                         transition-duration: 0.25s;
                         &:hover {
-                            color:$setting-color-globus-darkGreen;
-                            background-color: $setting-color-globus-lightGreen-2;
+                            color:$setting-color-forest-green;
+                            border: rem(2) solid $setting-color-forest-green;
+                            background-color: $setting-color-globus-white;
                         }
                     }
 
