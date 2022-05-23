@@ -1,5 +1,7 @@
 delimiter //
-CREATE OR REPLACE PROCEDURE pyzx_availability_update()
+CREATE OR REPLACE PROCEDURE pyzx_availability_update(
+    IN in_fk_product_abstract INT
+)
 BEGIN
 
 	delete spas
@@ -35,6 +37,7 @@ BEGIN
              LEFT JOIN spy_availability_storage sas on sa.fk_availability_abstract = sas.fk_availability_abstract
              LEFT JOIN spy_oms_product_reservation sopr on s.id_store = sopr.fk_store AND sp.sku = sopr.sku
     WHERE not sp.sku is null
+      and (in_fk_product_abstract is null or sp.fk_product_abstract = in_fk_product_abstract)
       and (sa.id_availability is null or saa.id_availability_abstract is null or sas.id_availability_storage is null);
 
     INSERT INTO tbl_availability
@@ -67,7 +70,8 @@ BEGIN
                   (ssp.is_never_out_of_stock <> sa.is_never_out_of_stock)
                   or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(sa.quantity, 0.0))
                   or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(saa.quantity, 0.0))
-              );
+              )
+      and (in_fk_product_abstract is null or sp.fk_product_abstract = in_fk_product_abstract);
 
     CREATE INDEX ix_tbl_availability ON tbl_availability (id_availability_abstract);
     CREATE INDEX ix_tbl_availability2 ON tbl_availability (id_store, abstract_sku);
@@ -102,8 +106,10 @@ BEGIN
     update tbl_availability ta
         inner join spy_availability sa on ta.id_availability = sa.id_availability
         set sa.quantity = ta.real_quantity,
+            sa.is_never_out_of_stock = ta.is_never_out_of_stock,
             ta.isModified = 1
-    where sa.quantity <> ta.real_quantity;
+    where sa.quantity <> ta.real_quantity
+        or sa.is_never_out_of_stock <> ta.is_never_out_of_stock;
 
     update
         tbl_availability ta1

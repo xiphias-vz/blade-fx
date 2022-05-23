@@ -8,6 +8,7 @@
 namespace Pyz\Zed\DataImport\Communication;
 
 use Pyz\Zed\DataImport\Communication\Console\Executor\DataImportExecutor;
+use Pyz\Zed\DataImport\Communication\Plugin\ExecEvents\ExecEventsPlugin;
 use Spryker\Zed\DataImport\Communication\Console\Executor\DataImportExecutorInterface;
 use Spryker\Zed\DataImport\Communication\DataImportCommunicationFactory as SprykerDataImportCommunicationFactory;
 
@@ -22,5 +23,12 @@ class DataImportCommunicationFactory extends SprykerDataImportCommunicationFacto
             $this->createDataImportConfigurationYamlParser(),
             $this->getFacade()
         );
+    }
+
+    /**
+     * @return ExecEventsPlugin
+     */
+    public function getExecEventsPlugin(): ExecEventsPlugin {
+        return new ExecEventsPlugin();
     }
 }

@@ -9,10 +9,10 @@ namespace Pyz\Zed\Product\Business;
 
 use Pyz\Zed\Product\Business\Product\ConcreteAttributesRetriever;
 use Pyz\Zed\Product\Business\Product\ConcreteAttributesRetrieverInterface;
-use Pyz\Zed\Product\Business\Product\PyzStoreRelation\ProductAbstractPyzStoreRelationReaderInterface;
-use Pyz\Zed\Product\Business\Product\Url\ProductUrlGenerator;
 use Pyz\Zed\Product\Business\Product\ProductAbstractManager;
 use Pyz\Zed\Product\Business\Product\PyzStoreRelation\ProductAbstractPyzStoreRelationReader;
+use Pyz\Zed\Product\Business\Product\PyzStoreRelation\ProductAbstractPyzStoreRelationReaderInterface;
+use Pyz\Zed\Product\Business\Product\Url\ProductUrlGenerator;
 use Spryker\Zed\Product\Business\ProductBusinessFactory as SprykerProductBusinessFactory;
 
 /**
@@ -71,9 +71,9 @@ class ProductBusinessFactory extends SprykerProductBusinessFactory
     }
 
     /**
-     * @return ProductAbstractPyzStoreRelationReaderInterface
+     * @return \Pyz\Zed\Product\Business\Product\PyzStoreRelation\ProductAbstractPyzStoreRelationReaderInterface
      */
-    public function createProductAbstractPyzStoreRelationReader():ProductAbstractPyzStoreRelationReaderInterface
+    public function createProductAbstractPyzStoreRelationReader(): ProductAbstractPyzStoreRelationReaderInterface
     {
         return new ProductAbstractPyzStoreRelationReader($this->getQueryContainer());
     }

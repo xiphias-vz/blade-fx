@@ -46,4 +46,6 @@ BEGIN
             ssp.quantity = pis.instock
         where sp.fk_product_abstract = fk_product_abstract;
 
+    call pyzx_availability_update(fk_product_abstract);
+
 END

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\Product\Business\Product\PyzStoreRelation;
 
 use ArrayObject;
@@ -27,7 +32,7 @@ class ProductAbstractPyzStoreRelationReader implements ProductAbstractPyzStoreRe
      *
      * @return \Generated\Shared\Transfer\StoreRelationTransfer
      */
-    public function getStoreRelation(StoreRelationTransfer $storeRelationTransfer):StoreRelationTransfer
+    public function getStoreRelation(StoreRelationTransfer $storeRelationTransfer): StoreRelationTransfer
     {
         $storeRelationTransfer->requireIdEntity();
 
@@ -77,5 +82,4 @@ class ProductAbstractPyzStoreRelationReader implements ProductAbstractPyzStoreRe
             return $storeTransfer->getIdStore();
         }, $storeTransferCollection->getArrayCopy());
     }
-
 }

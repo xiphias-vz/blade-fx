@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\ProductManagement\Communication;
 
+use Pyz\Zed\DataImport\Communication\Plugin\ExecEvents\ExecEventsPlugin;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\ProductManagement\Communication\Form\DataProvider\ProductFormEditDataProvider;
 use Pyz\Zed\ProductManagement\Communication\Form\ProductConcreteFormEdit;
@@ -133,5 +134,12 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
     public function createProductFormEdit(array $formData, array $formOptions = [])
     {
         return $this->getFormFactory()->create(ProductFormEdit::class, $formData, $formOptions);
+    }
+
+    /**
+     * @return ExecEventsPlugin
+     */
+    public function getExecEventsPlugin(): ExecEventsPlugin {
+        return new ExecEventsPlugin();
     }
 }

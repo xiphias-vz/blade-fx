@@ -68,6 +68,7 @@ class EditController extends SprykerEditController
                 $pyzStoreRelation = implode(',', $form->getData()["pyz_store_relation"]["idStores"]);
 
                 PropelExtension::execute(sprintf("call pyzx_set_pyz_product_abstract_store(%d, '%s')", $idProductAbstract, $pyzStoreRelation));
+                $this->getFactory()->getExecEventsPlugin()->execEvents();
 
                 $productAbstractTransfer->setIdProductAbstract($idProductAbstract);
 

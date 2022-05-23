@@ -52,7 +52,7 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
         $connection = Propel::getConnection();
 
         $this->updateProductImages($connection);
-        PropelExtension::execute("call pyzx_availability_update()");
+        PropelExtension::execute("call pyzx_availability_update(null)");
     }
 
     /**

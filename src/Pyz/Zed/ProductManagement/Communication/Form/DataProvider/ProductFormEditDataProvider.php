@@ -8,13 +8,11 @@
 namespace Pyz\Zed\ProductManagement\Communication\Form\DataProvider;
 
 use Generated\Shared\Transfer\ProductAbstractTransfer;
-use Generated\Shared\Transfer\PyzStoreRelationTransfer;
 use Generated\Shared\Transfer\StoreRelationTransfer;
-use Orm\Zed\Product\Persistence\Base\PyzProductAbstractStore;
 use Orm\Zed\Product\Persistence\Map\PyzProductAbstractStoreTableMap;
 use Orm\Zed\Product\Persistence\PyzProductAbstractStoreQuery;
-use Spryker\Zed\ProductManagement\Communication\Form\DataProvider\ProductFormEditDataProvider as SpyProductFormEditDataProvider;
 use Pyz\Zed\ProductManagement\Communication\Form\ProductFormAdd;
+use Spryker\Zed\ProductManagement\Communication\Form\DataProvider\ProductFormEditDataProvider as SpyProductFormEditDataProvider;
 
 class ProductFormEditDataProvider extends SpyProductFormEditDataProvider
 {
@@ -61,7 +59,8 @@ class ProductFormEditDataProvider extends SpyProductFormEditDataProvider
      *
      * @return array
      */
-    protected function getPyzRelatedStores(int $idProductAbstract): array {
+    protected function getPyzRelatedStores(int $idProductAbstract): array
+    {
         return PyzProductAbstractStoreQuery::create()
             ->select([PyzProductAbstractStoreTableMap::COL_FK_STORE])
             ->findByFkProductAbstract($idProductAbstract)
@@ -71,9 +70,10 @@ class ProductFormEditDataProvider extends SpyProductFormEditDataProvider
     /**
      * @param int $idProductAbstract
      *
-     * @return StoreRelationTransfer
+     * @return \Generated\Shared\Transfer\StoreRelationTransfer
      */
-    protected function getPyzStoreRelationTransfer(int $idProductAbstract): StoreRelationTransfer {
+    protected function getPyzStoreRelationTransfer(int $idProductAbstract): StoreRelationTransfer
+    {
         return (new StoreRelationTransfer())
             ->setIdEntity($idProductAbstract)
             ->setIdStores($this->getPyzRelatedStores($idProductAbstract));
