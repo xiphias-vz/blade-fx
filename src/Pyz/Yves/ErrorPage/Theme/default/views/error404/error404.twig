@@ -27,7 +27,7 @@
         {% if app.currentCodeBucket == 'DE' %}
             <h1 class="{{ config.name }}__title title--general">{{ 'error_page.title' | trans }}</h1>
         {% else %}
-            <h1 class="title title--general title--heading-CZ">{{ 'error_page.title' | trans }}</h1>
+            <h1 class="{{ config.name }}__title-CZ title--general title--heading-CZ">{{ 'error_page.title' | trans }}</h1>
         {% endif %}
         <p class="title title--general {{ config.name }}__title-not-found" style="margin-top: 2%">{{ 'error_page.second_title' | trans }}
         {{'error_page.text' | trans}}</p>
@@ -43,7 +43,7 @@
                 </div>
             </a>
         {% else %}
-            <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ" style="margin-top: 1%" href="/">
+            <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ {{ config.name }}__button-CZ" style="margin-top: 1%" href="/">
                 {{ 'error_page.button_home' | trans}}
                 <div class="{{ config.name }}_btn-arrow">{% include atom('icon') with {
                         modifiers: ['small', 'not-found-arrow'],
@@ -68,7 +68,7 @@
                 </div>
             </a>
         {% else %}
-            <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ" style="margin-top: 1%" href="{{ data.customerContact_CZ }}">
+            <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ {{ config.name }}__button-CZ" style="margin-top: 1%" href="{{ data.customerContact_CZ }}">
                 {{ 'error_page.button_contact' | trans}}
                 <div class="{{ config.name }}_btn-arrow">{% include atom('icon') with {
                         modifiers: ['small', 'not-found-arrow'],

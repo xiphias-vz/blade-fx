@@ -18,8 +18,42 @@
             }
         }
 
+        &__button-CZ {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $setting-color-globusCZ-main-green;
+            border-radius: rem(30);
+            width: fit-content;
+            height: rem(48);
+            margin-bottom: rem(50);
+            font-size: rem(16);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                width: 100%;
+                margin-bottom: rem(20);
+                letter-spacing: rem(2);
+            }
+        }
+
         &__title {
             font-size: rem(50);
+
+            @include helper-breakpoint-media-max($md-max){
+                font-size: rem(40);
+            }
+
+            @include helper-breakpoint-media-max($sm-max){
+                display: none;
+            }
+        }
+
+        &__title-CZ {
+            font-size: rem(40);
+
+            @include helper-breakpoint-media-min($md-max) {
+                margin-bottom: rem(50);
+            }
 
             @include helper-breakpoint-media-max($md-max){
                 font-size: rem(40);
