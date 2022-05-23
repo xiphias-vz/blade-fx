@@ -15,7 +15,7 @@
             background: url('../images/bin-new.svg') center no-repeat;
 
             &:hover {
-                background: url('../images/bin-new.svg') center no-repeat;
+                background: url('../images/bin-new-green.svg') center no-repeat;
             }
         }
 
@@ -23,7 +23,7 @@
             background: url('../images/bin-new-green.svg') center no-repeat;
 
             &:hover {
-                background: url('../images/bin-new-green.svg') center no-repeat;
+                background: url('../images/bin-new.svg') center no-repeat;
             }
         }
 
@@ -132,6 +132,7 @@
 
                 @include helper-breakpoint-media-max($sm-max){
                     width: 70%;
+                    justify-content: space-between;
                 }
             }
 
@@ -211,7 +212,7 @@
             padding-bottom: rem(25);
 
             @include helper-breakpoint-media-max($sm-max){
-                justify-content: flex-end;
+                justify-content: center;
             }
 
             a {
@@ -231,7 +232,7 @@
             .change-cart-counter {
                 width: 90%;
                 display: flex;
-                justify-content: flex-end;
+                justify-content: space-between;
                 background-color: $setting-color-white;
                 border-radius: rem(25);
 
@@ -306,8 +307,8 @@
                         color: $setting-color-fresh-orange;
                         transition-duration: 0.25s;
                         &:hover {
-                            color: $setting-color-fresh-orange;
-                            background-color: $setting-color-fresh-orange-2;
+                            color: $setting-color-forest-green;
+                            background-color: $setting-color-white;
                         }
                     }
                     &.js-quantity-counter-product__incr {
@@ -316,14 +317,17 @@
                         color: $setting-color-globus-white;
                         transition-duration: 0.25s;
                         &:hover {
-                            color: $setting-color-fresh-orange;
-                            background-color: $setting-color-fresh-orange-2;
+                            color: $setting-color-forest-green;
+                            background-color: $setting-color-white;
                         }
                     }
 
                     @include helper-breakpoint-media-max($sm-max) {
                         height: auto;
                         margin: 0;
+                    }
+                    &:hover {
+                        border: rem(2) solid $setting-color-forest-green;
                     }
                 }
             }
