@@ -127,10 +127,14 @@
             }
         }
 
+        .uvp-flex-box {
+            display: flex;
+            flex-direction: row;
+        }
+
         &__uvp {
-            position: absolute;
-            margin-left: rem(45);
-            color: #111;
+            margin-right: rem(5);
+            color: #7b7b7b;
         }
 
         &__hide {

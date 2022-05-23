@@ -128,6 +128,7 @@
                             {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
                             {% set productItemSubTotal = data.productItem.quantity is not empty ? data.productItem.quantity * price : price %}
                             {% set productItemOriginalPrice = data.productItem.quantity is not empty ? data.productItem.quantity * data.productItem.originalPrice : data.productItem.originalPrice %}
+                            {% set promotion = data.productItem.priceProduct.moneyValue.promotion | default(null) %}
                             {% set labels = labels | default([]) %}
 
                             {% block image %}
@@ -171,7 +172,7 @@
                                                 data: {
                                                     amount: productItemSubTotal | default(null),
                                                     originalAmount: productItemOriginalPrice,
-                                                    promotion: data.productItem.promotion ?? '',
+                                                    promotion: promotion ?? '',
                                                 },
                                             } only %}
                                         {% else %}
@@ -181,7 +182,7 @@
                                                 data: {
                                                     amount: productItemSubTotal | default(null),
                                                     originalAmount: productItemOriginalPrice,
-                                                    promotion: data.productItem.promotion ?? '',
+                                                    promotion: promotion ?? '',
                                                 },
                                             } only %}
                                         {% endif %}

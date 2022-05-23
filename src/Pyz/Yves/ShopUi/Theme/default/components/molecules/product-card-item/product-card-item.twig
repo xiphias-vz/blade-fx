@@ -169,7 +169,7 @@
                         data: {
                             amount: price | default(null),
                             originalAmount: originalPrice | default(null),
-                            promotion: data.product.promotion ?? '',
+                            promotion: data.productItem.priceProduct.moneyValue.promotion ?? '',
                         },
                     } only %}
                 </div>
