@@ -57,7 +57,7 @@
                                             {% if app.currentCodeBucket == 'DE' %}
                                                class="{{ component.renderClass(config.name ~ '__title', modifiers) }}">
                                                 {{ productBrand }} <br>
-                                                <span class="{{ config.name }}__cut-text">{{ productName }}</span>
+                                                <span class="{{ config.name }}__cut-text">{{ productName }}
                                                 {% if data.productItem.concreteAttributes.einzelgewicht is defined %}
                                                     -
                                                     cca
@@ -72,9 +72,10 @@
                                                     {{ (productSaleVolume|round(3, 'floor') > 0 ? data.product.attributes["grundpreismasseinheit"] : '' ) }}
                                                 {% endif %}
                                                 {{ productBasePriceUnit }}
+                                                </span>
                                             {% else %}
                                                 class="{{ component.renderClass(config.name ~ '__title', modifiers) }} {{ config.name }}__title-cz">
-                                                <span class="{{ config.name }}__cut-text">{{ productName }}</span>
+                                                <span class="{{ config.name }}__cut-text">{{ productName }}
                                                 {% if data.productItem.concreteAttributes.einzelgewicht is defined %}
                                                     -
                                                     cca
@@ -83,6 +84,7 @@
                                                         {{ (productSaleVolume|round(3, 'floor') > 0 ? data.productItem.concreteAttributes["grundpreismasseinheit"] : '' ) }}
                                                     {% endif %}
                                                 {% endif %}
+                                                </span>
                                             {% endif %}
                                         </a>
                                     {% endblock %}
