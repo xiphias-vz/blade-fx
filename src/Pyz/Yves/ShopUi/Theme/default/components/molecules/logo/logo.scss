@@ -18,6 +18,15 @@
             max-height: inherit;
             height: rem(72);
             margin-left: rem(5);
+
+            .footer {
+                height: auto;
+                margin-left: 0;
+
+                @include helper-breakpoint-media-min($xxl-min) {
+                    width: rem(75);
+                }
+            }
         }
 
         &__link {
@@ -38,6 +47,11 @@
         &--header {
             width: rem(99);
             height: rem(63);
+        }
+
+        &__header-mobile-CZ {
+            height: auto;
+            width: 80%;
         }
 
         &--header-mobile {
@@ -82,15 +96,32 @@
 
         }
 
-        &__image-CZ--header-mobile {
-            width: rem(64);
+        &__image-CZ--header {
+            margin-left: rem(10);
             height: auto;
+            width: rem(70);
+
+            @include helper-breakpoint-media-max($l-max) {
+                margin-left: rem(20);
+            }
+
+            @include helper-breakpoint-media-max(md-max) {
+                margin-left: rem(10);
+            }
+
+        }
+
+        &__image-CZ--header-mobile {
+            width: 80% !important;
+            height: auto !important;
             margin-top: rem(12);
 
+
             @include helper-breakpoint-media-max($lg-max) {
-                width: 3rem;
+                /*width: 3rem;
                 margin-top: -2px;
-                margin-left: 6px;
+                margin-left: 6px;*/
+                width: rem(60);
             }
 
             @include helper-breakpoint-media-max($sm-max) {

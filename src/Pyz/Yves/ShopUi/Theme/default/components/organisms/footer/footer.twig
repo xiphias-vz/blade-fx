@@ -19,15 +19,30 @@
                 <div class="{{ config.name }}__content">
                     <div class="grid grid--expand">
                         <div class="footer-logo col col--lg-2">
+                            {% if app.currentCodeBucket == 'DE' %}
                             <div class="footer-logo-icon">
                                 {% include molecule('logo') with {
                                     class: 'col col--no-shrink',
                                     modifiers: modifiers | merge(['footer']),
+                                    attributes: {
+                                        src: publicPath('images/logo-new-globus.png')
+                                    }
+                                } only %}
+                                <div class="footer-logo-text">
+                                    <p>{{ 'footer.logo.text.globus' | trans }}</p>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="footer-logo-icon-CZ">
+                                {% include molecule('logo') with {
+                                    class: 'col col--no-shrink',
+                                    modifiers: modifiers | merge(['footer']),
+                                    attributes: {
+                                        src: publicPath('images/iglobuscz_logo.png')
+                                    }
                                 } only %}
                             </div>
-                            <div class="footer-logo-text">
-                                <p>{{ 'footer.logo.text.globus' | trans }}</p>
-                            </div>
+                            {% endif %}
                         </div>
 {#                        <div class="contact-store-info">#}
 {#                        </div>#}
