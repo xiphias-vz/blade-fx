@@ -240,6 +240,13 @@
 
     &--color-green {
         color: $setting-color-globusCZ-main-green;
+        width: rem(20);
+        height: rem(20);
+
+        @include helper-breakpoint-media-max($sm-max) {
+            width: rem(30);
+            height: rem(30);
+        }
     }
 
     &--color-black {

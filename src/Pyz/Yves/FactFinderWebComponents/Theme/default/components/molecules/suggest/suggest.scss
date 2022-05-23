@@ -112,6 +112,10 @@
                 .suggestBrand{
                     display: flex;
 
+                    @include helper-breakpoint-media-max($xs-max) {
+                        display: block;
+                    }
+
                     .suggest__brand{
                         margin-right: rem(5);
                     }

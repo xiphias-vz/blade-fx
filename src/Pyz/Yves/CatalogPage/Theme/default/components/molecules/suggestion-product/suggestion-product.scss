@@ -28,6 +28,12 @@
             padding: 10px 3px 10px 18px;
             background: $setting-color-gray-2;
         }
+
+        @include helper-breakpoint-media-max($sm-max)  {
+            margin-left: 0;
+            margin-top: rem(20);
+            padding: 0;
+        }
     }
 
     .suggested-product-link{
