@@ -170,7 +170,7 @@
                 width: rem(30);
                 height: rem(30);
 
-                @include helper-breakpoint-media-max($xs-max) {
+                @include helper-breakpoint-media-max(rem(500)) {
                     width: rem(38);
                     height: rem(32);
                 }
@@ -229,6 +229,10 @@
 
             @include helper-breakpoint-media-max($xs-max) {
                 margin: 0 auto;
+            }
+
+            @include helper-breakpoint-media-max($md-max) {
+                margin-bottom: rem(50);
             }
         }
     }

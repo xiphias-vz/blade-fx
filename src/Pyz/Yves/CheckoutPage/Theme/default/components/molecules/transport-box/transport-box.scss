@@ -80,7 +80,7 @@
                 height: rem(30);
 
                 @include helper-breakpoint-media-max($xs-max) {
-                    width: rem(38);
+                    width: rem(32);
                     height: rem(30);
                 }
                 svg {
