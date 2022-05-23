@@ -84,6 +84,11 @@
             }
         }
 
+        .title-box {
+                padding: rem(10);
+                background-color: $setting-color-light-tentgray-3;
+        }
+
         &__col-first, &__col-last {
 
             padding: rem(23) rem(27);
