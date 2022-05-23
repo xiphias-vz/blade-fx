@@ -2,10 +2,6 @@
     #{$name} {
         padding: rem(85) rem(16);
 
-        @include helper-breakpoint-media-max($md-max) {
-
-        }
-
         &__container {
             background-color: $setting-color-white;
 
@@ -65,13 +61,15 @@
                                     text-align: center;
                                 }
                             }
-
-                            .payback-discovery {
-                                width: 100% !important;
-                                margin-top: 10px;
-                                margin-bottom: 10px;
-                            }
                         }
+                    }
+                }
+
+                @include helper-breakpoint-media-max($md-max) {
+                    .payback-discovery {
+                        width: 100% !important;
+                        margin-top: 10px;
+                        margin-bottom: 10px;
                     }
                 }
 

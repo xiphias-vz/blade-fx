@@ -1,0 +1,13 @@
+@mixin page-layout-order-submitted($name: '.page-layout-order-submitted') {
+    #{$name} {
+        &__resize {
+            @include helper-breakpoint-media-max($md-max) {
+                width: 100%;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include page-layout-order-submitted();

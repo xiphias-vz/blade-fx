@@ -14,6 +14,11 @@
     currencyIsoCode: app.currentCurrencyISOCode,
 } %}
 
+{% define config = {
+    name: 'page-layout-order-submitted',
+    tag: 'page-layout-order-submitted'
+} %}
+
 {%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
 
 {% block breadcrumbs %}{% endblock %}
@@ -64,7 +69,7 @@
                         {% endif %}
                     </p>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a style="float: left;margin-top: 15px;font-size: 12px;font-weight: 900;" class="button {{ fontClass }}" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
+                        <a style="float: left;margin-top: 15px;font-size: 12px;font-weight: 900;" class="button {{ config.name }}__resize {{ fontClass }}" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
                     {% endif %}
                 </div>
             </div>
