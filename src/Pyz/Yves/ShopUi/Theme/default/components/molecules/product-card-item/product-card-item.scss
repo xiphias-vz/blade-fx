@@ -5,10 +5,11 @@ $additional-info-width: rem(350);
 
 @mixin shop-ui-product-card-item($name: '.product-card-item') {
     #{$name} {
-        .product-image{
+        .product-image {
             @include helper-breakpoint-media-max($sm-max) {
                 margin: 0;
                 padding: 0;
+                bottom: 0;
             }
             @include helper-breakpoint-media-max($xs-max) {
                 margin-bottom: 0;
