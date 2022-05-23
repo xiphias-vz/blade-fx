@@ -13,6 +13,12 @@ $header-sticky-height: rem(69, number);
         @include helper-breakpoint-media-min($xl-min) {
             height: auto;
         }
+
+        &__top, &__content-holder {
+            padding-left: rem(10);
+            padding-right: rem(10);
+        }
+
         &__logo_text_link {
             text-decoration: none;
         }
@@ -43,8 +49,13 @@ $header-sticky-height: rem(69, number);
 
         }
 
+        &__flexbox {
+            display: flex;
+            justify-content: space-between;
+        }
+
         &__logo-container {
-            margin-right: rem(30);
+            width: 10%;
         }
 
         &__info-container {
@@ -56,7 +67,16 @@ $header-sticky-height: rem(69, number);
             background: $setting-color-globus-darkGray-3;
             font-size: rem(11);
             margin: 0;
-            color:$setting-color-globus-white;
+            color: $setting-color-globus-white;
+
+            #{$name}__link_container {
+                display: flex;
+                height: 100%;
+                font-size: rem(10);
+                width: rem(150);
+                align-items: center;
+                justify-content: center;
+            }
 
             @include helper-breakpoint-media-max($xl-min) {
                 display: none;
@@ -69,38 +89,44 @@ $header-sticky-height: rem(69, number);
             cursor: pointer;
         }
 
-       &__text-left {
-           display: flex;
-           height: rem(35);
-           width: 100%;
-           align-items: center;
-           color: $setting-color-white;
-           justify-content: right;
+        &__content-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+        }
 
-           :nth-child(2) {
-               background-color: $setting-color-fresh-orange;
-               justify-content: space-evenly;
-           }
-           :nth-child(3) {
-               margin-right: rem(220);
-           }
-           :last-child {
-               justify-content: end;
-           }
+        &__left-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &__text-left {
+            display: flex;
+            height: rem(35);
+            width: 100%;
+            align-items: center;
+            color: $setting-color-white;
+            justify-content: right;
+
+            :nth-child(2) {
+                background-color: $setting-color-fresh-orange;
+                justify-content: space-evenly;
+            }
+
+            :nth-child(3) {
+                margin-right: rem(220);
+            }
+
+            :last-child {
+                justify-content: end;
+            }
         }
 
         &__text-right {
-            color:$setting-color-globus-darkGray-2;
+            color: $setting-color-globus-darkGray-2;
             display: none;
-        }
-
-        &__link_container {
-            display: flex;
-            height: 100%;
-            font-size: rem(10);
-            width: rem(150);
-            align-items: center;
-            justify-content: center;
         }
 
         &__link_orange {
@@ -123,7 +149,7 @@ $header-sticky-height: rem(69, number);
         &__icon_left {
             width: rem(18);
             height: rem(18);
-            vertical-align:bottom;
+            vertical-align: bottom;
             margin-right: rem(2);
             margin-left: rem(10);
             text-decoration: none;
@@ -142,7 +168,7 @@ $header-sticky-height: rem(69, number);
         &__icon_right {
             width: rem(16);
             height: rem(16);
-            vertical-align:bottom;
+            vertical-align: bottom;
             margin-right: rem(2);
             margin-left: rem(10);
         }
@@ -169,7 +195,6 @@ $header-sticky-height: rem(69, number);
 
             @include helper-breakpoint-media-min($xl-min) {
                 display: block;
-                padding: rem(10) 0 rem(5);
             }
         }
 
@@ -208,7 +233,7 @@ $header-sticky-height: rem(69, number);
             @include helper-breakpoint-media-max($lg-max) {
                 padding: 0 rem(10) rem(15);
                 transition: top 0.3s;
-                top:-120px;
+                top: -120px;
                 background: #FFFFFF;
                 &--sticky {
                     position: fixed;
@@ -263,7 +288,7 @@ $header-sticky-height: rem(69, number);
             width: 100%;
 
             @include helper-breakpoint-media-max($lg-max) {
-                display:flex;
+                display: flex;
                 margin-top: rem(10);
             }
         }
@@ -272,7 +297,7 @@ $header-sticky-height: rem(69, number);
             font-size: rem(14);
             margin-left: rem(10);
 
-            @include helper-breakpoint-media-max($lg-max){
+            @include helper-breakpoint-media-max($lg-max) {
                 display: none;
             }
         }
@@ -314,6 +339,7 @@ $header-sticky-height: rem(69, number);
                 ul {
                     overflow-y: hidden;
                     margin-top: rem(12);
+
                     a, ul {
                         text-align: justify;
                     }
@@ -353,6 +379,7 @@ $header-sticky-height: rem(69, number);
                 ul {
                     overflow-y: hidden;
                     margin-top: rem(20);
+
                     a, ul {
                         text-align: justify;
                     }
@@ -435,7 +462,7 @@ $header-sticky-height: rem(69, number);
         &--global-products {
             margin-right: rem(0);
             height: rem(44);
-            display:flex;
+            display: flex;
             justify-content: center;
             align-items: center;
             background: $setting-color-fresh-orange;
@@ -527,12 +554,6 @@ $header-sticky-height: rem(69, number);
         .icon-time {
             font-size: rem(28);
             margin-right: rem(12);
-        }
-
-        .zIndex{
-            z-index: 1;
-            margin-left: auto;
-            font-size: rem(12);
         }
 
         @content;

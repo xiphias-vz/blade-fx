@@ -15,7 +15,7 @@
 {% block extraClass %} {{ config.jsName }} {% endblock %}
 
   {% block body %}
-    <ul class="grid grid--middle grid--right {{ config.name }}__shop-user">
+    <ul class="grid {{ config.name }}__shop-user">
          {% if data.showUserMenu and is_granted('IS_AUTHENTICATED_FULLY') %}
             <li class="{{ config.name }}__item">
                 <a href="{{ url('wishlist/overview') }}" class="link link--nav">

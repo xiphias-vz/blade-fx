@@ -66,6 +66,7 @@
     {% if data.currentCodeBucket=='DE' %}
         <div class="{{ config.name }}__meta-navigation-top">
                 <div class="container {{ config.name }}__container-nav ">
+
                     <div class="{{ config.name }}__text-left col col--lg-4">
                         <div class="{{ config.name }}__link_container">
                         <a href="https://www.globus.de/" target = "_blank" class="{{ config.name }}__link_orange">
@@ -144,8 +145,8 @@
     <div class="{{ config.name }}__top">
         <div class="container">
             {% block topSection %}
-                <div class="{{ config.name }}__row grid grid--no-wrap grid--justify grid--middle">
-                    <div class="{{ config.name }}__logo-container col col--md-1">
+                <div class="{{ config.name }}__row {{ config.name }}__flexbox">
+                    <div class="{{ config.name }}__logo-container">
                     <div class="col col--for-truncate grid grid--no-wrap grid--middle {{ config.name }}__logo-content">
                         {% block logo %}
                             {% include molecule('logo') with {
@@ -160,29 +161,33 @@
                         {% endif %}
                     </div>
                     </div>
-                    <div class="col col--no-shrink grid grid--no-wrap grid--middle zIndex">
-                        {% if data.showStoreSwitches %}
-                            {% widget 'StoreSwitcherWidget' %}{% endwidget %}
-                        {% endif %}
+                    <div class="{{ config.name }}__content-section">
 
-                        {% if app.currentCodeBucket == 'DE' %}
-                            <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav link--reset-focus link-to-time-slots">
-                                {{ 'header.timeslot.button' | trans }}
-                            </a>
-                        {% else %}
-                            <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav-CZ link--reset-focus link-to-time-slots">
-                                {{ 'header.timeslot.button' | trans }}
-                            </a>
-                        {% endif %}
-                        {% if app.currentCodeBucket == 'DE' %}
-                            <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav" target="_blank">
-                                {{ 'global.help' | trans }}
-                            </a>
-                        {% else %}
-                            <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav-CZ">
-                                {{ 'global.help' | trans }}
-                            </a>
-                        {% endif %}
+                        <div class="{{ config.name }}__left-section">
+                            {% if data.showStoreSwitches %}
+                                {% widget 'StoreSwitcherWidget' %}{% endwidget %}
+                            {% endif %}
+
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav link--reset-focus link-to-time-slots">
+                                    {{ 'header.timeslot.button' | trans }}
+                                </a>
+                            {% else %}
+                                <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav-CZ link--reset-focus link-to-time-slots">
+                                    {{ 'header.timeslot.button' | trans }}
+                                </a>
+                            {% endif %}
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav" target="_blank">
+                                    {{ 'global.help' | trans }}
+                                </a>
+                            {% else %}
+                                <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav-CZ">
+                                    {{ 'global.help' | trans }}
+                                </a>
+                            {% endif %}
+                        </div>
+
                         {% if data.showNavigation %}
                                     <div class="col is-hidden-sm-lg">
                                         {% include organism('navigation-top') only %}

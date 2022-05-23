@@ -1,8 +1,5 @@
 @mixin shop-ui-navigation-top ($name: '.navigation-top') {
     #{$name} {
-        padding-left: rem(16);
-        padding-right: rem(16);
-        /*margin-left: rem(70);*/
         width: 100%;
 
         &__shop-user {
