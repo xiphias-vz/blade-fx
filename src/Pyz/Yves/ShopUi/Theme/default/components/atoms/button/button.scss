@@ -699,8 +699,8 @@
         }
 
         &--checkout {
-            @include helper-breakpoint-media-max(440px) {
-                width: 50%;
+            @include helper-breakpoint-media-max($xxs-max) {
+                width: 70%;
             }
         }
 

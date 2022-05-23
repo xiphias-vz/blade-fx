@@ -4417,7 +4417,7 @@ customer.registration.address1_placeholder,"Ulice",cs_CZ
 customer.registration.address1_placeholder,Straße,de_DE
 customer.registration.address1_placeholder,Enter street ,en_US
 customer.registration.address2_placeholder,"Číslo domu",cs_CZ
-customer.registration.address2_placeholder,Hausnummer,de_DE
+customer.registration.address2_placeholder,"Hausnr.",de_DE
 customer.registration.address2_placeholder,Enter house number,en_US
 customer.registration.floor_placeholder,"Zvolit patro",cs_CZ
 customer.registration.floor_placeholder,Etage wählen,de_DE
@@ -4429,10 +4429,10 @@ customer.registration.city_placeholder,"Obec",cs_CZ
 customer.registration.city_placeholder,Ort,de_DE
 customer.registration.city_placeholder,Enter city,en_US
 customer.registration.phone_placeholder,Enter phone number,en_US
-customer.registration.phone_placeholder,Festnetznummer eingeben,de_DE
+customer.registration.phone_placeholder,Festnetz,de_DE
 customer.registration.mobile_phone_placeholder,"Zadejte číslo mobilního telefonu",cs_CZ
 customer.registration.mobile_phone_placeholder,Enter cell phone number,en_US
-customer.registration.mobile_phone_placeholder,Mobiltelefonnummer eingeben,de_DE
+customer.registration.mobile_phone_placeholder,Mobiltelefon,de_DE
 customer.registration.benefit_title,"EJednoduše si zde vytvořte nový účet a hned začněte.",cs_CZ
 customer.registration.benefit_title,"Einfach hier mit Ihren Mein Globus Zugangsdaten anmelden und bestellen.",de_DE
 customer.registration.benefit_title,"Create a new Spryker account.",en_US

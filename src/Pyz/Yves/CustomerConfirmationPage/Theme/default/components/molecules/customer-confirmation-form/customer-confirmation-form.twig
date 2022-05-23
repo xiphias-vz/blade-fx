@@ -100,13 +100,13 @@
                             'zip_code': 'col col--sm-5',
                             'city': 'col col--sm-7',
                             'country': 'col col--sm-12',
-                            'phone_prefix': 'col col--sm-12 col--md-3 margin-telefon-date',
-                            'mobile_phone_number': 'col col--sm-12 col--md-9 margin-telefon-date',
-                            'mobile_phone_prefix': 'col col--sm-12 col--md-3',
-                            'phone': 'col col--sm-12 col--md-9',
-                            'birth_day': 'col col--sm-12 col--md-4 margin-telefon-date',
-                            'birth_month': 'col col--sm-12 col--md-4 margin-telefon-date',
-                            'birth_year': 'col col--sm-12 col--md-4 margin-telefon-date',
+                            'phone_prefix': 'col col--sm-12 col--md-3 padding-phone-date-prefix',
+                            'mobile_phone_number': 'col col--sm-12 col--md-9 padding-phone-date',
+                            'mobile_phone_prefix': 'col col--sm-12 col--md-3 padding-mobile-prefix',
+                            'phone': 'col col--sm-12 col--md-9 padding-phone-date',
+                            'birth_day': 'col col--sm-12 col--md-4 padding-phone-date',
+                            'birth_month': 'col col--sm-12 col--md-4 padding-phone-date',
+                            'birth_year': 'col col--sm-12 col--md-4 padding-phone-date',
                             'accept_terms': 'col col--sm-12',
                             '_token': 'col col--sm-12',
                         } %}
@@ -125,13 +125,13 @@
                             'zip_code': 'col col--order-2 col--sm-12 col--md-6',
                             'city': 'col col--order-2 col--sm-12 col--md-6',
                             'country': 'col col--order-2 col--sm-12 col--md-12',
-                            'phone_prefix': 'col col--order-3 col--sm-12 col--md-4',
+                            'phone_prefix': 'col col--order-3 col--sm-12 col--md-4 padding-phone-prefix',
                             'mobile_phone_number': 'col col--order-3 col--sm-12 col--md-8 padding-phone',
-                            'mobile_phone_prefix': 'col col--order-3 col--sm-12 col--md-4 padding-phone',
-                            'phone': 'col col--order-3 col--sm-12 col--md-8',
-                            'birth_day': 'col col--order-3 col--sm-12 col--md-4',
-                            'birth_month': 'col col--order-3 col--sm-12 col--md-4',
-                            'birth_year': 'col col--order-3 col--sm-12 col--md-4',
+                            'mobile_phone_prefix': 'col col--order-3 col--sm-12 col--md-4 padding-phone-prefix',
+                            'phone': 'col col--order-3 col--sm-12 col--md-8 padding-phone',
+                            'birth_day': 'col col--order-3 col--sm-12 col--md-4 padding-date',
+                            'birth_month': 'col col--order-3 col--sm-12 col--md-4 padding-date',
+                            'birth_year': 'col col--order-3 col--sm-12 col--md-4 padding-date',
                             'additional_info': 'col col--order-4 col--sm-12',
                             'merchant_reference': 'col col--order-4 col--sm-12',
                             'accept_terms': 'col col--order-6 col--sm-12',
@@ -188,8 +188,8 @@
                                 {% endif %}
                             {% elseif fieldName == 'birth_day' %}
                                 {% if data.form.vars.full_name == 'registerForm' %}
-                                    <div class="col--lg-12 col--md-12 col--sm-12">
-                                        <label for="birth_day" class="margin-telefon-title">{{ 'customer.register.birthdate.title' | trans }}</label>
+                                    <div class="col--lg-12 col--md-12 col--sm-12 padding-date-title">
+                                        <label for="birth_day" class="margin-date-title">{{ 'customer.register.birthdate.title' | trans }}</label>
                                     </div>
                                     {{ form_row(field, {
                                         rowAttr: {
@@ -197,8 +197,8 @@
                                         },
                                     }) }}
                                 {% elseif data.form.vars.full_name == 'registerForm[customer]' %}
-                                    <div class="col col--order-3 col--lg-12 col--md-12 col--sm-12">
-                                        <label for="birth_day" class="margin-telefon-title">{{ 'customer.register.birthdate.title' | trans }}</label>
+                                    <div class="col col--order-3 col--lg-12 col--md-12 col--sm-12 padding-date-title">
+                                        <label for="birth_day" class="margin-date-title">{{ 'customer.register.birthdate.title' | trans }}</label>
                                     </div>
                                     {{ form_row(field, {
                                         rowAttr: {

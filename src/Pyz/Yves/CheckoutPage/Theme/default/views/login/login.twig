@@ -166,6 +166,17 @@
             padding-top: 6px;
         }
 
+        #btnLogin {
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 575px) {
+            #btnLogin {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
         #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
             display: none;
         }
@@ -185,7 +196,7 @@
             bottom: 21px;
             right: 23px;
             width: 25px;
-            height: 35px;
+            height: 28px;
             background: transparent;
         }
 
@@ -195,7 +206,7 @@
             bottom: 33px;
             right: 28px;
             width: 24px;
-            height: 28px;
+            height: 14px;
             background: transparent;
             cursor: pointer;
         }
@@ -203,7 +214,7 @@
         #startRegister_passwordToggleEye {
             display: block;
             position: absolute;
-            bottom: 22px;
+            bottom: 14px;
             right: 28px;
             width: 24px;
             background: transparent;
@@ -248,8 +259,41 @@
             padding-top: 20px;
         }
 
+        @media screen and (max-width: 575px) {
+            .btnContainer {
+                flex-direction: column-reverse;
+            }
+        }
+
         #btnCancelLogin {
             text-decoration: none;
+        }
+
+        @media screen and (max-width: 575px) {
+            #btnCancelLogin {
+                margin-top: 10px;
+            }
+        }
+
+        #btnCheckMailOrCard {
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 575px) {
+            #btnCheckMailOrCard {
+                margin-left: 0;
+            }
+        }
+
+        #btnContinueRegistration {
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 575px) {
+            #btnContinueRegistration {
+                margin-left: 0;
+                margin-top: 10px;
+            }
         }
 
         #btnContinueRegistration, #btnContinueRegistrationAsGuest, #btnCancelLogin, #btnCheckMailOrCard, #btnBackToLogin  {

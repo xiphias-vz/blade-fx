@@ -42,6 +42,11 @@
                 .form__fields, .form--checkout-form .form__fields {
                     max-width: inherit;
                 }
+
+                #phoneRequiredFieldsGuest {
+                    margin-right: 35px;
+                    padding-left: 20px;
+                }
             </style>
             <script>
                 window.dataLayer.push({
@@ -129,14 +134,17 @@
                                     enableStart: false,
                                     enableEnd: false,
                                     layout: {
-                                        salutation: 'col col--sm-12 col--lg-3',
-                                        first_name: 'col col--sm-12 col--lg-4',
-                                        last_name: 'col col--sm-12 col--lg-5',
-                                        address1: 'col col--sm-12 col--md-8 col--lg-7',
-                                        address2: 'col col--sm-12 col--md-4 col--lg-5',
+                                        salutation: 'col col--sm-12',
+                                        first_name: 'col col--sm-12',
+                                        last_name: 'col col--sm-12',
+                                        address1: 'col col--sm-12 col--md-8 col--lg-9',
+                                        address2: 'col col--sm-12 col--md-4 col--lg-3',
+                                        additional_info: 'col col--sm-12',
                                         floor: 'col col--sm-12 col--lg-12',
                                         zip_code: 'col col--sm-12 col--lg-5',
                                         city: 'col col--sm-12 col--lg-7',
+                                        phone: 'col col--sm-12',
+                                        cell_phone: 'col col--sm-12',
                                         id_customer_address: 'is-hidden',
                                         isAddressSavingSkipped: 'is-hidden'
                                     }

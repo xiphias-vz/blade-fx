@@ -158,7 +158,12 @@ $review-rating-field-width: rem(154);
             #{$name}__actions {
                 display: flex;
                 align-items: flex-end;
-                //float: right;
+                float: right;
+
+                @media only screen and (max-width: $lg-min) {
+                    float: unset;
+                    margin-top: rem(12);
+                }
             }
 
             #{$name}__actions-guest {
@@ -334,16 +339,52 @@ $review-rating-field-width: rem(154);
             }
         }
 
-        .margin-telefon-title
-        {
-            font-family: $setting-font-family-additional;
-            font-size: rem(14);
-            font-weight: 500;
-            margin-left: rem(28);
-            margin-right: rem(90);
+        .margin-telefon-title {
+            margin-left: rem(20);
+            margin-right: rem(94);
 
-            @media only screen and (max-width: 769px) {
-                margin-right: rem(8);
+            @media only screen and (max-width: $lg-min) {
+                margin-right: rem(15);
+            }
+
+            @media only screen and (max-width: $lg-min) {
+                margin-right: rem(15);
+            }
+        }
+
+        .margin-date-title {
+            margin-left: rem(20);
+        }
+
+        .padding-phone-date-prefix {
+
+            @media only screen and (max-width: $sm-max) {
+                padding-top: 0;
+                padding-bottom: rem(4);
+            }
+        }
+
+        .padding-mobile-prefix {
+
+            @media only screen and (max-width: $sm-max) {
+                padding-top: rem(8);
+                padding-bottom: rem(4);
+            }
+        }
+
+        .padding-phone-date {
+            padding-top: rem(9);
+
+            @media only screen and (max-width: $sm-max) {
+                padding-top: 0;
+                padding-bottom: rem(4);
+            }
+        }
+
+        .padding-date-title {
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding-top: rem(12);
             }
         }
 

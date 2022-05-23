@@ -20,20 +20,36 @@
             margin-top: 5%;
         }
 
-        .margin-telefon-title
-        {
-            font-family: $setting-font-family-additional;
-            font-size: rem(12);
-            font-weight: 600;
-            margin-left: rem(20);
+        .padding-phone-title {
+            padding-left: rem(18);
         }
 
         .asterisk-orange {
             color: $setting-color-globus-lightOrange;
         }
 
+        .padding-phone-prefix {
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding-bottom: 0;
+            }
+        }
+
         .padding-phone {
+            padding-top: rem(8);
             padding-bottom: 0;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding-top: 0;
+                padding-bottom: rem(8);
+            }
+        }
+
+        .padding-date {
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding-bottom: 0;
+            }
         }
 
         @content;
