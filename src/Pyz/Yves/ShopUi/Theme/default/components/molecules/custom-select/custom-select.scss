@@ -4,7 +4,6 @@
     @include shop-ui-select($name) {
         line-height: 0;
         background-color: transparent;
-        margin: rem(8) 0;
 
         &__select {
             font-size: inherit;
@@ -54,7 +53,6 @@
         }
 
         .select2-selection--single {
-            padding: rem(22) rem(12);
             background: $setting-color-globus-white;
             height: auto;
             border-radius: rem(24);
@@ -105,7 +103,7 @@
 
             .select2-selection--single .select2-selection__rendered {
                 color: $setting-color-globusCZ-main-green;
-                padding: rem(9);
+                padding: rem(24);
                 font: fw(normal) rem(16) $setting-font-family-fira-sans;
             }
 

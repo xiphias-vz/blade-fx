@@ -83,29 +83,55 @@
             <div class="col col--spaced-lg col--sm-12 col--lg-12">
                 <div class="container__inner">
                     {% if data.product.description is defined and data.product.description != "" %}
-                        {% embed molecule('toggler-item') with {
-                            data: {
-                                title: 'product.info.description' | trans,
-                                triggerClass: 'product-description__trigger-bundle margin-top',
-                                targetClass: 'product-description__target-bundle',
-                                isActive: true,
-                                productAttributes: data.product.attributes,
-                                product: data.product
-                            },
-                            embed: {
-                                bundleItems: data.bundleItems,
-                            }
-                        } only %}
-                            {% block contentText %}
-                                {% include molecule('product-description', 'ProductDetailPage') with {
-                                    data: {
-                                        productAttributes: data.product.attributes,
-                                        zutatenText: _view.zutatenText,
-                                        product: data.product
-                                    },
-                                } only %}
-                            {% endblock %}
-                        {% endembed %}
+                        {% if data.currentCodeBucket == 'DE' %}
+                            {% embed molecule('toggler-item') with {
+                                data: {
+                                    title: 'product.info.description' | trans,
+                                    triggerClass: 'product-description__trigger-bundle margin-top',
+                                    targetClass: 'product-description__target-bundle',
+                                    isActive: true,
+                                    productAttributes: data.product.attributes,
+                                    product: data.product
+                                },
+                                embed: {
+                                    bundleItems: data.bundleItems,
+                                }
+                            } only %}
+                                {% block contentText %}
+                                    {% include molecule('product-description', 'ProductDetailPage') with {
+                                        data: {
+                                            productAttributes: data.product.attributes,
+                                            zutatenText: _view.zutatenText,
+                                            product: data.product
+                                        },
+                                    } only %}
+                                {% endblock %}
+                            {% endembed %}
+                        {% else %}
+                            {% embed molecule('toggler-item') with {
+                                data: {
+                                    title: 'product.info.description' | trans,
+                                    triggerClass: 'margin-top product-description__trigger-bundle-cz',
+                                    targetClass: 'product-description__target-bundle',
+                                    isActive: true,
+                                    productAttributes: data.product.attributes,
+                                    product: data.product
+                                },
+                                embed: {
+                                    bundleItems: data.bundleItems,
+                                }
+                            } only %}
+                                {% block contentText %}
+                                    {% include molecule('product-description', 'ProductDetailPage') with {
+                                        data: {
+                                            productAttributes: data.product.attributes,
+                                            zutatenText: _view.zutatenText,
+                                            product: data.product
+                                        },
+                                    } only %}
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
                     {% endif %}
 
                      {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
@@ -243,6 +269,8 @@
                     {% endembed %}
                     {% endif %}
 
+                    {% if data.currentCodeBucket == 'DE' %}
+
                     {% embed molecule('toggler-item') with {
                         data: {
                             title: 'catalog.view.product.info' | trans,
@@ -267,6 +295,32 @@
                         {% endblock %}
                     {% endembed %}
 
+                    {% else %}
+
+                    {% embed molecule('toggler-item') with {
+                        data: {
+                            title: 'catalog.view.product.info' | trans,
+                            triggerClass: 'additional-product-information__trigger-bundle-cz',
+                            targetClass: 'additional-product-information__target-bundle',
+                            isActive: true,
+                            productAttributes: data.product.attributes,
+                            product: data.product
+                        },
+                        embed: {
+                            bundleItems: data.bundleItems,
+                        }
+                    } only %}
+                        {% block contentText %}
+                            {% include molecule('additional-product-information', 'ProductDetailPage') with {
+                                data: {
+                                    productAttributes: data.productAttributes,
+                                    product: data.product,
+                                    characteristics: _view.characteristics
+                                },
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
+                    {% endif %}
                 </div>
             </div>
         </div>

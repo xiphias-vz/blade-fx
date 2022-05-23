@@ -13,6 +13,12 @@
         &__item {
             display: inline-block;
             padding: 0 rem(5);
+
+            :hover {
+                text-decoration: none;
+                background: $setting-color-globusCZ-hover;
+                color: $setting-color-white;
+            }
         }
 
         &__step {
@@ -68,10 +74,18 @@
                 text-decoration: none;
             }
 
+            svg {
+                color: $setting-color-globusCZ-main-green;
+            }
+
             &:hover {
                 text-decoration: none;
-                background: $setting-color-globusCZ-secondary-green;
-                color: $setting-color-globusCZ-hover;
+                background: $setting-color-globusCZ-hover;
+                color: $setting-color-white;
+
+                svg {
+                    color: $setting-color-white;
+                }
             }
 
             &--current {

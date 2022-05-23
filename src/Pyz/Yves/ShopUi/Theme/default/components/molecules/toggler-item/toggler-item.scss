@@ -494,12 +494,12 @@
             border-color: $setting-color-tentgray;
         }
 
-        .title--heading-CZ {
-            border-bottom: 1px solid $setting-color-globusCZ-main-green !important;
+        .product-description__trigger-bundle-cz, .additional-product-information__trigger-bundle-cz {
+            border-bottom: 1px solid $setting-color-globusCZ-main-green;
         }
 
-        .title--heading-CZ:hover {
-            color: $setting-color-globusCZ-main-green !important;
+        .product-description__trigger-bundle-cz, .additional-product-information__trigger-bundle-cz {
+            color: $setting-color-globusCZ-main-green;
         }
 
         @content;
