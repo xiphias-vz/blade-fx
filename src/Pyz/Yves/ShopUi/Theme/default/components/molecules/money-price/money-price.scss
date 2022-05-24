@@ -21,6 +21,7 @@
             font-size: rem(15);
             display: block;
             font-weight: 500;
+            float: right;
 
             @include helper-breakpoint-media-max(450px){
                 position: relative;
@@ -34,11 +35,33 @@
         @include helper-breakpoint-media-max($lg-max) {
             float: none;
         }
+
+        &--summary {
+            float: right;
+        }
     }
 
     &__price-container {
         display: flex;
         align-items: center;
+
+        &--summary {
+            @include helper-breakpoint-media-between($lg-min, $lg-max) {
+                margin-left: rem(62);
+            }
+
+            @include helper-breakpoint-media-between($sm-max, $lg-min) {
+                margin-left: rem(25);
+            }
+
+            @include helper-breakpoint-media-between($xs-max, $sm-max) {
+                margin-left: 0;
+            }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                margin-left: rem(-10);
+            }
+        }
     }
 
     &__uvp {

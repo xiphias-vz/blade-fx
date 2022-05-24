@@ -150,6 +150,12 @@
             &--summary {
                 padding: 0;
                 margin-top: rem(12);
+                display: inline-table;
+                margin-left: rem(25);
+
+                @include helper-breakpoint-media-max($lg-max) {
+                    margin-left: 0;
+                }
             }
         }
 

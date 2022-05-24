@@ -182,7 +182,8 @@ $review-rating-field-width: rem(154);
                 float: unset;
 
                 @include helper-breakpoint-media-max($lg-max) {
-                    display: block;
+                    display: flex;
+                    flex-direction: column-reverse;
                     padding-top: 0;
                 }
             }

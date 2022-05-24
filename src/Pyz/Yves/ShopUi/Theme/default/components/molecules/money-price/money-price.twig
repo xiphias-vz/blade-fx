@@ -22,7 +22,7 @@
             {{ data.calculatedPrice }}
         {%- else -%}
             {% if data.originalAmount is not empty and data.originalAmount > data.amount -%}
-                <div class="{{ config.name }}__price-container">
+                <div class="{{ component.renderClass(config.name ~ '__price-container', modifiers) }}">
                     {% if data.currentCodeBucket == 'DE' %}
                         <span class="{{ config.name }}__uvp">{{ data.promotion }}</span>
                     {% else %}
@@ -36,7 +36,7 @@
                 {{ data.noPriceText }}
             {%- else -%}
                 {% if data.originalAmount is not empty and data.originalAmount > data.amount -%}
-                    <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }} {{ config.name }}__amount-red">
+                    <span class="{{ component.renderClass(config.name ~ '__amount-red', modifiers) }} {{ config.name }}__amount-red">
                         {{ data.prefix }}{{ data.amount | money }}
                     </span>
                 {%- else -%}
