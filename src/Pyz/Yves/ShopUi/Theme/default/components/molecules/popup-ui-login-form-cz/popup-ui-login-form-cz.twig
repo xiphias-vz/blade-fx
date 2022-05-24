@@ -16,7 +16,7 @@
                 <div>
                     <div class="form form--grid-indent form--login form--checkout-actions" data-qa="component form">
                         <form name="loginForm" method="post" action="/login_check">
-                            <div class="form__container">
+                            <div class="form__container {{ config.name }}__container-margin">
                                 <div class="login-margin-cz form__fields grid grid--top">
                                     <div class="form__field col col--sm-12">
                                         <label for="loginForm_email" class="label label--required label-CZ">{{ 'customer.login.email' | trans }}</label>
@@ -43,9 +43,9 @@
                                     <button type="submit" class="form__action form__action--login button button--large button--expand button--font-CZ button--backgroundcolor-CZ" data-qa="submit-button">
                                         {{ 'customer.signin' | trans }}
                                     </button>
+                                    <a class="login-margin-cz link-cursor" href="https://www.globusbonus.cz/prihlaseni/zapomenute-heslo" target="_blank">{{ 'customer.forgotten-password.title' | trans }}?</a>
                                 </div>
                                 <br>
-                                <a class="login-margin-cz link-cursor" href="https://www.globusbonus.cz/prihlaseni/zapomenute-heslo" target="_blank">{{ 'customer.forgotten-password.title' | trans }}?</a>
                                 <hr class='box-separator'>
                                 <p class=" login-margin-cz register-now-cz">
                                     {{ 'customer.signup_subtext' | trans }}

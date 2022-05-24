@@ -159,6 +159,7 @@ $review-rating-field-width: rem(154);
                 display: flex;
                 align-items: flex-end;
                 float: right;
+                margin-top: rem(32);
 
                 @media only screen and (max-width: $lg-min) {
                     float: unset;
@@ -374,7 +375,7 @@ $review-rating-field-width: rem(154);
         }
 
         .padding-phone-date {
-            padding-top: rem(9);
+            padding-bottom: 0;
 
             @media only screen and (max-width: $sm-max) {
                 padding-top: 0;

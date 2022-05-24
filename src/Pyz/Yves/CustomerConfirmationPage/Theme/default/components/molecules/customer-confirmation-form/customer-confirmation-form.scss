@@ -36,7 +36,6 @@
         }
 
         .padding-phone {
-            padding-top: rem(8);
             padding-bottom: 0;
 
             @include helper-breakpoint-media-max($sm-max) {
