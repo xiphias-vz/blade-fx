@@ -53,6 +53,7 @@ export default class PopupUiAddressValidation extends Component{
     protected $cmbDay;
     protected $cmbMonth;
     protected $cmbYear;
+    protected country;
 
     protected ageDiff;
     protected flagRadio;
@@ -110,6 +111,7 @@ export default class PopupUiAddressValidation extends Component{
         this.checkboxIsAdvertise = document.querySelector('#chk_isAdvertise .checkbox__input');
         this.hiddenIsMeinGlobus = document.querySelector('#registerForm_isMeinGlobus');
         this.$mobilePhoneNumber = document.getElementById(this.getMobilePhoneNumber);
+        this.country = document.getElementById(this.getCountryRegistrationForm);
         if (!this.$mobilePhoneNumber) {
             this.$mobilePhoneNumber = document.getElementById(this.getMobilePhoneNumberRegistrationForm);
         }
@@ -469,6 +471,12 @@ export default class PopupUiAddressValidation extends Component{
             this.addErrorMessageToTheInputField(this.$mobilePhoneNumber);
             this.$phoneNumber.classList.add('input--error');
             this.addErrorMessageToTheInputField(this.$phoneNumber);
+            flag = 1;
+        }
+
+        if (this.country.value === '' || this.country.value === null) {
+            this.country.parentNode.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.country.parentNode);
             flag = 1;
         }
 
@@ -841,5 +849,9 @@ export default class PopupUiAddressValidation extends Component{
 
     get getYearRegistrationForm(): string {
         return 'registerForm_birth_year';
+    }
+
+    get getCountryRegistrationForm(): string {
+        return 'registerForm_customer_country';
     }
 }
