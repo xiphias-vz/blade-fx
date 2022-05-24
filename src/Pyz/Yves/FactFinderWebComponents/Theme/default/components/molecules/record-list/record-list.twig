@@ -170,6 +170,7 @@
                         </div>
                         </a>
                         {% block contentContainer %}
+                            <input type="hidden" id="product-item-codebucket" value="{{ app.currentCodeBucket }}">
                             <div class="col--sm-9 col--lg-12 {{ config.name }}__record-product-info" onclick="productClicked('{{ productUrl | trim }}', '{{ sku | trim }}', '{{ productName | trim }}', '{{ price | trim }}', '{{ sku | trim }}', '{{ position | trim }}' )">
                                 <div class="{{ config.name }}__record-product-brand">{{ brand }}</div>
                                 <div class="{{ config.name }}__record-product-name">
@@ -313,7 +314,7 @@
                                 {% endverbatim %}
                             {% endset %}
                             <div class="{{ config.name }}__button-wrapper">
-                            <a href="{{ addAjaxUrl|trim }}"
+                            <a href="{{ addAjaxUrl | trim }}"
                                rel="nofollow"
                                onclick="productAddToCartRecordList({{ idProductAbstractRecord | trim }}, '{{ productName | trim }}', {{ price | trim }}, {{ sku | trim }}, '{{ brand | trim }}')"
                                class="
@@ -361,7 +362,7 @@
                                     {% endverbatim %}
                                 {% endset %}
 
-                                <a href="{{ changeAjaxUrl|trim }}"
+                                <a href="{{ changeAjaxUrl | trim }}"
                                    class="
                                     js-ajax-change-quantity__link
                                     js-quantity-counter-product__decr add-bin"
@@ -374,7 +375,7 @@
 
                             <input type="number" class="txt-product-quantity" min="1" max="99" value="1">
                             {% if app.currentCodeBucket == 'DE' %}
-                                <a href="{{ changeAjaxUrl  }}"
+                                <a href="{{ changeAjaxUrl | trim }}"
                                    class="
                                 js-ajax-change-quantity__link
                                 js-quantity-counter-product__incr"

@@ -486,16 +486,15 @@
                 margin: rem(0);
             }
         }
+    }
 
-        .pagingSmall {
+    .pagingSmall {
 
-            @include helper-breakpoint-media-max($sm-max){
-                display: flex;
-                justify-content: center;
-                margin: rem(25) auto;
-            }
+        @include helper-breakpoint-media-max($sm-max){
+            display: flex;
+            justify-content: center;
+            margin: rem(25) auto;
         }
-
     }
 }
 

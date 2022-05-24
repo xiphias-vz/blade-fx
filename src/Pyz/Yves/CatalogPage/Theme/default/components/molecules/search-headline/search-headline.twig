@@ -15,11 +15,11 @@
     <div class="grid box grid--center">
         <div class="col col--sm-12 d-flex flex-center">
                 {% if app.currentCodeBucket == 'DE' %}
-                    <h1 class="spacing-bottom spacing-bottom--inner {{ config.name }}__title" id="searchResultCountTitle">{{ data.headline }} {{ data.searchString }}</h1>
-                    <span class="m-left-m m-bottom-xs text-grey font-weight-500 {{ config.name }}__number-of-products" id="searchResultCount" data-text="{{ 'catalog.itemsFound' | trans }}" data-title="{{ 'global.search.results.for' | trans }}">
+                    <h1 class="{{ config.name }}__title" id="searchResultCountTitle">{{ data.headline }} {{ data.searchString }}</h1>
+                    <span class="m-left-m m-top-xs text-grey font-weight-500 {{ config.name }}__number-of-products" id="searchResultCount" data-text="{{ 'catalog.itemsFound' | trans }}" data-title="{{ 'global.search.results.for' | trans }}">
                 {% else %}
-                    <h1 class="spacing-bottom spacing-bottom--inner {{ config.name }}__title-cz" id="searchResultCountTitle">{{ data.headline }} {{ data.searchString }}</h1>
-                    <span class="m-left-m m-bottom-xs text-grey font-weight-500 {{ config.name }}__number-of-products-cz" id="searchResultCount">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
+                    <h1 class="{{ config.name }}__title-cz" id="searchResultCountTitle">{{ data.headline }} {{ data.searchString }}</h1>
+                    <span class="m-left-m m-top-xs text-grey font-weight-500 {{ config.name }}__number-of-products-cz" id="searchResultCount">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
                 {% endif %}
             </span>
         </div>
