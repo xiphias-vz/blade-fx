@@ -11,7 +11,6 @@
     isBackground: false,
     imageTitle: '',
     extraAttributes: {},
-    imgClass: '',
 } %}
 
 {% block extraClass %}
@@ -40,7 +39,7 @@
         {% block imageContainer %}
             {% if data.isBackground %}
                 {% block background %}
-                    <div class="{{ backgroundClasses }} {{ config.jsName }}__background {%if data.imgClass is not empty %}{{ data.imgClass}}{% endif %}{{ backgroundExtraClasses }}"
+                    <div class="{{ backgroundClasses }} {{ config.jsName }}__background {{ backgroundExtraClasses }}"
                          data-background-image="url('{{ imageSrc }}')"
                          title="{{ imageTitle }}"
                         {{ component.renderAttributes(extraAttributes | merge({style: backgroundStyleAttribute})) }}></div>

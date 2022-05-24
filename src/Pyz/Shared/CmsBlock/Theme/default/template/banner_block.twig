@@ -16,6 +16,7 @@
         } only %}
         {% block inner %}
             {{ data.blockTitle | raw }}
+
             <div class="grid grid--left grid--middle">
                 <div class="col col--sm-12">
                     {% include molecule('banner-block') with {
@@ -30,5 +31,4 @@
             </div>
         {% endblock %}
     {% endembed %}
-
 {% endblock %}

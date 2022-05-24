@@ -84,32 +84,6 @@
             background-size: cover;
         }
 
-        &__position-class {
-            height: 50%;
-            width: 50%;
-            margin-left: rem(100);
-            margin-top: rem(20);
-            z-index: 1;
-
-            @include helper-breakpoint-media-max($xxl-min) {
-                margin-left: rem(84)
-            }
-
-            @include helper-breakpoint-media-max($lg-max) {
-                height: 40%;
-                width: 25%;
-                top: rem(20);
-                left: rem(160);
-            }
-
-            @include helper-breakpoint-media-max($sm-max) {
-                height: 50%;
-                width: 50%;
-                left: unset;
-                top: rem(10);
-            }
-        }
-
 
         &--smaller {
             height: rem(52);
@@ -192,10 +166,7 @@
         &__content {
             position: absolute;
             line-height: 1.5;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            background-color: $setting-color-stonegray;
+            bottom: rem(10);
         }
 
 

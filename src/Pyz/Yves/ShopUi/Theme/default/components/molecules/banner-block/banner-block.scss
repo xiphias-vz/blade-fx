@@ -13,30 +13,12 @@
             height: rem(400);
         }
 
-
-
         &--small {
             height: rem(200);
-            margin-top: rem(10);
-
-            @include helper-breakpoint-media-max($sm-max) {
-                width: 100%;
-                padding-right: rem(10);
-            }
 
             @include helper-breakpoint-media-min($lg-min) {
                 height: rem(340);
             }
-
-            @include helper-breakpoint-media-max($xxl-min) {
-                overflow: unset;
-                margin-right: rem(10);
-            }
-
-            @include helper-breakpoint-media-max($lg-max) {
-                height: rem(400);
-            }
-
         }
 
         &--success {
@@ -62,10 +44,10 @@
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
+            text-align: center;
             position: relative;
             padding: 0 rem(10);
-            margin: 0 rem(10);
-            border: rem(2) solid $setting-color-stonegray;
+            margin: 0 rem(15);
 
             @include helper-media-ie() {
                 height: 100%;
@@ -95,78 +77,6 @@
             }
         }
 
-        &__button {
-            background-color: $setting-color-fresh-orange;
-            border-radius: rem(30);
-            padding: rem(5);
-            margin-right: rem(10);
-            margin-bottom: rem(10);
-            font-weight: bolder;
-            font-family: $setting-font-family-additional;
-
-            &:hover {
-                background-color: $setting-color-main-hover-de;
-                box-shadow: none !important;
-            }
-        }
-
-        &__button-cz {
-            background-color: $setting-color-forest-green;
-            border-radius: rem(30);
-            padding: rem(5);
-            margin-right: rem(10);
-            margin-bottom: rem(10);
-            font-weight: bolder;
-            font-family: $setting-font-family-additional;
-
-            &:hover {
-                background-color: $setting-color-forest-green-3;
-                box-shadow: none !important;
-            }
-        }
-
-        &__mobile{
-
-            @include helper-breakpoint-media-max($sm-max) {
-                padding: 0;
-            }
-
-            @include helper-breakpoint-media-max($lg-max) {
-                display: flex;
-                flex-flow: column;
-                width: 100%;
-                margin: rem(10);
-            }
-
-            @include helper-breakpoint-media-max($xl-max) {
-                padding-right: rem(10);
-            }
-        }
-
-        &__image-container {
-            background-color: $setting-color-globus-white;
-            width: rem(380);
-
-            @include helper-breakpoint-media-max($l-max) {
-                width: 100%;
-            }
-        }
-
-        &__curved-top {
-            display: block;
-            box-sizing: border-box;
-            height: rem(50);
-            background-color: $setting-color-white;
-            clip-path: ellipse(60% 100% at 50% 0%);
-            margin-bottom: rem(10);
-        }
-
-        &__button-container {
-            display: flex;
-            width: 100%;
-            justify-content: end;
-        }
-
         &__title,
         &__text {
             color: $setting-color-white;
@@ -183,13 +93,6 @@
                 line-height: rem(30);
                 margin-bottom: rem(13);
             }
-        }
-
-        &__content-container {
-            background-color: $setting-color-stonegray;
-            color: $setting-color-tentgray;
-            font-family: $setting-font-family-additional;
-            font-size: rem(14);
         }
 
         &__text {
