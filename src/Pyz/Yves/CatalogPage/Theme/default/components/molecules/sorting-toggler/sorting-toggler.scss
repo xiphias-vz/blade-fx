@@ -7,11 +7,11 @@
         color: $setting-color-globusCZ-main-green;
 
         @include helper-breakpoint-media-max($md-max)  {
-            width: 30%;
+            min-width: 30%;
         }
 
         @include helper-breakpoint-media-max($sm-max)  {
-            width: 50%;
+            min-width: 50%;
         }
 
         .title {

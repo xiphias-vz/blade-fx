@@ -43,12 +43,12 @@
             word-break: break-all;
 
             &:hover {
-                color: $setting-color-globus-darkOrange;
+                color: $setting-color-globus-black;
             }
 
             &[disabled],
             &--disabled {
-                color: $setting-color-dark;
+                color: $setting-color-black;
                 cursor: default;
             }
 

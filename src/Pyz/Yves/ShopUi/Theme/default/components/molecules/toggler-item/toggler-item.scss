@@ -264,6 +264,7 @@
                 border: none;
                 background-color: $setting-color-stonegray;
                 border-bottom-right-radius: rem(20);
+                padding: rem(15);
 
                 &:hover {
                     background-color: $setting-color-gray-19;
@@ -374,6 +375,7 @@
             }
             div.toggler-item__title-wrapper:hover {
                 background-color: $setting-color-globusCZ-hover;
+                color: $setting-color-black;
             }
 
             button.filter-category__link {
