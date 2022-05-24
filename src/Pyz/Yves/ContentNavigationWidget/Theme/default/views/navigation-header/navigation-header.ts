@@ -6,6 +6,9 @@ export default class NavigationHeader extends Component
     private defaultClassName: string = 'icon-globus-leaf-default-md';
     private categoryClass: string = 'category-filter-style';
     private categoryClassDiv: string = 'category-filter-style-div';
+    private navigationButton: HTMLButtonElement;
+    private navigationContainer: HTMLElement;
+
     protected classData = {
         'Fachtmetzgerei': 'icon-butcher-md',
         'Süßes & Salziges': 'icon-sweet-and-savoury-md',
@@ -33,6 +36,7 @@ export default class NavigationHeader extends Component
 
     protected init() {
         super.init();
+
         this.map = new Map<string, string>(Object.entries(this.classData));
 
         if (document.readyState === 'interactive' || document.readyState === 'complete') {
@@ -49,7 +53,12 @@ export default class NavigationHeader extends Component
                     }
                 }
             });
+            this.navigationButton = <HTMLButtonElement>document.getElementsByClassName('button__all-products')[0];
+            this.navigationContainer = document.getElementsByClassName('js-header__navigation-target')[0];
+            this.addButtonEventListener();
         }
+
+
     }
 
     protected readyCallback() {}
@@ -72,4 +81,22 @@ export default class NavigationHeader extends Component
             element.classList.add(this.categoryClass);
         }
     }
+
+    private addButtonEventListener(){
+        if(this.navigationButton !== undefined && this.navigationContainer !== undefined){
+            this.navigationButton.addEventListener('mouseover', () => {
+                if(this.navigationContainer.classList.contains('is-hidden')){
+                    this.navigationContainer.classList.remove('is-hidden');
+                }
+            })
+
+            this.navigationContainer.addEventListener('mouseleave', () => {
+                if(!this.navigationContainer.classList.contains('is-hidden')){
+                    this.navigationContainer.classList.add('is-hidden');
+                }
+            })
+        }
+    }
+
+
 }
