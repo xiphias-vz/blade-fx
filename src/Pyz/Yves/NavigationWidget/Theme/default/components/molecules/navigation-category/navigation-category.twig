@@ -14,6 +14,13 @@
 } %}
 
 {% block body %}
-    {{ data.node.title }}
-    <span class="{{ config.name }}__image {{ data.node.cssClass }}"></span>
+    <div class="navigation-category__text">
+        <p class="{{ config.name }}__title">{{ data.node.title }}</p>
+    {% if app.currentCodeBucket == 'DE' %}
+        <div class="{{ config.name }}__browse-button">{{ 'browse.category' | trans }}</div>
+    {% else %}
+        <div class="{{ config.name }}__browse-button-CZ">{{ 'browse.category' | trans }}</div>
+    {% endif %}
+        <span class="{{ config.name }}__image {{ data.node.cssClass }}"></span>
+    </div>
 {% endblock %}

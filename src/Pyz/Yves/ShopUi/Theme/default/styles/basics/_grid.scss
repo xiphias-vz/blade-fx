@@ -19,6 +19,11 @@
         &__inner {
             padding: 0 rem(16);
         }
+
+        &__inner-homepage-categories {
+            max-width: rem(1204);
+            margin: auto;
+        }
     }
 
     .grid,

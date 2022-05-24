@@ -44,6 +44,15 @@
             }
         }
 
+        &__content {
+                background-color: $setting-color-white;
+                clip-path: ellipse(240% 100% at 50% 0%);
+
+            @include helper-breakpoint-media-max($l-max) {
+                clip-path: none;
+            }
+        }
+
         &__container {
             display: flex;
             flex-direction: column;

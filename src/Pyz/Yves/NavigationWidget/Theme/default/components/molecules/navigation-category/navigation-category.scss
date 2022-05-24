@@ -10,9 +10,14 @@
         font-weight: fw(semibold);
         color: $setting-color-black;
         text-decoration: none;
-        background: $setting-color-gray-1;
+        background: $setting-color-white;
         border-radius: rem(4);
         position: relative;
+
+        @include helper-breakpoint-media-min($l-max) {
+            width: rem(370);
+            height: rem(285);
+        }
 
         &:hover {
             color: $setting-color-black;
@@ -20,15 +25,89 @@
             box-shadow: 0 rem(2) rem(16) $setting-color-alpha-12;
         }
 
+        &__browse-button {
+            font-family: $setting-font-family-additional;
+            background-color: $setting-color-fresh-orange;
+            height: fit-content;
+            width: fit-content;
+            color: $setting-color-white;
+            align-items: center;
+            border-radius: rem(30);
+            padding: rem(10);
+        }
+
+        &__browse-button-CZ {
+            background-color: $setting-color-forest-green;
+            height: fit-content;
+            width: fit-content;
+            color: $setting-color-white;
+            align-items: center;
+            border-radius: rem(30);
+            padding: rem(10);
+        }
+
+        &__title {
+            font-size: rem(20);
+        }
+
+        &__category-title {
+            margin-left: rem(20);
+        }
+
+        &__gray-container {
+            background-color: $setting-color-stonegray;
+            clip-path: ellipse(180% 100% at 50% 0%);
+        }
+
+        &__curved-top {
+            display: block;
+            box-sizing: border-box;
+            height: rem(50);
+            background-color: $setting-color-white;
+            clip-path: ellipse(75% 100% at 50% 0%);
+        }
+
+        &__container {
+            max-width: rem(1204);
+            margin: auto;
+
+            @include helper-breakpoint-media-max($l-max) {
+                width: 100%;
+                margin-left: rem(25);
+            }
+
+            @include helper-breakpoint-media-max($sm-max) {
+                width: 100%;
+                margin-left: rem(30);
+            }
+        }
+
+        &__homepage {
+            max-width: rem(1204);
+            margin: auto;
+        }
+
+        &__text {
+            height:100%;
+            text-align: start;
+            display: flex;
+            flex-flow: column;
+            justify-content: space-between;
+        }
+
         &__image {
             position: absolute;
             bottom: rem(-6);
             right: 0;
             height: 80%;
-            width: rem(100);
+            width: 50%;
             background-size: contain;
             background-position: left bottom;
             background-repeat: no-repeat;
+
+            @include helper-breakpoint-media-max($l-max) {
+                background-position: right;
+            }
 
             @for $i from 1 through 10 {
                 &.category-#{$i} {
@@ -42,32 +121,32 @@
 
             &.category-11
             {
-                background-image: url("../images/categoryimages_home_1_obst_gemuese.png");
+                background-image: url("../images/categoryimages_home_1_obst_gemuese_new.png");
             }
 
             &.category-12
             {
-                background-image: url("../images/categoryimages_home_2_frische_produkte.png");
+                background-image: url("../images/categoryimages_home_2_frische_produkte_new.png");
             }
 
             &.category-13
             {
-                background-image: url("../images/categoryimages_home_3_vorratsschrank.png");
+                background-image: url("../images/categoryimages_home_3_vorratsschrank_new.png");
             }
 
             &.category-14
             {
-                background-image: url("../images/categoryimages_home_4_getraenke.png");
+                background-image: url("../images/categoryimages_home_4_getraenke_new.png");
             }
 
             &.category-15
             {
-                background-image: url("../images/categoryimages_home_5_fisch_fleisch.png");
+                background-image: url("../images/categoryimages_home_5_fisch_fleisch_new.png");
             }
 
             &.category-16
             {
-                background-image: url("../images/categoryimages_home_6_tiefkuehl.png");
+                background-image: url("../images/categoryimages_home_6_tiefkuehl_new.png");
             }
 
             &.category-17

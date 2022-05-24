@@ -21,6 +21,12 @@
             }
         }
 
+        &__curved-top {
+            height: rem(20);
+            background-color: $setting-color-stonegray;
+            clip-path: ellipse(60% 100% at 50% 0%);
+        }
+
         &--success {
             height: auto;
             margin-bottom: rem(15);
@@ -39,6 +45,11 @@
             margin-bottom: 0;
         }
 
+        &__button {
+            width: 100%;
+            text-align: end;
+        }
+
         &__container {
             min-height: 100%;
             background-position: center;
@@ -46,8 +57,13 @@
             background-repeat: no-repeat;
             text-align: center;
             position: relative;
-            padding: 0 rem(10);
-            margin: 0 rem(15);
+            border: rem(2) solid $setting-color-stonegray;
+            margin-right: rem(10);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-left: rem(40);
+                text-align: left;
+            }
 
             @include helper-media-ie() {
                 height: 100%;
@@ -55,10 +71,6 @@
 
             @include helper-breakpoint-media-min($lg-min) {
                 text-align: left;
-            }
-
-            @include helper-breakpoint-media-min($xl-min) {
-                padding: 0 rem(30);
             }
 
             &--success {

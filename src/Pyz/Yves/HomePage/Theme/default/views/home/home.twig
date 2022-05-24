@@ -3,7 +3,6 @@
 {% block pageInfo %}{% endblock %}
 
 {% block container %}
-    <main>
         {% embed organism('jumbotron-slider') only %}
             {% block body %}
                 {% embed molecule('slick-carousel') with {
@@ -32,10 +31,9 @@
             {% endblock %}
         {% endembed %}
 
-        <div class="container">
 
             {% embed organism('section') with {
-                modifiers: ['secondary', 'full-width'],
+                modifiers: ['secondary', 'full-width','homepage'],
                 class: 'quick-links-section spacing-top spacing-top--inner spacing-top--big',
             } only %}
                 {% block inner %}
@@ -44,28 +42,32 @@
                     </div>
                 {% endblock %}
             {% endembed %}
-
-            <div class="container__inner">
+    <div class="navigation-category__curved-top"></div>
+            <div class="container__inner" style="background-color: white">
                 {% block content %}
-
-                    <div class="slot3-container">
-                        {% cms_slot 'slt-3' %}
-                    </div>
-
+            </div>
+            <div class="slot3-container">
+                {% cms_slot 'slt-3' %}
+            </div>
+            <div class="navigation-category__gray-container">
+                <div class="navigation-category__container">
                     {{ content_navigation('navigation-categories', 'navigation-categories') }}
                     {% cms_slot 'slt-1st-in-frame' %}
-
+                </div>
+        </div>
                     {% embed organism('section') with {
-                        modifiers: ['secondary', 'full-width'],
+                        modifiers: ['secondary', 'full-width','homepage'],
                         class: 'spacing-top spacing-top--inner spacing-top--big',
                     } only %}
                         {% block inner %}
+                            <div class="navigation-category__container">
                             <div class="grid grid--left grid--middle">
                                 {% cms_slot '3-elements-slt-in-frame-grid-content' %}
                             </div>
+                            </div>
                         {% endblock %}
                     {% endembed %}
-
+                <div class="navigation-category__white-container">
                     {% embed organism('section') with {
                         modifiers: ['secondary', 'full-width'],
                         class: 'spacing-top spacing-top--inner spacing-top--big',
@@ -76,10 +78,9 @@
                             </div>
                         {% endblock %}
                     {% endembed %}
-
+                </div>
                 {% endblock %}
             </div>
-        </div>
         {% block downbar %}
                 {% cms_slot 'downbar-slt' %}
         {% endblock %}

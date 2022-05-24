@@ -37,6 +37,11 @@
             }
         }
 
+        &--homepage {
+            max-width: rem(1204);
+            margin: auto !important;
+        }
+
         &--bg-dark {
             padding: rem(22) 0 rem(19);
             background-color: $setting-color-gray-7;

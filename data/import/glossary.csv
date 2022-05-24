@@ -4547,6 +4547,9 @@ global.contact_us,Contact Us,en_US
 global.email,info@spryker.com,cs_CZ
 global.email,info@spryker.com,de_DE
 global.email,info@spryker.com,en_US
+browse.categories,Browse now,en_US
+browse.categories,"Procházet nyní",cs_CZ
+browse.categories,Jetzt stöbern,de_DE
 popular.categories,"Oblíbené kategorie",cs_CZ
 popular.categories,Beliebte Kategorien,de_DE
 popular.categories,Popular Categories,en_US

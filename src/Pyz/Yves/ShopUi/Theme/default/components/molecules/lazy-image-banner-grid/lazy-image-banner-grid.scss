@@ -76,12 +76,23 @@
 
         &__background {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: rem(25);
+            left: rem(90);
+            width: 50%;
+            height: 50%;
             background-position: center;
             background-size: cover;
+
+            @include helper-breakpoint-media-max($l-max) {
+                width: 30%;
+                right: rem(300);
+                left: auto;
+            }
+
+            @include helper-breakpoint-media-max($sm-max) {
+                left: rem(120);
+                top: 0;
+            }
         }
 
 
@@ -164,9 +175,12 @@
         }
 
         &__content {
+            background-color: $setting-color-stonegray;
             position: absolute;
             line-height: 1.5;
-            bottom: rem(10);
+            bottom: 0;
+            padding: rem(10);
+            text-align: left;
         }
 
 
