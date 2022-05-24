@@ -8,9 +8,11 @@ export default class FacetsAsn extends Component
     private categoryClassDiv: string = 'category-filter-style-div';
     protected classData = {
         'Fachtmetzgerei': 'icon-butcher-md',
+        'Fachmetzgerei': 'icon-butcher-md',
         'Süßes & Salziges': 'icon-sweet-and-savoury-md',
         'Wurst & Käse': 'icon-sausage-and-cheese-md',
         'Bäckerei': 'icon-baker-md',
+        'Meisterbäckerei': 'icon-baker-md',
         'Fleich & Fisch': 'icon-meat-sausages-fish-md',
         'Tiefkühl': 'icon-ready-meals-md',
         'Angebote': 'icon-offer-md',
@@ -27,6 +29,7 @@ export default class FacetsAsn extends Component
         'Getränke': 'icon-drinks-md',
         'Fertiggerichte & Tiefkühl': 'icon-ready-meals-md',
         'Fisch & Fleisch': 'icon-meat-md',
+        'Fleisch & Fisch': 'icon-meat-md',
         'Haushalt': 'icon-household-md'
     };
     protected map: Map<string, string>;
@@ -41,7 +44,7 @@ export default class FacetsAsn extends Component
                     const span = nodeInsertedEvent.relatedNode.querySelector('span');
                     if (span !== undefined && span !== null) {
                         if (span.classList.contains('filterName')) {
-                            const className = this.getClassName(span.innerText);
+                            const className = this.getClassName(span.innerText.trim());
                             if (!nodeInsertedEvent.relatedNode.classList.contains('clusterLevel1') &&
                                 !nodeInsertedEvent.relatedNode.classList.contains('clusterLevel2') &&
                                 !nodeInsertedEvent.relatedNode.classList.contains('clusterLevel3'))
@@ -50,10 +53,14 @@ export default class FacetsAsn extends Component
                             }
                         }
                     } else {
-                        if (nodeInsertedEvent.relatedNode.hasAttribute('selected')) {
+                        if (nodeInsertedEvent.relatedNode.hasAttribute('selected') &&
+                            !nodeInsertedEvent.relatedNode.classList.contains('clusterLevel1') &&
+                            !nodeInsertedEvent.relatedNode.classList.contains('clusterLevel2') &&
+                            !nodeInsertedEvent.relatedNode.classList.contains('clusterLevel3'))
+                        {
                             const parentDiv = nodeInsertedEvent.relatedNode.querySelector('div[slot=selected]');
                             if (parentDiv !== undefined && parentDiv !== null) {
-                                const className = this.getClassName(parentDiv.innerText);
+                                const className = this.getClassName(parentDiv.innerText.trim());
                                 this.addClasses(parentDiv, className, 'div');
                             }
                         }

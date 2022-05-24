@@ -11,9 +11,11 @@ export default class NavigationHeader extends Component
 
     protected classData = {
         'Fachtmetzgerei': 'icon-butcher-md',
+        'Fachmetzgerei': 'icon-butcher-md',
         'Süßes & Salziges': 'icon-sweet-and-savoury-md',
         'Wurst & Käse': 'icon-sausage-and-cheese-md',
         'Bäckerei': 'icon-baker-md',
+        'Meisterbäckerei': 'icon-baker-md',
         'Fleich & Fisch': 'icon-meat-sausages-fish-md',
         'Tiefkühl': 'icon-ready-meals-md',
         'Angebote': 'icon-offer-md',
@@ -30,6 +32,7 @@ export default class NavigationHeader extends Component
         'Getränke': 'icon-drinks-md',
         'Fertiggerichte & Tiefkühl': 'icon-ready-meals-md',
         'Fisch & Fleisch': 'icon-meat-md',
+        'Fleisch & Fisch': 'icon-meat-md',
         'Haushalt': 'icon-household-md'
     };
     protected map: Map<string, string>;
