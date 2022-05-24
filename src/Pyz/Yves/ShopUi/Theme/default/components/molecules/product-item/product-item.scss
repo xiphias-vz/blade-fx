@@ -20,16 +20,15 @@
         }
 
         .add-bin-cz {
-            background: url('../images/bin-new-green.svg') center no-repeat;
+            background: url('../images/bin-green-cz.svg') center no-repeat;
 
             &:hover {
-                background: url('../images/bin-new.svg') center no-repeat;
+                background: url('../images/bin-green-hover-cz.svg') center no-repeat;
             }
         }
 
         .font-cz {
-            font-family: $setting-font-family-additional;
-
+            font-family: $setting-font-family-fira-sans;
         }
 
         .supplier {
@@ -200,7 +199,7 @@
             color: $setting-color-tentgray;
 
             &:hover {
-                color: $setting-color-fresh-orange;
+                color: $setting-color-globusCZ-hover;
                 text-decoration: none;
             }
         }
@@ -217,7 +216,7 @@
 
             a {
                 &:hover {
-                    background-color: $setting-color-globus-darkGreen;
+                    background-color: transparent;
                 }
                 .icon-cart, .icon-basketplus {
                     font-size: rem(18);
@@ -236,13 +235,18 @@
                 background-color: $setting-color-white;
                 border-radius: rem(25);
 
+                @include helper-breakpoint-media-max($md-max) {
+                    width: 40%;
+                    margin: rem(8);
+                }
+
                 .message {
                     width: rem(190);
                     display: flex;
                     align-items: center;
                     justify-content: space-around;
                     position: absolute;
-                    top: -60px;
+                    bottom: rem(115);
                     padding: rem(10);
                     background-color:#7b7b7b;
                     color: #fff;
@@ -296,11 +300,18 @@
                 .js-ajax-change-quantity__link {
                     display: inline-block;
                     text-align: center;
-                    font-size: 16px;
-                    padding: 5px 10px;
+                    font-size: rem(16);
+                    padding: rem(5) rem(10);
                     text-decoration: none;
-                    border: rem(2) solid $setting-color-fresh-orange;
                     border-radius: 100%;
+
+                    &--border-cz {
+                        border: rem(2) solid $setting-color-globusCZ-main-green;
+                    }
+
+                    &--border {
+                        border: rem(2) solid $setting-color-fresh-orange;
+                    }
 
                     &.js-quantity-counter-product__decr {
                         width: rem(40);
@@ -308,26 +319,42 @@
                         transition-duration: 0.25s;
                         &:hover {
                             color: $setting-color-forest-green;
-                            background-color: $setting-color-white;
+                            border: rem(2) solid $setting-color-forest-green;
+                        }
+                    }
+
+                    &.js-quantity-counter-product__decr-cz {
+                        width: rem(40);
+                        color: $setting-color-globusCZ-main-green;
+                        transition-duration: 0.25s;
+                        &:hover {
+                            color: $setting-color-globusCZ-hover;
+                            border: rem(2) solid $setting-color-globusCZ-hover;
                         }
                     }
                     &.js-quantity-counter-product__incr {
                         width: rem(40);
-                        background-color: $setting-color-fresh-orange;
-                        color: $setting-color-globus-white;
+                        color: $setting-color-fresh-orange;
                         transition-duration: 0.25s;
                         &:hover {
                             color: $setting-color-forest-green;
-                            background-color: $setting-color-white;
+                            border: rem(2) solid $setting-color-forest-green;
+                        }
+                    }
+
+                    &.js-quantity-counter-product__incr-cz {
+                        width: rem(40);
+                        color: $setting-color-globusCZ-main-green;
+                        transition-duration: 0.25s;
+                        &:hover {
+                            color: $setting-color-globusCZ-hover;
+                            border: rem(2) solid $setting-color-globusCZ-hover;
                         }
                     }
 
                     @include helper-breakpoint-media-max($sm-max) {
                         height: auto;
                         margin: 0;
-                    }
-                    &:hover {
-                        border: rem(2) solid $setting-color-forest-green;
                     }
                 }
             }

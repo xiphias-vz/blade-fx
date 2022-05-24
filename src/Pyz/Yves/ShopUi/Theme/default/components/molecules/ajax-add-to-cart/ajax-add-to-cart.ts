@@ -451,11 +451,20 @@ export default class AjaxAddToCart extends Component {
     protected addOrRemoveBinIcon(element) {
         let decreaseButtonElement = element.getElementsByClassName(this.addToCartDecrementer)[0];
         let quantityElement = element.getElementsByClassName(this.quantityInputField)[0];
-        if (quantityElement.valueAsNumber > 1 && decreaseButtonElement.classList.contains(this.addBinIcon)) {
-            decreaseButtonElement.classList.remove(this.addBinIcon);
+        let codebucket = document.getElementById(this.codeBucket);
+        if (quantityElement.valueAsNumber > 1 && decreaseButtonElement.classList.contains(this.addBinIcon) || decreaseButtonElement.classList.contains(this.addBinIconCz)) {
+            if(codebucket.value === "DE"){
+                decreaseButtonElement.classList.remove(this.addBinIcon);
+            } else {
+                decreaseButtonElement.classList.remove(this.addBinIconCz);
+            }
             decreaseButtonElement.innerText = "-";
         } else if(quantityElement.valueAsNumber === 1) {
-            decreaseButtonElement.classList.add(this.addBinIcon);
+            if(codebucket.value === "DE"){
+                decreaseButtonElement.classList.add(this.addBinIcon);
+            } else {
+                decreaseButtonElement.classList.add(this.addBinIconCz);
+            }
             decreaseButtonElement.innerText = "";
         }
     }
@@ -499,6 +508,14 @@ export default class AjaxAddToCart extends Component {
 
     protected get addBinIcon(): string {
         return 'add-bin';
+    }
+
+    protected get addBinIconCz(): string {
+        return 'add-bin-cz';
+    }
+
+    protected get codeBucket(): string {
+        return 'product-item-codebucket';
     }
 
     protected get itemAdded(): string {

@@ -43,7 +43,7 @@
             &--decr {
                 border-radius: rem(25);
                 border: rem(2) solid $setting-color-fresh-orange;
-                align-items: center;
+                align-items: flex-start;
 
                 &:hover {
                     border-color: $setting-color-forest-green;
@@ -58,7 +58,6 @@
                     border-color: $setting-color-forest-green;
                 }
             }
-
             &:hover {
                 color: $setting-color-forest-green;
             }
@@ -69,29 +68,28 @@
             justify-content: center;
             align-items: center;
             background-color: $setting-color-globus-white;
-            color: $setting-color-forest-green;
+            color: $setting-color-globusCZ-main-green;
 
             &--decr-cz {
                 border-radius: rem(25);
-                border: rem(2) solid $setting-color-forest-green;
-                align-items: center;
+                border: rem(2) solid $setting-color-globusCZ-main-green;
+                align-items: flex-start;
 
                 &:hover {
-                    border-color: $setting-color-fresh-orange;
+                    border-color: $setting-color-globusCZ-hover;
                 }
             }
 
             &--incr-cz {
                 border-radius: rem(25);
-                border: rem(2) solid $setting-color-forest-green;
+                border: rem(2) solid $setting-color-globusCZ-main-green;
 
                 &:hover {
-                    border-color: $setting-color-fresh-orange;
+                    border-color: $setting-color-globusCZ-hover;
                 }
             }
-
             &:hover {
-                color: $setting-color-fresh-orange;
+                color: $setting-color-globusCZ-hover;
             }
         }
 
@@ -119,9 +117,11 @@
             }
 
             &--quantity-lighter {
-                border: none;
+                border-top: rem(1) solid $setting-color-input-border-tentgray;
+                border-bottom: rem(1) solid $setting-color-input-border-tentgray;
                 color: black;
-                background: transparent;
+                width: 250%;
+                margin-left: rem(-38);
             }
 
             &--quantity-large {

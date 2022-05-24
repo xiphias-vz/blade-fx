@@ -69,7 +69,7 @@
             pointer-events: none;
             position: absolute;
             top: 50%;
-            left: rem(7);
+            left: 15%;
             transform: translate(0, -50%);
             color: $setting-color-white;
         }
@@ -77,10 +77,10 @@
         &__input:checked {
             & + #{$name}__box {
                 border-color: $setting-color-input-border-tentgray;
-                background: $setting-color-forest-green;
+                background: $setting-color-globusCZ-main-green;
 
                 &:hover {
-                    background-color: #008B3E;
+                    background-color: $setting-color-globusCZ-hover;
                 }
 
                 #{$name}__check {
@@ -96,8 +96,8 @@
 
         &__input-CZ:checked {
             & + #{$name}__box {
-                border-color: $setting-color-forest-green;
-                background: $setting-color-forest-green;
+                border-color: $setting-color-globusCZ-main-green;
+                background: $setting-color-globusCZ-main-green;
 
                 #{$name}__check {
                     opacity: 1;

@@ -25,6 +25,7 @@
 {% set productName = data.productItem.name | default %}
 {% set productSaleUnit = data.productItem.concreteAttributes['verpackungseinheit'] | default(null) %}
 {% set productSaleVolume = data.productItem.concreteAttributes['grundpreisinhalt'] | default(null) %}
+{% set productSupplier = data.productItem.brand  | default(null) %}
 
 {% block body %}
     {% set fontClass = app.currentCodeBucket == "CZ" ? 'cz-font' : '' %}
@@ -49,6 +50,8 @@
             </a>
         {% endblock %}
 
+
+
         {% block contentInner %}
             {% block headingGrid %}
             {% block heading %}
@@ -56,9 +59,11 @@
                     {% if app.currentCodeBucket == 'DE' %}class="{{ component.renderClass(config.name ~ '__heading', modifiers) }} col--lg-2 col--md-3 col--sm-7"
                     {% else %}class="{{ component.renderClass(config.name ~ '__heading CZ', modifiers) }} col--lg-2 col--md-3 col--sm-7"{% endif %}>
                     {% block title %}
-                        {% if data.productItem.brand is not empty %}
-                            <div
-                                class="{{ config.name }}__brand-title">{{ data.productItem.brand }}</div>
+                        {% if app.currentCodeBucket == 'DE' %}
+                            {% if data.productItem.brand is not empty %}
+                                <div
+                                    class="{{ config.name }}__brand-title">{{ data.productItem.brand }}</div>
+                            {% endif %}
                         {% endif %}
                         <a href="{{ data.productItem.url }}"
                            class="{{ component.renderClass(config.name ~ '__title', modifiers) }}">

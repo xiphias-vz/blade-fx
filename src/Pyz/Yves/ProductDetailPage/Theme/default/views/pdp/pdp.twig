@@ -32,6 +32,7 @@
 {% endblock %}
 
 {% block pageInfo %}
+    <input type="hidden" id="product-item-codebucket" value="{{ app.currentCodeBucket }}">
     <div class="container__inner">
         {% block breadcrumbs %}
             {% widget 'ProductBreadcrumbsWithCategoriesWidget' args [data.product] only %}{% endwidget %}
@@ -134,29 +135,57 @@
                         {% endif %}
                     {% endif %}
 
-                     {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
-                         {% embed molecule('toggler-item') with {
-                             data: {
-                                 title: 'product.info.ingredients.and.allergens' | trans,
-                                 triggerClass: 'ingredients-and-allergens__trigger-bundle',
-                                 targetClass: 'ingredients-and-allergens__target-bundle',
-                                 isActive: true,
-                                 productAttributes: data.product.attributes,
-                                 product: data.product
-                             },
-                             embed: {
-                                 bundleItems: data.bundleItems,
-                             }
-                         } only %}
-                             {% block contentText %}
-                                 {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
-                                     data: {
-                                         productAttributes: data.product.attributes,
-                                         zutatenText: _view.zutatenText
-                                     },
-                                 } only %}
-                             {% endblock %}
-                         {% endembed %}
+
+                    {% if data.currentCodeBucket == 'DE' %}
+                         {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
+                             {% embed molecule('toggler-item') with {
+                                 data: {
+                                     title: 'product.info.ingredients.and.allergens' | trans,
+                                     triggerClass: 'ingredients-and-allergens__trigger-bundle',
+                                     targetClass: 'ingredients-and-allergens__target-bundle',
+                                     isActive: true,
+                                     productAttributes: data.product.attributes,
+                                     product: data.product
+                                 },
+                                 embed: {
+                                     bundleItems: data.bundleItems,
+                                 }
+                             } only %}
+                                 {% block contentText %}
+                                     {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
+                                         data: {
+                                             productAttributes: data.product.attributes,
+                                             zutatenText: _view.zutatenText
+                                         },
+                                     } only %}
+                                 {% endblock %}
+                             {% endembed %}
+                        {% endif %}
+                    {%  else %}
+                        {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
+                            {% embed molecule('toggler-item') with {
+                                data: {
+                                    title: 'product.info.ingredients.and.allergens' | trans,
+                                    triggerClass: 'ingredients-and-allergens__trigger-bundle-cz',
+                                    targetClass: 'ingredients-and-allergens__target-bundle',
+                                    isActive: true,
+                                    productAttributes: data.product.attributes,
+                                    product: data.product
+                                },
+                                embed: {
+                                    bundleItems: data.bundleItems,
+                                }
+                            } only %}
+                                {% block contentText %}
+                                    {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
+                                        data: {
+                                            productAttributes: data.product.attributes,
+                                            zutatenText: _view.zutatenText
+                                        },
+                                    } only %}
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
                     {% endif %}
 
                     {% if data.currentCodeBucket == 'CZ' %}
@@ -164,7 +193,7 @@
                             {% embed molecule('toggler-item') with {
                                 data: {
                                     title: 'product.info.additional.storage' | trans,
-                                    triggerClass: 'temperature-condition__trigger-bundle',
+                                    triggerClass: 'temperature-condition__trigger-bundle-cz',
                                     targetClass: 'temperature-condition__target-bundle',
                                     isActive: true,
                                     productAttributes: data.product.attributes,
@@ -186,31 +215,60 @@
                         {% endif %}
                     {% endif %}
 
-                    {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined %}
-                        {% embed molecule('toggler-item') with {
-                            data: {
-                                title: 'product.info.additional.nutritionalInfo' | trans,
-                                triggerClass: 'nutritional-information__trigger-bundle',
-                                targetClass: 'nutritional-information__target-bundle',
-                                isActive: true,
-                                productAttributes: data.product.attributes,
-                                product: data.product,
-                                bioCertification: 'bio-certification-code'
-                            },
-                            embed: {
-                                bundleItems: data.bundleItems,
-                            }
-                        } only %}
-                            {% block contentText %}
-                                {% include molecule('nutritional-information', 'ProductDetailPage') with {
-                                    data: {
-                                        attributes: data.product.attributes,
-                                        isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
-                                    },
-                                } only %}
-                            {% endblock %}
-                        {% endembed %}
+                    {% if data.currentCodeBucket == 'DE' %}
+                        {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined %}
+                            {% embed molecule('toggler-item') with {
+                                data: {
+                                    title: 'product.info.additional.nutritionalInfo' | trans,
+                                    triggerClass: 'nutritional-information__trigger-bundle',
+                                    targetClass: 'nutritional-information__target-bundle',
+                                    isActive: true,
+                                    productAttributes: data.product.attributes,
+                                    product: data.product,
+                                    bioCertification: 'bio-certification-code'
+                                },
+                                embed: {
+                                    bundleItems: data.bundleItems,
+                                }
+                            } only %}
+                                {% block contentText %}
+                                    {% include molecule('nutritional-information', 'ProductDetailPage') with {
+                                        data: {
+                                            attributes: data.product.attributes,
+                                            isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
+                                        },
+                                    } only %}
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
+                    {% else %}
+                        {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined %}
+                            {% embed molecule('toggler-item') with {
+                                data: {
+                                    title: 'product.info.additional.nutritionalInfo' | trans,
+                                    triggerClass: 'nutritional-information__trigger-bundle_cz',
+                                    targetClass: 'nutritional-information__target-bundle',
+                                    isActive: true,
+                                    productAttributes: data.product.attributes,
+                                    product: data.product,
+                                    bioCertification: 'bio-certification-code'
+                                },
+                                embed: {
+                                    bundleItems: data.bundleItems,
+                                }
+                            } only %}
+                                {% block contentText %}
+                                    {% include molecule('nutritional-information', 'ProductDetailPage') with {
+                                        data: {
+                                            attributes: data.product.attributes,
+                                            isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
+                                        },
+                                    } only %}
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
                     {% endif %}
+
                     {% if data.productAttributes['bioCertificationCode'] is defined and data.productAttributes['bioCertificationCode'] != "" %}
                         {% if data.currentCodeBucket == 'CZ' %}
                             <p style="margin-top: -50px; margin-bottom: 30px;">{{ 'product.info.biocertification' | trans }}: {{ data.productAttributes['bioCertificationCode'] }}</p>

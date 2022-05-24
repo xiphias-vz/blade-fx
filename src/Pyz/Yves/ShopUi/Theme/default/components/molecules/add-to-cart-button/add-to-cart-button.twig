@@ -28,7 +28,9 @@
                data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
                data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
             >
-
+                <svg class="icon-svg-cz">
+                    <use xlink:href="#:icon-basketplus"></use>
+                </svg>
                 <div class="add-details-to-cart-text-holder">
                     {{- 'customer.account.wishlist.add-to-cart' | trans -}}
                 </div>
@@ -80,7 +82,8 @@
             {% if app.currentCodeBucket == 'DE' %}
                 <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
                    class="js-ajax-change-quantity__link
-                          js-quantity-counter-product__decr"
+                          js-quantity-counter-product__decr
+                          js-quantity-counter-product__decr_DE"
                    data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
                    data-product-sku="{{ data.product.sku }}"
                 >
@@ -89,10 +92,10 @@
             {% else %}
                 <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
                    class="js-ajax-change-quantity__link
-                          js-quantity-counter-product__decr"
+                          js-quantity-counter-product__decr
+                          js-quantity-counter-product__decr_CZ"
                    data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                   data-product-sku="{{ data.product.sku }}"
-                   style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
+                   data-product-sku="{{ data.product.sku }}">
                     -
                 </a>
             {% endif %}
@@ -101,7 +104,8 @@
             {% if app.currentCodeBucket == 'DE' %}
                 <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
                    class="js-ajax-change-quantity__link
-                          js-quantity-counter-product__incr"
+                          js-quantity-counter-product__incr
+                          js-quantity-counter-product__incr_DE"
                    data-product-sku="{{ data.product.sku }}"
                    data-product-title="{{ data.product.name }}"
                    data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
@@ -112,10 +116,10 @@
             {% else %}
                 <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
                    class="js-ajax-change-quantity__link
-                          js-quantity-counter-product__incr"
+                          js-quantity-counter-product__incr
+                          js-quantity-counter-product__incr_CZ"
                    data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                   data-product-sku="{{ data.product.sku }}"
-                   style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
+                   data-product-sku="{{ data.product.sku }}">
                     +
                 </a>
             {% endif %}
