@@ -77,7 +77,7 @@
         &__input:checked {
             & + #{$name}__box {
                 border-color: $setting-color-input-border-tentgray;
-                background: $setting-color-globusCZ-main-green;
+                background: $setting-color-forest-green;
 
                 &:hover {
                     background-color: $setting-color-globusCZ-hover;
