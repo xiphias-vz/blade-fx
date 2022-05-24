@@ -1,0 +1,15 @@
+{% block content %}
+
+    <!-- CMS_BLOCK_PLACEHOLDER : "icon" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "title" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "linkText" -->
+
+    {% include molecule('available-timeslot-top-header') with {
+        data: {
+            icon: spyCmsBlockPlaceholder('icon'),
+            linkText: spyCmsBlockPlaceholder('linkText'),
+            title: spyCmsBlockPlaceholder('title'),
+        },
+    } only %}
+
+{%  endblock %}

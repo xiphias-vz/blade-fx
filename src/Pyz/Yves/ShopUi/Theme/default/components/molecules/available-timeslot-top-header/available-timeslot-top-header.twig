@@ -1,0 +1,91 @@
+{% define config = {
+    name: 'available-timeslot-top-header',
+} %}
+
+{% define data = {
+    icon: '',
+    linkText: '',
+    title:'',
+} %}
+
+{% block downbar %}
+    <div class="{{ config.name }}__container">
+        <input type="hidden" id="codeBucketHeader" value="{{ app.currentCodeBucket }}">
+        <div class="{{ config.name }}__content-section">
+            <div class="{{ config.name }}__icon">
+                {{ data.icon | raw }}
+            </div>
+
+            <div class="{{ config.name }}__title">
+                {{ data.title | raw }}
+            </div>
+
+            <div class="{{ config.name }}__content">
+                <div class="{{ config.name }}__timeslot">
+
+                </div>
+
+                <div class="{{ config.name }}__link">
+                    {{ data.linkText | raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        let availableTimeslotTopHeaderContainer = document.getElementsByClassName("available-timeslot-top-header__container")[0];
+        let availableTimeslotTopHeaderContent = document.getElementsByClassName("available-timeslot-top-header__content")[0];
+        let availableTimeslotTopHeaderLink = document.getElementsByClassName("available-timeslot-top-header__link")[0];
+        let availableTimeslotTopHeaderField = document.getElementsByClassName("available-timeslot-top-header__timeslot")[0];
+        let codeBucketHeader = document.getElementById("codeBucketHeader");
+
+        availableTimeslotTopHeaderLink.addEventListener("click", openTimeSlotPopupHeader);
+
+        function openTimeSlotPopupHeader(){
+            if(!document.querySelector("popup-ui-shipment-form").classList.contains("popup-ui-shipment-form--show")){
+                document.getElementById("link-to-time-slots").click();
+            }
+        }
+
+        const availableTimeslotTopHeaderTimeSlotsUrl = "/checkout/time-slots-data";
+        fetch(availableTimeslotTopHeaderTimeSlotsUrl, {method: 'POST'})
+            .then(response => response.json())
+            .then(parsedResponse => {
+                if(parsedResponse != undefined && parsedResponse != []){
+                    getAvailableTimeSlotHeader(parsedResponse);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        function getAvailableTimeSlotHeader(parsedResponse){
+
+            let timeRange = '';
+            let availableDate = '';
+
+            for(let count = 0; count < Object.entries(parsedResponse).length; count++){
+                if(Object.entries(parsedResponse)[count][1].length > 0){
+                    timeRange = Object.entries(parsedResponse)[count][1][0];
+                    availableDate = Object.entries(parsedResponse)[count][0];
+                    break;
+                }
+            }
+
+            let testDay = availableDate.substring(8, 10);
+            if (testDay < 10 && testDay.includes("0")){
+                testDay = testDay.slice(1, 2);
+            }
+
+            let date = new Date(availableDate);
+            let monthShort = '';
+
+            monthShort = date.getMonth() + 1;
+            availableTimeslotTopHeaderField.textContent = testDay + '.' + monthShort + '.' + ' - ' + ' ' + timeRange;
+
+        }
+    </script>
+{% endblock %}
+
+

@@ -23,6 +23,12 @@ $header-sticky-height: rem(69, number);
             text-decoration: none;
         }
 
+        &__payback {
+            color: $setting-color-stonegray;
+            background-color: transparent;
+            font-size: rem(12);
+        }
+
         &__logo-text {
             color: $setting-color-fresh-orange;
             font-size: rem(18);
@@ -47,6 +53,10 @@ $header-sticky-height: rem(69, number);
                 margin: 0;
             }
 
+        }
+
+        &__container-nav {
+            display: flex;
         }
 
         &__flexbox {
@@ -83,6 +93,10 @@ $header-sticky-height: rem(69, number);
             }
         }
 
+        &__link_orange, &__link_orange__middle {
+            display: none;
+        }
+
         &__link_orange__middle {
             color: $setting-color-gray-4;
             user-select: none;
@@ -110,18 +124,18 @@ $header-sticky-height: rem(69, number);
             color: $setting-color-white;
             justify-content: right;
 
-            :nth-child(2) {
-                background-color: $setting-color-fresh-orange;
-                justify-content: space-evenly;
-            }
+            //:nth-child(2) {
+            //    background-color: $setting-color-fresh-orange;
+            //    justify-content: space-evenly;
+            //}
 
-            :nth-child(3) {
-                margin-right: rem(220);
-            }
+            //:nth-child(3) {
+            //    margin-right: rem(220);
+            //}
 
-            :last-child {
-                justify-content: end;
-            }
+            //:last-child {
+            //    justify-content: end;
+            //}
         }
 
         &__text-right {
