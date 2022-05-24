@@ -4550,6 +4550,9 @@ global.email,info@spryker.com,en_US
 popular.categories,"Oblíbené kategorie",cs_CZ
 popular.categories,Beliebte Kategorien,de_DE
 popular.categories,Popular Categories,en_US
+browse.category,"Procházet nyní",cs_CZ
+browse.category,Jetzt stöbern,de_DE
+browse.category,Browse now,en_US
 home.jumbotron.headline,Click&Collect&Delivery Demo,cs_CZ
 home.jumbotron.headline,Click&Collect&Delivery Demo,de_DE
 home.jumbotron.headline,Click&Collect&Delivery Demo,en_US

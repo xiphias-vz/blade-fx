@@ -71,6 +71,13 @@
             }
         }
 
+        &__homepage-container {
+            width: 100%;
+            max-width: rem(1204);
+            margin: auto;
+            background-color: $setting-color-white;
+        }
+
         &--product-set {
             #{$name}__container {
                 padding: 0;
