@@ -13,6 +13,7 @@
         <column name="class_name" type="VARCHAR" size="100"/>
         <column name="event_data" type="VARCHAR" size="1000"/>
         <column name="created_at" required="true" type="TIMESTAMP"/>
+        <column name="local_uuid" type="VARCHAR" size="50"/>
     </table>
 
     <table name="pyz_data_import_event_archive">

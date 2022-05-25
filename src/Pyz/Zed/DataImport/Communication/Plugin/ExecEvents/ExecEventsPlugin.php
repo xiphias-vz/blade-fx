@@ -55,10 +55,14 @@ class ExecEventsPlugin extends AbstractPlugin
         $con->beginTransaction();
         try {
                 $counter = 0;
+                $uuid = PropelExtension::getResultNamed("select uuid() as id", $con)[0]["id"];
+                PropelExtension::execute("update pyz_data_import_event set local_uuid = '" . $uuid . "' where local_uuid is null", $con);
+                $con->commit();
                 DataImporterPublisher::triggerEvents();
                 $qry = new PyzDataImportEventQuery();
                 $qry->groupBy([PyzDataImportEventTableMap::COL_EVENT_NAME, PyzDataImportEventTableMap::COL_ENTITY_ID, PyzDataImportEventTableMap::COL_EVENT_DATA]);
                 $qry->withColumn('GROUP_CONCAT(' . PyzDataImportEventTableMap::COL_ID_DATA_IMPORT_EVENT . ')', 'itemIdList');
+                $qry->where(PyzDataImportEventTableMap::COL_LOCAL_UUID . " ='" . $uuid . "'");
                 $data = $qry->find();
 
             foreach ($data as $event) {

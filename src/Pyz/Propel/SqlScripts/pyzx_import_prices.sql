@@ -39,7 +39,8 @@ BEGIN
         promotionstart datetime,
         promotionend datetime,
         isDefault bit,
-        price_imp decimal(9,2)
+        price_imp decimal(9,2),
+        isChanged bit
     );
 
     /*PRICE TYPES: 1-DEFAULT, 2-ORIGINAL */
@@ -205,13 +206,13 @@ BEGIN
     update tmp_tbl_price tmp1
         inner join
         (
-        select id_store, id_price_product, fk_price_type, id_product_abstract,
-        ROW_NUMBER() over (PARTITION BY id_store, id_product_abstract ORDER BY fk_price_type) as priority
-        from tmp_tbl_price tmp
+            select id_store, id_price_product, fk_price_type, id_product_abstract,
+            ROW_NUMBER() over (PARTITION BY id_store, id_product_abstract ORDER BY fk_price_type) as priority
+            from tmp_tbl_price tmp
         ) tmp2 on tmp1.id_store = tmp2.id_store
-        and tmp1.id_price_product = tmp2.id_price_product
-        and tmp1.fk_price_type = tmp2.fk_price_type
-        and tmp1.id_product_abstract = tmp2.id_product_abstract
+            and tmp1.id_price_product = tmp2.id_price_product
+            and tmp1.fk_price_type = tmp2.fk_price_type
+            and tmp1.id_product_abstract = tmp2.id_product_abstract
         SET
             isDefault = 1
     where tmp2.priority = 1
@@ -309,6 +310,7 @@ BEGIN
         , spps.price_data = '[]'
         , spps.price_per_kg = tmp.price_per_kg
         , spps.promotion = null
+        , tmp.isChanged = 1
     where (spps.gross_price <> tmp.price or ifnull(spps.price_per_kg, 0) <> tmp.price_per_kg)
       and tmp.isDefault = 1
       and tmp.promotion is null;
@@ -334,13 +336,20 @@ BEGIN
          left outer join spy_price_product_default sppd on spps.id_price_product_store = sppd.fk_price_product_store
     where sppd.id_price_product_default is null;
 
-    DROP TEMPORARY TABLE IF EXISTS tmp_tbl_price;
+    INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
+    select distinct tmp.id_product_abstract , 'Price.price_abstract.publish', now()
+    from tmp_tbl_price tmp
+        left outer join spy_price_product_store spps on spps.fk_price_product = tmp.id_price_product and spps.fk_store = tmp.id_store
+    where tmp.isDefault = 1
+      and tmp.promotion is null
+      and spps.id_price_product_store is null;
 
     INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
-    select distinct spp.fk_product_abstract , 'Price.price_abstract.publish', now()
-    from spy_price_product spp
-             inner join spy_product sp on spp.fk_product_abstract  = sp.fk_product_abstract
-    where sp.is_active = 1;
+    select distinct tmp.id_product_abstract , 'Price.price_abstract.publish', now()
+    from tmp_tbl_price tmp
+    where tmp.isChanged = 1;
+
+    DROP TEMPORARY TABLE IF EXISTS tmp_tbl_price;
 
 END;
 
