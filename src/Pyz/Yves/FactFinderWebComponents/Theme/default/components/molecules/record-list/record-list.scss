@@ -358,6 +358,7 @@
             right: rem(48);
             margin-top: rem(20.32);
             font-size: rem(12);
+            color: $setting-color-tentgray;
 
             @include helper-breakpoint-media-max($md-min) {
                 right: rem(60.8);

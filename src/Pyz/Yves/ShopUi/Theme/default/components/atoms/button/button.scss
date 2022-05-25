@@ -34,7 +34,7 @@
         &:hover,
         &:focus,
         &:active {
-            background: $setting-color-fresh-orange;
+            background: $setting-color-fresh-orange-3;
             color: $setting-color-white;
             box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2 !important;
         }
@@ -42,6 +42,10 @@
         &:focus {
             background: $setting-color-fresh-orange;
             color: $setting-color-white;
+            outline-style: solid;
+            outline-width: rem(1);
+            outline-color: $setting-color-fresh-orange;
+            outline-offset: rem(2);
         }
 
         &--pdp-height-CZ {

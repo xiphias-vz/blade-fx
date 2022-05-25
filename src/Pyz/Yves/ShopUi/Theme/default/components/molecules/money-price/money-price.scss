@@ -7,7 +7,8 @@
 
         &--original {
             font-size: rem(12);
-            color: #9ea1a7;
+            color: $setting-color-tentgray;
+            text-decoration-color: #E30613;
         }
 
         &--cart {
@@ -27,6 +28,10 @@
             @include helper-breakpoint-media-max(450px){
                 position: relative;
             }
+        }
+
+        &--pdp {
+            color: $setting-color-tentgray;
         }
     }
     &__amount-red {
@@ -68,7 +73,7 @@
     &__uvp {
         margin-right: rem(5);
         font-size: rem(12);
-        color: #9ea1a7;
+        color: $setting-color-tentgray;
     }
 
     &__uvp-cz {

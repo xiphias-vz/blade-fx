@@ -12,7 +12,7 @@
         }
 
         .text-grey {
-            color: $setting-color-gray-9;
+            color: $setting-color-stonegray-2;
         }
 
         .wishlist-icon-CZ {
@@ -40,6 +40,18 @@
                     height: rem(20);
                     width: rem(20);
                 }
+            }
+
+            button:hover, button:active {
+                background: $setting-color-forest-green-3 !important;
+            }
+
+            button:focus {
+                background: $setting-color-forest-green;
+                outline-style: solid;
+                outline-width: rem(1);
+                outline-color: $setting-color-forest-green;
+                outline-offset: rem(2);;
             }
 
             @include helper-breakpoint-media-max($md-max) {
