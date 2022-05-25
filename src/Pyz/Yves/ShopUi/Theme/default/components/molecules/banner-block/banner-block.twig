@@ -43,7 +43,6 @@
         } only %}
         {% block content %}
             {{ parent() }}
-            <div class="{{ config.name }}__curved-top"></div>
             <div class="{{ config.name }}__content {{ embed.contentClass }}">
                 {{ embed.contentBlock | raw }}
             </div>

@@ -55,13 +55,12 @@
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
-            text-align: center;
             position: relative;
             border: rem(2) solid $setting-color-stonegray;
-            margin-right: rem(10);
 
             @include helper-breakpoint-media-max($sm-max) {
-                margin-left: rem(40);
+                width: 90%;
+                margin-left: 0;
                 text-align: left;
             }
 
@@ -71,6 +70,11 @@
 
             @include helper-breakpoint-media-min($lg-min) {
                 text-align: left;
+            }
+
+            @include helper-breakpoint-media-max($md-max) {
+                margin-left: rem(20);
+                margin-right: 0;
             }
 
             &--success {
