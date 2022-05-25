@@ -59,28 +59,26 @@
             border: rem(2) solid $setting-color-stonegray;
 
             @include helper-breakpoint-media-max($sm-max) {
-                width: 90%;
-                margin-left: 0;
+                width: 100%;
+                margin-left: rem(10);
                 text-align: left;
-            }
-
-            @include helper-media-ie() {
-                height: 100%;
             }
 
             @include helper-breakpoint-media-min($md-max) {
                 margin-right: rem(10);
             }
 
+            @include helper-breakpoint-media-max($md-max) {
+                margin-left: 0;
+            }
+
+            @include helper-media-ie() {
+                height: 100%;
+            }
+
             @include helper-breakpoint-media-min($lg-min) {
                 text-align: left;
             }
-
-            @include helper-breakpoint-media-max($md-max) {
-                margin-left: rem(20);
-                margin-right: 0;
-            }
-
             &--success {
                 margin: 0;
                 padding: rem(20) rem(15) rem(26);

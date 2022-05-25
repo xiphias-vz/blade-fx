@@ -331,7 +331,14 @@
                 min-width: 100%;
             }
         }
-
+        .quick-links-section {
+            @include helper-breakpoint-media-between($md-min, $lg-min) {
+                .col--lg-3 {
+                    width: 33.33333%;
+                    min-width: 33.33333%
+                }
+            }
+        }
         @content;
     }
 }

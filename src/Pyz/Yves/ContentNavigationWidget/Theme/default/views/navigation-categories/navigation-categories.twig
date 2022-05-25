@@ -9,7 +9,7 @@
 
     <div class="grid grid--justify">
         {% for node in data.navigation.nodes %}
-            <div class="col col--sm-12 col--md-6 col--lg-4 col--spaced-lg">
+            <div class="col col--sm-12 col--lg-4 col--spaced-lg">
                 {% include molecule('navigation-category', 'NavigationWidget') with {
                     data: {
                         node: node,

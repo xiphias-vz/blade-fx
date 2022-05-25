@@ -84,11 +84,13 @@
             background-size: cover;
 
             @include helper-breakpoint-media-max($l-max) {
-                width: 30%;
-                right: rem(300);
+                width: 100%;
+                right: auto;
                 left: auto;
+            }
+
+            @include helper-breakpoint-media-max($md-max) {
                 margin-right: rem(10);
-                margin-left:rem(10);
             }
 
             @include helper-breakpoint-media-max($sm-max) {

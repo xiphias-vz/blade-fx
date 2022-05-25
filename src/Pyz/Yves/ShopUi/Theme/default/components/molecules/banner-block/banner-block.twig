@@ -11,7 +11,7 @@
     buttonTitle: '',
 } %}
 
-{% set containerClass = config.name ~ '__container grid grid--left grid--middle' %}
+{% set containerClass = config.name ~ '__container' %}
 {% set contentClass = 'col col--sm-12' %}
 {% block content %}
 
@@ -31,7 +31,7 @@
 {% block body %}
     {% embed molecule('lazy-image-banner-grid') with {
         class: containerClass,
-        modifiers: modifiers,
+        modifiers: ['small'],
         data: {
         imageSrc: data.imageUrl,
         isBackground: true,
