@@ -62,4 +62,14 @@ BEGIN
         )
       and spps.is_current = 1;
 
+    INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
+    select DISTINCT spp.fk_product_abstract, 'Product.product_abstract.publish', now()
+    from spy_product_abstract_page_search spaps
+             inner join spy_store ss on spaps.store = ss.name
+             inner join spy_price_product spp on spaps.fk_product_abstract = spp.fk_product_abstract
+             inner join spy_price_product_store spps on spp.id_price_product = spps.fk_price_product and ss.id_store = spps.fk_store
+    where not spps.price_per_kg is null
+      and spp.fk_price_type = 1
+      and IFNULL(cast(JSON_VALUE(spaps.`data`, '$.search-result-data.prices.*.PRICE_PER_KG.DEFAULT') as int), 0) <> spps.price_per_kg;
+
 END;
