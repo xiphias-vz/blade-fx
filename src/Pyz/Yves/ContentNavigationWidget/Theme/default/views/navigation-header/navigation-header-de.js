@@ -771,6 +771,8 @@ function createQueryForRecommendedProducts(arrayOfRecommendedItems, usePipes) {
         }
     }
 
+    productsForQuery += "&log=my_products";
+
     return productsForQuery;
 }
 
