@@ -467,4 +467,12 @@ if ($storeCodeBucket == 'CZ') {
         'enable' => true,
         'stores' => ['EIN'],
     ];
+
+    $jobs[] = [
+        'name' => 'factfinder-publish-events',
+        'command' => '$PHP_BIN vendor/bin/console factfinder:publish',
+        'schedule' => '*/10 * * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
 }

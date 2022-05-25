@@ -60,8 +60,10 @@ class FactFinderEventManager
      */
     public function clearEvents(string $eventName, array $idProductAbstractList)
     {
-        $sql = "delete from pyz_fact_finder_event where event_name = '" . $eventName . "' and fk_product_abstract in(" . implode(",", $idProductAbstractList) . ")";
-        $this->getResult($sql);
+        if(count($idProductAbstractList) > 0) {
+            $sql = "delete from pyz_fact_finder_event where event_name = '" . $eventName . "' and fk_product_abstract in(" . implode(",", $idProductAbstractList) . ")";
+            $this->getResult($sql);
+        }
     }
 
     /**
