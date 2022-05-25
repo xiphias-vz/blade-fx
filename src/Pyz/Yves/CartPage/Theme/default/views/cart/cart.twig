@@ -125,13 +125,13 @@
                             {% endif %}
 
                             {% if app.currentCodeBucket == 'DE' %}
-                                <p class="header-cart-title col--lg-2 col--md-2">{{ 'cart.header.quantity' | trans }}</p>
-                                <p class="header-cart-title col--lg-2 col--md-2">{{ 'cart.header.single_price' | trans }}</p>
-                                <p class="header-cart-title col--lg-2 col--md-2">{{ 'cart.header.price' | trans }}</p>
+                                <p class="header-cart-title header-cart-title--quantity">{{ 'cart.header.quantity' | trans }}</p>
+                                <p class="header-cart-title header-cart-title--unit-price">{{ 'cart.header.single_price' | trans }}</p>
+                                <p class="header-cart-title col--lg-1 col--md-2">{{ 'cart.header.price' | trans }}</p>
                             {% else %}
-                                <p class="header-cart-title CZ col--lg-2 col--md-2">{{ 'cart.header.quantity' | trans }}</p>
-                                <p class="header-cart-title CZ col--lg-2 col--md-2">{{ 'cart.header.single_price' | trans }}</p>
-                                <p class="header-cart-title CZ col--lg-2 col--md-2">{{ 'cart.header.price' | trans }}</p>
+                                <p class="header-cart-title CZ header-cart-title--quantity">{{ 'cart.header.quantity' | trans }}</p>
+                                <p class="header-cart-title CZ header-cart-title--unit-price">{{ 'cart.header.single_price' | trans }}</p>
+                                <p class="header-cart-title CZ col--lg-1 col--md-2">{{ 'cart.header.price' | trans }}</p>
                             {% endif %}
                         </div>
                     </div>

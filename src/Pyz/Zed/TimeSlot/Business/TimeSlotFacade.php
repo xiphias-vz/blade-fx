@@ -163,6 +163,7 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
 
     /**
      * @param string $storeName
+     *
      * @return int
      */
     public function getMerchantByStoreName(string $storeName): int

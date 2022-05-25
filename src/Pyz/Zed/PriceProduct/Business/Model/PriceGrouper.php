@@ -14,6 +14,7 @@ class PriceGrouper extends SprykerPriceGrouper
 {
     protected const PRICE_PER_KG = 'PRICE_PER_KG';
     protected const PROMOTION = 'PROMOTION';
+
     /**
      * @param \Generated\Shared\Transfer\PriceProductTransfer $priceProductTransfer
      * @param array $prices

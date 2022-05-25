@@ -26,9 +26,10 @@ class DataImportCommunicationFactory extends SprykerDataImportCommunicationFacto
     }
 
     /**
-     * @return ExecEventsPlugin
+     * @return \Pyz\Zed\DataImport\Communication\Plugin\ExecEvents\ExecEventsPlugin
      */
-    public function getExecEventsPlugin(): ExecEventsPlugin {
+    public function getExecEventsPlugin(): ExecEventsPlugin
+    {
         return new ExecEventsPlugin();
     }
 }

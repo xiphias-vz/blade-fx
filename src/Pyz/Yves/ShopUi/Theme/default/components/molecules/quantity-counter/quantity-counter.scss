@@ -121,7 +121,25 @@
                 border-bottom: rem(1) solid $setting-color-input-border-tentgray;
                 color: black;
                 width: 250%;
-                margin-left: rem(-38);
+                margin-left: rem(-35);
+
+                @include helper-breakpoint-media-min($xxs-max) {
+                    width: 220%;
+                }
+
+                @include helper-breakpoint-media-min($lg-max){
+                    width: 350%;
+                }
+
+                @include helper-breakpoint-media-min($l-min){
+                    width: 325%;
+                }
+
+                @include helper-breakpoint-media-min($l-min+2){
+                    width: 240%;
+                }
+
+
             }
 
             &--quantity-large {

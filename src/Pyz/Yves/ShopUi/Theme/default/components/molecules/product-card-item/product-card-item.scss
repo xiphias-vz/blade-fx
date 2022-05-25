@@ -269,10 +269,12 @@ $additional-info-width: rem(350);
 
             @include helper-breakpoint-media-min($xl-min) {
                 padding: 0 rem(5);
-                width: 20%;
+                width: 16%;
                 flex-shrink: 0;
                 display: flex;
                 align-items: center;
+                justify-content: normal;
+                padding-left: rem(35);
             }
 
             @include helper-breakpoint-media-max($lg-max) {
@@ -280,9 +282,9 @@ $additional-info-width: rem(350);
                 justify-content: flex-end;
             }
 
-            @include helper-breakpoint-media-max(420px) {
+            @include helper-breakpoint-media-max(360px) {
                 position: relative;
-                left: rem(50);
+                left: rem(0);
             }
         }
 

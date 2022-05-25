@@ -32,7 +32,7 @@
     <div class="{{ component.renderClass(config.name ~ '__box', modifiers) }} {{ productItemBox }} {{ fontClass }}">
         {% block image %}
             <a href="{{ data.productItem.url }}"
-               class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col col--lg-2 col--md-2 col--sm-1">
+               class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col col--lg-1 col--md-2 col--sm-1">
                 {% if data.productItem.images[0].externalUrlLarge is defined %}
                     {% set imageProduct = data.productItem.images[0].externalUrlLarge %}
                 {% else %}

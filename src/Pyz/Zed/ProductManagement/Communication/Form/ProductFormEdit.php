@@ -1,7 +1,11 @@
 <?php
 
-namespace Pyz\Zed\ProductManagement\Communication\Form;
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
 
+namespace Pyz\Zed\ProductManagement\Communication\Form;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\ProductManagement\Communication\Form\Product\ImageSetForm;
@@ -34,7 +38,7 @@ class ProductFormEdit extends ProductFormAdd
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
-     * @return \Pyz\Zed\ProductManagement\Communication\Form\ProductFormEdit
+     * @return $this
      */
     protected function addSkuField(FormBuilderInterface $builder)
     {
@@ -92,4 +96,3 @@ class ProductFormEdit extends ProductFormAdd
         return $this;
     }
 }
-

@@ -337,7 +337,7 @@ class GsoaProductConsole extends Console
                         $modifiedFrom = $this->getLastImportDate("product-price", $store);
                     }
                     $result = $this->getModifiedArray($client->getProductsModified($modifiedFrom, true));
-                    $result =  array_merge(
+                    $result = array_merge(
                         $result,
                         $this->getModifiedArray($client->getProductPricesByHouseModified($store, $modifiedFrom, true))
                     );
@@ -356,7 +356,7 @@ class GsoaProductConsole extends Console
                         $modifiedFrom = $this->getLastImportDate("product-stock", $store);
                     }
                     $result = $this->getModifiedArray($client->getProductsModified($modifiedFrom, true));
-                    $result =  array_merge(
+                    $result = array_merge(
                         $result,
                         $this->getModifiedArray($client->getProductStocksByHouseModified($store, $modifiedFrom, true))
                     );
@@ -989,7 +989,8 @@ class GsoaProductConsole extends Console
      *
      * @return array
      */
-    protected function getModifiedArray(array $result): array {
+    protected function getModifiedArray(array $result): array
+    {
         if (isset($result["modifiedProducts"])) {
             return $result["modifiedProducts"];
         }

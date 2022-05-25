@@ -37,6 +37,7 @@
     &__amount-red {
         color: $setting-color-globus-red;
         float: left;
+        font-size: rem(16);
 
         @include helper-breakpoint-media-max($lg-max) {
             float: none;

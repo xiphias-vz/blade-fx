@@ -575,7 +575,7 @@ class CartController extends SprykerCartController
 
             $this->cartTrackingEvent($count, $productSku, $productPrice, $productTitle);
 
-            if(isset($firstClickFlag) && $firstClickFlag === "true"){
+            if (isset($firstClickFlag) && $firstClickFlag === "true") {
                 $masterId = $productSku;
                 $productPage = $_REQUEST['productPage'] ?? 1;
                 $productQuery = $_REQUEST['productQuery'] ?? "*";
@@ -586,7 +586,7 @@ class CartController extends SprykerCartController
                     $query = $productQuery;
                 }
 
-            $this->clickTrackingEvent($productSku, $masterId, (int)$productPage, (int)$productPosition, $query, $productTitle);
+                $this->clickTrackingEvent($productSku, $masterId, (int)$productPage, (int)$productPosition, $query, $productTitle);
             }
         }
 
@@ -595,13 +595,13 @@ class CartController extends SprykerCartController
 
     public function removeCharsFromString($productTitle)
     {
-        $search = array(
+        $search = [
             "<span",
             "class=",
             '"ffw-query">',
             "</",
-            "span>"
-        );
+            "span>",
+        ];
 
         return str_replace($search, "", $productTitle);
     }
@@ -646,7 +646,6 @@ class CartController extends SprykerCartController
         return $cartItemsSku;
     }
 
-
     /**
      * @param $productSku
      * @param $masterId
@@ -654,6 +653,7 @@ class CartController extends SprykerCartController
      * @param $position
      * @param $query
      * @param $title
+     *
      * @return array
      */
     public function clickTrackingEvent($productSku, $masterId, $page, $position, $query, $title): array
@@ -670,5 +670,4 @@ class CartController extends SprykerCartController
 
         return FactFinderApiClient::postTrackClickData($data);
     }
-
 }
