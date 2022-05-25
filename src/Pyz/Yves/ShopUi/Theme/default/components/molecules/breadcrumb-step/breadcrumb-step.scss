@@ -106,6 +106,14 @@
             }
         }
 
+        &--active-cz-color {
+            color: $setting-color-globusCZ-main-green;
+
+            &::after {
+                background: $setting-color-globusCZ-main-green;
+            }
+        }
+
         &__check {
             position: absolute;
             top: 50%;

@@ -32,15 +32,12 @@
         }
 
         &:hover,
-        &:focus,
         &:active {
             background: $setting-color-fresh-orange-3;
             color: $setting-color-white;
         }
 
         &:focus {
-            background: $setting-color-fresh-orange;
-            color: $setting-color-white;
             outline-style: solid;
             outline-width: rem(1);
             outline-color: $setting-color-fresh-orange;
@@ -288,11 +285,15 @@
             color: $setting-color-white;
 
             &:hover,
-            &:focus,
             &:active {
-                box-shadow: 0 rem(4) rem(18) $setting-color-globusCZ-hover;
                 background: $setting-color-globusCZ-hover;
+            }
 
+            &:focus {
+                outline-style: solid;
+                outline-width: rem(1);
+                outline-color: $setting-color-globusCZ-main-green;
+                outline-offset: rem(2);
             }
 
             &[disabled],
@@ -317,6 +318,13 @@
             &:hover {
                 background: $setting-color-globusCZ-hover !important;;
                 box-shadow: 0 rem(4) rem(18) $setting-color-lightest !important;
+            }
+
+            &:focus {
+                outline-style: solid;
+                outline-width: rem(1);
+                outline-color: $setting-color-globusCZ-main-green;
+                outline-offset: rem(2);
             }
         }
 
