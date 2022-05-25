@@ -153,6 +153,7 @@
             @include helper-breakpoint-media-max($sm-max){
                 width: rem(48);
                 padding-left: 0;
+                transition: border-radius 0.1s ease-in-out 0s;
             }
         }
 

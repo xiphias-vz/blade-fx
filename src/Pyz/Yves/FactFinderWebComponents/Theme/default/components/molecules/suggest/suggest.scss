@@ -15,6 +15,13 @@
             border-color: $setting-color-fresh-orange;
             border-bottom-right-radius: 24px;
             background-color: $setting-color-light-tentgray-3;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                position: absolute;
+                left: -25%;
+                width: calc(100% + 25%);
+                margin-top: rem(-1);
+            }
         }
 
         .ffw-suggestContainer {

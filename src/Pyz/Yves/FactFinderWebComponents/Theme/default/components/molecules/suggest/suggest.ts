@@ -13,6 +13,7 @@ export default class Suggest extends Component {
     protected messagesTextHolders: HTMLElement[];
     protected notificationArea: HTMLElement;
     private queryEL: any;
+    private menuButton: HTMLElement;
 
 
     protected readyCallback(): void {
@@ -26,6 +27,7 @@ export default class Suggest extends Component {
             this.getElementsByClassName(this.messagesTextHolderClass)
         );
         this.btnCallTs = <HTMLFormElement>document.querySelector("#callTs")
+        this.menuButton = <HTMLElement>document.getElementsByClassName(' button--global-products')[0];
         this.changesInInputField();
         this.load();
         this.mapEvents();
@@ -149,10 +151,22 @@ export default class Suggest extends Component {
 
     protected changesInInputField(): void {
         this.toggleClearButton(Boolean(!this.searchInput.value));
+        this.changeButtonBorderStyle();
     }
 
     protected toggleClearButton(isToggled: boolean): void {
         this.clearButton.classList.toggle(this.getHiddenClass, isToggled);
+    }
+
+    protected changeButtonBorderStyle() {
+        let screenSize = window.matchMedia("(max-width: 575px)");
+        if(this.menuButton !== undefined && screenSize.matches) {
+            let borderRadius = this.menuButton.style.borderRadius;
+            if(this.searchInput.value)
+                this.menuButton.style.borderBottomLeftRadius = 0;
+            else
+                this.menuButton.style.borderBottomLeftRadius = borderRadius;
+        }
     }
 
     protected get getHiddenClass(): string {
