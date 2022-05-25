@@ -149,6 +149,11 @@
             }
         }
 
+        &--counter-wishlist {
+            border: 1px solid $setting-color-input-border-tentgray;
+            border-radius: rem(24);
+        }
+
         @content;
     }
 }

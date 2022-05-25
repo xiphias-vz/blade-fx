@@ -314,9 +314,12 @@
                         background-color: $setting-color-white;
                         border-radius: 100%;
                         transition-duration: 0.25s;
+                        font: fw(bold) rem(27)/0.9 $setting-font-family-additional;
+
                         &:hover {
                             color:$setting-color-forest-green;
                             border: rem(2) solid $setting-color-forest-green;
+                            background-color: $setting-color-fresh-orange-2;
                         }
                     }
 
@@ -327,9 +330,12 @@
                         background-color: $setting-color-white;
                         border-radius: 100%;
                         transition-duration: 0.25s;
+                        font: fw(bold) rem(27)/0.9 $setting-font-family-additional;
+
                         &:hover {
                             color:$setting-color-forest-green;
                             border: rem(2) solid $setting-color-forest-green;
+                            background-color: $setting-color-fresh-orange-2;
                         }
                     }
 

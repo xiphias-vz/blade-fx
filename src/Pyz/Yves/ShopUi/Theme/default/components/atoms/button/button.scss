@@ -36,7 +36,6 @@
         &:active {
             background: $setting-color-fresh-orange-3;
             color: $setting-color-white;
-            box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2 !important;
         }
 
         &:focus {
@@ -256,9 +255,15 @@
             color: $setting-color-white;
 
             &:hover,
-            &:focus,
             &:active {
-                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange;
+                background-color: $setting-color-fresh-orange-3;
+            }
+
+            &:focus {
+                outline-style: solid;
+                outline-width: rem(1);
+                outline-color: $setting-color-fresh-orange;
+                outline-offset: rem(2);
             }
 
             &[disabled],
@@ -364,7 +369,6 @@
                 border: 2px solid $setting-color-fresh-orange;
                 background: $setting-color-fresh-orange-2;
                 color: $setting-color-fresh-orange;
-                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2;
             }
         }
 
@@ -381,7 +385,6 @@
                 border: 2px solid $setting-color-forest-green;
                 background: $setting-color-forest-green-light;
                 color: $setting-color-forest-green;
-                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2;
             }
         }
 
@@ -391,15 +394,17 @@
             color: $setting-color-white;
 
             &:hover,
-            &:active,
-            &:focus {
+            &:active {
                 border-color: $setting-color-fresh-orange;
                 color: $setting-color-white;
-                background: $setting-color-fresh-orange;
+                background: $setting-color-fresh-orange-3;
             }
 
             &:focus {
-                box-shadow: 0 0 0 rem(2) $setting-color-alpha-6;
+                outline-style: solid;
+                outline-width: rem(1);
+                outline-color: $setting-color-fresh-orange;
+                outline-offset: rem(2);
             }
         }
 

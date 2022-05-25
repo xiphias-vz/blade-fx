@@ -75,9 +75,16 @@ $review-rating-field-width: rem(154);
                 background-color: $setting-color-globus-white !important;
 
                 &:hover {
-                    background-color: $setting-color-fresh-orange !important;
-                    color: $setting-color-globus-white !important;
-                    box-shadow: none !important;
+                    border: 2px solid $setting-color-fresh-orange;
+                    background: $setting-color-fresh-orange-2 !important;
+                    color: $setting-color-fresh-orange !important;
+                }
+
+                &:focus {
+                    outline-style: solid;
+                    outline-width: rem(1);
+                    outline-color: $setting-color-fresh-orange;
+                    outline-offset: rem(2);
                 }
             }
 

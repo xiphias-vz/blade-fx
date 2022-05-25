@@ -173,10 +173,19 @@
                         color: $setting-color-fresh-orange;
                         transition-duration: 0.25s;
                         border: rem(2) solid $setting-color-fresh-orange;
+                        font: fw(bold) rem(27)/0.9 $setting-font-family-additional;
+
                         &:hover {
                             color:$setting-color-forest-green;
                             border: rem(2) solid $setting-color-forest-green;
-                            background-color: $setting-color-globus-white;
+                            background-color: $setting-color-fresh-orange-2;
+                        }
+
+                        &:focus {
+                            outline-style: solid;
+                            outline-width: rem(1);
+                            outline-color: $setting-color-fresh-orange;
+                            outline-offset: rem(2);
                         }
                     }
                     &.js-quantity-counter-product__incr_DE {
@@ -185,10 +194,19 @@
                         color: $setting-color-fresh-orange;
                         transition-duration: 0.25s;
                         border: rem(2) solid $setting-color-fresh-orange;
+                        font: fw(bold) rem(27)/1 $setting-font-family-additional;
+
                         &:hover {
                             color:$setting-color-forest-green;
                             border: rem(2) solid $setting-color-forest-green;
-                            background-color: $setting-color-globus-white;
+                            background-color: $setting-color-fresh-orange-2;
+                        }
+
+                        &:focus {
+                            outline-style: solid;
+                            outline-width: rem(1);
+                            outline-color: $setting-color-fresh-orange;
+                            outline-offset: rem(2);
                         }
                     }
 
