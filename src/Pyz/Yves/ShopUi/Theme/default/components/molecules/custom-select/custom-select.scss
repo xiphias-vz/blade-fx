@@ -62,6 +62,19 @@
                 color: $setting-color-light-tentgray-4;
                 font: fw(semibold) rem(14)/rem(16) $setting-font-family-additional;
                 min-height: rem(16);
+
+                @include helper-breakpoint-media-max($xxl-min) {
+                    font-size: rem(12);
+                }
+
+                @include helper-breakpoint-media-max($l-max) {
+                    font-size: rem(11);
+                }
+
+                @include helper-breakpoint-media-max($xl-min) {
+                    font-size: rem(9);
+                    padding-left: 0;
+                }
             }
 
             .select2-selection__arrow {

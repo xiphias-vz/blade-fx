@@ -358,7 +358,8 @@ $review-rating-field-width: rem(154);
             margin-left: rem(20);
         }
 
-        .padding-phone-date-prefix {
+        .padding-phone-prefix {
+            padding-right: 0;
 
             @media only screen and (max-width: $sm-max) {
                 padding-top: 0;
@@ -367,6 +368,7 @@ $review-rating-field-width: rem(154);
         }
 
         .padding-mobile-prefix {
+            padding-right: 0;
 
             @media only screen and (max-width: $sm-max) {
                 padding-top: rem(8);

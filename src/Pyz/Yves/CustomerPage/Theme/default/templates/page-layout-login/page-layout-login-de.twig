@@ -23,6 +23,7 @@
             font-family: "Roboto Thin", sans-serif;
             font-size: 31px;
             font-style: normal;
+            font-weight: 500;
             color: #373936;
             line-height: 37px;
             margin-bottom: 16px;
@@ -43,6 +44,7 @@
             font-size: 27px;
             color: #373936;
             margin-bottom: 16px;
+            font-weight: 500;
         }
 
         .inputGray {
@@ -69,7 +71,7 @@
             text-decoration: none;
             font-family: "Roboto Thin", sans-serif;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             color: #373936; !important;
             line-height: 19px;
         }
@@ -279,6 +281,12 @@
             padding: 1.5rem;
         }
 
+        @media screen and (max-width: 1070px) {
+            .btn-cancel-margin {
+                margin-top: -0.8rem !important;
+            }
+        }
+
         @media screen and (max-width: 768px) {
             .btn-cancel-margin {
                 margin-top: -2rem !important;
@@ -370,7 +378,7 @@
         }
 
         #loginAPI, #additionalLoginForm, #passwordForgotFormDiv {
-            padding: 0 25%;
+            padding: 0 10%;
         }
 
         @media only screen and (max-width: 991px) {
