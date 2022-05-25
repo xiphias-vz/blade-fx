@@ -77,10 +77,14 @@
         &__input:checked {
             & + #{$name}__box {
                 border-color: $setting-color-input-border-tentgray;
-                background: $setting-color-forest-green !important;
+                background: $setting-color-forest-green;
 
                 &:hover {
                     background-color: $setting-color-forest-green-3;
+                }
+
+                &:focus {
+                    outline: rem(1) solid $setting-color-checkbox-focus-orange;
                 }
 
                 #{$name}__check {

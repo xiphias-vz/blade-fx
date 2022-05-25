@@ -16,8 +16,8 @@
 
             :hover {
                 text-decoration: none;
-                background: $setting-color-globusCZ-hover;
-                color: $setting-color-white;
+                background: $setting-color-forest-green-light;
+                color: $setting-color-forest-green;
             }
         }
 
@@ -31,11 +31,16 @@
             font-weight: fw(medium);
             font-size: rem(13);
             text-align: center;
-            color: $setting-color-globusCZ-main-green;
+            color: $setting-color-forest-green;
             background: $setting-color-white;
-            border: rem(2) solid $setting-color-globusCZ-main-green;
+            border: rem(2) solid $setting-color-forest-green;
             border-radius: 100%;
             text-decoration: none;
+
+            &:hover {
+                background: $setting-color-forest-green-light;
+                border: rem(2) solid $setting-color-forest-green-light;
+            }
 
             @include helper-breakpoint-media-max($sm-max) {
                 width: rem(32);
@@ -53,8 +58,9 @@
             &--previous,
             &--next {
                 border: none;
-                color: $setting-color-gray-12;
+                color: $setting-color-white;
                 width: 1rem;
+
             }
 
             &--previous,
@@ -69,7 +75,7 @@
                 text-align: center;
                 color: $setting-color-globusCZ-main-green;
                 background: $setting-color-white;
-                border: rem(2) solid $setting-color-globusCZ-main-green;
+                border: rem(2) solid $setting-color-forest-green;
                 border-radius: 100%;
                 text-decoration: none;
             }
@@ -80,18 +86,37 @@
 
             &:hover {
                 text-decoration: none;
-                background: $setting-color-globusCZ-hover;
-                color: $setting-color-white;
+                background: $setting-color-forest-green-light;
+                color: $setting-color-forest-green;
+                border:  rem(2) solid $setting-color-forest-green;
 
-                svg {
-                    color: $setting-color-white;
-                }
+            }
+
+            &:focus {
+                background: $setting-color-white;
+                color: $setting-color-forest-green;
+                outline: rem(2) solid $setting-color-fresh-orange;
             }
 
             &--current {
                 color: $setting-color-white;
-                background: $setting-color-globusCZ-main-green;
+                background: $setting-color-forest-green;
                 pointer-events: none;
+
+                &:hover {
+                    background: $setting-color-forest-green-3;
+                    border:  rem(2) solid $setting-color-forest-green-3;
+                    svg {
+                        color: $setting-color-white;
+                    }
+                }
+
+                &:focus {
+                    background: $setting-color-forest-green;
+                    color: $setting-color-white;
+                    border: $setting-color-fresh-orange solid rem(1);
+                }
+
             }
 
             &--ellipsis,
