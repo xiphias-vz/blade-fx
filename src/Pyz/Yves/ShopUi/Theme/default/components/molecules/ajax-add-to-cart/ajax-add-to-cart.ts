@@ -451,7 +451,7 @@ export default class AjaxAddToCart extends Component {
     protected addOrRemoveBinIcon(element) {
         let decreaseButtonElement = element.getElementsByClassName(this.addToCartDecrementer)[0];
         let quantityElement = element.getElementsByClassName(this.quantityInputField)[0];
-        let codebucket = document.getElementById(this.codeBucket);
+        let codebucket = document.querySelector(this.codeBucket);
         if (quantityElement.valueAsNumber > 1 && decreaseButtonElement.classList.contains(this.addBinIcon) || decreaseButtonElement.classList.contains(this.addBinIconCz)) {
             if(codebucket.value === "DE"){
                 decreaseButtonElement.classList.remove(this.addBinIcon);
@@ -515,7 +515,7 @@ export default class AjaxAddToCart extends Component {
     }
 
     protected get codeBucket(): string {
-        return 'product-item-codebucket';
+        return "input[name=header-codebucket]";
     }
 
     protected get itemAdded(): string {

@@ -32,7 +32,6 @@
 {% endblock %}
 
 {% block pageInfo %}
-    <input type="hidden" id="product-item-codebucket" value="{{ app.currentCodeBucket }}">
     <div class="container__inner">
         {% block breadcrumbs %}
             {% widget 'ProductBreadcrumbsWithCategoriesWidget' args [data.product] only %}{% endwidget %}

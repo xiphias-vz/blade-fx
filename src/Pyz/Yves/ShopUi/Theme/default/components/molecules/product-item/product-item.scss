@@ -249,8 +249,9 @@
                 border-radius: rem(25);
 
                 @include helper-breakpoint-media-max($md-max) {
-                    width: 40%;
-                    margin: rem(8);
+                    width: 70%;
+                    margin-bottom: rem(8);
+                    margin-top: rem(8);
                 }
 
                 .message {
