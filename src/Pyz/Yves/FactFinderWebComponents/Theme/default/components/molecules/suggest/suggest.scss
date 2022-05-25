@@ -123,6 +123,8 @@
 
                 .moneyTag {
                     margin-right: auto;
+                    display: flex;
+
                 }
             }
         }
@@ -130,6 +132,7 @@
         .uvp-flex-box {
             display: flex;
             flex-direction: row;
+            margin-right: rem(15);
         }
 
         &__uvp {

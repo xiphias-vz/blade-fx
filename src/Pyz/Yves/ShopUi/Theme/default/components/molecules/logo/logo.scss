@@ -5,19 +5,16 @@
         &__image {
             width: 100%;
             max-height: inherit;
-            margin-left: rem(5px);
         }
 
         &__image--header {
             width: rem(43);
             height: rem(43);
-            margin-left: rem(30);
         }
 
         &__image-CZ {
             max-height: inherit;
             height: rem(72);
-            margin-left: rem(5);
 
             .footer {
                 height: auto;
@@ -42,8 +39,11 @@
         }
 
         &--header {
-            width: rem(99);
-            height: rem(63);
+            //width: rem(99);
+            //height: rem(63);
+            //display: flex;
+            //align-items: center;
+            //justify-content: center;
         }
 
         &__header-mobile-CZ {

@@ -123,19 +123,6 @@ $header-sticky-height: rem(69, number);
             align-items: center;
             color: $setting-color-white;
             justify-content: right;
-
-            //:nth-child(2) {
-            //    background-color: $setting-color-fresh-orange;
-            //    justify-content: space-evenly;
-            //}
-
-            //:nth-child(3) {
-            //    margin-right: rem(220);
-            //}
-
-            //:last-child {
-            //    justify-content: end;
-            //}
         }
 
         &__text-right {
@@ -214,15 +201,10 @@ $header-sticky-height: rem(69, number);
 
         &__row {
 
+            padding-top: rem(20);
+
             @include helper-breakpoint-media-max($lg-max) {
                 margin-right: 0;
-            }
-
-            @include helper-breakpoint-media-max($sm-max) {
-                height: rem(52);
-                display: flex;
-                flex-flow: wrap;
-                align-items: flex-end;
             }
         }
 
@@ -260,12 +242,12 @@ $header-sticky-height: rem(69, number);
         }
 
         &__all-products-button {
+            width: 20%;
 
-            @include helper-breakpoint-media-max($lg-max) {
-                width: rem(60);
-            }
-            @include helper-breakpoint-media-max($sm-max) {
-                height: rem(40);
+            .button {
+                min-width: unset;
+                display: flex;
+                justify-content: center;
             }
         }
 
@@ -277,8 +259,8 @@ $header-sticky-height: rem(69, number);
         }
 
         &__container {
-            position: relative;
-            z-index: $setting-zi-header + 1;
+            display: flex;
+            flex-direction: column;
         }
 
         &__top-nav {
@@ -290,6 +272,7 @@ $header-sticky-height: rem(69, number);
             position: relative;
             z-index: $setting-zi-header + 3;
             display: flex;
+            flex-direction: row;
 
             &--checkout {
                 display: flex;
@@ -297,14 +280,31 @@ $header-sticky-height: rem(69, number);
             }
         }
 
-        &__search-bar {
-            height: rem(48);
-            width: 100%;
+        &__logo-desktop {
+            display: flex;
+            @include helper-breakpoint-media-max($lg-max) {
+                display: none;
+            }
+        }
+
+        &__logo-mobile {
+            display: none;
 
             @include helper-breakpoint-media-max($lg-max) {
                 display: flex;
-                margin-top: rem(10);
+                align-items: center;
+                justify-content: center;
             }
+        }
+
+        &__search--input {
+            width: 80%;
+        }
+
+        &__search-bar {
+            display: flex;
+            align-items: center;
+            width: 100%;
         }
 
         &__products-button-text {
@@ -318,12 +318,6 @@ $header-sticky-height: rem(69, number);
 
         &__search-form {
             z-index: $setting-zi-header + 2;
-
-            @include helper-breakpoint-media-max($sm-max) {
-                margin-right: rem(10);
-                position: unset;
-                margin-top: rem(8);
-            }
         }
 
         &__navigation-main {
@@ -488,31 +482,7 @@ $header-sticky-height: rem(69, number);
         }
 
         &__logo {
-            display: flex;
-            position: fixed;
-            left: rem(60);
-            top: rem(5);
 
-            @include helper-breakpoint-media-max($lg-max) {
-                display: flex;
-                align-items: center;
-                height: 100%;
-                position: absolute;
-                top: rem(0);
-                left: rem(0);
-                margin-top: rem(5);
-            }
-
-            @include helper-breakpoint-media-max($sm-max) {
-                align-items: center;
-                margin-left: 0;
-            }
-
-            @include helper-breakpoint-media-max($xs-max) {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
         }
 
         &__logo-CZ {
@@ -554,14 +524,6 @@ $header-sticky-height: rem(69, number);
             }
             @include helper-breakpoint-media-max($sm-max) {
                 display: none;
-            }
-        }
-
-        .link-to-time-slots {
-            cursor: pointer;
-            @include helper-breakpoint-media-min($xl-min) {
-                text-overflow: ellipsis;
-                white-space: nowrap;
             }
         }
 

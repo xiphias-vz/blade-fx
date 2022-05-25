@@ -3,7 +3,6 @@
 
         @include helper-breakpoint-media-max($lg-max) {
             width: 100%;
-            padding-left: rem(130);
         }
 
         @include helper-breakpoint-media-max($sm-max) {
@@ -47,11 +46,7 @@
            }
 
            .my-market-title {
-               position: relative;
-               top: 5px;
-               color: black;
-               left: 11px;
-               font-size:13px;
+               display: none;
            }
 
            .store-widget-holder {

@@ -153,12 +153,22 @@
         color: $setting-color-globus-darkGray-4;
         margin: 0 rem(15);
 
-        &:hover,
         &:focus {
-            opacity: 1;
+            border: solid rem(2) $setting-color-fresh-orange-5;
+            background-color: $setting-color-fresh-orange-4;
+            border-radius: rem(25);
+            padding: 0 rem(5);
+            text-decoration: none;
+            color: $setting-color-tentgray;
+        }
+
+        &:hover, &:active {
             color: $setting-color-fresh-orange;
             text-decoration: none;
-            box-shadow: none;
+        }
+
+        &:disabled {
+            color: $setting-color-stonegray-2;
         }
 
         &:first-child {
