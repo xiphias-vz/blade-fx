@@ -199,6 +199,20 @@
             color: $setting-color-tentgray;
 
             &:hover {
+                color: $setting-color-fresh-orange;
+                text-decoration: none;
+            }
+        }
+
+        &__name-cz {
+            text-decoration: none;
+            font-weight: 700;
+            font-size: rem(16);
+            line-height: rem(24);
+            letter-spacing: rem(0.1);
+            color: $setting-color-black;
+
+            &:hover {
                 color: $setting-color-globusCZ-hover;
                 text-decoration: none;
             }
@@ -231,7 +245,6 @@
             .change-cart-counter {
                 width: 90%;
                 display: flex;
-                justify-content: space-between;
                 background-color: $setting-color-white;
                 border-radius: rem(25);
 
@@ -248,8 +261,8 @@
                     position: absolute;
                     bottom: rem(115);
                     padding: rem(10);
-                    background-color:#7b7b7b;
-                    color: #fff;
+                    background-color:$setting-color-light-tentgray-2;
+                    color: $setting-color-white;
                     z-index: 1;
 
                     &.is-hidden {
