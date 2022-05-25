@@ -18,6 +18,7 @@ export default class PopupUiShipmentForm extends Component {
     footerMessage: HTMLInputElement;
     locale: HTMLInputElement;
     todayTranslation: HTMLInputElement;
+    codeBucket: HTMLInputElement;
 
 
     protected readyCallback(): void {
@@ -30,6 +31,7 @@ export default class PopupUiShipmentForm extends Component {
         this.footerMessage = <HTMLInputElement>document.querySelector('#footer_message');
         this.todayTranslation = <HTMLInputElement>document.querySelector('#today_translation');
         this.locale = <HTMLInputElement>document.querySelector('#locale');
+        this.codeBucket = <HTMLInputElement>document.querySelector(this.getCodeBucket)
 
         this.mapEvents();
     }
@@ -87,8 +89,12 @@ export default class PopupUiShipmentForm extends Component {
 
     protected createTimeSlotsContainer(data): void {
         this.timeSlotData = data;
-
-        let slickCarouselContainer = $('<div class="grid"><article class="checkout-block checkout-block--shipment checkout-block--border-bottom-less grid col col--sm-12"><div class="col col--sm-12"><div class="popup-ui-shipment-form__container-slick js-slick-carousel__container js-list-switches__item slick-initialized slick-slider"><div class="popup-ui-shipment-form__top-left-title"><span>' + this.pickUpTimes.value + '</span></div><div class="popup-ui-shipment-form__time-slot-buttons"><button id="goToPreviousTimeSlot" class="slick-prev slick-arrow" aria-label="Previous" type="button">Previous</button><button id="goToNextTimeSlot" class="slick-next slick-arrow" aria-label="Next" type="button">Next</button></div><div class="popup-ui-shipment-form--timeslots"><div class="slick-popup-list draggable"><div class="slick-popup-track" style="opacity: 1; transform: translate3d(0px, 0px, 0px);"></div></div></div></div></div></article><div class="time-slot-info-text"><span>' + this.footerMessage.value + '</span></div></div>');
+        let slickCarouselContainer;
+        if(this.codeBucket.value === "DE") {
+            slickCarouselContainer = $('<div class="grid"><article class="checkout-block checkout-block--shipment checkout-block--border-bottom-less grid col col--sm-12"><div class="col col--sm-12"><div class="popup-ui-shipment-form__container-slick js-slick-carousel__container js-list-switches__item slick-initialized slick-slider"><div class="popup-ui-shipment-form__top-left-title"><span>' + this.pickUpTimes.value + '</span></div><div class="popup-ui-shipment-form__time-slot-buttons"><button id="goToPreviousTimeSlot" class="slick-prev slick-arrow" aria-label="Previous" type="button">Previous</button><button id="goToNextTimeSlot" class="slick-next slick-arrow" aria-label="Next" type="button">Next</button></div><div class="popup-ui-shipment-form--timeslots"><div class="slick-popup-list draggable"><div class="slick-popup-track" style="opacity: 1; transform: translate3d(0px, 0px, 0px);"></div></div></div></div></div></article><div class="time-slot-info-text"><span>' + this.footerMessage.value + '</span></div></div>');
+        } else {
+            slickCarouselContainer = $('<div class="grid"><article class="checkout-block checkout-block--shipment checkout-block--border-bottom-less grid col col--sm-12 font-cz"><div class="col col--sm-12"><div class="popup-ui-shipment-form__container-slick js-slick-carousel__container js-list-switches__item slick-initialized slick-slider"><div class="popup-ui-shipment-form__top-left-title"><span>' + this.pickUpTimes.value + '</span></div><div class="popup-ui-shipment-form__time-slot-buttons"><button id="goToPreviousTimeSlot" class="slick-prev slick-arrow-cz" aria-label="Previous" type="button">Previous</button><button id="goToNextTimeSlot" class="slick-next slick-arrow-cz" aria-label="Next" type="button">Next</button></div><div class="popup-ui-shipment-form--timeslots-cz"><div class="slick-popup-list draggable"><div class="slick-popup-track" style="opacity: 1; transform: translate3d(0px, 0px, 0px);"></div></div></div></div></div></article><div class="time-slot-info-text"><span>' + this.footerMessage.value + '</span></div></div>');
+        }
         slickCarouselContainer.appendTo(this.mainContentContainer);
 
         this.btnSlickPrevious = document.getElementById(this.getSlickPrevious);
@@ -343,5 +349,12 @@ export default class PopupUiShipmentForm extends Component {
     get getSlickNext(): string {
         return `goToNextTimeSlot`;
     }
+
+
+    get getCodeBucket(): string {
+        return "input[name=header-codebucket]";
+    }
+
+
 
 }

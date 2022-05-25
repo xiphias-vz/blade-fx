@@ -35,6 +35,7 @@
     <input type="hidden" id="customerUserRecoData" value="{{ data.customerUserRecoData }}" />
     <input type="hidden" id="ffChannelName" value="{{ data.channelName }}" />
     <input type="hidden" id="storeId" value="{{ data.storeId }}" />
+    <input type="hidden" name="header-codebucket" value="{{ app.currentCodeBucket }}">
 
 
     {% embed molecule('popup-ui-shipment-form') with {} only %}

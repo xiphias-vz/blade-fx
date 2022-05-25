@@ -9,6 +9,10 @@
             }
         }
 
+        .font-cz {
+            font-family: $setting-font-family-fira-sans;
+        }
+
         .slick-popup-slide {
             float:left;
             height: rem(380);
@@ -185,21 +189,48 @@
                 padding: 0 rem(11);
             }
 
+
             .slick-arrow {
                 font-size: 0;
-                width: rem(30);
-                height: rem(30);
-                background: url('../images/right-chevron.svg') no-repeat center / rem(15);
-                border-radius: rem(4);
-                z-index: $setting-zi-element + 1;
-                opacity: 1;
-                background-color: $setting-color-globus-white;
+                top: 0;
+                right: rem(15);
+                left: auto;
+                width: rem(36);
+                height: rem(36);
+                background: url('../images/right-chevron-orange.svg') no-repeat center / rem(6);
+                background-color: $setting-color-white;
+                border-radius: 50%;
+                border: rem(2) solid $setting-color-fresh-orange;
 
                 @include helper-breakpoint-media-max($sm-max) {
                     top: rem(66);
                 }
 
                 &:hover {
+                    background-color: $setting-color-white;
+                    cursor: pointer;
+                }
+            }
+
+
+            .slick-arrow-cz {
+                font-size: 0;
+                top: 0;
+                right: rem(15);
+                left: auto;
+                width: rem(36);
+                height: rem(36);
+                background: url('../images/right-chevron-green.svg') no-repeat center / rem(6);
+                background-color: $setting-color-white;
+                border-radius: 50%;
+                border: rem(2) solid $setting-color-globusCZ-main-green;
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    top: rem(66);
+                }
+
+                &:hover {
+                    background-color: $setting-color-white;
                     cursor: pointer;
                 }
             }
@@ -312,8 +343,8 @@
         }
 
         .checkout-block {
-            background-color: $setting-color-gray-1;
-            color: $setting-color-gray-9;
+            background-color: $setting-color-light-tentgray-3;
+            color: $setting-color-light-tentgray-5;
             border-radius: rem(2);
             padding: rem(20) rem(15);
             height: rem(470);
@@ -387,10 +418,30 @@
         }
 
         &--timeslots {
-            background-color: $setting-color-gray-1;
-            color: $setting-color-gray-9;
+            background-color: $setting-color-light-tentgray-3;
+            color: $setting-color-light-tentgray-5;
             border-radius: rem(2);
             clear: both;
+
+            /* width */
+            ::-webkit-scrollbar {
+                width: rem(3);
+            }
+
+            /* Track */
+            ::-webkit-scrollbar-track {
+                background: $setting-color-light-tentgray-3;
+            }
+
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                background: $setting-color-fresh-orange;
+                height: rem(20);
+                border-bottom-left-radius: rem(1.5);
+                border-bottom-right-radius: rem(1.5);
+                border-top-left-radius: rem(1.5);
+                border-top-right-radius: rem(1.5);
+            }
 
             #{$name}-popup__containerSlick {
                 padding-top: rem(56);
@@ -428,13 +479,13 @@
                 /* stylelint-enable */
 
                 #{$name}-popup__slot-label {
-                    background: $setting-color-lighter;
+                    //background: $setting-color-lighter;
                     border-radius: rem(2);
-                    border: rem(1) solid $setting-color-transparent;
+                    border: rem(1) solid $setting-color-input-border-tentgray;
                     padding: rem(9);
                     margin: rem(8) 0;
                     text-align: center;
-                    color: $setting-color-black-1;
+                    color: $setting-color-light-tentgray-5;
                     line-height: rem(28);
 
                     @media only screen and (min-width: 992px) and (max-width: 1028px)  {
@@ -449,7 +500,113 @@
 
             }
 
+
             #{$name}-popup__date {
+                font: fw(semibold) rem(16) / rem(22) $setting-font-family-additional !important;
+                color: $setting-color-black !important;
+                margin-bottom: rem(30) !important;
+                height: rem(30);
+            }
+
+         .slick-arrow {
+                top: 0;
+                right: rem(15);
+                left: auto;
+                width: rem(36);
+                height: rem(36);
+                background-color: $setting-color-white;
+                border-radius: rem(4);
+            }
+
+            .slick-prev {
+                right: rem(69);
+            }
+
+        }
+
+        &--timeslots-cz {
+            background-color: $setting-color-light-tentgray-3;
+            color: $setting-color-light-tentgray-5;
+            border-radius: rem(2);
+            clear: both;
+
+            /* width */
+            ::-webkit-scrollbar {
+                width: rem(3);
+            }
+
+            /* Track */
+            ::-webkit-scrollbar-track {
+                background: $setting-color-light-tentgray-3;
+            }
+
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                background: $setting-color-globusCZ-main-green;
+                height: rem(20);
+                border-bottom-left-radius: rem(1.5);
+                border-bottom-right-radius: rem(1.5);
+                border-top-left-radius: rem(1.5);
+                border-top-right-radius: rem(1.5);
+            }
+
+            #{$name}-popup__containerSlick {
+                padding-top: rem(56);
+            }
+
+            #{$name}-popup__column {
+                padding: rem(30) rem(26);
+                background-color: #FFF;
+                height: rem(380);
+
+                #{$name}-popup__input {
+                    display: none;
+                }
+
+                /* stylelint-disable selector-max-combinators, selector-max-compound-selectors */
+                #{$name}-popup__input:checked + #{$name}-popup__slot-label {
+                    border-color: $setting-color-globus-darkOrange;
+                    color: $setting-color-white;
+                    background-color: $setting-color-globus-darkOrange;
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        right: rem(20);
+                        top: rem(15);
+                        display: block;
+                        width: rem(8);
+                        height: rem(12);
+                        transform: rotate(45deg);
+                        border-right: rem(2) solid $setting-color-white;
+                        border-bottom: rem(2) solid $setting-color-white;
+                    }
+                }
+                /* stylelint-enable */
+
+                #{$name}-popup__slot-label {
+                    border-radius: rem(2);
+                    border: rem(1) solid $setting-color-input-border-tentgray;
+                    padding: rem(9);
+                    margin: rem(8) 0;
+                    text-align: center;
+                    color: $setting-color-light-tentgray-5;
+                    line-height: rem(28);
+
+                    @media only screen and (min-width: 992px) and (max-width: 1028px)  {
+                        line-height: rem(14) !important;
+                    }
+
+                    @media only screen and (min-width: 1029px) and (max-width: 1037px)  {
+                        line-height: rem(20) !important;
+                    }
+
+                }
+
+            }
+
+            #{$name}-popup__date-cz {
                 font: fw(semibold) rem(16) / rem(22) $setting-font-family !important;
                 color: $setting-color-black !important;
                 margin-bottom: rem(30) !important;

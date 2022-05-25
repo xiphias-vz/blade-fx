@@ -6,7 +6,7 @@
 } %}
 
 {% block body %}
-    <div class="{{ config.name }}__overlay">
+    <div class="{{ config.name }}__overlay {% if app.currentCodeBucket == "CZ"%}font-cz{% endif %}">
         <input type="hidden" id="pickup_times" value="{{ 'popup.shipment.form.available.pick-up.times' | trans }}">
         <input type="hidden" id="footer_message" value="{{ 'popup.shipment.form.footer.message' | trans }}">
         <input type="hidden" id="locale" value="{{ 'popup.shipment.form.locale' | trans }}">
