@@ -111,7 +111,10 @@ export default class PopupUiAddressValidation extends Component{
         this.checkboxIsAdvertise = document.querySelector('#chk_isAdvertise .checkbox__input');
         this.hiddenIsMeinGlobus = document.querySelector('#registerForm_isMeinGlobus');
         this.$mobilePhoneNumber = document.getElementById(this.getMobilePhoneNumber);
-        this.country = document.getElementById(this.getCountryRegistrationForm);
+        this.country = document.getElementById(this.getCustomerCountryRegistrationForm);
+        if (this.country === undefined || this.country === null) {
+            this.country = document.getElementById(this.getCountryRegistrationForm);
+        }
         if (!this.$mobilePhoneNumber) {
             this.$mobilePhoneNumber = document.getElementById(this.getMobilePhoneNumberRegistrationForm);
         }
@@ -851,7 +854,11 @@ export default class PopupUiAddressValidation extends Component{
         return 'registerForm_birth_year';
     }
 
-    get getCountryRegistrationForm(): string {
+    get getCustomerCountryRegistrationForm(): string {
         return 'registerForm_customer_country';
+    }
+
+    get getCountryRegistrationForm(): string {
+        return 'registerForm_country';
     }
 }
