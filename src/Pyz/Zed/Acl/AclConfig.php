@@ -202,6 +202,34 @@ class AclConfig extends SprykerAclConfig
             'type' => AclConstants::ALLOW,
             'role' => AclConstants::SUPPORT_CENTER_ROLE,
         ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_SALES,
+            'controller' => AclConstants::MODULE_TIMESLOTS,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::DENY,
+            'role' => AclConstants::SUPERVISOR_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_SALES,
+            'controller' => AclConstants::MODULE_TIMESLOTS,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::DENY,
+            'role' => AclConstants::SUPPORT_CENTER_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_SALES,
+            'controller' => AclConstants::MODULE_TIMESLOTS,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::DENY,
+            'role' => AclConstants::DELIVERY_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_SALES,
+            'controller' => AclConstants::MODULE_TIMESLOTS,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::DENY,
+            'role' => AclConstants::PICKER_ROLE,
+        ];
 
         return $rules;
     }

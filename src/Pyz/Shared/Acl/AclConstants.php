@@ -28,6 +28,8 @@ interface AclConstants extends SprykerAclConstants
     public const MODULE_SALES_OVERVIEW = 'sales-overview';
     public const MODULE_OMS = 'oms';
     public const MODULE_CUSTOMER = 'customer';
+    public const MODULE_TIMESLOTS = 'timeslots';
     public const MODULE_PICKING_ZONE_ORDER_EXPORT = 'picking-zone-order-export';
     public const MODULE_USER = 'user';
+    public const DENY = 'deny';
 }
