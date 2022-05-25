@@ -36,6 +36,12 @@
 
         }
 
+        .store-select {
+            @include helper-breakpoint-media-max($xs-max) {
+                display: none;
+            }
+        }
+
         nav {
            ul {
                @include helper-breakpoint-media-max($lg-max){

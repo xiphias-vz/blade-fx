@@ -56,10 +56,6 @@
 
             @include helper-breakpoint-media-min($xxl-min) {
                 display: inline;
-                color: $setting-color-forest-green;
-                &:hover{
-                color: $setting-color-fresh-orange;
-                }
             }
         }
         &:hover {

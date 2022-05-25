@@ -217,7 +217,7 @@ $header-sticky-height: rem(69, number);
         }
 
         &__middle {
-            padding: rem(14) 0;
+            padding-bottom: rem(14);
             background: $setting-color-globus-white;
             z-index: $setting-zi-header + 1;
             width: 100%;
@@ -294,6 +294,10 @@ $header-sticky-height: rem(69, number);
                 display: flex;
                 align-items: center;
                 justify-content: center;
+            }
+
+            a {
+                display: flex;
             }
         }
 

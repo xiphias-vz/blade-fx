@@ -1,0 +1,21 @@
+@mixin shop-ui-store-switcher ($name: '.store-switcher') {
+    #{$name} {
+
+        border-bottom: rem(3) solid $setting-color-forest-green;
+        display: flex;
+        align-items: center;
+        margin-left: rem(10);
+
+        &__icon {
+            .icon {
+                color: $setting-color-forest-green;
+            }
+        }
+
+        .custom-select__caret {
+            display: none;
+        }
+    }
+}
+
+@include shop-ui-store-switcher();

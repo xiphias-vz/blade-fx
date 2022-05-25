@@ -75,7 +75,7 @@
                                 name: 'user-account',
                             },
                         } only %}
-                        <span class="link__text-cz link__user">
+                        <span class="link__text-cz link__user link__text--xxl-visible">
                             {{ 'customer.profile.link' | trans }}
                         </span>
                     </a>
@@ -87,7 +87,9 @@
                                 name: 'logout',
                             },
                         } only %}
-                        {{ 'customer.logout' | trans }}
+                        <span>
+                             {{ 'customer.logout' | trans }}
+                        </span>
                     </a>
                 {% else %}
                     <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
@@ -109,7 +111,7 @@
                             } only %}
                         {% endif %}
 
-                        <span class="link__user">
+                        <span class="link__user link__text--xxl-visible">
                     {{ 'customer.profile.link' | trans }}
                 </span>
                     </a>
@@ -135,7 +137,7 @@
                             } only %}
                         {% endif %}
 
-                        <span class="link__user">
+                        <span class="link__user link__text--xxl-visible">
                             {{ 'customer.profile.link' | trans }}
                         </span>
                     </a>
@@ -159,7 +161,7 @@
                             } only %}
                         {% endif %}
 
-                        <span class="link__user">
+                        <span class="link__user link__text--xxl-visible">
                             {{ 'customer.profile.link' | trans }}
                         </span>
                     </a>
@@ -168,12 +170,14 @@
                     <a href="{{ url('logout') }}" class="link link--nav">
                         {% include atom('icon') with {
                             modifiers: ['big'],
-                            class: 'link__icon',
+                            class: 'link__icon icon--color-orange',
                             data: {
                                 name: 'logout',
                             },
                         } only %}
-                        {{ 'customer.logout' | trans }}
+                        <span class="link__user link__text--xxl-visible">
+                             {{ 'customer.logout' | trans }}
+                        </span>
                     </a>
                 {% endif %}
             {% endif %}
