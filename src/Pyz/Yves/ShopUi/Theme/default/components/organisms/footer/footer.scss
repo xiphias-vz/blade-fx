@@ -53,6 +53,8 @@
         }
 
         .title-and-content-holder {
+            margin-right: rem(50);
+
             .title-holder {
                 font-size: rem(18);
                 font-family: $setting-font-family-additional;
@@ -147,7 +149,6 @@
         &__content {
             display: flex;
             flex-wrap: wrap;
-            //flex: 1;
             width:100%;
 
             .alignLeft {
@@ -184,7 +185,7 @@
         &__navigation {
             color: $setting-color-white;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-evenly;
             flex-wrap: wrap;
             flex-grow: 1;
             padding-bottom: rem(30);

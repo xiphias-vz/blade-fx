@@ -94,6 +94,16 @@
             }
         }
 
+        .quantity-counter__button--incr {
+            border-color: $setting-color-forest-green;
+            color: $setting-color-forest-green;
+        }
+
+        .quantity-counter__button--decr {
+            border-color: $setting-color-forest-green;
+            color: $setting-color-forest-green;
+        }
+
         &__main-title {
             font-weight: 500;
         }
