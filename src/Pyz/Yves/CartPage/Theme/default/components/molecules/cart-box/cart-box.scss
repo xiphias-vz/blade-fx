@@ -45,6 +45,14 @@
             }
         }
 
+        &--linkDecoration--CZ {
+            color: $setting-color-globusCZ-main-green;
+
+            &:hover {
+                color: $setting-color-globus-darkGreen;
+            }
+        }
+
         &--linkDecoration_mobile {
             display: flex;
             height: rem(45);
@@ -70,6 +78,13 @@
 
         }
 
+        &--linkDecoration_mobile--CZ {
+            color: $setting-color-globusCZ-main-green;
+
+            &:hover {
+                color: $setting-color-globus-darkGreen;
+            }
+        }
     }
 }
 

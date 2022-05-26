@@ -57,6 +57,7 @@
 
                 .form__action--login {
                     margin-top: rem(25);
+                    margin-bottom: rem(10);
                 }
 
             @include helper-breakpoint-media-min($xl-min) {

@@ -4,7 +4,6 @@
     $button-medium-min-width: rem(120, number);
 
     #{$name} {
-        @include helper-effect-transition(color background box-shadow border-color);
         display: inline-block;
         padding: rem(12) rem(24) rem(12) rem(24);
         border: none;
@@ -32,12 +31,15 @@
         }
 
         &:hover,
+        &:focus,
         &:active {
             background: $setting-color-fresh-orange-3;
             color: $setting-color-white;
         }
 
         &:focus {
+            background: $setting-color-fresh-orange;
+            color: $setting-color-white;
             outline-style: solid;
             outline-width: rem(1);
             outline-color: $setting-color-fresh-orange;
@@ -153,7 +155,6 @@
             @include helper-breakpoint-media-max($sm-max){
                 width: rem(48);
                 padding-left: 0;
-                transition: border-radius 0.1s ease-in-out 0s;
             }
         }
 
@@ -218,7 +219,6 @@
             &:active {
                 border-color: $setting-color-gray-10;
                 color: $setting-color-gray-6;
-                background-color: $setting-color-alpha-2;
                 box-shadow: none;
             }
         }
@@ -251,18 +251,6 @@
         &--hollow-light {
             background-color: $setting-color-fresh-orange;
             color: $setting-color-white;
-
-            &:hover,
-            &:active {
-                background-color: $setting-color-fresh-orange-3;
-            }
-
-            &:focus {
-                outline-style: solid;
-                outline-width: rem(1);
-                outline-color: $setting-color-fresh-orange;
-                outline-offset: rem(2);
-            }
 
             &[disabled],
             &--disabled {
@@ -316,24 +304,45 @@
             justify-content: center;
             align-items: center;
 
-            &:hover {
+            &:hover,
+            &:active {
                 background: $setting-color-globusCZ-hover !important;;
-                box-shadow: 0 rem(4) rem(18) $setting-color-lightest !important;
             }
 
             &:focus {
+                background: $setting-color-globusCZ-main-green;
                 outline-style: solid;
                 outline-width: rem(1);
                 outline-color: $setting-color-globusCZ-main-green;
                 outline-offset: rem(2);
             }
+
+            &[disabled],
+            &:disabled {
+                border-color: $setting-color-globusCZ-secondary-green !important;
+                background-color: $setting-color-globusCZ-secondary-green !important;
+            }
         }
 
         &--backgroundcolor-DE {
             background: $setting-color-fresh-orange;
+            justify-content: center;
+            align-items: center;
+
             &:hover {
                 background: $setting-color-fresh-orange-3 !important;;
-                box-shadow: 0 rem(4) rem(18) $setting-color-lightest !important;
+            }
+
+            &:focus {
+                outline-style: solid;
+                outline-width: rem(1);
+                outline-color: $setting-color-fresh-orange-3;
+                outline-offset: rem(2);
+            }
+
+            &:disabled {
+                border-color: $setting-color-fresh-orange-2;
+                background-color: $setting-color-fresh-orange-2;
             }
         }
 
@@ -385,15 +394,22 @@
             background-color: transparent;
             border-width: thin;
             border-style: solid;
-            border-color: $setting-color-forest-green;
-            color: $setting-color-forest-green;
+            border-color: $setting-color-globusCZ-main-green;
+            color: $setting-color-globusCZ-main-green;
 
             &:hover,
             &:focus,
             &:active {
-                border: 2px solid $setting-color-forest-green;
-                background: $setting-color-forest-green-light;
-                color: $setting-color-forest-green;
+                border: 2px solid $setting-color-globusCZ-main-green;
+                background: $setting-color-globusCZ-secondary-green;
+                color: $setting-color-globusCZ-main-green;
+            }
+
+            &:focus {
+                outline-style: solid;
+                outline-width: rem(1);
+                outline-color: $setting-color-globusCZ-main-green;
+                outline-offset: rem(2);
             }
         }
 
@@ -403,17 +419,15 @@
             color: $setting-color-white;
 
             &:hover,
-            &:active {
+            &:active,
+            &:focus {
                 border-color: $setting-color-fresh-orange;
                 color: $setting-color-white;
-                background: $setting-color-fresh-orange-3;
+                background: $setting-color-fresh-orange;
             }
 
             &:focus {
-                outline-style: solid;
-                outline-width: rem(1);
-                outline-color: $setting-color-fresh-orange;
-                outline-offset: rem(2);
+                box-shadow: 0 0 0 rem(2) $setting-color-alpha-6;
             }
         }
 

@@ -69,7 +69,11 @@
                         {% endif %}
                     </p>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a style="float: left;margin-top: 15px;font-size: 12px;font-weight: 900;" class="button {{ config.name }}__resize {{ fontClass }}" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
+                        {% if app.currentCodeBucket == 'DE' %}
+                            <a style="float: left;margin-top: 15px;font-size: 12px;font-weight: 900;" class="button {{ config.name }}__resize {{ fontClass }}" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
+                        {% else %}
+                            <a style="float: left;margin-top: 15px;font-size: 12px;font-weight: 900;" class="button button--backgroundcolor-CZ {{ config.name }}__resize {{ fontClass }}" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
+                        {%  endif %}
                     {% endif %}
                 </div>
             </div>

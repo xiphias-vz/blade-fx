@@ -44,9 +44,9 @@
                 <div class="text-and-button">
                     <p class="info">{{ 'page.detail.add-to-cart.continue.shopping' | trans }}</p>
                     {% if app.currentCodeBucket == 'DE' %}
-                        <a class="button" href="{{ data.path }}">{{ 'cart.empty.button' | trans }}</a>
+                        <a class="button button--backgroundcolor-DE" href="{{ data.path }}">{{ 'cart.empty.button' | trans }}</a>
                     {% else %}
-                        <a class="button button--font-CZ" href="{{ data.path }}">{{ 'cart.empty.button' | trans }}</a>
+                        <a class="button button--font-CZ button--backgroundcolor-CZ" href="{{ data.path }}">{{ 'cart.empty.button' | trans }}</a>
                     {% endif %}
                 </div>
                 <img class="warenkorb-img" src={{ publicPath("/images/new-warenkorb.png") }}>
@@ -58,18 +58,20 @@
             <div class="floatLeft">
                 {% if app.currentCodeBucket == 'DE' %}
                     <h1 class="col headline-cart">{{ 'cart.title_content' | trans }}</h1>
+                    <a class="cart-box--linkDecoration_mobile"
+                       href="javascript:history.go(-1)">{{ 'cart.continue_shopping' | trans }}</a>
                 {% else %}
                     <h1 class="col headline-cart-CZ">{{ 'cart.title_content' | trans }}</h1>
+                    <a class="cart-box--linkDecoration_mobile cart-box--linkDecoration_mobile--CZ"
+                       href="javascript:history.go(-1)">{{ 'cart.continue_shopping' | trans }}</a>
                 {% endif %}
-                <a class="cart-box--linkDecoration_mobile"
-                   href="javascript:history.go(-1)">{{ 'cart.continue_shopping' | trans }}</a>
             </div>
 
             <div class="is-hidden-lg-xl buttonRight">
 
                 {% if canProceedToCheckout %}
                     {% if app.currentCodeBucket == 'DE' %}
-                        <a class="button button__begin-checkout bttnStyle" href="javascript:void(0)"
+                        <a class="button button__begin-checkout bttnStyle button--backgroundcolor-DE" href="javascript:void(0)"
                            onclick="beginCheckout('{{ url('checkout-index') }}')"
                             {{ qa('cart-go-to-checkout') }}>
                             {{ 'cart.checkout' | trans }}
@@ -98,8 +100,13 @@
 
                     <div class="cart-box grid grid--middle grid--justify allArticle">
                         <span class="ihreArticle">{{ 'cart.mobile.your_articles' | trans }} ({{ data.cartItems|length }})</span>
-                        <a class="cart-box--linkDecoration"
-                           href="javascript:history.go(-1)">{{ 'cart.continue_shopping' | trans }}</a>
+                        {% if app.currentCodeBucket == 'DE' %}
+                            <a class="cart-box--linkDecoration"
+                            href="javascript:history.go(-1)">{{ 'cart.continue_shopping' | trans }}</a>
+                        {% else %}
+                            <a class="cart-box--linkDecoration cart-box--linkDecoration--CZ"
+                               href="javascript:history.go(-1)">{{ 'cart.continue_shopping' | trans }}</a>
+                        {% endif %}
                         <span class="col">
                                 <form action="{{ path('cart/clear') }}" method="post">
                                     <input type="hidden" name="token" value="{{ csrf_token('clear-cart') }}"/>

@@ -53,12 +53,13 @@
             } only %}
                 {% block breadcrumbs %}
                     {% for step in data.steps %}
-                        {% if app.currentCodeBucket == 'DE' %}
-                            {% set modifiers = step.isActive ? ['active', 'progress', 'progress-active'] : ['progress'] %}
+                        {% if app.currentCodeBucket == "DE" %}
+                            {% set activeClass = "active" %}
                         {% else %}
-                            {% set modifiers = step.isActive ? ['active', 'active-cz-color', 'progress', 'progress-active'] : ['progress'] %}
+                            {% set activeClass = "active-cz" %}
                         {% endif %}
-                            {% set modifiers = step.isEnabled ? modifiers | merge(['progress-active']) : modifiers | merge(['disabled']) %}
+                        {% set modifiers = step.isActive ? [activeClass, 'progress', 'progress-active'] : ['progress'] %}
+                        {% set modifiers = step.isEnabled ? modifiers | merge(['progress-active']) : modifiers | merge(['disabled']) %}
 
                         {% include molecule('breadcrumb-step') with {
                             modifiers: modifiers,

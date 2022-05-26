@@ -88,7 +88,7 @@
 
         {% if canProceedToCheckout %}
             {% if app.currentCodeBucket == 'DE' %}
-                <a class="button button--expand button--bigfont" href="javascript:void(0)"
+                <a class="button button--expand button--bigfont button--backgroundcolor-DE" href="javascript:void(0)"
                    onclick="beginCheckout('{{ url('checkout-index') }}')"
                     {{ qa('cart-go-to-checkout') }}>
                     {{ 'cart.checkout' | trans }}
