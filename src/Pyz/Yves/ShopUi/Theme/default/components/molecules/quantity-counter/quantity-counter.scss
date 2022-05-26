@@ -51,7 +51,8 @@
 
         &__col {
             padding: 0;
-            &:first-child{
+            &:nth-child(odd)
+            {
                 z-index: 1;
             }
         }
