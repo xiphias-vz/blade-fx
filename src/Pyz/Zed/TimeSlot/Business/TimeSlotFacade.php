@@ -241,4 +241,19 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
 
         return $this->getFactory()->createTimeSlotReader()->getTimeSlotDefinition($timeslotDefinitionTransfer);
     }
+
+    /**
+     * @param string $merchantReference
+     * @param string $exactDate
+     * @param string $timeSlot
+     * @param int $capacity
+     * @param int|null $oldCapacity
+     * @param int|null $idUser
+     *
+     * @return array
+     */
+    public function setTimeSlotExactDateCapacity(string $merchantReference, string $exactDate, string $timeSlot, int $capacity, ?int $oldCapacity, ?int $idUser): array
+    {
+        return $this->getFactory()->createTimeSlotWriter()->setTimeSlotExactDateCapacity($merchantReference, $exactDate, $timeSlot, $capacity, $oldCapacity, $idUser);
+    }
 }

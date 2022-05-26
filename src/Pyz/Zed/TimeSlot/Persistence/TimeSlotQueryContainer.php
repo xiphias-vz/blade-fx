@@ -94,13 +94,32 @@ class TimeSlotQueryContainer extends AbstractQueryContainer implements TimeSlotQ
      */
     protected function selectSqlQueryForGetTimeslotDefinition(string $merchantReference, ?string $exactDate, ?string $workDay): string
     {
-        if ($exactDate == "") {
-            $exactDate = "''";
+        if ($exactDate === null) {
+            $exactDate = "";
         }
-        if ($workDay == "") {
-            $workDay = "''";
+        if ($workDay === null) {
+            $workDay = "";
         }
 
-        return "call pyzx_get_timeslot_definition(" . $merchantReference . ", " . $exactDate . ", " . $workDay . ")";
+        return "call pyzx_get_timeslot_definition('" . $merchantReference . "', '" . $exactDate . "', '" . $workDay . "')";
+    }
+
+    /**
+     * @param string $merchantReference
+     * @param string $exactDate
+     * @param string $timeSlot
+     * @param int $capacity
+     * @param int|null $oldCapacity
+     * @param int|null $idUser
+     *
+     * @return array
+     */
+    public function setTimeSlotExactDateCapacity(string $merchantReference, string $exactDate, string $timeSlot, int $capacity, ?int $oldCapacity, ?int $idUser): array
+    {
+        $selectSql = sprintf("call pyzx_set_timeslot_exact_date_capacity('%s', '%s', '%s', %d, %d, %d, '%s')", $merchantReference, $exactDate, $timeSlot, $capacity, $oldCapacity, $idUser, date('Y-m-d H:i:s'));
+
+        $result = $this->getResult($selectSql);
+
+        return $result;
     }
 }

@@ -62,6 +62,10 @@ class CapacitiesController extends AbstractController
      */
     public function saveTimeSlotsAction(Request $request)
     {
+        $userFacade = $this->getFactory()->getUserFacade();
+        $currentUser = $userFacade->getCurrentUser();
+        $idUser = $currentUser->getIdUser();
+
         $selectedStore = $request->request->get("store");
         $timeSlots = json_decode($request->request->get("changedData"), true);
         $formToSave = $request->request->get("formToSave");
@@ -76,48 +80,11 @@ class CapacitiesController extends AbstractController
             $pieces = explode("_", $timeSlotTimeDate);
             $date = $pieces[0];
             $day = $pieces[1];
-            $timeIndex = $pieces[2];
-            $isDefault = $pieces[3];
+            $timeSlot = $pieces[2];
             $oldCapacityValue = $pieces[4];
 
-            $timeSlot = $this->getTimeSlotByIndex($timeIndex, $selectedStore);
-            $actionPerformed = "";
-
             if ($formToSave == "ByDate") {
-                if ($isDefault == "defaultTable") {
-                    $tsForDate = $this->getFactory()->getTimeSlotsFacade()->getTimeSlotsForSpecificDateAndDay($selectedStore, $date, $day);
-                    if (count($tsForDate) > 0) {
-                        $actionPerformed = "UPDATE";
-                        $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedDate($selectedStore, $date, $day, $timeSlot, $capacityToSave);
-                        if ($response == 1) {
-                            $result = $this->saveTimeSlotsHistoryData($timeSlot, $day, $date, $oldCapacityValue, $capacityToSave, $actionPerformed, $selectedStore);
-                        }
-                    } else {
-                        $capacitiesFromDefaultDay = $this->getFactory()->getTimeSlotsFacade()->getTimeSlotCapacityForDefaultDay($selectedStore, $day);
-                        $actionPerformed = "INSERT";
-                        for ($timeId = 0; $timeId < 5; $timeId++) {
-                            $time = $this->getTimeSlotByIndex($timeId, $selectedStore);
-                            if ($timeSlot == $time) {
-                                $capacity = $capacityToSave;
-                                $capacityOld = $capacitiesFromDefaultDay[$timeId]["Capacity"];
-                            } else {
-                                $capacity = $capacitiesFromDefaultDay[$timeId]["Capacity"];
-                                $capacityOld = $capacity;
-                            }
-
-                            $response = $this->getFactory()->getTimeSlotsFacade()->setDefaultTimeSlotsForSelectedDate($selectedStore, $date, $day, $time, $capacity);
-                            if ($response == 1) {
-                                $result = $this->saveTimeSlotsHistoryData($time, $day, $date, $capacityOld, $capacity, $actionPerformed, $selectedStore);
-                            }
-                        }
-                    }
-                } else {
-                    $actionPerformed = "UPDATE";
-                    $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedDate($selectedStore, $date, $day, $timeSlot, $capacityToSave);
-                    if ($response == 1) {
-                        $result = $this->saveTimeSlotsHistoryData($timeSlot, $day, $date, $oldCapacityValue, $capacityToSave, $actionPerformed, $selectedStore);
-                    }
-                }
+                $this->getFactory()->getTimeSlotsFacade()->setTimeSlotExactDateCapacity($selectedStore, $date, $timeSlot, $capacityToSave, $oldCapacityValue, $idUser);
             } elseif ($formToSave == "DefaultByStore") {
                 $actionPerformed = "UPDATE";
                 $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedStore($selectedStore, $day, $timeSlot, $capacityToSave);
@@ -260,22 +227,6 @@ class CapacitiesController extends AbstractController
         $response = $this->getFactory()->getTimeSlotsFacade()->getTimeSlotsFilteredByStore($request->get("store"));
 
         return new JsonResponse($response);
-    }
-
-    /**
-     * @param string $indexOfTime
-     *
-     * @return string
-     */
-    public function getTimeSlotByIndex(string $indexOfTime, string $merchantReference): string
-    {
-        $timeslotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
-        $timeslotDefinitionTransfer->setMerchantReference($merchantReference);
-        $timeSlotsArr = $this->getFactory()
-            ->getTimeSlotsFacade()
-            ->getTimeslotDefinition($timeslotDefinitionTransfer, "");
-
-        return $timeSlotsArr[$indexOfTime]["time_slot"];
     }
 
     /**

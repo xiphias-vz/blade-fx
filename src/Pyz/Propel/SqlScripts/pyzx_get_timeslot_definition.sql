@@ -1,29 +1,34 @@
 delimiter //
-create or replace procedure pyzx_get_timeslot_definition(
-    IN merchantReference VARCHAR(50),
-    IN exactDate VARCHAR(50),
-    IN workDay VARCHAR(50)
+create or replace procedure pyzx_set_timeslot_definition_per_store(
+    IN startTimeInt VARCHAR(50),
+    IN endTimeInt VARCHAR(50),
+    IN intervalMinutes TINYINT,
+    IN defaultCapacity INT,
+    IN merchant_reference VARCHAR(50),
+    IN fkUser int
 )
 BEGIN
     SET @merchant_reference = merchantReference;
     SET @work_day = workDay;
     SET @exact_date = exactDate;
 
-    SELECT DISTINCT time_slot
+    IF (IFNULL(@exact_date, '') = '') THEN
+        SET @exact_date = '1990-01-01';
+    END IF;
+
+    IF (IFNULL(@work_day, '') = '') THEN
+        SET @work_day = 'x9xw';
+    END IF;
+
+    SELECT pts.time_slot
     FROM pyz_time_slot pts
-    WHERE merchant_reference = @merchant_reference
-      AND
-        (
-            (
-                CASE WHEN `day` IS NOT NULL THEN `day` ELSE 1 END = CASE WHEN `day` IS NOT NULL THEN @work_day ELSE 1 END
-                AND
-                CASE WHEN `day` IS NULL THEN IFNULL(`date`, CAST('1990-01-01' as date)) ELSE `date` END = CAST('1990-01-01' as date)
-            )
-            OR
-            (
-                CASE WHEN `day` IS NULL THEN `date` ELSE IFNULL(`date`, CAST('1990-01-01' as date)) END = CASE WHEN `day` IS NULL THEN @exact_date ELSE IFNULL(`date`, CAST('1990-01-01' as date)) END
-            )
-        )
+    WHERE pts.merchant_reference = @merchant_reference
+        AND (pts.`day` = @work_day OR (@exact_date > '1990-01-01' AND pts.`day` = DAYNAME(@exact_date)))
+    UNION
+    SELECT DISTINCT pts.time_slot
+    FROM pyz_time_slot pts
+    WHERE pts.merchant_reference = @merchant_reference
+        AND (pts.`date` = @exact_date)
     ORDER BY time_slot;
 
 END;

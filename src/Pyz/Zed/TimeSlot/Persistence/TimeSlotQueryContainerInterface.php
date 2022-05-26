@@ -24,4 +24,16 @@ interface TimeSlotQueryContainerInterface
      * @return array
      */
     public function getTimeSlotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer): array;
+
+    /**
+     * @param string $merchantReference
+     * @param string $exactDate
+     * @param string $timeSlot
+     * @param int $capacity
+     * @param int|null $oldCapacity
+     * @param int|null $idUser
+     *
+     * @return array
+     */
+    public function setTimeSlotExactDateCapacity(string $merchantReference, string $exactDate, string $timeSlot, int $capacity, ?int $oldCapacity, ?int $idUser): array;
 }

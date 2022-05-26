@@ -65,4 +65,16 @@ interface TimeSlotWriterInterface
      * @return \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer
      */
     public function saveTimeSlotDefinitionForStore(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer): TimeSlotsDefinitionTransfer;
+
+    /**
+     * @param string $merchantReference
+     * @param string $exactDate
+     * @param string $timeSlot
+     * @param int $capacity
+     * @param int|null $oldCapacity
+     * @param int|null $idUser
+     *
+     * @return array
+     */
+    public function setTimeSlotExactDateCapacity(string $merchantReference, string $exactDate, string $timeSlot, int $capacity, ?int $oldCapacity, ?int $idUser): array;
 }

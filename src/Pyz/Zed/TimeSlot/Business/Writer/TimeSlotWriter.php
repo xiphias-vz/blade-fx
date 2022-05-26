@@ -237,4 +237,19 @@ class TimeSlotWriter implements TimeSlotWriterInterface
     {
         return $this->queryContainer->saveTimeSlotDefinitionForStore($timeslotDefinitionTransfer);
     }
+
+    /**
+     * @param string $merchantReference
+     * @param string $exactDate
+     * @param string $timeSlot
+     * @param int $capacity
+     * @param int|null $oldCapacity
+     * @param int|null $idUser
+     *
+     * @return array
+     */
+    public function setTimeSlotExactDateCapacity(string $merchantReference, string $exactDate, string $timeSlot, int $capacity, ?int $oldCapacity, ?int $idUser): array
+    {
+        return $this->queryContainer->setTimeSlotExactDateCapacity($merchantReference, $exactDate, $timeSlot, $capacity, $oldCapacity, $idUser);
+    }
 }

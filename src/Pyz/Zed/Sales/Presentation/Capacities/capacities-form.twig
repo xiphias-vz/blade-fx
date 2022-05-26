@@ -112,9 +112,29 @@
                 .ts-table-0-row,
                 .ts-table-2-row,
                 .ts-table-4-row,
+                .ts-table-6-row,
+                .ts-table-8-row,
+                .ts-table-10-row,
+                .ts-table-12-row,
+                .ts-table-14-row,
+                .ts-table-16-row,
+                .ts-table-18-row,
+                .ts-table-20-row,
+                .ts-table-22-row,
+                .ts-table-24-row,
                 .capacityField_1,
                 .capacityField_3,
-                .capacityField_5
+                .capacityField_5,
+                .capacityField_7,
+                .capacityField_9,
+                .capacityField_11,
+                .capacityField_13,
+                .capacityField_15,
+                .capacityField_17,
+                .capacityField_19,
+                .capacityField_21,
+                .capacityField_23,
+                .capacityField_25
                 {
                     background-color: #ffffff;
                 }
@@ -122,9 +142,29 @@
                 .ts-table-1-row,
                 .ts-table-3-row,
                 .ts-table-5-row,
+                .ts-table-7-row,
+                .ts-table-9-row,
+                .ts-table-11-row,
+                .ts-table-13-row,
+                .ts-table-15-row,
+                .ts-table-17-row,
+                .ts-table-19-row,
+                .ts-table-21-row,
+                .ts-table-23-row,
+                .ts-table-25-row,
                 .capacityField_0,
                 .capacityField_2,
-                .capacityField_4
+                .capacityField_4,
+                .capacityField_6,
+                .capacityField_8,
+                .capacityField_10,
+                .capacityField_12,
+                .capacityField_14,
+                .capacityField_16,
+                .capacityField_18,
+                .capacityField_20,
+                .capacityField_22,
+                .capacityField_24
                 {
                     background-color: #f7f7f7;
                 }
@@ -498,7 +538,7 @@
                                     document.getElementById("tbody_" + key).insertAdjacentHTML("beforeend",
                                         '<tr class="ts-table-' + rowCounter + '-row">' +
                                         '<td>' + timeSlot["TimeSlot"] + '</td>' +
-                                        '<td><div id="capacityRow__' + key + '_' + rowCounter + '_notDefaultTable"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="' + userIsAdmin + '">' + timeSlot["Capacity"] + '</div></td>' +
+                                        '<td><div id="capacityRow__' + key + '_' + timeSlot["TimeSlot"] + '_notDefaultTable"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="' + userIsAdmin + '">' + timeSlot["Capacity"] + '</div></td>' +
                                         '<td></td>' +
                                         '</tr>'
                                     );
@@ -602,7 +642,7 @@
                                         document.getElementById("tbody_" + key).insertAdjacentHTML("beforeend",
                                             '<tr class="ts-table-' + rowCounter + '-row">' +
                                             '<td title="default: ' + value1["DefaultCapacity"] + '">' + value1["TimeSlot"] + '</td>' +
-                                            '<td><div id="capacityRow_' + value1["Date"] + '_' + value1["Day"] + '_' + rowCounter + '_' + defaultClass + '"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="' + userIsAdmin + '">' + value1["Capacity"] + '</div></td>' +
+                                            '<td><div id="capacityRow_' + value1["Date"] + '_' + value1["Day"] + '_' + value1["TimeSlot"] + '_' + defaultClass + '"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="' + userIsAdmin + '">' + value1["Capacity"] + '</div></td>' +
                                             '<td>' + usedCapacity + '</td>' +
                                             '<td>' + capacityLeft + '</td>' +
                                             '</tr>'
