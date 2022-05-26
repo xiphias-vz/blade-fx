@@ -38,19 +38,6 @@
             }
         }
 
-        &--header {
-            //width: rem(99);
-            //height: rem(63);
-            //display: flex;
-            //align-items: center;
-            //justify-content: center;
-        }
-
-        &__header-mobile-CZ {
-            height: auto;
-            width: 80%;
-        }
-
         &--header-mobile {
             width: rem(40);
             height: rem(63);
@@ -115,9 +102,6 @@
 
 
             @include helper-breakpoint-media-max($lg-max) {
-                /*width: 3rem;
-                margin-top: -2px;
-                margin-left: 6px;*/
                 width: rem(60);
             }
 

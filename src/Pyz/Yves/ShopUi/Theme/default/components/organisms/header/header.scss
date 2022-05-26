@@ -57,6 +57,8 @@ $header-sticky-height: rem(69, number);
 
         &__container-nav {
             display: flex;
+            justify-content: flex-end;
+            height: inherit;
         }
 
         &__flexbox {
@@ -81,11 +83,8 @@ $header-sticky-height: rem(69, number);
 
             #{$name}__link_container {
                 display: flex;
-                height: 100%;
+                height: inherit;
                 font-size: rem(10);
-                width: rem(150);
-                align-items: center;
-                justify-content: center;
             }
 
             @include helper-breakpoint-media-max($xl-min) {
@@ -222,10 +221,6 @@ $header-sticky-height: rem(69, number);
             z-index: $setting-zi-header + 1;
             width: 100%;
 
-            @include helper-breakpoint-media-min($xl-min) {
-                position: relative;
-            }
-
             @include helper-breakpoint-media-max($lg-max) {
                 padding: 0 rem(10) rem(15);
                 transition: top 0.3s;
@@ -280,15 +275,21 @@ $header-sticky-height: rem(69, number);
             }
         }
 
-        &__logo-desktop {
+        &__logo-desktop, &__logo-desktop-CZ {
             display: flex;
             @include helper-breakpoint-media-max($lg-max) {
                 display: none;
             }
         }
 
+        &__logo-desktop-CZ {
+
+        }
+
         &__logo-mobile {
             display: none;
+            max-width: rem(150);
+            height: auto;
 
             @include helper-breakpoint-media-max($lg-max) {
                 display: flex;

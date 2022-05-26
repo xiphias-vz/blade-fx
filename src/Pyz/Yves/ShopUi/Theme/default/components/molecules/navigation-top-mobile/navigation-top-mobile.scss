@@ -17,7 +17,7 @@
                 justify-content: space-between;
             }
 
-            .test {
+            .right-top-nav {
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -33,7 +33,6 @@
 
                 }
             }
-
         }
 
         .store-select {
@@ -53,38 +52,6 @@
 
            .my-market-title {
                display: none;
-           }
-
-           .store-widget-holder {
-
-               select {
-                   max-width: 30vw
-               }
-
-               @include helper-breakpoint-media-max($lg-max) {
-                   margin-right: rem(150);
-               }
-
-               @include helper-breakpoint-media-max($md-max) {
-                   margin-right: 0;
-               }
-
-               .custom-select__select--header, .custom-select-cz__select--header{
-                   color: #71747c !important;
-                   background: #f7f7f7;
-                   border:none !important;
-                   padding: 0 1.125rem 0 0.6875rem !important;
-
-                   @include helper-breakpoint-media-max($lg-max) {
-                       background: #ffffff;
-                   }
-               }
-
-               .store-switcher {
-                   @include helper-breakpoint-media-max($sm-max) {
-                       margin-top:5px;
-                   }
-               }
            }
 
            @include helper-breakpoint-media-max($sm-max) {

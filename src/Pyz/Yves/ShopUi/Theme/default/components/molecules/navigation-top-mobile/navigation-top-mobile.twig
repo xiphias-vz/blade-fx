@@ -47,7 +47,7 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="test">
+            <div class="right-top-nav">
             {% for item in items if item.isVisibleForAuthorized ?? true %}
                 {% if item.isCart ?? false %}
                     {% embed molecule('navigation-top-mobile-item') with {

@@ -31,12 +31,15 @@
         }
 
         &__select--header {
-            color: $setting-color-gray-13;
+            color: $setting-color-forest-green;
+            font-weight: bold;
             background: $setting-color-white;
-            border: 1px solid $setting-color-gray-15;
+            border: none !important;
             border-radius: 0;
-            padding: rem(11) rem(30) rem(11) rem(11);
-            width: rem(120);
+
+            option {
+                color: $setting-color-tentgray;
+            }
         }
 
         &__select--side-drawer {
