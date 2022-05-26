@@ -12,6 +12,10 @@
         &__container {
             position: relative;
 
+            .slick-list {
+                min-width: 90%;
+            }
+
             .slick-arrow {
                 position: absolute;
                 top: rem(185);

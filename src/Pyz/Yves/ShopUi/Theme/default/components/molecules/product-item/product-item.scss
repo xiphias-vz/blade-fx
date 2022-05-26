@@ -1,7 +1,7 @@
 @mixin shop-ui-product-item($name: '.product-item') {
     #{$name} {
         position: relative;
-        padding: 0 rem(5) rem(30);
+        padding: 0 rem(5);
         z-index: 0;
         font-family: $setting-font-family-additional;
         display: flex;
@@ -92,17 +92,14 @@
                 align-items: flex-end;
                 justify-content: flex-end;
                 min-height: rem(70);
+                margin-right: rem(15);
 
                 @include helper-breakpoint-media-max($md-max) {
                     flex-direction: row;
                     justify-content: flex-end;
-                    align-items: baseline;
+                    align-items: center;
                     min-height: auto;
                 }
-            }
-
-            .money-price__amount {
-                padding-right: rem(10);
             }
 
             .label-group {
@@ -125,14 +122,23 @@
                 }
             }
 
-            .button--with-icon, .change-cart-counter {
+            .change-cart-counter {
                 width: 90%;
-                justify-content: center;
 
                 @include helper-breakpoint-media-max($sm-max){
                     width: 70%;
                     justify-content: space-between;
                 }
+            }
+            .button--with-icon {
+                justify-content: center;
+                width: 90%;
+                min-width: unset;
+
+                @include helper-breakpoint-media-max($sm-max){
+                    width: 70%;
+                }
+
             }
 
             .no-touch &:hover {
@@ -175,12 +181,24 @@
             cursor: pointer;
         }
 
+        &__brand {
+            color: $setting-color-light-tentgray-4;
+            font-weight: 700;
+            font-size: rem(16);
+            margin: 0;
+        }
+
         &__info {
             display: block;
             margin-bottom: rem(6);
+            overflow: hidden;
+            width: 100%;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            min-height: rem(75);
 
             @include helper-breakpoint-media-min($md-min) {
-                min-height: rem(41);
                 margin-bottom: 0;
                 display: -webkit-box;
                 -webkit-line-clamp: 3;
@@ -226,6 +244,7 @@
 
             @include helper-breakpoint-media-max($sm-max){
                 justify-content: center;
+                padding: rem(5);
             }
 
             a {
@@ -247,11 +266,10 @@
                 display: flex;
                 background-color: $setting-color-white;
                 border-radius: rem(25);
+                justify-content: space-between;
 
-                @include helper-breakpoint-media-max($md-max) {
+                @include helper-breakpoint-media-max($sm-max) {
                     width: 70%;
-                    margin-bottom: rem(8);
-                    margin-top: rem(8);
                 }
 
                 .message {
@@ -334,6 +352,7 @@
                         &:hover {
                             color: $setting-color-forest-green;
                             border: rem(2) solid $setting-color-forest-green;
+                            background-color: $setting-color-forest-green-light;
                         }
                     }
 
@@ -350,9 +369,10 @@
                         width: rem(40);
                         color: $setting-color-fresh-orange;
                         transition-duration: 0.25s;
-                        &:hover {
+                        &:hover, &:active {
                             color: $setting-color-forest-green;
                             border: rem(2) solid $setting-color-forest-green;
+                            background-color: $setting-color-forest-green-light;
                         }
                     }
 
@@ -377,16 +397,13 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
-                text-align: right;
                 border-top: 1px solid $setting-color-lighter;
                 width: 100%;
-                padding: 8px 1px 3px;
 
                 a {
                     justify-content: center;
                     padding: rem(15);
-                    height: rem(40);
-                    margin: 0 rem(8) rem(6) 0;
+                    height: rem(38);
                     .add-details-to-cart-text-holder {
                         font-weight: 900;
                     }
@@ -403,6 +420,7 @@
 
         &__info-more {
             color: $setting-color-light-tentgray-4;
+            min-height: rem(35);
         }
 
         &__info-more-col {
@@ -411,7 +429,7 @@
 
             .money-price{
 
-                &__amount{
+                &__amount, &__amount-red{
                     font-size: rem(25);
                     font-weight: 600;
                 }
@@ -419,7 +437,12 @@
                     font-size: rem(15);
                     font-weight: 400;
                     color: $setting-color-globus-black;
-                    text-decoration-color: $setting-color-alt-4;
+                    text-decoration-color: $setting-color-red-tomato;
+                    text-decoration-thickness: rem(2);
+
+                    @include helper-breakpoint-media-max($md-max) {
+                        margin-right: rem(15);
+                    }
                 }
             }
         }

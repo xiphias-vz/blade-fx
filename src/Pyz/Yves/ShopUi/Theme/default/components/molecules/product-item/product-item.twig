@@ -229,6 +229,14 @@
                                     {% endif %}
                                 {% endif %}
 
+                            {% block brand %}
+                                {% if productSupplier %}
+                                <div class="{{ config.name }}__brand">
+                                    <p>{{productSupplier}}</p>
+                                </div>
+                                {% endif %}
+                            {% endblock%}
+
                             {% block link %}
                                 <div class="{{ config.name }}__info">
                                     <a href="javascript:void(0)" class="{{ config.name }}__name{% if app.currentCodeBucket == 'CZ' %}-cz{% endif %}"
