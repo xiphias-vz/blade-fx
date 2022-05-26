@@ -92,11 +92,12 @@ export default class ContainerScanOrder extends Component {
         this.allPacksForCustomerNumber.addEventListener('click', (event:MouseEvent) => this.toggleConfirmButton(event));
         this.inputScanner.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.form.addEventListener('submit', (e) => {
-
-            if(!this.atLeastOneContainerIsAdded(this.listOfContainersHolder, this.listContainersShelf)) {
+            if (!this.atLeastOneContainerIsAdded(this.listOfContainersHolder, this.listContainersShelf)) {
                 e.preventDefault();
 
                 this.clearInputField(this.inputScanner);
+                this.showPopUpErrorMessageForEmptyContainer();
+
                 return false;
             }
 
@@ -115,7 +116,7 @@ export default class ContainerScanOrder extends Component {
     }
 
     protected atLeastOneContainerIsAdded(listOfContainersHolder, listContainersShelf) {
-         return (listOfContainersHolder.childElementCount != 0 || listContainersShelf.childElementCount != 0);
+         return (listOfContainersHolder.childElementCount !== 0 || (listContainersShelf.childElementCount === 0 ? false : listContainersShelf.firstElementChild.value !== ''));
     }
 
     protected toggleConfirmButton(event): void {
