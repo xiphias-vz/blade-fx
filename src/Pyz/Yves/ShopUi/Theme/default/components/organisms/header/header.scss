@@ -360,7 +360,7 @@ $header-sticky-height: rem(69, number);
 
             @include helper-breakpoint-media-min($xl-min) {
                 position: absolute;
-                left: rem(20);
+                left: auto;
                 bottom: auto;
                 display: block;
                 width: rem(300);
@@ -401,6 +401,7 @@ $header-sticky-height: rem(69, number);
             @include helper-breakpoint-media-min($xl-min) {
                 position: absolute;
                 top: 100%;
+                left: auto;
                 bottom: auto;
                 display: block;
                 width: rem(345);
