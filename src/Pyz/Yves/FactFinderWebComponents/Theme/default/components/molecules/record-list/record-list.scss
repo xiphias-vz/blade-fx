@@ -314,7 +314,7 @@
                         background-color: $setting-color-white;
                         border-radius: 100%;
                         transition-duration: 0.25s;
-                        font: fw(bold) rem(27)/0.9 $setting-font-family-additional;
+                        font: fw(500) rem(27)/0.9 $setting-font-family-additional;
 
                         &:hover {
                             color:$setting-color-forest-green;
@@ -330,7 +330,7 @@
                         background-color: $setting-color-white;
                         border-radius: 100%;
                         transition-duration: 0.25s;
-                        font: fw(bold) rem(27)/0.9 $setting-font-family-additional;
+                        font: fw(500) rem(27)/0.9 $setting-font-family-additional;
 
                         &:hover {
                             color:$setting-color-forest-green;
@@ -391,8 +391,6 @@
             justify-content: flex-end;
             min-height: rem(30);
             color: $setting-color-tentgray;
-
-
 
             @include helper-breakpoint-media-max($sm-max){
                 margin-right: rem(12);
