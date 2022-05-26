@@ -110,7 +110,7 @@ $additional-info-width: rem(350);
             font-weight: fw(normal);
             font-size: rem(14);
             text-decoration: none;
-            color: $setting-color-black;
+            color: $setting-color-tentgray;
 
             @include helper-breakpoint-media-max($md-max) {
                 font-size: rem(14);
@@ -421,10 +421,14 @@ $additional-info-width: rem(350);
                 margin-top: rem(10);
 
                 @include helper-breakpoint-media-min($lg-min) {
-                    position: absolute;
+                    position: relative;
                     left: auto;
                     right: rem(15);
                     bottom: rem(15);
+                }
+
+                @include helper-breakpoint-media-max($lg-min) {
+                    margin-right: rem(12);
                 }
             }
         }

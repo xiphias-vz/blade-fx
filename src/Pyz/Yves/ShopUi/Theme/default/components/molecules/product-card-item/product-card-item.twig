@@ -25,7 +25,8 @@
 {% set productName = data.productItem.name | default %}
 {% set productSaleUnit = data.productItem.concreteAttributes['verpackungseinheit'] | default(null) %}
 {% set productSaleVolume = data.productItem.concreteAttributes['grundpreisinhalt'] | default(null) %}
-{% set productSupplier = data.productItem.brand  | default(null) %}
+{% set productSupplier = data.productItem.attributes['supplier'] | default(null) %}
+{% set productPrice = data.productItem.price | default(null) %}
 
 {% block body %}
     {% set fontClass = app.currentCodeBucket == "CZ" ? 'cz-font' : '' %}
@@ -49,9 +50,6 @@
                 {% block groups %}{% endblock %}
             </a>
         {% endblock %}
-
-
-
         {% block contentInner %}
             {% block headingGrid %}
             {% block heading %}
@@ -60,9 +58,10 @@
                     {% else %}class="{{ component.renderClass(config.name ~ '__heading CZ', modifiers) }} col--lg-2 col--md-3 col--sm-7"{% endif %}>
                     {% block title %}
                         {% if app.currentCodeBucket == 'DE' %}
-                            {% if data.productItem.brand is not empty %}
-                                <div
-                                    class="{{ config.name }}__brand-title">{{ data.productItem.brand }}</div>
+                            {% if data.productItem.brand is defined %}
+                                <div class="{{ config.name }}__brand-title">{{ data.productItem.brand }}</div>
+                            {% else %}
+                                <div class="{{ config.name }}__brand-title">{{ productSupplier }}</div>
                             {% endif %}
                         {% endif %}
                         <a href="{{ data.productItem.url }}"
@@ -166,7 +165,7 @@
 
             {% block unitPrice %}
                 <div class="{{ config.name }}__price-col col--lg-2 col--md-1 col--sm-1">
-                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.unitGrossPrice %}
+                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : productPrice %}
                     {% set originalPrice = data.productItem.originalPrice is defined ? data.productItem.originalPrice %}
 
                     {% include molecule('money-price') with {
