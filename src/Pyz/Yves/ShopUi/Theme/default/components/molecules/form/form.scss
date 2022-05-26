@@ -164,12 +164,11 @@ $review-rating-field-width: rem(154);
         &--checkout-actions {
             #{$name}__actions {
                 display: flex;
+                flex-direction: column-reverse;
                 align-items: flex-end;
-                float: right;
                 margin-top: rem(32);
 
                 @media only screen and (max-width: $lg-min) {
-                    float: unset;
                     margin-top: rem(12);
                 }
             }

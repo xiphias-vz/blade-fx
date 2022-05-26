@@ -574,6 +574,11 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            const emailFieldGuest = document.querySelector('#guestForm_customer_email');
+            emailFieldGuest.parentElement.classList.add('col', 'col--sm-12');
+        </script>
     {% endif %}
 
     {% if data.currentCodeBucket=='DE' %}
