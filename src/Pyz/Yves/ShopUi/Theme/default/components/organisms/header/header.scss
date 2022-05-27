@@ -367,6 +367,7 @@ $header-sticky-height: rem(69, number);
                 display: block;
                 width: rem(300);
                 padding: rem(5) 0 rem(10) rem(10);
+                top: 92%;
             }
 
             @include helper-media-ie() {
