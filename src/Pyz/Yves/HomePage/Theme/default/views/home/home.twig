@@ -3,8 +3,6 @@
 {% block pageInfo %}{% endblock %}
 
 {% block container %}
-
-
         {% embed organism('jumbotron-slider') only %}
             {% block body %}
                 {% embed molecule('slick-carousel') with {
@@ -53,10 +51,9 @@
                 {% block content %}
 
             </div>
-            <div class="slot3-container">
+            <div class="navigation-category__container slot3-container">
                 {% cms_slot 'slt-3' %}
             </div>
-
 
                 <div class="navigation-category__container">
                     {{ content_navigation('navigation-categories', 'navigation-categories') }}
@@ -75,7 +72,6 @@
                         {% endblock %}
                     {% endembed %}
         <div class="navigation-category__container">
-
                     {% embed organism('section') with {
                         modifiers: ['secondary'],
                         class: 'spacing-top spacing-top--inner spacing-top--big',
@@ -87,9 +83,9 @@
                         {% endblock %}
                     {% endembed %}
                 {% endblock %}
+        </div>
+    </div>
                 {% block downbar %}
                         {% cms_slot 'downbar-slt' %}
                 {% endblock %}
-        </div>
-    </div>
 {% endblock %}
