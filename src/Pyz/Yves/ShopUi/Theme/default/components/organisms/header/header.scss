@@ -1,12 +1,12 @@
-$header-mobile-height: rem(61, number);
+$header-mobile-height: rem(130, number);
 $header-height: rem(147, number);
-$header-sticky-height: rem(69, number);
+$header-sticky-height: rem(130, number);
 
 @mixin shop-ui-header($name: '.header') {
     #{$name} {
         position: relative;
         z-index: $setting-zi-header;
-
+        margin-bottom: rem(5);
         height: rem(130);
         background-color: $setting-color-white;
 
@@ -14,7 +14,7 @@ $header-sticky-height: rem(69, number);
             height: auto;
         }
 
-        &__top, &__content-holder {
+        &__top, &__content-holder, &__meta-navigation-top {
             padding-left: rem(10);
             padding-right: rem(10);
         }
@@ -211,28 +211,19 @@ $header-sticky-height: rem(69, number);
             min-height: $header-mobile-height;
 
             @include helper-breakpoint-media-min($xl-min) {
-                min-height: $header-sticky-height;
+                min-height: 0;
             }
         }
 
         &__middle {
-            padding-bottom: rem(14);
             background: $setting-color-globus-white;
             z-index: $setting-zi-header + 1;
             width: 100%;
 
             @include helper-breakpoint-media-max($lg-max) {
-                padding: 0 rem(10) rem(15);
+                padding: 0 rem(10);
                 transition: top 0.3s;
-                top: -120px;
-                background: #FFFFFF;
-                &--sticky {
-                    position: fixed;
-                    left: 0;
-                    top: 0;
-                    right: 0;
-
-                }
+                background: $setting-color-white;
             }
         }
 
@@ -281,6 +272,11 @@ $header-sticky-height: rem(69, number);
             @include helper-breakpoint-media-max($lg-max) {
                 display: none;
             }
+        }
+
+        &__logo-desktop {
+            height: auto;
+            width: rem(80);
         }
 
         &__logo-desktop-CZ {
@@ -338,14 +334,6 @@ $header-sticky-height: rem(69, number);
 
             display: flex;
             flex-direction: column;
-
-            @include helper-breakpoint-media-max($lg-max) {
-                margin-top: rem(48);
-            }
-
-            @include helper-breakpoint-media-max($sm-max) {
-                margin-top: rem(50);
-            }
 
             h4 {
                 overflow-y: scroll;

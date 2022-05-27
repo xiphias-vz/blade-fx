@@ -126,6 +126,16 @@
         }
 
         &--header {
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: rem(150);
+
+            .custom-select__edit {
+                color: $setting-color-forest-green;
+            }
+
             .select2-selection--single .select2-selection__rendered {
                 color: $setting-color-forest-green;
                 font-size: rem(14);
@@ -133,10 +143,6 @@
 
             .custom-select__caret {
                 color: $setting-color-forest-green;
-
-                @include helper-breakpoint-media-max($lg-max) {
-                    color: $setting-color-tentgray;
-                }
             }
 
             .custom-select__caret-cz {

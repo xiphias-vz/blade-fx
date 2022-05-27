@@ -26,11 +26,12 @@
                 .navigation-top-mobile-item {
                     margin-right: rem(5);
                     text-align: center;
+                    display: flex;
+                    justify-content: flex-end;
 
                     @include helper-breakpoint-media-min($md-min) {
                         width: 20%;
                     }
-
                 }
             }
         }
