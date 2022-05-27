@@ -24,6 +24,11 @@
         &--shipment {
             padding-bottom: 0;
             margin-bottom: rem(30);
+
+            @include helper-breakpoint-media-max($md-min) {
+                overflow: hidden;
+            }
+
         }
 
         &--summary {
