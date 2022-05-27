@@ -1,11 +1,8 @@
 delimiter //
-create or replace procedure pyzx_set_timeslot_definition_per_store(
-    IN startTimeInt VARCHAR(50),
-    IN endTimeInt VARCHAR(50),
-    IN intervalMinutes TINYINT,
-    IN defaultCapacity INT,
-    IN merchant_reference VARCHAR(50),
-    IN fkUser int
+create or replace procedure pyzx_get_timeslot_definition(
+    IN merchantReference VARCHAR(50),
+    IN exactDate VARCHAR(50),
+    IN workDay VARCHAR(50)
 )
 BEGIN
     SET @merchant_reference = merchantReference;
