@@ -109,7 +109,7 @@
                                         {%- else -%}
                                             {% if originalAmount is not empty and originalAmount > amount -%}
                                                 <div class="uvp-flex-box">
-                                                    <span class="{{ config.name }}__uvp">{{ uvp }}</span>
+                                                    <span class="{{ config.name }}__uvp is-hidden">{{ uvp | trim }}</span>
                                                     <span class="{{ config.name }}__amount {{ config.name }}__amount--original">
                                                         {{ originalAmount }}
                                                     </span>

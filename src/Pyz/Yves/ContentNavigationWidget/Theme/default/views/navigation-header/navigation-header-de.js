@@ -511,10 +511,12 @@ window.addEventListener("DOMNodeInserted", function (event) {
         checkBrandIsSet(event.relatedNode, 'ff-record');
         checkWeightPriceHasHyphen(event.relatedNode, 'ff-record');
         addParenthesisToGrundPreis(event.relatedNode, 'ff-record');
+        addUvpToPrice(event.relatedNode, 'ff-record');
     } else if (event.relatedNode.localName == 'ff-suggest-item') {
         checkPictureAvailability(event.relatedNode);
         checkOriginalAndDefaultPrices(event.relatedNode, 'ff-suggest-item');
         addCommaAfterBrand(event.relatedNode);
+        addUvpToPrice(event.relatedNode, 'ff-suggest-item');
     } else if (event.relatedNode.localName == 'ff-asn-group-element') {
         var treeElement = document.querySelector('ff-asn-group[filter-style="TREE"]');
         if(treeElement) {
@@ -589,6 +591,25 @@ function addParenthesisToGrundPreis(element){
             if(!text.startsWith('(')){
                 text = "(" + text + ")";
                 el.innerText = text;
+            }
+        }
+    }
+}
+
+function addUvpToPrice(element, flag){
+    let el = '';
+    if (flag === 'ff-record') {
+        el = element.querySelector('.record-list__uvp');
+    } else {
+        el = element.querySelector('.suggest__uvp');
+    }
+
+    if(el !== undefined && el !== null) {
+        let text = el.innerText;
+        if(text !== ""){
+            text = text.trim();
+            if (text === 'UVP') {
+                el.classList.remove('is-hidden');
             }
         }
     }
