@@ -57,6 +57,14 @@
             }
         }
 
+        .col-decr {
+            .js-quantity-counter__decr {
+                pointer-events: unset;
+                display: flex;
+                align-items: center;
+            }
+        }
+
         &__button {
             display: flex;
             justify-content: center;

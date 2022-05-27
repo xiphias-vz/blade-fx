@@ -258,10 +258,12 @@ $setting-popup-spacing-y: rem(16);
         margin-right: rem(30);
     }
 
-    .button__icon {
-        width: 2rem;
-        height: 2rem;
-    }
+    //Commented because of wishlist button
+
+    //.button__icon {
+    //    width: 2rem;
+    //    height: 2rem;
+    //}
 
     #api_button_content {
         text-align: center;
