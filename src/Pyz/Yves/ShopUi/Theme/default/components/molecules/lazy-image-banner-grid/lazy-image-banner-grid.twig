@@ -42,11 +42,12 @@
                     <div class="{{ backgroundClasses }} {{ config.jsName }}__background {{ backgroundExtraClasses }}"
                          data-background-image="url('{{ imageSrc }}')"
                          title="{{ imageTitle }}"
-                        {{ component.renderAttributes(extraAttributes | merge({style: backgroundStyleAttribute})) }}></div>
+                        {{ component.renderAttributes(extraAttributes | merge({style: backgroundStyleAttribute})) }}>
+                    </div>
                 {% endblock %}
             {% else %}
                 {% block image %}
-                    <img class="{{ imageClasses }} {{ config.jsName }}__image {{ imageExtraClasses }}"
+                    <img class="{{ imageClasses }} {{ config.jsName }}__image image-wrap {{ imageExtraClasses }}"
                          src="{{ imagePlaceholder }}"
                          data-src="{{ imageSrc }}"
                          alt="{{ imageTitle }}"

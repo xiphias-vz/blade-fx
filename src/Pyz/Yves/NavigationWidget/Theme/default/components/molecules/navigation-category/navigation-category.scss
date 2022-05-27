@@ -14,6 +14,10 @@
         border-radius: rem(4);
         position: relative;
 
+        @include helper-breakpoint-media-max($lg-max) {
+            padding: rem(0) rem(0) rem(0) rem(0);
+        }
+
         @include helper-breakpoint-media-min($l-max) {
             width: rem(370);
             height: rem(285);
@@ -34,10 +38,11 @@
             align-items: center;
             border-radius: rem(30);
             padding: rem(10);
+
         }
 
         &__browse-button-CZ {
-            background-color: $setting-color-forest-green;
+            background-color: $setting-color-globusCZ-main-green;
             height: fit-content;
             width: fit-content;
             color: $setting-color-white;
@@ -47,12 +52,7 @@
         }
 
         &__title {
-            font-size: rem(20);
-            padding-top: rem(20);
-
-            @include helper-breakpoint-media-max($md-max) {
-                font-size: rem(16);
-            }
+            font-size: rem(16);
         }
 
         &__category-title {
@@ -96,6 +96,10 @@
             display: flex;
             flex-flow: column;
             justify-content: space-between;
+
+            @include helper-breakpoint-media-max($lg-max) {
+                margin: rem(0) rem(5) rem(10) rem(5);
+            }
         }
 
         &__image {

@@ -1,19 +1,8 @@
-@mixin shop-ui-banner-block($name: '.banner-block') {
+@mixin shop-ui-banner-block-four-elements($name: '.banner-block-four-elements') {
     #{$name} {
         overflow: hidden;
         height: rem(200);
         margin-bottom: rem(10);
-
-        .curved-line-block {
-            background: $setting-color-white;
-            width: 100%;
-            height: rem(19.2);
-            clip-path: ellipse(55% 100% at 50% 0%);
-
-            @include helper-breakpoint-media-max($md-max) {
-                clip-path: ellipse(70% 100% at 50% 0%);
-            }
-        }
 
         @include helper-breakpoint-media-min($lg-min) {
             height: rem(450);
@@ -25,11 +14,17 @@
         }
 
         &--small {
-            height: rem(400);
+            height: rem(416);
 
             @include helper-breakpoint-media-min($lg-min) {
                 height: rem(340);
             }
+        }
+
+        &__curved-top {
+            height: rem(20);
+            background-color: $setting-color-stonegray;
+            clip-path: ellipse(60% 100% at 50% 0%);
         }
 
         &--success {
@@ -61,6 +56,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             position: relative;
+
 
             @include helper-breakpoint-media-min($sm-min) {
                 margin: 0 rem(10) 0;
@@ -158,4 +154,4 @@
     }
 }
 
-@include shop-ui-banner-block;
+@include shop-ui-banner-block-four-elements;

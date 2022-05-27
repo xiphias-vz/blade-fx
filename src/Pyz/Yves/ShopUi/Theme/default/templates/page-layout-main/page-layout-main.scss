@@ -4,6 +4,29 @@
             display: none;
         }
 
+        .curved-line-home {
+            background: $setting-color-white;
+            width: 100%;
+            height: rem(48);
+            margin-bottom: rem(40);
+            clip-path: ellipse(55% 100% at 50% 0%);
+
+            @include helper-breakpoint-media-max($md-max) {
+                clip-path: ellipse(70% 100% at 50% 0%);
+            }
+        }
+
+        .gray-div-section{
+            width: 100%;
+            padding-bottom: rem(30);
+            background-color: $setting-color-stonegray;
+            clip-path: ellipse(220% 100% at 50% 0%);
+            @include helper-breakpoint-media-max($md-max) {
+                clip-path: ellipse(370% 100% at 50% 0%);
+            }
+        }
+
+
         .slot3-container {
             .slick-carousel__container {
                 position: relative;
@@ -333,7 +356,7 @@
         }
         .quick-links-section {
             @include helper-breakpoint-media-between($md-min, $lg-min) {
-                .col--lg-3 {
+                .col--lg-4 {
                     width: 33.33333%;
                     min-width: 33.33333%
                 }

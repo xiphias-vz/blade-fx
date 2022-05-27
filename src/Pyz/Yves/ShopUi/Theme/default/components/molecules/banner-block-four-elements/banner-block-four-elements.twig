@@ -1,7 +1,7 @@
 {% extends model('component') %}
 
 {% define config = {
-    name: 'banner-block',
+    name: 'banner-block-four-elements',
     tag: 'article',
 } %}
 
@@ -31,22 +31,19 @@
 {% block body %}
     {% embed molecule('lazy-image-banner-grid') with {
         class: containerClass,
-        modifiers: ['small', 'border', 'half-picture'],
+        modifiers: ['small', 'border', 'big-picture'],
         data: {
         imageSrc: data.imageUrl,
-        isBackground: false,
+        isBackground: true,
     },
         embed: {
         contentClass: contentClass,
         contentBlock: block('content'),
     },
         } only %}
-
         {% block content %}
             {{ parent() }}
-
             <div class="{{ config.name }}__content {{ embed.contentClass }} {% if app.currentCodeBucket == "CZ"%}font-cz{% else %}font{% endif %}">
-                <div class="curved-line-block"></div>
                 {{ embed.contentBlock | raw }}
             </div>
         {% endblock %}

@@ -754,6 +754,10 @@
             padding: rem(6);
         }
 
+        &--margin-ten {
+            margin: rem(10);
+        }
+
         &--checkout {
             @include helper-breakpoint-media-max($xxs-max) {
                 width: 70%;

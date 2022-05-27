@@ -4,6 +4,7 @@
 
 {% block container %}
 
+
         {% embed organism('jumbotron-slider') only %}
             {% block body %}
                 {% embed molecule('slick-carousel') with {
@@ -31,6 +32,7 @@
                 {% endembed %}
             {% endblock %}
         {% endembed %}
+
     <div class="navigation-category__container">
             {% embed organism('section') with {
                 modifiers: ['secondary', 'full-width','homepage'],
@@ -42,19 +44,24 @@
                     </div>
                 {% endblock %}
             {% endembed %}
+        </div>
+
+    <div class="gray-div-section">
+        <div class="curved-line-home"></div>
             <div class="container__inner" style="background-color: white">
+
                 {% block content %}
+
             </div>
             <div class="slot3-container">
                 {% cms_slot 'slt-3' %}
             </div>
-    </div>
-            <div class="navigation-category__gray-container">
+
+
                 <div class="navigation-category__container">
                     {{ content_navigation('navigation-categories', 'navigation-categories') }}
                     {% cms_slot 'slt-1st-in-frame' %}
                 </div>
-            </div>
                <div class="navigation-category__container">
                     {% embed organism('section') with {
                         modifiers: ['secondary', 'full-width','homepage'],
@@ -68,8 +75,9 @@
                         {% endblock %}
                     {% endembed %}
         <div class="navigation-category__container">
+
                     {% embed organism('section') with {
-                        modifiers: ['secondary', 'full-width'],
+                        modifiers: ['secondary'],
                         class: 'spacing-top spacing-top--inner spacing-top--big',
                         } only %}
                         {% block inner %}
@@ -83,5 +91,5 @@
                         {% cms_slot 'downbar-slt' %}
                 {% endblock %}
         </div>
-    </main>
+    </div>
 {% endblock %}

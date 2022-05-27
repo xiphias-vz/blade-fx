@@ -361,6 +361,7 @@
                         color: $setting-color-globusCZ-main-green;
                         transition-duration: 0.25s;
                         &:hover {
+                            background-color: $setting-color-white;
                             color: $setting-color-globusCZ-hover;
                             border: rem(2) solid $setting-color-globusCZ-hover;
                         }
@@ -381,6 +382,7 @@
                         color: $setting-color-globusCZ-main-green;
                         transition-duration: 0.25s;
                         &:hover {
+                            background-color: $setting-color-white;
                             color: $setting-color-globusCZ-hover;
                             border: rem(2) solid $setting-color-globusCZ-hover;
                         }
