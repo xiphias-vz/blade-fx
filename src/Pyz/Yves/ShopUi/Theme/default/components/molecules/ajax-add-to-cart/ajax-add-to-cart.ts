@@ -222,13 +222,38 @@ export default class AjaxAddToCart extends Component {
 
         let recordList = document.getElementsByTagName('ff-record-list')[0];
         if(recordList){
-            let baseURI = recordList.baseURI;
-            let resultQuery = baseURI.substring(baseURI.indexOf('?') + 1, baseURI.indexOf('&'));
-            let resultPage = baseURI.substring(baseURI.indexOf('&') + 1);
-            query = resultQuery.substring(resultQuery.indexOf('=') + 1);
-            page = resultPage.substring(resultPage.indexOf('=') + 1);
-        }
+            let baseURI = document.getElementsByTagName('ff-record-list')[0].baseURI;
 
+            if(baseURI.includes('&page=')) {
+                let pageNumberString = '';
+                let string = baseURI.split('&page=')[1];
+                const lengthOfString = string.length;
+                for (let i = 0; i < lengthOfString; i++) {
+                    if (this.checkNumberInString(string[i]) === true) {
+                        break;
+                    } else {
+                        pageNumberString += string[i];
+                    }
+
+                }
+
+                page = pageNumberString;
+            }
+
+            if(baseURI.includes('query=')) {
+                let queryString = '';
+                let string = baseURI.split('query=')[1];
+                const lengthOfString = string.length;
+                for (let i = 0; i < lengthOfString; i++) {
+                    if (string[i] !== '&') {
+                        queryString += string[i];
+                    } else {
+                        break;
+                    }
+                }
+                query = queryString;
+            }
+        }
 
         const formData = new FormData();
         formData.append('token', link.dataset.csrfToken);
@@ -280,6 +305,12 @@ export default class AjaxAddToCart extends Component {
             }
         });
 
+    }
+
+    protected checkNumberInString(character) {
+        if (isNaN(character)) {
+            return true;
+        }
     }
 
     protected showMessages(): void {
