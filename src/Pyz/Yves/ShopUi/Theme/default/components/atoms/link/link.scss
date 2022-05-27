@@ -5,10 +5,6 @@
         color: $setting-color-globus-darkOrange;
     }
 
-    &:focus {
-        box-shadow: 0 0 0 rem(2) $setting-color-blue-alpha-2;
-    }
-
     &__icon {
         margin-right: rem(15);
         width: rem(20);
@@ -153,9 +149,10 @@
             border: solid rem(2) $setting-color-fresh-orange-5;
             background-color: $setting-color-fresh-orange-4;
             border-radius: rem(25);
-            padding: 0 rem(5);
+            padding: rem(2) rem(5);
             text-decoration: none;
             color: $setting-color-tentgray;
+            white-space: nowrap;
         }
 
         &:hover, &:active {
