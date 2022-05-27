@@ -11,14 +11,14 @@
 
             .tooltip-information {
                 visibility: hidden;
-                width: 316px;
+                width: rem(290);
                 background-color: #F7F7F7;
                 padding: 5px 10px;
                 position: absolute;
                 z-index: 1;
                 opacity: 0;
                 bottom: 152%;
-                left: -307%;
+                left: -450%;
                 transition: opacity .5s;
                 -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
                 -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
@@ -29,7 +29,7 @@
                 }
 
                 @include helper-breakpoint-media-max($xs-max) {
-                    left: -460%;
+                    left: -650%;
                     width: 270px;
                 }
 
@@ -37,7 +37,7 @@
                     content: "";
                     position: absolute;
                     top: 100%;
-                    left: 50%;
+                    left: 78%;
                     margin-left: -5px;
                     border-top: 19px solid #f0f0f0;
                     border-bottom: 19px solid transparent;
@@ -45,7 +45,7 @@
                     border-left: 15px solid transparent;
 
                     @include helper-breakpoint-media-max($l-max) {
-                        left: 79%;
+                        left: 86%;
                     }
 
                     @include helper-breakpoint-media-max($xxs-max) {

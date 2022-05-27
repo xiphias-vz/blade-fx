@@ -207,9 +207,9 @@
                 }
             }
 
-            @include helper-breakpoint-media-max($xs-max) {
-                display: block !important;
-            }
+            //@include helper-breakpoint-media-max($xs-max) {
+            //    display: block !important;
+            //}
         }
 
         textarea {
