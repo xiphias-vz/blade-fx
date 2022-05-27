@@ -134,7 +134,7 @@
             font-size: rem(11);
             @include helper-breakpoint-media-max($sm-max){
                 margin-top: rem(12);
-                min-width: 40%;
+                min-width: 70%;
                 font-size: rem(22);
                 margin-right: rem(10);
             }
@@ -226,7 +226,7 @@
                 border-top-right-radius: rem(35);
                 border-top-left-radius: rem(35);
                 border-bottom-left-radius: rem(35);
-                min-width: 40%;
+                min-width: 70%;
 
                 @include helper-breakpoint-media-min($md-min){
                     min-width: 90%;
