@@ -10,6 +10,7 @@ namespace Pyz\Zed\MonitoringReport;
 use Pyz\Zed\Mail\Business\MailFacadeInterface;
 use Spryker\Client\Catalog\Plugin\Elasticsearch\Query\ProductCatalogSearchQueryPlugin;
 use Spryker\Client\Search\Dependency\Plugin\QueryInterface;
+use Spryker\Service\FileSystem\FileSystemServiceInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
@@ -23,6 +24,7 @@ class MonitoringReportDependencyProvider extends AbstractBundleDependencyProvide
     public const SERVICE_MAIL_CMS_BLOCK = 'SERVICE_MAIL_CMS_BLOCK';
     public const CLIENT_SEARCH = 'CLIENT_SEARCH';
     public const CATALOG_SEARCH_QUERY_PLUGIN = 'catalog search query plugin';
+    public const SERVICE_FLY_SYSTEM_SERVICE = 'SERVICE_FLY_SYSTEM_SERVICE';
 
     /**
      * @uses \Spryker\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin::SERVICE_TWIG
@@ -43,6 +45,7 @@ class MonitoringReportDependencyProvider extends AbstractBundleDependencyProvide
         $container = $this->addMailCmsBlockService($container);
         $container = $this->addStore($container);
         $container = $this->addSearchClient($container);
+        $container = $this->addFlySystemService($container);
 
         return $container;
     }
@@ -166,5 +169,19 @@ class MonitoringReportDependencyProvider extends AbstractBundleDependencyProvide
     protected function createCatalogSearchQueryPlugin(): QueryInterface
     {
         return new ProductCatalogSearchQueryPlugin();
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    private function addFlySystemService(Container $container): Container
+    {
+        $container->set(static::SERVICE_FLY_SYSTEM_SERVICE, function (Container $container): FileSystemServiceInterface {
+            return $container->getLocator()->fileSystem()->service();
+        });
+
+        return $container;
     }
 }

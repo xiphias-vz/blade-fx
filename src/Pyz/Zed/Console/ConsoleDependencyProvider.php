@@ -48,6 +48,7 @@ use Pyz\Zed\Maintenance\Communication\Console\MaintenanceDisableConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceEnableConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\AdditionalMonitoringProcedure;
 use Pyz\Zed\MonitoringReport\Communication\Console\AlarmEmailConsole;
+use Pyz\Zed\MonitoringReport\Communication\Console\CashierFileFTPConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\CategoryCheckConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\JenkinsCheckConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\JenkinsCheckUrlConsole;
@@ -412,7 +413,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new CategoryCheckConsole(),
             new AdditionalMonitoringProcedure(),
             new ZeroPricesReportMailConsole(),
-
+            new CashierFileFTPConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

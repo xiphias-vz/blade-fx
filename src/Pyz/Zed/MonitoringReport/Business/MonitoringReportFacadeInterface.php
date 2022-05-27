@@ -22,4 +22,9 @@ interface MonitoringReportFacadeInterface
      * @return mixed
      */
     public function sendAlarmMail();
+
+    /**
+     * @return void
+     */
+    public function checkCashierFilesOnFtp(): void;
 }

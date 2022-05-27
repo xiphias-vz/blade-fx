@@ -37,6 +37,11 @@ class ZeroPricesReportPlugin extends AbstractPlugin
         }
     }
 
+    /**
+     * @param array $data
+     *
+     * @return string
+     */
     protected function getEmailBody(array $data): string
     {
         $header = "<table>

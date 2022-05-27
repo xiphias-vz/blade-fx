@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\MonitoringReport;
 
+use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\Mail\MailConstants;
 use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
@@ -56,5 +57,29 @@ class MonitoringReportConfig extends AbstractBundleConfig
     public function getEmailSendHeartbeatUrl(): string
     {
         return $this->get(MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCashierOrderSFTPFolder(): string
+    {
+        return $this->get(CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCashierOrderXmlSFTPFolder(): string
+    {
+        return $this->get(CashierOrderExportConstants::SFTP_CASHIER_ORDER_XML_FILES_FOLDER_KEY);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCashierOrderTxtSFTPFolder(): string
+    {
+        return $this->get(CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY);
     }
 }

@@ -10,6 +10,7 @@ namespace Pyz\Zed\MonitoringReport\Business;
 use Pyz\Service\MailCmsBlock\MailCmsBlockServiceInterface;
 use Pyz\Zed\Mail\Business\MailFacadeInterface;
 use Pyz\Zed\MonitoringReport\Business\Mailer\MonitoringReportMailer;
+use Pyz\Zed\MonitoringReport\Business\Model\FtpChecker\FtpChecker;
 use Pyz\Zed\MonitoringReport\MonitoringReportDependencyProvider as MonitoringReportMonitoringReportDependencyProvider;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
@@ -36,6 +37,18 @@ class MonitoringReportBusinessFactory extends AbstractBusinessFactory
             $this->getStore()
         );
     }
+
+    /**
+     * @return \Pyz\Zed\MonitoringReport\Business\Model\FtpChecker\FtpChecker
+     */
+    public function getFtpCashierFileChecker(): FtpChecker
+    {
+        return new FtpChecker(
+            $this->getProvidedDependency(MonitoringReportMonitoringReportDependencyProvider::SERVICE_FLY_SYSTEM_SERVICE),
+            $this->getConfig()
+        );
+    }
+
 
     /**
      * @return \Pyz\Zed\Mail\Business\MailFacadeInterface

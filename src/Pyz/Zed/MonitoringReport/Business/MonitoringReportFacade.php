@@ -82,4 +82,12 @@ class MonitoringReportFacade extends AbstractFacade implements MonitoringReportF
 
         return [];
     }
+
+    /**
+     * @return void
+     */
+    public function checkCashierFilesOnFtp(): void
+    {
+        $this->getFactory()->getFtpCashierFileChecker()->checkExportOnFtp();
+    }
 }
