@@ -268,6 +268,7 @@ $header-sticky-height: rem(69, number);
             z-index: $setting-zi-header + 3;
             display: flex;
             flex-direction: row;
+            align-items: center;
 
             &--checkout {
                 display: flex;
@@ -492,32 +493,7 @@ $header-sticky-height: rem(69, number);
         }
 
         &__logo-CZ {
-            display: flex;
-            position: fixed;
-            left: rem(60);
-            top: rem(5);
-            width: rem(90);
 
-            @include helper-breakpoint-media-max($lg-max) {
-                display: flex;
-                align-items: center;
-                height: 100%;
-                position: absolute;
-                top: rem(0);
-                left: rem(0);
-                margin-top: rem(5);
-            }
-
-            @include helper-breakpoint-media-max($sm-max) {
-                align-items: center;
-                margin-left: 0;
-            }
-
-            @include helper-breakpoint-media-max($xs-max) {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
         }
 
         .navigation-top-left-mobile__item {

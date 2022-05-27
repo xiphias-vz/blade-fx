@@ -230,10 +230,12 @@
                                 {% endif %}
 
                             {% block brand %}
-                                {% if productSupplier %}
-                                <div class="{{ config.name }}__brand">
-                                    <p>{{productSupplier}}</p>
-                                </div>
+                                {% if app.currentCodeBucket == 'DE' %}
+                                    {% if productSupplier %}
+                                        <div class="{{ config.name }}__brand">
+                                            <p>{{productSupplier}}</p>
+                                        </div>
+                                    {% endif %}
                                 {% endif %}
                             {% endblock%}
 
