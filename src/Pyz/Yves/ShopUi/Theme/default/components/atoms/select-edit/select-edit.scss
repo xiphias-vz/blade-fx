@@ -1,8 +1,0 @@
-@mixin shop-ui-select-edit($name: '.select-edit') {
-    #{$name} {
-
-        @content;
-    }
-}
-
-@include shop-ui-select-edit();

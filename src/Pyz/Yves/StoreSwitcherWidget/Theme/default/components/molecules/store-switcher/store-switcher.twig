@@ -52,6 +52,23 @@
                     {% endif %}
                 {% endfor %}
             {% endblock %}
+            {% block icon %}
+                {% if app.currentCodeBucket == 'DE' %}
+                    {% include atom('icon') with {
+                        class: config.name ~ '__edit',
+                        data: {
+                            name: 'edit'
+                        }
+                    } only %}
+                {% else %}
+                    {% include atom('icon') with {
+                        class: config.name ~ '__edit-cz',
+                        data: {
+                            name: 'edit'
+                        }
+                    } only %}
+                {% endif %}
+            {% endblock %}
         {% endembed %}
     {% else %}
         {% embed molecule('custom-select-cz') with {

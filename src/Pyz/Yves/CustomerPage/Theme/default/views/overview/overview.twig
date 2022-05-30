@@ -65,19 +65,6 @@
                         title: 'customer.account.profile_data' | trans,
                     },
                 } only %}
-                    {% block additionalContent %}
-                        {% if app.currentCodeBucket == 'DE' %}
-                            <a href="{{ url('customer/profile') }}" class="link link--darkest link--edit col">
-                                {% include molecule('icon-tooltip') with {
-                                    modifiers: ['medium-up'],
-                                    data: {
-                                        icon: 'edit',
-                                        text: 'general.edit.button' | trans,
-                                    },
-                                } only %}
-                            </a>
-                        {% endif %}
-                    {% endblock %}
                 {% endembed %}
 
                 {% if app.currentCodeBucket == 'DE'%}

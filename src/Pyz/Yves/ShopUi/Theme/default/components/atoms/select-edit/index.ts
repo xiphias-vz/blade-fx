@@ -1,1 +1,0 @@
-import './select-edit.scss';
