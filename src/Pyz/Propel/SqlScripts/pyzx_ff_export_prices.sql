@@ -9,7 +9,7 @@ BEGIN
          , ROUND(sppsDef.gross_price / 100, 2) as price
          , CASE WHEN sppsDef.gross_price < orig.gross_price THEN ROUND(orig.gross_price / 100, 2) ELSE null end as pseudoPrice
          , ROUND(sa.quantity) as quantity
-         , CASE WHEN sppsDef.gross_price < orig.gross_price THEN 1 else 0 end as sale
+         , CASE WHEN sppsDef.gross_price < orig.gross_price THEN 1 else CASE WHEN prom.name is not null then 1 else 0 end end as sale
          , null as ShelfInfo
          , CASE WHEN sppsDef.gross_price < orig.gross_price THEN
                     CONCAT('-', FLOOR((1 - (sppsDef.gross_price / 100) / (orig.gross_price / 100)) * 100),'%')
@@ -25,7 +25,7 @@ BEGIN
                ELSE
                    REPLACE(CONCAT(ROUND(sppsDef.gross_price / 100, 2), ' ', sc.symbol, '/1 ',  JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]')), '.', ',')
             END as basePrice
-        , prom.name as Promotion
+        , CASE WHEN sppsDef.gross_price < orig.gross_price THEN prom.name ELSE null END as Promotion
         , sp.id_product
         , now()
     FROM spy_product sp
