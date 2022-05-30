@@ -8,7 +8,7 @@
 $(document).ready(function() {
 
     var $pickingDateField = $('.js-picking-date-field');
-
+    const pickingZoneOrderExportFormPickingData = document.querySelector('#picking_zone_order_export_form_picking_date');
     $pickingDateField.datepicker({
         dateFormat: 'yy-mm-dd',
         changeMonth: true,
@@ -19,10 +19,10 @@ $(document).ready(function() {
     var $storeField = $('.js-store-field');
 
     $storeField[0].addEventListener('change', event=>{
-        sendStoreDataToIndexController(event.target.value)
+        sendStoreDataToIndexController(event.target.value, pickingZoneOrderExportFormPickingData.value)
     });
 
-    function sendStoreDataToIndexController(storeName) {
+    function sendStoreDataToIndexController(storeName, pickingZoneOrderExportFormPickingDate) {
         let url = "";
         let originUrlTwo = window.location.origin + '/picking-zone-order-export/picking-zone-order-items-export';
         if(window.location.href === originUrlTwo){
@@ -32,6 +32,7 @@ $(document).ready(function() {
         }
         const dataToSend = {};
         dataToSend.storeName = storeName;
+        dataToSend.exactDate = pickingZoneOrderExportFormPickingDate;
         url = url.trim();
         $.ajax(url, {
             type: 'POST',

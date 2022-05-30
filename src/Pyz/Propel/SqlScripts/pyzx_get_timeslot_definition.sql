@@ -17,7 +17,7 @@ BEGIN
         SET @work_day = 'x9xw';
     END IF;
 
-    SELECT pts.time_slot
+    SELECT DISTINCT pts.time_slot
     FROM pyz_time_slot pts
     WHERE pts.merchant_reference = @merchant_reference
         AND (pts.`day` = @work_day OR (@exact_date > '1990-01-01' AND pts.`day` = DAYNAME(@exact_date)))

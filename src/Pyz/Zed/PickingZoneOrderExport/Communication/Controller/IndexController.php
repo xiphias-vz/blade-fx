@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class IndexController extends AbstractController
 {
+    public const EXACT_DATE = 'exactDate';
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -67,6 +68,8 @@ class IndexController extends AbstractController
     {
         $timeSlotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
         $storeName = $request->request->get('storeName');
+        $timeSlotDefinitionTransfer->setExactDate($request->request->get(static::EXACT_DATE));
+
         $result = $this->getFactory()->getTimeSlotsFacade()->getTimeslotDefinition($timeSlotDefinitionTransfer, $storeName);
 
         if (empty($result)) {

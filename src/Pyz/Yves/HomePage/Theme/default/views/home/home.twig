@@ -83,12 +83,12 @@
                             {% endblock %}
                         {% endembed %}
                     {% endblock %}
-                    {% block downbar %}
-                            {% cms_slot 'downbar-slt' %}
-                    {% endblock %}
             </div>
         </div>
     </div>
 </div>
+    {% block downbar %}
+        {% cms_slot 'downbar-slt' %}
+    {% endblock %}
 </main>
 {% endblock %}
