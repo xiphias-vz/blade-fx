@@ -12,6 +12,8 @@ $l-min: 1023px;
 $l-max: 1100px;
 $xl-max: 1300px;
 $xxl-min: 1301px;
+$large-min: 1024px;
+$medium-max: 767px;
 
 $setting-breakpoints: (
     sm: ($sm-min, $sm-max),

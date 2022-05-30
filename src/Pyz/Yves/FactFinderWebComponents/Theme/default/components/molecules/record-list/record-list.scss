@@ -55,7 +55,7 @@
                 flex-flow: wrap;
             }
 
-            @include helper-breakpoint-media-between($md-min, $lg-min) {
+            @include helper-breakpoint-media-between($md-min, $medium-max) {
                 .col--md-3 {
                     width: 46%;
                     min-width: 46%;
@@ -94,17 +94,17 @@
             }
         }
 
-            @include helper-breakpoint-media-min($lg-min) {
+            @include helper-breakpoint-media-min($medium-max) {
                 .col--lg-3 {
-                    width: 31%;
-                    min-width: 31%;
+                    width: 30.5%;
+                    min-width: 30.5%;
                 }
             }
 
-            @include helper-breakpoint-media-min($min: 1025px){
+            @include helper-breakpoint-media-min($large-min){
             .col--lg-3{
-                width: 23.7%;
-                min-width: 23.7%;
+                width: 23.6%;
+                min-width: 23.6%;
             }
         }
 
