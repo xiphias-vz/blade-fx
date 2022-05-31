@@ -73,9 +73,9 @@ class FtpChecker
 
         foreach ($this->files as $file) {
             if ($file[static::IS_XML]) {
-                $path = '/' . $this->monitoringConfig->getCashierOrderXmlSFTPFolder() . '/archive';
+                $path = '/' . $this->monitoringConfig->getCashierOrderXmlSFTPFolder() . '/archiv';
             } else {
-                $path = '/' . $this->monitoringConfig->getCashierOrderTxtSFTPFolder() . '/archive';
+                $path = '/' . $this->monitoringConfig->getCashierOrderTxtSFTPFolder() . '/archiv';
             }
             $this->checkIfFileExists($path);
             if (count($this->files) > 0) {
@@ -122,7 +122,7 @@ class FtpChecker
                 static::EXPORT_XML_FILE_NAME_DEFAULT_PREFIX,
                 $file[static::FILIAL_NUMBER],
                 $dateTime,
-                $file['order_reference'],
+                $this->calculateOrderNumberInFileName($file[static::ID_ORDER]),
                 static::EXPORT_ARCHIVE_XML_FILE_EXTENSION
             );
         }
@@ -219,5 +219,21 @@ class FtpChecker
         if ($query->isNew()) {
             $query->save();
         }
+    }
+
+
+    /**
+     * @param string $idSalesOrder
+     *
+     * @return string
+     */
+    public function calculateOrderNumberInFileName(string $idSalesOrder)
+    {
+        $numlength = strlen((string)$idSalesOrder);
+        $numberOfZeroes = 9 - $numlength;
+        $result = str_repeat('0', $numberOfZeroes);
+        $result .= $idSalesOrder;
+
+        return $result;
     }
 }

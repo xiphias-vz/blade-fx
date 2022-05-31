@@ -49,6 +49,7 @@ class MonitoringReportBusinessFactory extends AbstractBusinessFactory
         );
     }
 
+
     /**
      * @return \Pyz\Zed\Mail\Business\MailFacadeInterface
      */
