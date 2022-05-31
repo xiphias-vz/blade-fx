@@ -72,52 +72,51 @@ BEGIN
              inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
              inner join spy_store ss on pipp.store  = ss.name
              inner join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
-    where pipp.pseudoprice > 0
+    where pipp.promotion is not null
       and pipp.price > 0
-      and not pipp.promotionstart is null;
+      and pipp.promotionstart is not null;
 
     insert into tmp_tbl_price
     (id_store, id_price_product, fk_price_type, id_product_abstract, price, weightPerItem, promotion, promotionstart, promotionend, taxRate, price_imp)
     select distinct ss.id_store, spp.id_price_product, 2 as fk_price_type, spa.id_product_abstract, pipp.pseudoprice * 100 as price
-              , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
-              , pipp.promotion, pipp.promotionstart, pipp.promotionend
-              , str.rate as taxRate, pipp.pseudoprice
+                  , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
+                  , pipp.promotion, pipp.promotionstart, pipp.promotionend
+                  , str.rate as taxRate, pipp.pseudoprice
     from pyz_imp_price_product pipp
-         inner join spy_product sp on pipp.sapnumber = sp.sap_number and (pipp.gtin = sp.sku or pipp.gtin is null)
-         inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
-         inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
-         inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
-         inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
-         inner join spy_store ss on pipp.store  = ss.name
-         inner join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
-    where pipp.pseudoprice > 0
+             inner join spy_product sp on pipp.sapnumber = sp.sap_number and (pipp.gtin = sp.sku or pipp.gtin is null)
+             inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
+             inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
+             inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
+             inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
+             inner join spy_store ss on pipp.store  = ss.name
+             inner join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
+    where pipp.promotion is not null
       and pipp.price > 0
-      and not pipp.promotionstart is null;
+      and pipp.promotionstart is not null;
 
 
     /* insert default prices in temp table tmp_tbl_price*/
     insert into tmp_tbl_price
     (id_store, id_price_product, fk_price_type, id_product_abstract, price, weightPerItem, promotion, promotionstart, promotionend, taxRate, price_imp)
     select distinct ss.id_store, spp.id_price_product, 1 as fk_price_type, spa.id_product_abstract, pipp.price * 100 as price
-              , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
-              , null as promotion, null as promotionstart, null as promotionend
-              , str.rate as taxRate, pipp.price
+                  , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
+                  , null as promotion, null as promotionstart, null as promotionend
+                  , str.rate as taxRate, pipp.price
     from pyz_imp_price_product pipp
-         inner join spy_product sp on pipp.sapnumber = sp.sap_number and (pipp.gtin = sp.sku or pipp.gtin is null)
-         inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
-         inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
-         inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
-         inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
-         inner join spy_store ss on pipp.store  = ss.name
-         inner join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
+             inner join spy_product sp on pipp.sapnumber = sp.sap_number and (pipp.gtin = sp.sku or pipp.gtin is null)
+             inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
+             inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
+             inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
+             inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
+             inner join spy_store ss on pipp.store  = ss.name
+             inner join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
     where pipp.price > 0
-      and (pipp.pseudoprice = 0 or pipp.promotionstart is null);
+      and ((pipp.pseudoprice = 0 and pipp.promotion is null) or pipp.promotionstart is null);
 
     CREATE INDEX u ON tmp_tbl_price (fk_price_type, id_product_abstract);
 
     update tmp_tbl_price
         set net_price = price * (1 - (taxRate / 100));
-
 
     /* populating spy_price_product_schedule data */
     insert into spy_price_product_schedule_list
