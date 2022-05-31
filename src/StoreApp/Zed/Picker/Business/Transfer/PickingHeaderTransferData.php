@@ -165,7 +165,7 @@ class PickingHeaderTransferData
                 inner join spy_oms_order_item_state soois
                     on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
                 inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
-             inner join spy_merchant_sales_order smso on sso.id_sales_order = smso.fk_sales_order
+             inner join spy_merchant_sales_order smso on ssoi.fk_sales_order = smso.fk_sales_order
              where soois.name in('" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "', '" . OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES . "')
                 and ppz.id_picking_zone = " . $idZone . "
                 and (smso.requested_delivery_date > DATE_ADD(now(), INTERVAL " . PickingZoneRepository::PICKING_DATE_INTERVAL . " day))
