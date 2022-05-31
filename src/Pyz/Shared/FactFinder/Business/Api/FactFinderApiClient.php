@@ -303,4 +303,16 @@ class FactFinderApiClient
             }
         }
     }
+
+    /**
+     * @param string $merchantReference
+     *
+     * @return array
+     */
+    public static function getNavigation(string $merchantReference): array
+    {
+        $url = static::getRootUrl() . 'navigation/category/' . static::getChannel() . '?marketId=' . $merchantReference;
+
+        return static::getData($url, []);
+    }
 }

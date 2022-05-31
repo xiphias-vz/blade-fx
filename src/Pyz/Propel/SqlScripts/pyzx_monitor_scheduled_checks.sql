@@ -131,4 +131,153 @@ BEGIN
     END;
     END IF;
 
+    IF (SELECT 1 = 1 FROM pyz_monitor_scheduled_checks pmsc
+        WHERE pmsc.`key` = 'ORDER_CREATION_CHECK' AND pmsc.last_executed < DATE_ADD(NOW(), INTERVAL pmsc.executed_every_x_minutes * (-1) MINUTE)
+          AND NOT HOUR(pmsc.last_executed) IN (0, 1, 2, 3, 4, 23)
+    ) THEN
+    BEGIN
+
+	    IF NOT EXISTS(select * from spy_sales_order sso where sso.created_at > (SELECT pmsc.last_executed FROM pyz_monitor_scheduled_checks pmsc WHERE pmsc.`key` = 'ORDER_CREATION_CHECK')) THEN
+        BEGIN
+            SELECT @last_created_at := MAX(sso.created_at)
+            FROM spy_sales_order sso;
+
+            INSERT INTO pyz_email_send
+            (sender_job_description, send_to_email, subject, body_description, is_html, created_at)
+            SELECT 'Order creation check', pmed.send_to_email, 'Order creation check'
+                , CONCAT('Last order created at '
+                , DATE_FORMAT(@last_created_at, "%d.%m.%Y %H:%i")
+                , '. Time passed since the last creation: '
+                , TIMEDIFF(NOW(), @last_created_at)
+                , ' hours.'
+                ) as emailBody
+                 , 0, NOW()
+            FROM pyz_monitor_email_definition pmed
+            WHERE pmed.role_name = 'ORDER_CREATION_CHECK';
+
+        END;
+        END IF;
+
+        UPDATE pyz_monitor_scheduled_checks
+        SET last_executed = NOW()
+        WHERE `key` = 'ORDER_CREATION_CHECK';
+
+    END;
+    END IF;
+
+    IF (SELECT 1 = 1 FROM pyz_monitor_scheduled_checks
+        WHERE `key` = 'PRICE_CHECK'
+          AND last_executed < DATE_ADD(NOW(), INTERVAL executed_every_x_minutes * (-1) MINUTE)
+          AND NOT HOUR(NOW()) in (23, 0, 1, 2, 3, 4, 5, 6, 7)
+    ) THEN
+    BEGIN
+
+        CREATE TEMPORARY TABLE tbl_prices AS
+        SELECT sm.filial_number as storeID
+             , sppsDef.gross_price as price
+             , cast(CASE WHEN sppsDef.gross_price < orig.gross_price THEN ROUND(orig.gross_price / 100, 2) ELSE null end as int) as pseudoPrice
+             , ROUND(sa.quantity) as quantity
+             , sppsDef.price_per_kg
+             , cast(JSON_VALUE(spaps.`data`, '$.search-result-data.prices.*.PRICE_PER_KG.DEFAULT') as int) as price_per_kg_search
+             , cast(JSON_VALUE(spaps.`data`, '$.search-result-data.prices.*.GROSS_MODE.DEFAULT') as int) as gross_price_search
+             , cast(JSON_VALUE(sppas.`data`, '$.prices.*.PRICE_PER_KG.DEFAULT') as int) as price_per_kg_pdp
+             , cast(JSON_VALUE(sppas.`data`, '$.prices.*.GROSS_MODE.DEFAULT') as int) as gross_price_pdp
+             , cast(pipp.price * 100 as int) as imp_price
+             , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
+             , sp.id_product
+             , sp.sku
+             , sp.sap_number
+             , sm.merchant_short_name as store
+        FROM spy_product sp
+         INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
+         INNER JOIN spy_price_product spp on spp.fk_product_abstract = sp.fk_product_abstract
+         INNER JOIN spy_price_product_store sppsDef on sppsDef.fk_price_product = spp.id_price_product
+            AND spp.fk_price_type = 1
+         INNER JOIN spy_product_abstract_store spas on spa.id_product_abstract = spas.fk_product_abstract
+            AND sppsDef.fk_store = spas.fk_store
+         INNER JOIN spy_currency sc on sppsDef.fk_currency = sc.id_currency
+         INNER JOIN spy_price_product_default sppd on sppd.fk_price_product_store = sppsDef.id_price_product_store
+         INNER JOIN spy_availability sa on sa.sku = sp.sku
+            AND sa.fk_store = sppsDef.fk_store
+         INNER JOIN spy_merchant sm on sm.fk_store = sppsDef.fk_store
+         LEFT JOIN
+        (
+         SELECT sppsOrig.fk_store, sppsOrig.gross_price, sppOrig.fk_product_abstract
+         FROM spy_price_product sppOrig
+                  INNER JOIN spy_price_product_store sppsOrig on sppsOrig.fk_price_product = sppOrig.id_price_product
+             AND sppOrig.fk_price_type = 2
+                  INNER JOIN spy_price_product_default sppdOrig on sppdOrig.fk_price_product_store = sppsOrig.id_price_product_store
+        ) orig ON orig.fk_store = sa.fk_store
+            AND spp.fk_product_abstract = orig.fk_product_abstract
+         LEFT OUTER JOIN spy_product_abstract_page_search spaps on spaps.fk_product_abstract = sp.fk_product_abstract
+            AND sm.merchant_short_name = spaps.store
+         LEFT OUTER JOIN spy_price_product_abstract_storage sppas on sppas.fk_product_abstract = sp.fk_product_abstract
+            AND sm.merchant_short_name = sppas.store
+         LEFT OUTER JOIN pyz_imp_price_product pipp on sm.merchant_short_name = pipp.store
+            AND sp.sap_number = pipp.sapnumber AND (sp.sku = pipp.gtin OR pipp.gtin IS NULL)
+        WHERE IFNULL(sa.quantity, 0) > 0
+          AND sppsDef.gross_price > 0
+          AND sp.is_active = 1;
+
+
+        CREATE TEMPORARY TABLE tbl_result AS
+        select CONCAT(
+           '<tr><td>', store
+           , '</td><td>', sap_number
+           , '</td><td>', sku
+           , '</td><td>', price
+           , '</td><td>', ifnull(gross_price_search, '?')
+           , '</td><td>', ifnull(gross_price_pdp, '?')
+           , '</td><td>', ifnull(price_per_kg, '')
+           , '</td><td>', ifnull(price_per_kg_search, '')
+           , '</td><td>', ifnull(price_per_kg_pdp, '')
+           , '</td><td>', imp_price
+           , '</td><td>', ifnull(weightPerItem, '')
+           , '</td></tr>'
+           ) as item
+        from tbl_prices
+        where (price - ifnull(gross_price_search, 0) + ifnull(gross_price_pdp, 0) <> price)
+           or (ifnull(price_per_kg, 0) - ifnull(price_per_kg_search, 0) + ifnull(price_per_kg_pdp, 0) <> ifnull(price_per_kg, 0))
+           or (cast(ifnull(weightPerItem, 1) * imp_price as int) <> price)
+        order by store, sap_number, sku
+            limit 200;
+
+        SELECT @emailBody := GROUP_CONCAT(item  SEPARATOR '') as dat
+        FROM tbl_result;
+
+        IF(@emailBody is not null) THEN
+        BEGIN
+            SELECT @emailBody := CONCAT(
+                    '<table border="1" cellspacing="0">'
+                    , '<tr><th>' , 'store'
+                    , '</th><th>', 'sap_number'
+                    , '</th><th>', 'sku'
+                    , '</th><th>', 'price'
+                    , '</th><th>', 'gross_price_search'
+                    , '</th><th>', 'gross_price_pdp'
+                    , '</th><th>', 'price_per_kg'
+                    , '</th><th>', 'price_per_kg_search'
+                    , '</th><th>', 'price_per_kg_pdp'
+                    , '</th><th>', 'imp_price'
+                    , '</th><th>', 'weightPerItem'
+                    , '</th></tr>', @emailBody, '</table>');
+
+            INSERT INTO pyz_email_send
+                (sender_job_description, send_to_email, subject, body_description, is_html, created_at)
+            SELECT 'Price check', pmed.send_to_email, 'Price check', @emailBody, 1, NOW()
+            FROM pyz_monitor_email_definition pmed
+            WHERE pmed.role_name = 'PRICE_CHECK';
+        END;
+        END IF;
+
+        DROP TEMPORARY TABLE IF EXISTS tbl_prices;
+        DROP TEMPORARY TABLE IF EXISTS tbl_result;
+
+        UPDATE pyz_monitor_scheduled_checks
+            SET last_executed = NOW()
+        WHERE `key` = 'PRICE_CHECK';
+
+    END;
+    END IF;
+
 END;

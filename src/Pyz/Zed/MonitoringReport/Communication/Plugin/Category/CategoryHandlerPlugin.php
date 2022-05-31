@@ -14,6 +14,8 @@ use Generated\Shared\Search\PageIndexMap;
 use Generated\Shared\Transfer\ElasticsearchSearchContextTransfer;
 use Generated\Shared\Transfer\SearchContextTransfer;
 use InvalidArgumentException;
+use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
+use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
 use Pyz\Shared\PropelExtension\PropelExtension;
 use Pyz\Zed\MonitoringReport\Communication\Console\CategoryCheckConsole;
 use Spryker\Client\Search\Dependency\Plugin\QueryInterface;
@@ -46,6 +48,19 @@ class CategoryHandlerPlugin extends AbstractPlugin
      */
     protected function updateSearchResults()
     {
+        $codeBucket = getenv('SPRYKER_CODE_BUCKET');
+        if ($codeBucket === "DE") {
+            $this->updateSearchResultsDE();
+        } else {
+            $this->updateSearchResultsCZ();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateSearchResultsCZ()
+    {
         $data = $this->getRepository()->getCategoryMonitoringData();
         /**@var \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories $item */
         foreach ($data as $item) {
@@ -57,6 +72,44 @@ class CategoryHandlerPlugin extends AbstractPlugin
                 $item->save();
             }
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateSearchResultsDE()
+    {
+        $activeMerchanList = SpyMerchantQuery::create()->findByIsActive(true);
+        foreach ($activeMerchanList as $merchant) {
+            $ffData[$merchant->getMerchantShortName()] = $this->getFactFinderCategories($merchant->getMerchantReference());
+        }
+        $data = $this->getRepository()->getCategoryMonitoringData();
+        /**@var \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories $item */
+        foreach ($data as $item) {
+            if ($item->getCategoryName() != self::NO_CATEGORY) {
+                $hits = $this->getFactFinderTotalHits($ffData, $item->getCategoryName(), $item->getStoreName());
+                $item->setNumberOfProductsSearch($hits);
+                $item->save();
+            }
+        }
+    }
+
+    /**
+     * @param array $ffData
+     * @param string $categoryName
+     * @param string $storeName
+     *
+     * @return int
+     */
+    protected function getFactFinderTotalHits(array $ffData, string $categoryName, string $storeName): int
+    {
+        foreach ($ffData[$storeName]["facets"][0]["elements"] as $item) {
+            if ($item["text"] === $categoryName) {
+                return $item["totalHits"];
+            }
+        }
+
+        return 0;
     }
 
     /**
@@ -113,6 +166,16 @@ class CategoryHandlerPlugin extends AbstractPlugin
         $this->addCategoryProductSorting($searchQuery, $idCategoryNode);
 
         return $this->getFactory()->getSearchClient()->search($searchQuery);
+    }
+
+    /**
+     * @param string $merchantReference
+     *
+     * @return array
+     */
+    protected function getFactFinderCategories(string $merchantReference)
+    {
+        return FactFinderApiClient::getNavigation($merchantReference);
     }
 
     /**
