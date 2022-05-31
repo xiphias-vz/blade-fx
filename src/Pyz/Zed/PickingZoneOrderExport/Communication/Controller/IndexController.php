@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 class IndexController extends AbstractController
 {
     public const EXACT_DATE = 'exactDate';
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *

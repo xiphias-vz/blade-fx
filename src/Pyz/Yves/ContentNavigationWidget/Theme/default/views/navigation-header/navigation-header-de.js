@@ -535,9 +535,13 @@ function checkDiscountLabel(element) {
 }
 
 function checkOriginalAndDefaultPrices(element, flag) {
+
     elOrig = flag === 'ff-record' ? element.getElementsByClassName('record-list__amount record-list__amount--original')[0] : element.getElementsByClassName('suggest__amount suggest__amount--original')[0];
     elDef = flag === 'ff-record' ? element.getElementsByClassName('record-list__amount record-list__amount-red')[0] : element.getElementsByClassName('suggest__amount suggest__amount-red')[0];
+    elPromotion = flag === 'ff-record' ? element.getElementsByClassName('record-list__uvp')[0] : element.getElementsByClassName('suggest__uvp')[0];
+    elSale = flag === 'ff-record' ? element.getElementsByClassName('record-list__saleValue')[0] : element.getElementsByClassName('suggest__saleValue')[0];
     if (elOrig !== undefined && elDef !== undefined) {
+
         if(elOrig.innerText.trim() === elDef.innerText.trim()) elOrig.innerHTML = "";
         if(elDef.innerText.trim() === "") {
             elDef.innerHTML = "---";
@@ -552,11 +556,16 @@ function checkOriginalAndDefaultPrices(element, flag) {
                 var p2 = parseFloat(elOrig.innerText).toFixed(2).toString();
                 elOrig.innerText = p2.replace('.', ',') + ' €';
                 elDef.style.color = "#E30613";
-            } else {
+            }
+            else if (elSale.value === 'true') {
+                elDef.style.color = "#E30613";
+            }
+            else {
                 elDef.style.color = "#373936";
                 elOrig.style.display="none";
                 if(flag === 'ff-suggest-item') {
                     elOrig.style.display = "none";
+                    elPromotion.display = "none";
                     elDef.style.marginBottom = "0";
                 }
             }
@@ -597,6 +606,7 @@ function addParenthesisToGrundPreis(element){
 }
 
 function addUvpToPrice(element, flag){
+    elOrig = flag === 'ff-record' ? element.getElementsByClassName('record-list__amount record-list__amount--original')[0] : element.getElementsByClassName('suggest__amount suggest__amount--original')[0];
     let el = '';
     if (flag === 'ff-record') {
         el = element.querySelector('.record-list__uvp');
@@ -608,7 +618,7 @@ function addUvpToPrice(element, flag){
         let text = el.innerText;
         if(text !== ""){
             text = text.trim();
-            if (text === 'UVP') {
+            if (text === 'UVP' && elOrig.innerText.length > 0) {
                 el.classList.remove('is-hidden');
             }
         }

@@ -9,7 +9,6 @@ namespace Pyz\Zed\Sales\Communication\Controller;
 
 use DateTime;
 use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
-use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
