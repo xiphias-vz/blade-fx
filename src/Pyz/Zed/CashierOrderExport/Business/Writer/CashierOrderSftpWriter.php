@@ -44,6 +44,7 @@ class CashierOrderSftpWriter implements CashierOrderSftpWriterInterface
      */
     public function sendFileToFtp(string $archiveFileName, string $archiveRemoteFilePath): void
     {
+
         $content = $this->fileSystemService->read(
             (new FileSystemQueryTransfer())
                 ->setPath($archiveFileName)

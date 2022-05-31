@@ -80,9 +80,9 @@ class FtpChecker
             $this->checkIfFileExists($path);
             if (count($this->files) > 0) {
                 if ($file[static::IS_XML]) {
-                    $path = '/' . $this->monitoringConfig->getCashierOrderXmlSFTPFolder() . '/' . $file[static::FILIAL_NUMBER];
+                    $path = '/' . $this->monitoringConfig->getCashierOrderXmlSFTPFolder();
                 } else {
-                    $path = '/' . $this->monitoringConfig->getCashierOrderTxtSFTPFolder() . '/' . $file[static::FILIAL_NUMBER];
+                    $path = '/' . $this->monitoringConfig->getCashierOrderTxtSFTPFolder();
                 }
                 $this->checkIfFileExists($path);
                 break;
@@ -159,7 +159,17 @@ class FtpChecker
      */
     protected function checkIfFileExists(string $path)
     {
+        $i = 0;
         foreach ($this->files as $fileKey => $file) {
+            if(!strpos($path, 'archiv'))
+            {
+                if($i > 0){
+                    $path = substr($path, 0,-5);
+                }
+                $path .= '/' . $file[static::FILIAL_NUMBER];
+                $i++;
+            }
+
             if ($file[static::IS_XML]) {
                 $fileNames = $this->structureFileXmlName($file);
             } else {
@@ -220,6 +230,7 @@ class FtpChecker
             $query->save();
         }
     }
+
 
     /**
      * @param string $idSalesOrder
