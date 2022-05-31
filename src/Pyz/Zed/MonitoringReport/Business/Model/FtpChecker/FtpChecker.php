@@ -221,7 +221,6 @@ class FtpChecker
         }
     }
 
-
     /**
      * @param string $idSalesOrder
      *
