@@ -23,9 +23,9 @@ BEGIN
                    REPLACE(CONCAT((ROUND(sppsDef.gross_price / 100 / JSON_VALUE(spa.`attributes`, '$.grundpreisinhalt[0]') * JSON_VALUE(spa.`attributes`, '$.grundeinheit[0]'), 2)),
                                   ' ', sc.symbol ,'/', JSON_VALUE(spa.`attributes`, '$.grundeinheit[0]'), ' ', JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]')), '.', ',')
                ELSE
-                   REPLACE(CONCAT(ROUND(sppsDef.gross_price / 100, 2), ' ', sc.symbol, '/1 ',  JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]')), '.', ',')
+                   REPLACE(CONCAT(ROUND(sppsDef.gross_price / 100, 2), ' ', sc.symbol, '/1 ',  IFNULL(JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]'), '')), '.', ',')
             END as basePrice
-        , CASE WHEN sppsDef.gross_price < orig.gross_price THEN prom.name ELSE null END as Promotion
+        , prom.name as Promotion
         , sp.id_product
         , now()
     FROM spy_product sp
@@ -54,7 +54,7 @@ BEGIN
              select spps.fk_product_abstract, spps.fk_store, sppsl.name
              from spy_price_product_schedule_list sppsl
                       inner join spy_price_product_schedule spps on sppsl.id_price_product_schedule_list = spps.fk_price_product_schedule_list
-             where sppsl.is_active = 1 and sppsl.name = 'UVP'
+             where sppsl.is_active = 1
                and spps.is_current = 1
              GROUP BY spps.fk_product_abstract, spps.fk_store, sppsl.name
          ) prom on spa.id_product_abstract = prom.fk_product_abstract AND sa.fk_store = prom.fk_store
