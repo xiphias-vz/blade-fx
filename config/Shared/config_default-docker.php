@@ -369,7 +369,6 @@ $config[LogConstants::EXCEPTION_LOG_FILE_PATH_GLUE] = (bool)getenv('SPRYKER_DEBU
     ? $logDir . '/GLUE/exception.log'
     : 'php://stderr';
 
-$config[EventConstants::LOGGER_ACTIVE] = true;
 /* End Logging */
 
 // ----------- Kernel test

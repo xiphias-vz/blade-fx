@@ -129,8 +129,6 @@ $config[ErrorHandlerConstants::YVES_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/publi
 $config[ErrorHandlerConstants::ZED_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/Zed/errorpage/5xx-CZ.html';
 $config[ErrorHandlerConstants::ERROR_RENDERER] = WebHtmlErrorRenderer::class;
 
-$config[EventConstants::LOGGER_ACTIVE] = true;
-
 $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = ''; // This is needed in order for header.twig not to break
 
 $config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = '';

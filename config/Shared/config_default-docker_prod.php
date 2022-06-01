@@ -40,8 +40,6 @@ $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/pr
 
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'DE_prod';
 
-$config[EventConstants::LOGGER_ACTIVE] = true;
-
 // ---------- FACT-Finder NG API
 $config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder.de/fact-finder'; # Fact-Finder URL
 $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'Spryker'; # Fact-Finder channel value
