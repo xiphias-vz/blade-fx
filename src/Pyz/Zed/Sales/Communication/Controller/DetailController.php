@@ -252,10 +252,17 @@ class DetailController extends SprykerDetailController
         }
 
         $timeslotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
+        $timeslotDefinitionTransfer->setExactDate($deliveryDate);
         $timeslotDefinitionTransfer->setMerchantReference($merchantReference);
         $timeSlotsData = $this->getFactory()
             ->getTimeSlotsFacade()
             ->getTimeslotDefinition($timeslotDefinitionTransfer, "");
+        $hardCodedTimeSlot = array(
+            'time_slot' => '10:00-18:00'
+        );
+
+        $timeSlotsData[] = $hardCodedTimeSlot;
+
 
         foreach ($containers as $container) {
             $idZone = $container->getIdPickingZone();
