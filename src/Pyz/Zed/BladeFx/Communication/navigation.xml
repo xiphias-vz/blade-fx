@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <reports>
+        <label>Reports</label>
+        <title>Reports</title>
+        <bundle>blade-fx</bundle>
+        <icon>fa-book</icon>
+        <controller>index</controller>
+        <action>index</action>
+    </reports>
+</config>

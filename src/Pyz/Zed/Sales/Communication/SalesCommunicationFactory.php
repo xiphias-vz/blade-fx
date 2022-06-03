@@ -16,6 +16,7 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Propel;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Shared\Oms\OmsConfig;
+use Pyz\Zed\BladeFx\Business\BladeFxFacadeInterface;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantGui\MerchantGuiDependencyProvider;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
@@ -27,10 +28,13 @@ use Pyz\Zed\PickingZoneOrderExport\PickingZoneOrderExportDependencyProvider;
 use Pyz\Zed\Sales\Communication\Table\CapacitiesHistoryTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilder;
+use Pyz\Zed\Sales\Communication\Table\SalesOrderBladeFxReportsTable;
+use Pyz\Zed\Sales\Communication\Tabs\SalesOrderFormTabs;
 use Pyz\Zed\Sales\SalesDependencyProvider;
 use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Pyz\Zed\User\UserDependencyProvider;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
+use Spryker\Zed\Gui\Communication\Tabs\TabsInterface;
 use Spryker\Zed\Sales\Communication\SalesCommunicationFactory as SprykerSalesCommunicationFactory;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
 use Spryker\Zed\Sales\SalesDependencyProvider as SprykerSalesDependencyProvider;
@@ -225,6 +229,37 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
             ->find();
 
         return $containerEntity->getData();
+    }
+
+    /**
+     * @return \Pyz\Zed\BladeFx\Business\BladeFxFacadeInterface
+     */
+    public function getBladeFxFacade(): BladeFxFacadeInterface
+    {
+        return $this->getProvidedDependency(SalesDependencyProvider::BLADE_FX_FACADE);
+    }
+
+    /**
+     * @return \Spryker\Zed\Gui\Communication\Tabs\TabsInterface
+     */
+    public function createSalesOrderFormTabs(): TabsInterface
+    {
+        return new SalesOrderFormTabs();
+    }
+
+    /**
+     * @param string $orderReference
+     * @param int $idSalesOrder
+     *
+     * @return \Pyz\Zed\Sales\Communication\Table\SalesOrderBladeFxReportsTable
+     */
+    public function createSalesOrderBladeFxReportsTable(string $orderReference, int $idSalesOrder): SalesOrderBladeFxReportsTable
+    {
+        return new SalesOrderBladeFxReportsTable(
+            $this->getBladeFxFacade(),
+            $orderReference,
+            $idSalesOrder
+        );
     }
 
     /**

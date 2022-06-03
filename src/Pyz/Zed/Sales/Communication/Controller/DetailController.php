@@ -16,10 +16,10 @@ use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Shared\Acl\AclConstants;
 use Pyz\Shared\S3Constants\S3Constants;
+use Pyz\Zed\Sales\SalesConfig;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Shared\Config\Config;
 use Spryker\Zed\Sales\Communication\Controller\DetailController as SprykerDetailController;
-use Spryker\Zed\Sales\SalesConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -295,7 +295,26 @@ class DetailController extends SprykerDetailController
             'phone' => $phone,
             'cellPhone' => $cellPhone,
             'isTransportBoxEnabled' => $isDepositAllowed,
+            'orderTabs' => $this->getFactory()->createSalesOrderFormTabs()->createView(),
+            'salesOrderBladeFxReportsTable' => $this->getFactory()->createSalesOrderBladeFxReportsTable($orderReference, $idSalesOrder)->render(),
         ], $blockResponseData);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function orderBladeFxTableAction(Request $request): JsonResponse
+    {
+        $orderReference = $request->query->get(SalesConfig::PARAM_ORDER_REFERENCE);
+        $idSalesOrder = $this->castId($request->query->get(SalesConfig::PARAM_ID_SALES_ORDER));
+
+        $table = $this->getFactory()->createSalesOrderBladeFxReportsTable($orderReference, $idSalesOrder);
+
+        return $this->jsonResponse(
+            $table->fetchData()
+        );
     }
 
     /**
