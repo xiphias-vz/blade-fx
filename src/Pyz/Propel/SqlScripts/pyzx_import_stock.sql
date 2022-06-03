@@ -95,6 +95,18 @@ BEGIN
         from tmp_stock ts;
     END IF;
 
+    insert into pyz_product_abstract_store
+        (fk_product_abstract, fk_store)
+    select sp.fk_product_abstract, ss.id_store
+    from spy_product sp
+         inner join spy_store ss on 1 = 1
+         inner join spy_merchant sm on ss.name = sm.merchant_short_name
+            and sm.is_active = 1
+         left outer join pyz_product_abstract_store ppas on sp.fk_product_abstract = ppas.fk_product_abstract
+            AND ss.id_store = ppas.fk_store
+    WHERE sp.created_at > DATE_ADD(NOW(), INTERVAL -1 DAY)
+        AND ppas.id_product_abstract_store is null;
+
     update tmp_stock ts
         left outer join pyz_product_abstract_store ppas on ts.fk_product_abstract = ppas.fk_product_abstract and ts.fk_store = ppas.fk_store
     set ts.instock = 0
