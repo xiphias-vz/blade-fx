@@ -315,4 +315,16 @@ class FactFinderApiClient
 
         return static::getData($url, []);
     }
+
+    /**
+     * @param string $name
+     *
+     * @return array
+     */
+    public static function import(string $name): array
+    {
+        $url = static::getRootUrl() . 'import/' . $name . '?channel=' . static::getChannel();
+
+        return static::postData($url, []);
+    }
 }

@@ -12,7 +12,7 @@ use Elastica\JSON;
 use Orm\Zed\FactFinderExport\Persistence\PyzFactFinderEvent;
 use PDO;
 use Propel\Runtime\Propel;
-use Pyz\Zed\FactFinderExport\Business\Api\FactFinderApiClient;
+use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
 
 class FactFinderEventManager
 {
@@ -78,7 +78,7 @@ class FactFinderEventManager
             static::FF_EVENT_RECORD_UPDATE,
             static::FF_EVENT_GEODATA_UPDATE,
         ];
-        $api = new FactFinderApiClient();
+
         $result = [];
         foreach ($events as $event) {
             $dataDb = $this->getResult("call pyzx_get_factfinder_event('" . $event . "')");
@@ -88,7 +88,7 @@ class FactFinderEventManager
                     $data[] = JSON::Parse($item["publishData"]);
                 }
                 $itemsCount = count($data);
-                $result[$event] = $api->execByEventName($event, $data);
+                $result[$event] = FactFinderApiClient::execByEventName($event, $data);
                 for ($i = 0; $i < $itemsCount; $i++) {
                     $result[$event][$i]["fk_product_abstract"] = $dataDb[$i]["fk_product_abstract"];
                     if (!$result[$event][$i]["success"]) {

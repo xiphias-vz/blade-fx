@@ -40,6 +40,7 @@ use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderCategoriesConsole;
 use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderConsole;
 use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderExportConsole;
 use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderPriceConsole;
+use Pyz\Zed\FactFinderImport\Communication\Console\FactFinderImportConsole;
 use Pyz\Zed\GsoaRestApiClient\Communication\Console\GsoaProductConsole;
 use Pyz\Zed\GsoaRestApiClient\Communication\Console\GsoaTokenConsole;
 use Pyz\Zed\ImageImportToS3\Communication\Console\ImageImportToS3Console;
@@ -406,6 +407,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
 
             new FactFinderNgImportSearchConsole(),
             new FactFinderSdkExportConsole(),
+            new FactFinderImportConsole(),
 
             new JenkinsCheckConsole(),
             new JenkinsCheckUrlConsole(),
