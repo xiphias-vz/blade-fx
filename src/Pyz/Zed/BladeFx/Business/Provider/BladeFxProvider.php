@@ -110,9 +110,9 @@ class BladeFxProvider implements BladeFxProviderInterface
     public function provideWebPageUrl(UserBladeFxTransfer $userBladeFxTransfer): string
     {
         $bladeFxSaasHost = $this->bladeFxConfig->getBladeFxReportsHost();
-        $fileName = $this->bladeFxConfig->getBladeFxMobileFileUrl();
+        $fileName = $this->bladeFxConfig->getBladeFxPrintOutFileUrl();
 
-        return $bladeFxSaasHost . $fileName . '?Data=' . $userBladeFxTransfer->getUserData() . '|' . $userBladeFxTransfer->getReportId() . '|0|0|HTML&inline=1';
+        return $bladeFxSaasHost . $fileName .'?'. $userBladeFxTransfer->getUserData() . '&rep_id=' . $userBladeFxTransfer->getReportId() . '&typ=reportHTML';
     }
 
     /**
