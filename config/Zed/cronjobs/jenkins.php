@@ -171,7 +171,7 @@ if ($storeCodeBucket == 'CZ') {
 
     $jobs[] = [
         'name' => 'data-import-full',
-        'command' => 'vendor/bin/install -r gsoa-based-ost-import',
+        'command' => 'vendor/bin/install -r gsoa-based-full-import',
         'schedule' => '5 0 * * *',
         'enable' => true,
         'stores' => ['OST'],
