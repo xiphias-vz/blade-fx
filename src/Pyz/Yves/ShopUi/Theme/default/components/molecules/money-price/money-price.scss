@@ -51,6 +51,7 @@
     &__price-container {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
 
         &--summary {
             @include helper-breakpoint-media-between($lg-min, $lg-max) {
