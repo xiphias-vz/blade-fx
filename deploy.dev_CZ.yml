@@ -214,7 +214,7 @@ groups:
 services:
     database:
         engine: mysql
-        version: mariadb-10.4
+        version: mariadb-10.5
         root:
             username: "root"
             password: "secret"
