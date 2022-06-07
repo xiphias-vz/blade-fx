@@ -33,9 +33,8 @@
 
         &__link {
             font: fw(medium) rem(14) $setting-font-family;
-            /*margin-bottom: rem(14);*/
             padding: rem(8) rem(15) rem(8);
-            color: $setting-color-gray-13;
+            color: $setting-color-globusCZ-category-link;
             background: $setting-color-transparent;
             cursor: pointer;
             text-align: left;
@@ -57,7 +56,7 @@
             }
 
             &--active {
-                color: $setting-color-globus-lightOrange;
+                color: $setting-color-globusCZ-main-green;
                 text-decoration: underline;
             }
         }
