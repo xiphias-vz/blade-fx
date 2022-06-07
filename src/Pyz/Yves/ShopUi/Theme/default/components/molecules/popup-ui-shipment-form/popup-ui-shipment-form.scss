@@ -67,7 +67,7 @@
         &__container {
             flex-grow: 1;
             width: 100%;
-            height: rem(620);
+            height: rem(640);
             background-color: $setting-color-globus-white;
             border-radius: 0;
             padding: 0 rem(20);
@@ -347,10 +347,15 @@
             color: $setting-color-light-tentgray-5;
             border-radius: rem(2);
             padding: rem(20) rem(15);
-            height: rem(470);
+            height: rem(512);
 
             @include helper-breakpoint-media-min($xl-min) {
                 padding: rem(30);
+            }
+
+
+            @include helper-breakpoint-media-min($sm-max) {
+                height: rem(490);
             }
 
             &--shipment {
