@@ -114,10 +114,6 @@
             }
         }
 
-        &__input:focus + #{$name}__box {
-            border-color: $setting-color-fresh-orange-2;
-        }
-
         &__label {
             line-height: rem(18);
             font-weight: fw(medium);
