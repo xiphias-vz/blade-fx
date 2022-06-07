@@ -646,7 +646,7 @@ global.search.suggestion.see_all_products,"Zobrazit všechny výrobky",cs_CZ
 global.search.suggestion.see_all_products,Alle Produkte anzeigen,de_DE
 global.search.suggestion.see_all_products,See all products,en_US
 global.shop,"Globus výdejní služba",cs_CZ
-global.shop,Globus Abholservice,de_DE
+global.shop,"Globus Abholservice Online bestellen, im Markt abholen",de_DE
 global.shop,Spryker Click&Collect&Delivery Shop,en_US
 global.spryker.motto,"Kvalitní technologie",cs_CZ
 global.spryker.motto,Qualitäts-Technologie,de_DE
@@ -4862,7 +4862,7 @@ customer.account.shopping_list.item.added,The item was added to your shopping li
 customer.account.shopping_list.item.added,Der Artikel wurde deiner Einkaufsliste hinzugefügt,de_DE
 customer.account.shopping_list.item.failed,Failed to add product to shopping list.,en_US
 customer.account.shopping_list.item.failed,Hinzufügen zu die Einkaufsliste fehlgeschlagen.,de_DE
-globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,de_DE
+globus.metadata,"Globus | Unser Globus Bestell & Abholservice | Lebensmittel einfach online bestellen ✅ zum Wunschtermin abholen ✅ in gewohnter Globus Qualität",de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,en_US
 checkout.step.customer.login.invalidPassword,Ungültiger Benutzername oder Passwort.,de_DE
 checkout.step.customer.login.accountTemporarilyLockedOut,Ihr Account ist temporär gesperrt. Bitte nach einiger Zeit erneut versuchen.,de_DE
