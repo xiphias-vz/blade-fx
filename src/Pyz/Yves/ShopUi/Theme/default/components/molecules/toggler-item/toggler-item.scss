@@ -345,7 +345,8 @@
             div#{$name}__content {
                 padding-top: 0 !important;
                 overflow-y: auto;
-                max-height: rem(300);
+                max-height: rem(500);
+                overflow-x: clip;
 
                 &::-webkit-scrollbar {
                     width: rem(7);
