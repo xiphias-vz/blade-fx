@@ -19,12 +19,8 @@
         }
 
         a {
-            @include helper-effect-transition(color);
-            text-decoration: underline;
-            color: $setting-color-black;
-
-            &:hover {
-                color: $setting-color-alt;
+            .button button--with-icon, :hover {
+                color: $setting-color-white;
             }
         }
     }

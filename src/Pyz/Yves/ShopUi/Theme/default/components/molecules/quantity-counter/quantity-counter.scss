@@ -170,6 +170,11 @@
         &--counter-wishlist {
             border: 1px solid $setting-color-input-border-tentgray;
             border-radius: rem(24);
+
+            .quantity-counter__button--decr, .quantity-counter__button--incr {
+                border-color: $setting-color-forest-green;
+                color: $setting-color-forest-green;
+            }
         }
 
         @content;

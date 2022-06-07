@@ -97,11 +97,15 @@
 
             .change-cart-counter {
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 border: 1px solid $setting-color-lightest;
                 border-radius: 30px;
                 position: relative;
                 height: 40px;
+
+                a:focus {
+                    outline: none;
+                }
 
                 .message {
                     width: 190px;
@@ -155,7 +159,6 @@
 
                     @include helper-breakpoint-media-max($sm-max) {
                         padding-left: 0;
-                        width: 40px;
                         margin: 0;
                     }
                 }

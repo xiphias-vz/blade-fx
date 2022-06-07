@@ -218,7 +218,7 @@
 
             .change-cart-counter {
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 background-color: $setting-color-white;
                 margin: 0 rem(10) 0;
                 position: relative;
@@ -280,15 +280,19 @@
 
                 .txt-product-quantity {
                     font-family: $setting-font-family-additional;
-                    width: 60%;
+                    width: 85%;
                     text-align: center;
                     outline: none;
                     border: none;
 
                     @include helper-breakpoint-media-max($sm-max) {
                         padding-left: 0;
-                        width: rem(40);
+                        width: 78%;
                         margin: 0;
+                    }
+
+                    @include helper-breakpoint-media-min($lg-min) {
+                        width: 60%;
                     }
                 }
 

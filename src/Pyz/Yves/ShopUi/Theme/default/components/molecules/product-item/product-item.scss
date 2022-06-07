@@ -274,12 +274,12 @@
                 }
 
                 .message {
-                    width: rem(190);
+                    width: 86%;
                     display: flex;
                     align-items: center;
                     justify-content: space-around;
                     position: absolute;
-                    bottom: rem(115);
+                    bottom: rem(80);
                     padding: rem(10);
                     background-color:$setting-color-light-tentgray-2;
                     color: $setting-color-white;
