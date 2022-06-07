@@ -315,6 +315,18 @@
 
                 .message-cz {
                     font-size: rem(12);
+                    bottom: rem(80);
+                    white-space: nowrap;
+
+                    @include helper-breakpoint-media-min($md-min){
+                        width: 85%;
+                        padding: rem(10) rem(5);
+                    }
+
+                    .checkmark {
+                        width: rem(9);
+                        height: rem(18);
+                    }
                 }
 
                 .txt-product-quantity {
