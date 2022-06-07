@@ -60,9 +60,11 @@ class GlobusRestApiClientAccount
     {
         if (isset($_COOKIE[GlobusRestApiClientCookie::COOKIE_NAME])) {
             $val = json_decode($_COOKIE[GlobusRestApiClientCookie::COOKIE_NAME], true);
-            $token = $val[GlobusRestApiClientCookie::FIELD_NAME_TOKEN];
+            if (isset($val[GlobusRestApiClientCookie::FIELD_NAME_TOKEN])) {
+                $token = $val[GlobusRestApiClientCookie::FIELD_NAME_TOKEN];
 
-            return static::loginWithToken($token);
+                return static::loginWithToken($token);
+            }
         }
 
         return "";
