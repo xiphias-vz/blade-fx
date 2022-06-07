@@ -149,8 +149,14 @@
                 padding-left: rem(10);
             }
 
-            &:hover{
+            &:focus,
+            &:active {
+                outline: none;
                 background-color: $setting-color-fresh-orange;
+            }
+
+            &:hover{
+                background-color: $setting-color-fresh-orange-3;
             }
             @include helper-breakpoint-media-max($sm-max){
                 width: rem(48);
@@ -522,6 +528,12 @@
             border-radius: rem(30) rem(0) rem(0) rem(30);
             border-color: transparent;
             padding-left: rem(10);
+
+            &:focus,
+            &:active {
+                background-color: $setting-color-globusCZ-main-green;
+                outline: none;
+            }
 
             @include helper-breakpoint-media-max($lg-max) {
                 padding-left: rem(10);
