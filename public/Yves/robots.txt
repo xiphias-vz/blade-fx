@@ -6,4 +6,4 @@ Disallow: /de/search/
 Disallow: /de/login/
 Disallow: /de/cart
 
-Sitemap: https://globus-prod-public-files.s3.eu-central-1.amazonaws.com/sitemap1.xml
+Sitemap: https://shop.globus.de/sitemap.xml
