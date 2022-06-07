@@ -25,6 +25,11 @@
         stroke: currentColor;
     }
 
+    &--pos-bottom{
+        position: relative;
+        bottom: rem(3);
+    }
+
     &--user-acc-cz {
         fill: $setting-color-globusCZ-main-green;
     }
