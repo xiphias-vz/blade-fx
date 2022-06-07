@@ -57,7 +57,6 @@ use Spryker\Zed\Shipment\Communication\Plugin\ShipmentOrderHydratePlugin;
 
 class SalesDependencyProvider extends SprykerSalesDependencyProvider
 {
-    public const BLADE_FX_FACADE = 'BLADE_FX_FACADE';
     public const FACADE_SHIPMENT = 'FACADE_SHIPMENT';
     public const BASE_FACADE_OMS = 'BASE_FACADE_OMS';
     public const FACADE_PICKING_ZONE = 'FACADE_PICKING_ZONE';
@@ -119,20 +118,6 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addTimeSlotFacade($container);
         $container = $this->addTimeSlotService($container);
         $container = $this->addMerchantFacade($container);
-
-        return $this->addBladeFxFacade($container);
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addBladeFxFacade(Container $container): Container
-    {
-        $container->set(static::BLADE_FX_FACADE, function (Container $container) {
-            return $container->getLocator()->bladeFx()->facade();
-        });
 
         return $container;
     }

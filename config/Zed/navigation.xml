@@ -98,14 +98,6 @@
         <shortcut>c</shortcut>
         <icon>fa-sitemap</icon>
     </category>
-    <reports>
-        <label>Reports</label>
-        <title>Reports</title>
-        <bundle>blade-fx</bundle>
-        <icon>fa-book</icon>
-        <controller>index</controller>
-        <action>index</action>
-    </reports>
     <tax/>
     <search-and-filters/>
     <customer>

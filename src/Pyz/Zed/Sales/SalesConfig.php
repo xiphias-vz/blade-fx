@@ -46,21 +46,6 @@ class SalesConfig extends SprykerSalesConfig
     ];
 
     /**
-     * @var string
-     */
-    public const PARAM_ID_SALES_ORDER = 'id-sales-order';
-
-    /**
-     * @var string
-     */
-    public const PARAM_ORDER_REFERENCE = 'order-reference';
-
-    /**
-     * @var string
-     */
-    public const PARAM_ID_REPORT = 'id-report';
-
-    /**
      * This method determines state machine process from the given quote transfer and order item.
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer

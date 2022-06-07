@@ -1,4 +1,7 @@
-    {% set substitute %}
+{% embed '@Gui/Partials/widget.twig' with { widget_title: 'checkout.order.overview' | trans } %}
+
+
+{% set substitute %}
         <svg class="replacmenet-icon" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              viewBox="0 0 64 62" style="enable-background:new 0 0 64 62;" xml:space="preserve">
                 <style type="text/css">
@@ -20,379 +23,378 @@
                 </g>
             </g>
         </svg>
-    {% endset %}
+{% endset %}
 
-    {% set currentCodeBucket = app.currentCodeBucket %}
+{% set currentCodeBucket = app.currentCodeBucket %}
     {% block widget_content %}
 
         <div class="row">
-            <div class="col-lg-12">
-                <input type="hidden" id="isCurrentUserSupervisorOrAdmin" value="{{ isCurrentUserSupervisorOrAdmin }}">
-                <div class="col-xs-12 col-md-4" style="background: #f7f7f7">
-                    <h3>{{ 'Ordering Information' | trans }}</h3>
-                    <div class="bottom-indent">
-                        <dl>
-                            <dt>{{ 'Order Reference' | trans }}</dt>
-                            <dd style="margin-bottom: 15px">{{ order.orderReference }}</dd>
-                            {% if order.collectNumber %}
-                                <dt>{{ 'Collect Number' | trans }}</dt>
-                                <dd style="margin-bottom: 15px">{{ order.collectNumber }}</dd>
-                            {% endif %}
+            <input type="hidden" id="isCurrentUserSupervisorOrAdmin" value="{{ isCurrentUserSupervisorOrAdmin }}">
+            <div class="col-xs-12 col-md-4" style="background: #f7f7f7">
+                <h3>{{ 'Ordering Information' | trans }}</h3>
+                <div class="bottom-indent">
+                    <dl>
+                        <dt>{{ 'Order Reference' | trans }}</dt>
+                        <dd style="margin-bottom: 15px">{{ order.orderReference }}</dd>
+                        {% if order.collectNumber %}
+                            <dt>{{ 'Collect Number' | trans }}</dt>
+                            <dd style="margin-bottom: 15px">{{ order.collectNumber }}</dd>
+                        {% endif %}
                             <dt>{{ 'Requested delivery date' | trans }}:</dt>
-                            <dd>
+                        <dd>
 
-                                {% if isCurrentUserSupervisorOrAdmin %}
+                            {% if isCurrentUserSupervisorOrAdmin %}
 
-                                    <div id="buttonsEditDiv">
-                                        <div style="float: left; padding-top: 2px;">
-                                            <span style="margin-right: 10px;">{{ deliveryDate }}</span>
-                                            <span style="margin-right: 10px;">{{ deliveryTimeSlot }}</span>
-                                        </div>
-                                        <div style="float: left;">
-                                            <?xml version="1.0" encoding="utf-8"?>
-                                            <!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                                            <svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                                 viewBox="0 0 24 24" style="fill:#18a689;width: 20px;" xml:space="preserve">
-                                                <title>003-fischfleisch</title>
-                                                <g>
-                                                    <g>
-                                                        <path d="M21.7,4.3l-1.8-1.8c-0.8-0.8-2.2-0.8-3.1,0C16,3.3,3.9,15.4,3.1,16.2c-0.1,0.1-0.1,0.2-0.2,0.3l-0.9,5
-                                                                c0,0.2,0,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2l5-0.9c0.1,0,0.2-0.1,0.3-0.2L21.7,7.4C22.6,6.5,22.6,5.2,21.7,4.3z M3.3,20.9l0.6-3
-                                                                l2.5,2.5L3.3,20.9z M7.6,19.9l-3.2-3.2L16.1,4.9l3.2,3.2L7.6,19.9z M20.9,6.5l-0.7,0.7L17,4.1l0.7-0.7c0.4-0.4,1-0.4,1.4,0
-                                                                l1.8,1.8C21.3,5.6,21.3,6.2,20.9,6.5z"/>
-                                                    </g>
-                                                </g>
-                                        </svg>
-                                            <div style="float: right;">
-                                                <button id="btnBearbeiten" style="border:none;background-color: transparent;color: #18a689;">{{ 'Edit' | trans }}</button>
-                                            </div>
-                                        </div>
+                                <div id="buttonsEditDiv">
+                                    <div style="float: left; padding-top: 2px;">
+                                        <span style="margin-right: 10px;">{{ deliveryDate }}</span>
+                                        <span style="margin-right: 10px;">{{ deliveryTimeSlot }}</span>
                                     </div>
-
-                                    <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;">
-                                        <form method="POST" action="" style="display: flex;">
-                                            <input type="hidden" name="isTimeslotsFormSubmit" value="true">
-                                            <input type="date" id="pickup-time-window" name="pickupDate" value="{{ deliveryDate }}" style="outline: none;height: 30px;margin-right: 10px;" required />
-                                            <select class="form-control input-sm" name="pickupTimeSlot" style="width:140px;height: 30px;margin-right: 10px;">
-                                                {% for timeSlot in timeSlotsData %}
-                                                    <option value="{{ timeSlot.time_slot }}">{{ timeSlot.time_slot }}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <div style="float: right;">
-                                                <input id="btnSaveTsChange" type="submit" class="btn btn-customPrimary" value={{ 'Save' | trans }} style="margin-right: 10px; min-width: 50px;">
-                                                <input id="btnCancelTsChange" type="button" class="btn" value="X" style="min-width: 50px;">
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                {% else %}
-
-                                    <div id="buttonsEditDiv">
-                                        <div style="float: left; padding-top: 2px;">
-                                            <span style="margin-right: 10px;">{{ deliveryDate }}</span>
-                                            <span style="margin-right: 10px;">{{ deliveryTimeSlot }}</span>
-                                        </div>
-                                    </div>
-
-                                    <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;"></div>
-
-
-                                {% endif %}
-
-
-
-                            </dd>
-                            <div style="height: 2px;background: lightgrey;width: 100%;margin: 10px 0px; clear: both;"></div>
-                            <dt>{{ 'Zone -> Container ID -> Shelf' | trans }}</dt>
-                            {% for pickingSalesOrder in containers %}
-                                {% if pickingSalesOrder.hasSubstitutedItem == true %}
-                                    <dd style="display: flex; align-items: center;">{{ pickingSalesOrder.zoneName ~ ' -> ' ~ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode }}{{ substitute }}</dd>
-                                {% else %}
-                                    <dd>{{ pickingSalesOrder.zoneName ~ ' -> ' ~ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if(isCurrentUserSupervisorOrAdmin) %}
-                                <dd>
-                                    <div  id="divAddContainer" style="float: left;">
+                                    <div style="float: left;">
                                         <?xml version="1.0" encoding="utf-8"?>
                                         <!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
                                         <svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                             viewBox="0 0 24 24" style="fill:#1BBEA0; width: 20px;padding-top: 4px;" xml:space="preserve">
-                                        <g>
-                                            <g id="Gruppe_343">
-                                                <g id="Gruppe_342">
-                                                    <path id="Pfad_216" d="M20.8,7.4L20.8,7.4c0-0.1-0.1-0.1-0.1-0.2l-2.8-4.9c-0.2-0.4-0.6-0.6-1-0.6H7.1c-0.4,0-0.8,0.2-1,0.6
-                        l-2.9,5c0,0,0,0.1-0.1,0.1c0,0.1-0.1,0.2-0.1,0.4v12.9c0,0.8,0.6,1.4,1.4,1.4h15c0.8,0,1.4-0.6,1.4-1.4v-13c0,0,0,0,0-0.1
-                        C20.9,7.6,20.9,7.5,20.8,7.4z M12.6,3h4.2l2.2,3.9h-6.5V3z M7.1,3h4.3v3.9H4.9L7.1,3z M19.7,20.8c0,0.1-0.1,0.2-0.2,0.2h-15
-                        c-0.1,0-0.2-0.1-0.2-0.2V8h15.4V20.8z"/>
+                                             viewBox="0 0 24 24" style="fill:#18a689;width: 20px;" xml:space="preserve">
+						                    <title>003-fischfleisch</title>
+                                            <g>
+                                                <g>
+                                                    <path d="M21.7,4.3l-1.8-1.8c-0.8-0.8-2.2-0.8-3.1,0C16,3.3,3.9,15.4,3.1,16.2c-0.1,0.1-0.1,0.2-0.2,0.3l-0.9,5
+                                                            c0,0.2,0,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2l5-0.9c0.1,0,0.2-0.1,0.3-0.2L21.7,7.4C22.6,6.5,22.6,5.2,21.7,4.3z M3.3,20.9l0.6-3
+                                                            l2.5,2.5L3.3,20.9z M7.6,19.9l-3.2-3.2L16.1,4.9l3.2,3.2L7.6,19.9z M20.9,6.5l-0.7,0.7L17,4.1l0.7-0.7c0.4-0.4,1-0.4,1.4,0
+                                                            l1.8,1.8C21.3,5.6,21.3,6.2,20.9,6.5z"/>
                                                 </g>
                                             </g>
-                                            <g id="Gruppe_345" transform="translate(8.618 14.323)">
-                                                <g id="Gruppe_344">
-                                                    <path id="Pfad_217" d="M5.9-0.4H4v-1.9c0-0.3-0.3-0.6-0.6-0.6c-0.3,0-0.6,0.3-0.6,0.6c0,0,0,0,0,0v1.9H0.8
-                        c-0.3,0-0.6,0.3-0.6,0.6c0,0.3,0.3,0.6,0.6,0.6h1.9v1.9c0,0.3,0.3,0.6,0.6,0.6C3.7,3.3,4,3.1,4,2.7c0,0,0,0,0,0V0.8h1.9
-                        c0.3,0,0.6-0.3,0.6-0.6C6.5-0.1,6.2-0.4,5.9-0.4z"/>
-                                                </g>
-                                            </g>
-                                        </g>
                                     </svg>
-                                        <div style="float: right; margin-top: 4px;">
-                                            <button type="button" id="btnAddContainer" style="border:none;background-color: transparent;color: #18a689;"> {{ 'Add Container' | trans }}</button>
+                                        <div style="float: right;">
+                                            <button id="btnBearbeiten" style="border:none;background-color: transparent;color: #18a689;">{{ 'Edit' | trans }}</button>
                                         </div>
                                     </div>
-                                    <div class="clearfix"></div>
-                                </dd>
-                                <form name="formAddZoneContainerShelf" method="post" action="">
-                                    <div id="divAddContainerAndShelf" style="display: none">
-                                        <dd id="labelContainerAndShelf" style="margin-top: 8px;"></dd>
-                                        <select id="pickingZones" name="pickingZones" required="required" class="form-control" style="width:40%">
-                                            <option value="">{{ 'order.overview.select.zone' | trans }}</option>
-                                            {% for idZone,nameZone  in pickingZonesForContainers %}
-                                                <option value="{{ idZone }}">{{ nameZone }}</option>
+                                </div>
+
+                                <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;">
+                                    <form method="POST" action="" style="display: flex;">
+                                        <input type="hidden" name="isTimeslotsFormSubmit" value="true">
+                                        <input type="date" id="pickup-time-window" name="pickupDate" value="{{ deliveryDate }}" style="outline: none;height: 30px;margin-right: 10px;" required />
+                                        <select class="form-control input-sm" name="pickupTimeSlot" style="width:140px;height: 30px;margin-right: 10px;">
+                                            {% for timeSlot in timeSlotsData %}
+                                                <option value="{{ timeSlot.time_slot }}">{{ timeSlot.time_slot }}</option>
                                             {% endfor %}
                                         </select>
-                                        <input type="hidden" id="frmContainerShelf_idSalesOrder" name="frmContainerShelf_idSalesOrder" value="{{ order.idSalesOrder }}">
-                                        <input id="inputContainer" name="inputContainer" type="hidden" class="form-control" required="required" placeholder="{{ 'Add Container' | trans }}" style="width:40%">
-                                        <input id="inputShelf" name="inputShelf" type="hidden" class="form-control" required="required" placeholder="{{ 'Container assign' | trans }}" style="width:40%">
-                                        <button id='btnSaveContainer' type="submit" class="btn btn-primary" style="margin-right:10px; margin-left: 10px">{{ 'Save' | trans }}</button>
-                                        <button id='btnCancelAction' type="button" class="btn">X</button>
-                                    </div>
-                                    <p id="errorMessage" style="color:red"></p>
-                                </form>
-                            {% endif %}
+                                        <div style="float: right;">
+                                            <input id="btnSaveTsChange" type="submit" class="btn btn-customPrimary" value={{ 'Save' | trans }} style="margin-right: 10px; min-width: 50px;">
+                                            <input id="btnCancelTsChange" type="button" class="btn" value="X" style="min-width: 50px;">
+                                        </div>
+                                    </form>
+                                </div>
 
-
-                            <dt style="margin-top: 1rem">{{ 'Customer Comment' | trans }}</dt>
-                            {% if order.cartNote %}
-                                <dd>{{ order.cartNote }}</dd>
-                            {% endif %}
-
-                            <dt style="margin-top: 1rem">{{ 'order.overview.replacement.article.title' | trans }}</dt>
-                            {% if order.isSubstitutionAllowed and order.isSubstitutionAllowed == '1'%}
-                                <dd>{{ 'order.overview.yes' | trans }}</dd>
                             {% else %}
-                                <div style="display: flex;">
-                                    <div style="width: 25px;">
-                                        <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                             viewBox="0 0 64 62" style="enable-background:new 0 0 64 62;" xml:space="preserve">
-                                    <style type="text/css">
-                                        .st0{fill:none;}
-                                        .st1{fill:none;stroke:#FF0303;stroke-width:3;}
-                                        .st2{enable-background:new    ;}
-                                        .st3{fill:#333333;}
-                                        .st4{fill:none;stroke:#FF0000;stroke-width:3;}
-                                    </style>
-                                            <g id="Gruppe_1241" transform="translate(-2139 -17231.137)">
-                                                <g id="Ellipse_47_1_" transform="translate(2139 17231.387)">
-                                                    <circle class="st0" cx="32" cy="30.8" r="30.5"/>
-                                                    <circle class="st1" cx="32" cy="30.8" r="29"/>
-                                                </g>
-                                                <g class="st2">
-                                                    <path class="st3" d="M2169.4,17263.5c-4-1.2-6.9-2.6-8.8-4.3c-1.8-1.7-2.7-3.8-2.7-6.2c0-2.8,1.1-5.1,3.4-6.9
-                                               c2.2-1.8,5.1-2.7,8.7-2.7c2.4,0,4.6,0.5,6.5,1.4c1.9,0.9,3.4,2.2,4.4,3.9s1.6,3.5,1.6,5.4h-4.7c0-2.2-0.7-3.9-2.1-5.1
-                                               s-3.3-1.8-5.8-1.8c-2.3,0-4.1,0.5-5.4,1.5c-1.3,1-1.9,2.4-1.9,4.2c0,1.5,0.6,2.7,1.8,3.7c1.2,1,3.3,1.9,6.3,2.8
-                                               c3,0.8,5.3,1.7,6.9,2.7c1.7,1,2.9,2.2,3.7,3.5s1.2,2.9,1.2,4.7c0,2.9-1.1,5.2-3.4,6.9c-2.2,1.7-5.2,2.6-9,2.6
-                                               c-2.4,0-4.7-0.5-6.8-1.4c-2.1-0.9-3.7-2.2-4.9-3.8s-1.7-3.5-1.7-5.5h4.7c0,2.1,0.8,3.8,2.4,5.1c1.6,1.2,3.7,1.9,6.4,1.9
-                                               c2.5,0,4.4-0.5,5.7-1.5s2-2.4,2-4.1c0-1.7-0.6-3.1-1.8-4C2174.8,17265.4,2172.6,17264.5,2169.4,17263.5z"/>
-                                                </g>
-                                                <line id="Linie_107" class="st4" x1="2151.3" y1="17284.1" x2="2189" y2="17239.1"/>
+
+                                <div id="buttonsEditDiv">
+                                    <div style="float: left; padding-top: 2px;">
+                                        <span style="margin-right: 10px;">{{ deliveryDate }}</span>
+                                        <span style="margin-right: 10px;">{{ deliveryTimeSlot }}</span>
+                                    </div>
+                                </div>
+
+                                <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;"></div>
+
+
+                            {% endif %}
+
+
+
+                        </dd>
+                        <div style="height: 2px;background: lightgrey;width: 100%;margin: 10px 0px; clear: both;"></div>
+                        <dt>{{ 'Zone -> Container ID -> Shelf' | trans }}</dt>
+                        {% for pickingSalesOrder in containers %}
+                            {% if pickingSalesOrder.hasSubstitutedItem == true %}
+                                <dd style="display: flex; align-items: center;">{{ pickingSalesOrder.zoneName ~ ' -> ' ~ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode }}{{ substitute }}</dd>
+                                {% else %}
+                                <dd>{{ pickingSalesOrder.zoneName ~ ' -> ' ~ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if(isCurrentUserSupervisorOrAdmin) %}
+                            <dd>
+                                <div  id="divAddContainer" style="float: left;">
+                                    <?xml version="1.0" encoding="utf-8"?>
+                                    <!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                    <svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                         viewBox="0 0 24 24" style="fill:#1BBEA0; width: 20px;padding-top: 4px;" xml:space="preserve">
+                                    <g>
+                                        <g id="Gruppe_343">
+                                            <g id="Gruppe_342">
+                                                <path id="Pfad_216" d="M20.8,7.4L20.8,7.4c0-0.1-0.1-0.1-0.1-0.2l-2.8-4.9c-0.2-0.4-0.6-0.6-1-0.6H7.1c-0.4,0-0.8,0.2-1,0.6
+                    l-2.9,5c0,0,0,0.1-0.1,0.1c0,0.1-0.1,0.2-0.1,0.4v12.9c0,0.8,0.6,1.4,1.4,1.4h15c0.8,0,1.4-0.6,1.4-1.4v-13c0,0,0,0,0-0.1
+                    C20.9,7.6,20.9,7.5,20.8,7.4z M12.6,3h4.2l2.2,3.9h-6.5V3z M7.1,3h4.3v3.9H4.9L7.1,3z M19.7,20.8c0,0.1-0.1,0.2-0.2,0.2h-15
+                    c-0.1,0-0.2-0.1-0.2-0.2V8h15.4V20.8z"/>
                                             </g>
-                                    </svg>
+                                        </g>
+                                        <g id="Gruppe_345" transform="translate(8.618 14.323)">
+                                            <g id="Gruppe_344">
+                                                <path id="Pfad_217" d="M5.9-0.4H4v-1.9c0-0.3-0.3-0.6-0.6-0.6c-0.3,0-0.6,0.3-0.6,0.6c0,0,0,0,0,0v1.9H0.8
+                    c-0.3,0-0.6,0.3-0.6,0.6c0,0.3,0.3,0.6,0.6,0.6h1.9v1.9c0,0.3,0.3,0.6,0.6,0.6C3.7,3.3,4,3.1,4,2.7c0,0,0,0,0,0V0.8h1.9
+                    c0.3,0,0.6-0.3,0.6-0.6C6.5-0.1,6.2-0.4,5.9-0.4z"/>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                                    <div style="float: right; margin-top: 4px;">
+                                        <button type="button" id="btnAddContainer" style="border:none;background-color: transparent;color: #18a689;"> {{ 'Add Container' | trans }}</button>
                                     </div>
-                                    <p style="margin: 4px 0px 0px 5px;">{{ 'order.overview.no' | trans }}</p>
                                 </div>
-                            {% endif %}
+                                <div class="clearfix"></div>
+                            </dd>
+                            <form name="formAddZoneContainerShelf" method="post" action="">
+                                <div id="divAddContainerAndShelf" style="display: none">
+                                    <dd id="labelContainerAndShelf" style="margin-top: 8px;"></dd>
+                                    <select id="pickingZones" name="pickingZones" required="required" class="form-control" style="width:40%">
+                                        <option value="">{{ 'order.overview.select.zone' | trans }}</option>
+                                        {% for idZone,nameZone  in pickingZonesForContainers %}
+                                            <option value="{{ idZone }}">{{ nameZone }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="hidden" id="frmContainerShelf_idSalesOrder" name="frmContainerShelf_idSalesOrder" value="{{ order.idSalesOrder }}">
+                                    <input id="inputContainer" name="inputContainer" type="hidden" class="form-control" required="required" placeholder="{{ 'Add Container' | trans }}" style="width:40%">
+                                    <input id="inputShelf" name="inputShelf" type="hidden" class="form-control" required="required" placeholder="{{ 'Container assign' | trans }}" style="width:40%">
+                                    <button id='btnSaveContainer' type="submit" class="btn btn-primary" style="margin-right:10px; margin-left: 10px">{{ 'Save' | trans }}</button>
+                                    <button id='btnCancelAction' type="button" class="btn">X</button>
+                                </div>
+                                <p id="errorMessage" style="color:red"></p>
+                            </form>
+                        {% endif %}
 
-                            <dt style="margin-top: 1rem">{{ 'order.overview.transportbox.article' | trans }}</dt>
-                            {% if isTransportBoxEnabled|default(false) %}
-                                <div style="width: 25px">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64">
-                                        <path d="m32.202 22.531h-5.6v18.938h5.6c2.865 0 4.862-1.41 5.993-4.232.617-1.549.927-3.393.927-5.531 0-2.953-.464-5.221-1.39-6.801-.927-1.583-2.77-2.374-5.53-2.374" fill="#43a047"/><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m10.959 39.094c-2.102 3.609-5.346 5.414-9.732 5.414h-12.511v-29.016h12.511c1.799.025 3.297.236 4.492.629 2.035.67 3.684 1.896 4.944 3.682 1.012 1.443 1.7 3.006 2.068 4.686s.552 3.281.552 4.803c0 3.858-.774 7.126-2.324 9.802" fill="#43a047"></path>
-                                    </svg>
-                                </div>
-                                <dd style="margin-left: 30px; margin-top: -25px;">{{ 'order.overview.yes' | trans }}</dd>
-                            {% else %}
-                                <p>{{ 'order.overview.no' | trans }}</p>
-                            {% endif %}
-                        </dl>
-                    </div>
+
+                        <dt style="margin-top: 1rem">{{ 'Customer Comment' | trans }}</dt>
+                        {% if order.cartNote %}
+                            <dd>{{ order.cartNote }}</dd>
+                        {% endif %}
+
+                        <dt style="margin-top: 1rem">{{ 'order.overview.replacement.article.title' | trans }}</dt>
+                        {% if order.isSubstitutionAllowed and order.isSubstitutionAllowed == '1'%}
+                            <dd>{{ 'order.overview.yes' | trans }}</dd>
+                        {% else %}
+                            <div style="display: flex;">
+                            <div style="width: 25px;">
+                                <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                     viewBox="0 0 64 62" style="enable-background:new 0 0 64 62;" xml:space="preserve">
+                                <style type="text/css">
+                                    .st0{fill:none;}
+                                    .st1{fill:none;stroke:#FF0303;stroke-width:3;}
+                                    .st2{enable-background:new    ;}
+                                    .st3{fill:#333333;}
+                                    .st4{fill:none;stroke:#FF0000;stroke-width:3;}
+                                </style>
+                                    <g id="Gruppe_1241" transform="translate(-2139 -17231.137)">
+                                        <g id="Ellipse_47_1_" transform="translate(2139 17231.387)">
+                                            <circle class="st0" cx="32" cy="30.8" r="30.5"/>
+                                            <circle class="st1" cx="32" cy="30.8" r="29"/>
+                                        </g>
+                                        <g class="st2">
+                                            <path class="st3" d="M2169.4,17263.5c-4-1.2-6.9-2.6-8.8-4.3c-1.8-1.7-2.7-3.8-2.7-6.2c0-2.8,1.1-5.1,3.4-6.9
+                                           c2.2-1.8,5.1-2.7,8.7-2.7c2.4,0,4.6,0.5,6.5,1.4c1.9,0.9,3.4,2.2,4.4,3.9s1.6,3.5,1.6,5.4h-4.7c0-2.2-0.7-3.9-2.1-5.1
+                                           s-3.3-1.8-5.8-1.8c-2.3,0-4.1,0.5-5.4,1.5c-1.3,1-1.9,2.4-1.9,4.2c0,1.5,0.6,2.7,1.8,3.7c1.2,1,3.3,1.9,6.3,2.8
+                                           c3,0.8,5.3,1.7,6.9,2.7c1.7,1,2.9,2.2,3.7,3.5s1.2,2.9,1.2,4.7c0,2.9-1.1,5.2-3.4,6.9c-2.2,1.7-5.2,2.6-9,2.6
+                                           c-2.4,0-4.7-0.5-6.8-1.4c-2.1-0.9-3.7-2.2-4.9-3.8s-1.7-3.5-1.7-5.5h4.7c0,2.1,0.8,3.8,2.4,5.1c1.6,1.2,3.7,1.9,6.4,1.9
+                                           c2.5,0,4.4-0.5,5.7-1.5s2-2.4,2-4.1c0-1.7-0.6-3.1-1.8-4C2174.8,17265.4,2172.6,17264.5,2169.4,17263.5z"/>
+                                        </g>
+                                        <line id="Linie_107" class="st4" x1="2151.3" y1="17284.1" x2="2189" y2="17239.1"/>
+                                    </g>
+                                </svg>
+                            </div>
+                                <p style="margin: 4px 0px 0px 5px;">{{ 'order.overview.no' | trans }}</p>
+                            </div>
+                        {% endif %}
+
+                        <dt style="margin-top: 1rem">{{ 'order.overview.transportbox.article' | trans }}</dt>
+                        {% if isTransportBoxEnabled|default(false) %}
+                            <div style="width: 25px">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64">
+                                    <path d="m32.202 22.531h-5.6v18.938h5.6c2.865 0 4.862-1.41 5.993-4.232.617-1.549.927-3.393.927-5.531 0-2.953-.464-5.221-1.39-6.801-.927-1.583-2.77-2.374-5.53-2.374" fill="#43a047"/><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m10.959 39.094c-2.102 3.609-5.346 5.414-9.732 5.414h-12.511v-29.016h12.511c1.799.025 3.297.236 4.492.629 2.035.67 3.684 1.896 4.944 3.682 1.012 1.443 1.7 3.006 2.068 4.686s.552 3.281.552 4.803c0 3.858-.774 7.126-2.324 9.802" fill="#43a047"></path>
+                                </svg>
+                            </div>
+                            <dd style="margin-left: 30px; margin-top: -25px;">{{ 'order.overview.yes' | trans }}</dd>
+                        {% else %}
+                            <p>{{ 'order.overview.no' | trans }}</p>
+                        {% endif %}
+                    </dl>
                 </div>
+            </div>
 
-                <div class="col-xs-12 col-md-8 bottom-indent">
-                    <div class="row">
-                        <div class="col-lg-4" style="margin-left: 60px">
-                            <h3>{{ 'Customer Information' | trans }}</h3>
-                            {% if customerTransfer and customerTransfer.firstName and customerTransfer.lastName %}
-                                <div style="margin-bottom: 15px;margin-top: 15px">
-                                    <span style="font-weight: bold">{{ 'Name' | trans }}</span><br/>
-                                    {{ customerTransfer.firstName }} {{ customerTransfer.lastName }}
-                                </div>
-                            {% endif %}
-
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Phone Number' | trans }}</span><br/>
-                                {% if phone %}
-                                    <div>{{ phone }}</div>
-                                {% else %}
-                                    <div>---</div>
-                                {% endif %}
-                            </div>
-
-
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Cell phone number' | trans }}</span><br/>
-                                {% if cellPhone %}
-                                    <div>{{ cellPhone }}</div>
-                                {% else %}
-                                    <div>---</div>
-                                {% endif %}
-                            </div>
-
-                            {% if customerTransfer and customerTransfer.email %}
-                                <div style="margin-bottom: 15px">
-                                    <span style="font-weight: bold">{{ 'Email' | trans }}</span><br/>
-                                    <div>{{ customerTransfer.email }}</div>
-                                </div>
-                            {% endif %}
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Billing address' | trans }}</span>
-                                {% if address.address1 is empty and address.address2 is empty and address.zipCode is empty and address.city is empty %}
-                                    <div>
-                                        {{ order.billingAddress.firstName ~ ' '
-                                        ~ order.billingAddress.lastName ~ ', '
-                                        ~ order.billingAddress.country.name }}
-                                    </div>
-                                {% else %}
-                                    <div>
-                                        {{ order.billingAddress.firstName ~ ' '
-                                        ~ order.billingAddress.lastName ~ ', '
-                                        ~ order.billingAddress.address1 ~ ' '
-                                        ~ order.billingAddress.address2 ~ ', '
-                                        ~ order.billingAddress.zipCode ~ ' '
-                                        ~ order.billingAddress.city ~ ', '
-                                        ~ order.billingAddress.country.name }}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Order date' | trans }}</span>
-                                <div>
-                                    {{ order.createdAt | formatDateTime }}
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Previous orders count' | trans }}</span>
-                                <div>{{ order.totalOrderCount }}</div>
-                            </div>
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Reference' | trans }}</span>
-                                <div><a href="{{ url('/customer/view', {'id-customer': order.fkCustomer}) }}" target="_blank">{{ order.customerReference }}</a></div>
-                            </div>
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Payment method' | trans }}</span>
-                                <div>
-                                    {% if payments %}
-                                        {% for payment in payments %}
-                                            <span>{{ payment.paymentMethod }}</span><br/>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ "Amount" | trans }}</span>
-                                <div>
-                                    {% if payments %}
-                                        {% for payment in payments %}
-                                            <span>{{ payment.amount | money(true, order.currencyIsoCode) }}</span><br/>
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4" style="margin-left: 160px">
-                            <h3>{{ 'Sonstige Informationen' | trans }}</h3>
+            <div class="col-xs-12 col-md-8 bottom-indent">
+                <div class="row">
+                    <div class="col-lg-4" style="margin-left: 60px">
+                        <h3>{{ 'Customer Information' | trans }}</h3>
+                        {% if customerTransfer and customerTransfer.firstName and customerTransfer.lastName %}
                             <div style="margin-bottom: 15px;margin-top: 15px">
-                                <span style="font-weight: bold">{{ 'Merchant Address' | trans }}</span>
-                                <div>
-                                    {{ order.merchantName }}
-                                </div>
+                                <span style="font-weight: bold">{{ 'Name' | trans }}</span><br/>
+                                {{ customerTransfer.firstName }} {{ customerTransfer.lastName }}
                             </div>
-                            <div style="margin-bottom: 15px;">
-                                <span style="font-weight: bold">{{ 'Merchant Region Number' | trans }}</span>
-                                <div>
-                                    {{ order.merchantRegionNumber }}
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px;">
-                                <span style="font-weight: bold">{{ 'Merchant' | trans }}</span>
-                                <div>
-                                    {{ order.merchantFilialNumber }}
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Delivery Address' | trans }}</span><br/>
-                                {% if address.address1 is empty and address.address2 is empty and address.zipCode is empty and address.city is empty %}
-                                    <div>
-                                        {{ address.salutation
-                                        ~ ' ' ~ address.firstName ~ ' '
-                                        ~ address.lastName ~ ', '
-                                        ~ address.country.name}}
-                                    </div>
-                                {% else %}
-                                    <div>
-                                        {{ address.salutation
-                                        ~ ' ' ~ address.firstName ~ ' '
-                                        ~ address.lastName ~ ', '
-                                        ~ address.address1 ~ ' '
-                                        ~ address.address2 ~ ', '
-                                        ~ address.additionalInfo ~ ' '
-                                        ~ address.company ~ ', '
-                                        ~ address.zipCode ~ ', '
-                                        ~ address.city ~ ', '
-                                        ~ address.country.name}}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Delivery Method' | trans }}</span><br>
-                                <div>
-                                    {{ shipping.carrier.name }}
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Shipping Method' | trans }}</span><br>
-                                <div>
-                                    {{ shipping.method.name }}
-                                </div>
-                            </div>
-                            {% for blockName, externalBlock in blocksToRenderForCustomer %}
-                                {% if blockName == 'discount' %}
-                                    {% set customExternalBlock = externalBlock|split('Rabatte und Gutscheine') %}
-                                    <div style="margin-bottom: 15px">
-                                        <span style="font-weight: bold">{{ 'Discounts & Vouchers' | trans }}</span>
-                                        {% if currentCodeBucket == "DE" %}
-                                            <div class="discount">{{ customExternalBlock[1] | raw }}</div>
-                                        {% else %}
-                                            <div class="discount">{{ customExternalBlock[0] | raw }}</div>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
-                                {% if blockName == 'refund' %}
-                                    {% set customExternalBlock = externalBlock|split('Rückerstattung') %}
-                                    <div style="margin-bottom: 15px">
-                                        <span style="font-weight: bold">{{ 'Refunds' | trans }}</span>
-                                        {% if app.currentCodeBucket == "DE" %}
-                                            <div class="refund">{{ customExternalBlock[1] | raw }}</div>
-                                        {% else %}
-                                            <div class="refund">{{ customExternalBlock[0] | raw }}</div>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                        {% endif %}
+
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Phone Number' | trans }}</span><br/>
+                            {% if phone %}
+                                <div>{{ phone }}</div>
+                            {% else %}
+                                <div>---</div>
+                            {% endif %}
                         </div>
+
+
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Cell phone number' | trans }}</span><br/>
+                            {% if cellPhone %}
+                                <div>{{ cellPhone }}</div>
+                            {% else %}
+                                <div>---</div>
+                            {% endif %}
+                        </div>
+
+                        {% if customerTransfer and customerTransfer.email %}
+                            <div style="margin-bottom: 15px">
+                                <span style="font-weight: bold">{{ 'Email' | trans }}</span><br/>
+                                <div>{{ customerTransfer.email }}</div>
+                            </div>
+                        {% endif %}
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Billing address' | trans }}</span>
+                            {% if address.address1 is empty and address.address2 is empty and address.zipCode is empty and address.city is empty %}
+                                <div>
+                                    {{ order.billingAddress.firstName ~ ' '
+                                    ~ order.billingAddress.lastName ~ ', '
+                                    ~ order.billingAddress.country.name }}
+                                </div>
+                            {% else %}
+                                <div>
+                                    {{ order.billingAddress.firstName ~ ' '
+                                    ~ order.billingAddress.lastName ~ ', '
+                                    ~ order.billingAddress.address1 ~ ' '
+                                    ~ order.billingAddress.address2 ~ ', '
+                                    ~ order.billingAddress.zipCode ~ ' '
+                                    ~ order.billingAddress.city ~ ', '
+                                    ~ order.billingAddress.country.name }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Order date' | trans }}</span>
+                            <div>
+                                {{ order.createdAt | formatDateTime }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Previous orders count' | trans }}</span>
+                            <div>{{ order.totalOrderCount }}</div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Reference' | trans }}</span>
+                            <div><a href="{{ url('/customer/view', {'id-customer': order.fkCustomer}) }}" target="_blank">{{ order.customerReference }}</a></div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Payment method' | trans }}</span>
+                            <div>
+                                {% if payments %}
+                                    {% for payment in payments %}
+                                        <span>{{ payment.paymentMethod }}</span><br/>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ "Amount" | trans }}</span>
+                            <div>
+                                {% if payments %}
+                                    {% for payment in payments %}
+                                        <span>{{ payment.amount | money(true, order.currencyIsoCode) }}</span><br/>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                         </div>
+                    </div>
+                    <div class="col-lg-4" style="margin-left: 160px">
+                        <h3>{{ 'Sonstige Informationen' | trans }}</h3>
+                        <div style="margin-bottom: 15px;margin-top: 15px">
+                            <span style="font-weight: bold">{{ 'Merchant Address' | trans }}</span>
+                            <div>
+                                {{ order.merchantName }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <span style="font-weight: bold">{{ 'Merchant Region Number' | trans }}</span>
+                            <div>
+                                {{ order.merchantRegionNumber }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <span style="font-weight: bold">{{ 'Merchant' | trans }}</span>
+                            <div>
+                                {{ order.merchantFilialNumber }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Delivery Address' | trans }}</span><br/>
+                            {% if address.address1 is empty and address.address2 is empty and address.zipCode is empty and address.city is empty %}
+                                <div>
+                                    {{ address.salutation
+                                    ~ ' ' ~ address.firstName ~ ' '
+                                    ~ address.lastName ~ ', '
+                                    ~ address.country.name}}
+                                </div>
+                            {% else %}
+                                <div>
+                                    {{ address.salutation
+                                    ~ ' ' ~ address.firstName ~ ' '
+                                    ~ address.lastName ~ ', '
+                                    ~ address.address1 ~ ' '
+                                    ~ address.address2 ~ ', '
+                                    ~ address.additionalInfo ~ ' '
+                                    ~ address.company ~ ', '
+                                    ~ address.zipCode ~ ', '
+                                    ~ address.city ~ ', '
+                                    ~ address.country.name}}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Delivery Method' | trans }}</span><br>
+                            <div>
+                                {{ shipping.carrier.name }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Shipping Method' | trans }}</span><br>
+                            <div>
+                                {{ shipping.method.name }}
+                            </div>
+                        </div>
+                        {% for blockName, externalBlock in blocksToRenderForCustomer %}
+                            {% if blockName == 'discount' %}
+                                {% set customExternalBlock = externalBlock|split('Rabatte und Gutscheine') %}
+                                <div style="margin-bottom: 15px">
+                                    <span style="font-weight: bold">{{ 'Discounts & Vouchers' | trans }}</span>
+                                    {% if currentCodeBucket == "DE" %}
+                                        <div class="discount">{{ customExternalBlock[1] | raw }}</div>
+                                    {% else %}
+                                        <div class="discount">{{ customExternalBlock[0] | raw }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            {% if blockName == 'refund' %}
+                                {% set customExternalBlock = externalBlock|split('Rückerstattung') %}
+                                <div style="margin-bottom: 15px">
+                                    <span style="font-weight: bold">{{ 'Refunds' | trans }}</span>
+                                     {% if app.currentCodeBucket == "DE" %}
+                                         <div class="refund">{{ customExternalBlock[1] | raw }}</div>
+                                     {% else %}
+                                         <div class="refund">{{ customExternalBlock[0] | raw }}</div>
+                                     {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
+            </div>
                 <div>
                     <div id="myModal" class="modal">
                         <div class="popUp-modal-content">
@@ -411,359 +413,361 @@
                         </div>
                     </div>
                 </div>
-                {% if order.isCashierExportSuccess %}
-                    <div class="col-md-12" style="text-align: right">
-                        <form name="DownloadCashierFile" method="POST">
-                            <input type="hidden" name="isDownloadCashierFile" value="true">
-                            <button type="submit" id="btnDownloadCashierFile" name="btnDownloadCashierFile" class="btn btn-primary">{{ 'order.overview.download.cashier.file' | trans }}</button>
-                        </form>
-                    </div>
-                {% endif %}
-                <div id="omsActions" class="col-md-12">
-                    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states inside this order' } %}
-                        {% block widget_content %}
-                            {% include '@Oms/RenderForm/_partial/order-actions.twig' with {
-                                redirectUrl: changeStatusRedirectUrl,
-                                idSalesOrder: order.idSalesOrder,
-                                pickingZone: null,
-                                events: events,
-                            } only %}
-                        {% endblock %}
-                    {% endembed %}
-                </div>
+            {% if order.isCashierExportSuccess %}
+            <div class="col-md-12" style="text-align: right">
+                <form name="DownloadCashierFile" method="POST">
+                    <input type="hidden" name="isDownloadCashierFile" value="true">
+                    <button type="submit" id="btnDownloadCashierFile" name="btnDownloadCashierFile" class="btn btn-primary">{{ 'order.overview.download.cashier.file' | trans }}</button>
+                </form>
             </div>
+            {% endif %}
+            <div id="omsActions" class="col-md-12">
+                {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states inside this order' } %}
+                    {% block widget_content %}
+                        {% include '@Oms/RenderForm/_partial/order-actions.twig' with {
+                            redirectUrl: changeStatusRedirectUrl,
+                            idSalesOrder: order.idSalesOrder,
+                            pickingZone: null,
+                            events: events,
+                        } only %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        </div>
 
-            {% if isCurrentUserSupervisorOrAdmin %}
-                <script type="text/javascript">
+        {% if isCurrentUserSupervisorOrAdmin %}
+            <script type="text/javascript">
 
-                    document.addEventListener('DOMContentLoaded', function(event) {
+                document.addEventListener('DOMContentLoaded', function(event) {
 
-                        var actionButtons = '{{ buttons | json_encode | raw }}';
-                        actionButtons = JSON.parse(actionButtons);
-                        if(actionButtons.length > 0){
+                    var actionButtons = '{{ buttons | json_encode | raw }}';
+                    actionButtons = JSON.parse(actionButtons);
+                    if(actionButtons.length > 0){
 
-                            var btnOmsActions = document.getElementById("omsActions");
-                            var omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+                        var btnOmsActions = document.getElementById("omsActions");
+                        var omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
 
-                            if(actionButtons.includes("Cancel") || actionButtons.includes("Abholung bestätigen") || actionButtons.includes("Picking bestätigen")){
-                                for(let i = 0;i<omsActionForms.length;i++){
-                                    let action = omsActionForms[i].getAttribute("action");
-                                    if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")){
-                                        omsActionForms[i].style.display = "none";
-                                    }
-                                    else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")){
-                                        omsActionForms[i].style.display = "none";
-                                        var nodeAbholung = '<button type="button" id="oms_trigger_form_submit_abholungBest" name="oms_trigger_formAbholungBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">{{ 'order.overview.pick-up.confirm' | trans }}</button>';
-                                        var lastAbholung = btnOmsActions.querySelector(".ibox-content");
-                                        lastAbholung.insertAdjacentHTML('beforeend', nodeAbholung);
-                                    }
-                                    else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Picking+best")){
-                                        omsActionForms[i].style.display = "none";
-                                        var nodePicking = '<button type="button" id="oms_trigger_form_submit_pickingBest" name="oms_trigger_formPickingBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">{{ 'order.overview.pick-up.confirm.picking' | trans }}</button>';
-                                        var lastPicking = btnOmsActions.querySelector(".ibox-content");
-                                        lastPicking.insertAdjacentHTML('beforeend', nodePicking);
-                                    }
+                        if(actionButtons.includes("Cancel") || actionButtons.includes("Abholung bestätigen") || actionButtons.includes("Picking bestätigen")){
+                            for(let i = 0;i<omsActionForms.length;i++){
+                                let action = omsActionForms[i].getAttribute("action");
+                                if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")){
+                                    omsActionForms[i].style.display = "none";
+                                }
+                                else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")){
+                                    omsActionForms[i].style.display = "none";
+                                    var nodeAbholung = '<button type="button" id="oms_trigger_form_submit_abholungBest" name="oms_trigger_formAbholungBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">{{ 'order.overview.pick-up.confirm' | trans }}</button>';
+                                    var lastAbholung = btnOmsActions.querySelector(".ibox-content");
+                                    lastAbholung.insertAdjacentHTML('beforeend', nodeAbholung);
+                                }
+                                else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Picking+best")){
+                                    omsActionForms[i].style.display = "none";
+                                    var nodePicking = '<button type="button" id="oms_trigger_form_submit_pickingBest" name="oms_trigger_formPickingBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">{{ 'order.overview.pick-up.confirm.picking' | trans }}</button>';
+                                    var lastPicking = btnOmsActions.querySelector(".ibox-content");
+                                    lastPicking.insertAdjacentHTML('beforeend', nodePicking);
+                                }
 
-                                    if(i === omsActionForms.length - 1){
-                                        var nodeCancel = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm" style="margin-right: 10px;">{{ 'order.overview.cancel.order' | trans }}</button>';
-                                        var lastCancel = btnOmsActions.querySelector(".ibox-content");
-                                        lastCancel.insertAdjacentHTML('beforeend', nodeCancel);
-                                    }
+                                if(i === omsActionForms.length - 1){
+                                    var nodeCancel = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm" style="margin-right: 10px;">{{ 'order.overview.cancel.order' | trans }}</button>';
+                                    var lastCancel = btnOmsActions.querySelector(".ibox-content");
+                                    lastCancel.insertAdjacentHTML('beforeend', nodeCancel);
                                 }
                             }
                         }
+                    }
 
-                        // Get the modal
-                        var modal = document.getElementById("myModal");
+                    // Get the modal
+                    var modal = document.getElementById("myModal");
 
-                        // Get the button that opens the modal
-                        var btn = document.getElementById("oms_trigger_form_submit_confirm selecting containers");
+                    // Get the button that opens the modal
+                    var btn = document.getElementById("oms_trigger_form_submit_confirm selecting containers");
 
-                        var btnAbholungBest = document.getElementById("oms_trigger_form_submit_abholungBest");
-                        var btnPickingBest = document.getElementById("oms_trigger_form_submit_pickingBest");
-                        var btnCancel = document.getElementById("oms_trigger_form_submit_cancel");
-                        var btnSubmit = document.getElementById("oms_trigger_form_submit");
+                    var btnAbholungBest = document.getElementById("oms_trigger_form_submit_abholungBest");
+                    var btnPickingBest = document.getElementById("oms_trigger_form_submit_pickingBest");
+                    var btnCancel = document.getElementById("oms_trigger_form_submit_cancel");
+                    var btnSubmit = document.getElementById("oms_trigger_form_submit");
 
-                        // Get the <span> element that closes the modal
-                        var span = document.getElementsByClassName("close")[0];
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
 
-                        // Get the <button> element that closes the modal
-                        var btnConfirmNo = document.getElementById("modalConfirmNo");
+                    // Get the <button> element that closes the modal
+                    var btnConfirmNo = document.getElementById("modalConfirmNo");
 
-                        var buttonBearbeiten = document.getElementById("btnBearbeiten");
+                    var buttonBearbeiten = document.getElementById("btnBearbeiten");
 
-                        var divButtonEdit = document.getElementById("buttonsEditDiv");
-                        var divFieldsEdit = document.getElementById("fieldsEditDiv");
+                    var divButtonEdit = document.getElementById("buttonsEditDiv");
+                    var divFieldsEdit = document.getElementById("fieldsEditDiv");
 
-                        var buttonCancel = document.getElementById("btnCancelTsChange");
+                    var buttonCancel = document.getElementById("btnCancelTsChange");
 
-                        if(btnAbholungBest != null){
-                            btnAbholungBest.onclick = function() {
-                                ResetModalContent();
+                    if(btnAbholungBest != null){
+                        btnAbholungBest.onclick = function() {
+                            ResetModalContent();
+                            ConfirmCollectionModalFill();
+                            modal.style.display = "block";
+                        }
+                    }
+
+                    if(btnPickingBest != null){
+                        btnPickingBest.onclick = function() {
+                            ResetModalContent();
+                            ConfirmPickingModalFill();
+                            modal.style.display = "block";
+                        }
+                    }
+
+                    if(btnCancel != null){
+                        // When the user clicks on the button, open the modal
+                        btnCancel.onclick = function() {
+                            ResetModalContent();
+                            CancelModalFill();
+                            modal.style.display = "block";
+                        }
+                    }
+
+                    if(btnSubmit != null){
+                        btnSubmit.onclick = function() {
+                            ResetModalContent();
+                            if(btnSubmit.innerText === "Picking bestätigen"){
+                                ConfirmPickingModalFill();
+                                modal.style.display = "block";
+                            }
+                            else if(btnSubmit.innerText === "Abholung bestätigen"){
                                 ConfirmCollectionModalFill();
                                 modal.style.display = "block";
                             }
                         }
+                    }
 
-                        if(btnPickingBest != null){
-                            btnPickingBest.onclick = function() {
-                                ResetModalContent();
-                                ConfirmPickingModalFill();
-                                modal.style.display = "block";
-                            }
+                    function ResetModalContent()
+                    {
+                        let titleElements = document.getElementById("popUpTitle");
+                        let contentElements = document.getElementById("popUpContent");
+                        let confirmYesModalButton = document.getElementById("confirmYes");
+
+                        while (titleElements.firstChild) {
+                            titleElements.removeChild(titleElements.firstChild);
+                        }
+                        while (contentElements.firstChild) {
+                            contentElements.removeChild(contentElements.firstChild);
+                        }
+                        while (confirmYesModalButton.firstChild) {
+                            confirmYesModalButton.removeChild(confirmYesModalButton.firstChild);
                         }
 
-                        if(btnCancel != null){
-                            // When the user clicks on the button, open the modal
-                            btnCancel.onclick = function() {
-                                ResetModalContent();
-                                CancelModalFill();
-                                modal.style.display = "block";
-                            }
-                        }
+                    }
 
-                        if(btnSubmit != null){
-                            btnSubmit.onclick = function() {
-                                ResetModalContent();
-                                if(btnSubmit.innerText === "Picking bestätigen"){
-                                    ConfirmPickingModalFill();
-                                    modal.style.display = "block";
+                    function CancelModalFill()
+                    {
+                        let cancelModalTitle = "{{ 'order.overview.cancel.order' | trans }}";
+                        let cancelModalContent = "{{ 'order.overview.cancel.order.question_1' | trans }} {{ order.orderReference }} {{ 'order.overview.cancel.order.question_2' | trans }}";
+                        let cancelModaDecline = "{{ 'order.overview.cancel.order.no' | trans }}";
+                        let cancelModalConfirm = "{{ 'order.overview.cancel.order.yes' | trans }}";
+                        let cancelModalButtonHtml = '<button type="button" id="modalConfirmYesCancel" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
+
+                        let hTag = document.createElement("h3");
+                        hTag.innerHTML = cancelModalTitle;
+                        document.getElementById("popUpTitle").appendChild(hTag);
+
+                        let pTag = document.createElement("p");
+                        pTag.innerHTML = cancelModalContent;
+                        document.getElementById("popUpContent").appendChild(pTag);
+
+                        document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
+
+                        document.getElementById("confirmYes").innerHTML = cancelModalButtonHtml;
+
+                        var btnConfirmYesCancel = document.getElementById("modalConfirmYesCancel");
+                        btnConfirmYesCancel.onclick = function () {
+                            let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                            for (let i = 0; i < omsActionForms.length; i++) {
+                                let action = omsActionForms[i].getAttribute("action");
+                                if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel+collection+by+store")) {
+                                    omsActionForms[i].submit();
+                                    return;
                                 }
-                                else if(btnSubmit.innerText === "Abholung bestätigen"){
-                                    ConfirmCollectionModalFill();
-                                    modal.style.display = "block";
-                                }
-                            }
-                        }
-
-                        function ResetModalContent()
-                        {
-                            let titleElements = document.getElementById("popUpTitle");
-                            let contentElements = document.getElementById("popUpContent");
-                            let confirmYesModalButton = document.getElementById("confirmYes");
-
-                            while (titleElements.firstChild) {
-                                titleElements.removeChild(titleElements.firstChild);
-                            }
-                            while (contentElements.firstChild) {
-                                contentElements.removeChild(contentElements.firstChild);
-                            }
-                            while (confirmYesModalButton.firstChild) {
-                                confirmYesModalButton.removeChild(confirmYesModalButton.firstChild);
-                            }
-
-                        }
-
-                        function CancelModalFill()
-                        {
-                            let cancelModalTitle = "{{ 'order.overview.cancel.order' | trans }}";
-                            let cancelModalContent = "{{ 'order.overview.cancel.order.question_1' | trans }} {{ order.orderReference }} {{ 'order.overview.cancel.order.question_2' | trans }}";
-                            let cancelModaDecline = "{{ 'order.overview.cancel.order.no' | trans }}";
-                            let cancelModalConfirm = "{{ 'order.overview.cancel.order.yes' | trans }}";
-                            let cancelModalButtonHtml = '<button type="button" id="modalConfirmYesCancel" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
-
-                            let hTag = document.createElement("h3");
-                            hTag.innerHTML = cancelModalTitle;
-                            document.getElementById("popUpTitle").appendChild(hTag);
-
-                            let pTag = document.createElement("p");
-                            pTag.innerHTML = cancelModalContent;
-                            document.getElementById("popUpContent").appendChild(pTag);
-
-                            document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
-
-                            document.getElementById("confirmYes").innerHTML = cancelModalButtonHtml;
-
-                            var btnConfirmYesCancel = document.getElementById("modalConfirmYesCancel");
-                            btnConfirmYesCancel.onclick = function () {
-                                let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
-
-                                for (let i = 0; i < omsActionForms.length; i++) {
-                                    let action = omsActionForms[i].getAttribute("action");
-                                    if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel+collection+by+store")) {
-                                        omsActionForms[i].submit();
-                                        return;
-                                    }
-                                    else if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")) {
-                                        omsActionForms[i].submit();
-                                        return;
-                                    }
-                                }
-                            }
-
-                        }
-
-                        function ConfirmPickingModalFill()
-                        {
-                            let cancelModalTitle = "Picking bestätigen";
-                            let cancelModalContent = "Möchten Sie das Picking für die Bestellung: {{ order.orderReference }} wirklich bestätigen?";
-                            let cancelModaDecline = "Nein, abbrechen";
-                            let cancelModalConfirm = "Ja, Picking bestätigen";
-                            let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesPicking" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
-
-                            let hTag = document.createElement("h3");
-                            hTag.innerHTML = cancelModalTitle;
-                            document.getElementById("popUpTitle").appendChild(hTag);
-
-                            let pTag = document.createElement("p");
-                            pTag.innerHTML = cancelModalContent;
-                            document.getElementById("popUpContent").appendChild(pTag);
-
-                            document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
-                            document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
-
-                            var btnConfirmYesPickingBest = document.getElementById("modalConfirmYesPicking");
-
-                            btnConfirmYesPickingBest.onclick = function () {
-                                let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
-
-                                for (let i = 0; i < omsActionForms.length; i++) {
-                                    let action = omsActionForms[i].getAttribute("action");
-                                    if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=Picking+best")) {
-                                        omsActionForms[i].submit();
-                                        return;
-                                    }
+                                else if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")) {
+                                    omsActionForms[i].submit();
+                                    return;
                                 }
                             }
                         }
 
-                        function ConfirmCollectionModalFill()
-                        {
-                            let cancelModalTitle = "{{ 'order.overview.collection.confirm' | trans }}";
-                            let cancelModalContent = "{{ 'order.overview.collection.question_1' | trans }} {{ order.orderReference }} {{ 'order.overview.collection.question_2' | trans }}";
-                            let cancelModaDecline = "{{ 'order.overview.collection.no' | trans }}";
-                            let cancelModalConfirm = "{{ 'order.overview.collection.yes' | trans }}";
-                            let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesCollection" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
+                    }
 
-                            let hTag = document.createElement("h3");
-                            hTag.innerHTML = cancelModalTitle;
-                            document.getElementById("popUpTitle").appendChild(hTag);
+                    function ConfirmPickingModalFill()
+                    {
+                        let cancelModalTitle = "Picking bestätigen";
+                        let cancelModalContent = "Möchten Sie das Picking für die Bestellung: {{ order.orderReference }} wirklich bestätigen?";
+                        let cancelModaDecline = "Nein, abbrechen";
+                        let cancelModalConfirm = "Ja, Picking bestätigen";
+                        let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesPicking" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
 
-                            let pTag = document.createElement("p");
-                            pTag.innerHTML = cancelModalContent;
-                            document.getElementById("popUpContent").appendChild(pTag);
+                        let hTag = document.createElement("h3");
+                        hTag.innerHTML = cancelModalTitle;
+                        document.getElementById("popUpTitle").appendChild(hTag);
 
-                            document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
-                            document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
+                        let pTag = document.createElement("p");
+                        pTag.innerHTML = cancelModalContent;
+                        document.getElementById("popUpContent").appendChild(pTag);
 
-                            var btnConfirmYesAbholungBest = document.getElementById("modalConfirmYesCollection");
+                        document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
+                        document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
 
-                            btnConfirmYesAbholungBest.onclick = function () {
-                                let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+                        var btnConfirmYesPickingBest = document.getElementById("modalConfirmYesPicking");
 
-                                for (let i = 0; i < omsActionForms.length; i++) {
-                                    let action = omsActionForms[i].getAttribute("action");
-                                    if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")) {
-                                        omsActionForms[i].submit();
-                                        return;
-                                    }
+                        btnConfirmYesPickingBest.onclick = function () {
+                            let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                            for (let i = 0; i < omsActionForms.length; i++) {
+                                let action = omsActionForms[i].getAttribute("action");
+                                if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=Picking+best")) {
+                                    omsActionForms[i].submit();
+                                    return;
                                 }
                             }
                         }
+                    }
 
-                        // When the user clicks on <span> (x), close the modal
-                        span.onclick = function() {
-                            modal.style.display = "none";
-                        }
+                    function ConfirmCollectionModalFill()
+                    {
+                        let cancelModalTitle = "{{ 'order.overview.collection.confirm' | trans }}";
+                        let cancelModalContent = "{{ 'order.overview.collection.question_1' | trans }} {{ order.orderReference }} {{ 'order.overview.collection.question_2' | trans }}";
+                        let cancelModaDecline = "{{ 'order.overview.collection.no' | trans }}";
+                        let cancelModalConfirm = "{{ 'order.overview.collection.yes' | trans }}";
+                        let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesCollection" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
 
-                        // When the user clicks on button "Nein" inside of pop up, close the modal
-                        btnConfirmNo.onclick = function() {
-                            modal.style.display = "none";
-                        }
+                        let hTag = document.createElement("h3");
+                        hTag.innerHTML = cancelModalTitle;
+                        document.getElementById("popUpTitle").appendChild(hTag);
 
-                        buttonBearbeiten.onclick = function() {
-                            divButtonEdit.style.display = "none";
-                            divFieldsEdit.style.display = "flex";
-                        }
+                        let pTag = document.createElement("p");
+                        pTag.innerHTML = cancelModalContent;
+                        document.getElementById("popUpContent").appendChild(pTag);
 
-                        buttonCancel.onclick = function() {
-                            divButtonEdit.style.display = "block";
-                            divFieldsEdit.style.display = "none";
-                        }
+                        document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
+                        document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
 
-                    })
+                        var btnConfirmYesAbholungBest = document.getElementById("modalConfirmYesCollection");
 
-                    const divAddContainer = document.getElementById('divAddContainer');
-                    const divAddContainerAndShelf = document.getElementById('divAddContainerAndShelf');
-                    const frmContainerShelf_idSalesOrder = document.getElementById('frmContainerShelf_idSalesOrder');
-                    const pickingZones = document.getElementById('pickingZones');
-                    const inputContainer = document.getElementById('inputContainer');
-                    const inputShelf = document.getElementById('inputShelf');
-                    const labelContainerAndShelf = document.getElementById('labelContainerAndShelf');
-                    const errorMessage = document.getElementById('errorMessage');
-                    const btnAddContainer = document.getElementById('btnAddContainer');
-                    const btnCancelAction = document.getElementById('btnCancelAction');
-                    const btnSaveContainer = document.getElementById('btnSaveContainer');
+                        btnConfirmYesAbholungBest.onclick = function () {
+                            let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
 
-                    btnAddContainer.addEventListener('click', function() {
-                        hideOrShowElement(divAddContainer, 'none', divAddContainerAndShelf, 'flex');
-                    });
-                    btnCancelAction.addEventListener('click', function() {
-                        hideOrShowElement(divAddContainer, 'block', divAddContainerAndShelf, 'none');
-                        resetForm();
-                    });
-                    btnSaveContainer.addEventListener('click', function() {
-                        errorMessage.textContent = '';
-                        if (pickingZones.value !== "" && inputContainer.getAttribute('type') === "hidden" && inputShelf.getAttribute('type') === "hidden") {
-                            labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ';
-                            pickingZones.classList.add('hidden');
-                            inputContainer.setAttribute('type', 'text');
-                            event.preventDefault();
-                        } else if (inputContainer.value !== "" && inputShelf.getAttribute('type') === "hidden") {
-                            if (inputContainer.value.length !== 8) {
-                                event.preventDefault();
-                                errorMessage.textContent = 'Container-ID muss 8 Zeichen haben';
-                            } else {
-                                setContainerToZone();
-                            }
-                        } else if (inputShelf.value !== "" && inputContainer.getAttribute('type') === "hidden") {
-                            let firstChar = (inputShelf.value.charAt(0));
-                            let reg = new RegExp (/^[A-Z]+$/g);
-                            let regTest = reg.test(firstChar);
-                            if (!regTest) {
-                                event.preventDefault();
-                                inputShelf.value = "";
-                                errorMessage.textContent = 'Der erste Buchstabe muss Großbuchstaben sein';
+                            for (let i = 0; i < omsActionForms.length; i++) {
+                                let action = omsActionForms[i].getAttribute("action");
+                                if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")) {
+                                    omsActionForms[i].submit();
+                                    return;
+                                }
                             }
                         }
-                    });
+                    }
 
-                    function setContainerToZone() {
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+
+                    // When the user clicks on button "Nein" inside of pop up, close the modal
+                    btnConfirmNo.onclick = function() {
+                        modal.style.display = "none";
+                    }
+
+                    buttonBearbeiten.onclick = function() {
+                        divButtonEdit.style.display = "none";
+                        divFieldsEdit.style.display = "flex";
+                    }
+
+                    buttonCancel.onclick = function() {
+                        divButtonEdit.style.display = "block";
+                        divFieldsEdit.style.display = "none";
+                    }
+
+                })
+
+                const divAddContainer = document.getElementById('divAddContainer');
+                const divAddContainerAndShelf = document.getElementById('divAddContainerAndShelf');
+                const frmContainerShelf_idSalesOrder = document.getElementById('frmContainerShelf_idSalesOrder');
+                const pickingZones = document.getElementById('pickingZones');
+                const inputContainer = document.getElementById('inputContainer');
+                const inputShelf = document.getElementById('inputShelf');
+                const labelContainerAndShelf = document.getElementById('labelContainerAndShelf');
+                const errorMessage = document.getElementById('errorMessage');
+                const btnAddContainer = document.getElementById('btnAddContainer');
+                const btnCancelAction = document.getElementById('btnCancelAction');
+                const btnSaveContainer = document.getElementById('btnSaveContainer');
+
+                btnAddContainer.addEventListener('click', function() {
+                    hideOrShowElement(divAddContainer, 'none', divAddContainerAndShelf, 'flex');
+                });
+                btnCancelAction.addEventListener('click', function() {
+                    hideOrShowElement(divAddContainer, 'block', divAddContainerAndShelf, 'none');
+                    resetForm();
+                });
+                btnSaveContainer.addEventListener('click', function() {
+                    errorMessage.textContent = '';
+                    if (pickingZones.value !== "" && inputContainer.getAttribute('type') === "hidden" && inputShelf.getAttribute('type') === "hidden") {
+                        labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ';
+                        pickingZones.classList.add('hidden');
+                        inputContainer.setAttribute('type', 'text');
                         event.preventDefault();
-                        var xhttp = new XMLHttpRequest();
-                        xhttp.onreadystatechange = function() {
-                            if (this.readyState === 4 && this.status === 200) {
-                                var dataParse = JSON.parse(this.response);
-                                if (dataParse['error'] === true) {
-                                    inputContainer.value = "";
-                                    errorMessage.textContent = 'Container ID bereits vergeben';
-                                } else {
-                                    labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ' + inputContainer.value + ' -> ';
-                                    inputContainer.setAttribute('type', 'hidden');
-                                    inputShelf.setAttribute('type', 'text');
-                                }
+                    } else if (inputContainer.value !== "" && inputShelf.getAttribute('type') === "hidden") {
+                        if (inputContainer.value.length !== 8) {
+                            event.preventDefault();
+                            errorMessage.textContent = 'Container-ID muss 8 Zeichen haben';
+                        } else {
+                            setContainerToZone();
+                        }
+                    } else if (inputShelf.value !== "" && inputContainer.getAttribute('type') === "hidden") {
+                        let firstChar = (inputShelf.value.charAt(0));
+                        let reg = new RegExp (/^[A-Z]+$/g);
+                        let regTest = reg.test(firstChar);
+                        if (!regTest) {
+                            event.preventDefault();
+                            inputShelf.value = "";
+                            errorMessage.textContent = 'Der erste Buchstabe muss Großbuchstaben sein';
+                        }
+                    }
+                });
+
+                function setContainerToZone() {
+                    event.preventDefault();
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState === 4 && this.status === 200) {
+                            var dataParse = JSON.parse(this.response);
+                            if (dataParse['error'] === true) {
+                                inputContainer.value = "";
+                                errorMessage.textContent = 'Container ID bereits vergeben';
+                            } else {
+                                labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ' + inputContainer.value + ' -> ';
+                                inputContainer.setAttribute('type', 'hidden');
+                                inputShelf.setAttribute('type', 'text');
                             }
-                        };
-                        xhttp.open("POST", window.location.origin + "/sales/detail/set-json-container-to-zone?idZone=" + pickingZones.value + "&containerID=" + inputContainer.value + '&idSalesOrder=' + frmContainerShelf_idSalesOrder.value, true);
-                        xhttp.send();
-                    }
+                        }
+                    };
+                    xhttp.open("POST", window.location.origin + "/sales/detail/set-json-container-to-zone?idZone=" + pickingZones.value + "&containerID=" + inputContainer.value + '&idSalesOrder=' + frmContainerShelf_idSalesOrder.value, true);
+                    xhttp.send();
+                }
 
-                    function hideOrShowElement(element1, displayProperty1, element2, displayProperty2) {
-                        element1.style.display = displayProperty1;
-                        element2.style.display = displayProperty2;
-                    }
+                function hideOrShowElement(element1, displayProperty1, element2, displayProperty2) {
+                    element1.style.display = displayProperty1;
+                    element2.style.display = displayProperty2;
+                }
 
-                    function resetForm() {
-                        errorMessage.textContent = '';
-                        labelContainerAndShelf.textContent = '';
-                        pickingZones.value = '';
-                        inputContainer.value = '';
-                        inputShelf.value = '';
-                        pickingZones.classList.remove('hidden');
-                        inputContainer.setAttribute('type', 'hidden');
-                        inputShelf.setAttribute('type', 'hidden');
-                    }
-                </script>
-            {% endif %}
-        </div>
+                function resetForm() {
+                    errorMessage.textContent = '';
+                    labelContainerAndShelf.textContent = '';
+                    pickingZones.value = '';
+                    inputContainer.value = '';
+                    inputShelf.value = '';
+                    pickingZones.classList.remove('hidden');
+                    inputContainer.setAttribute('type', 'hidden');
+                    inputShelf.setAttribute('type', 'hidden');
+                }
+            </script>
+        {% endif %}
+
+
     {% endblock %}
+{% endembed %}
