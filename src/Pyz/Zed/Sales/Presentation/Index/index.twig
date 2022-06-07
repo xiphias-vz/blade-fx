@@ -128,15 +128,6 @@
         }
 
 
-        .btn-customPrimary {
-            background-color: #1ab394;
-            border-color: #1ab394;
-            color: #FFFFFF;
-            border-radius: unset;
-            margin-left: 10px;
-            margin-top: 20px;
-        }
-
 
     </style>
     {% set currentPath = path(app.request.attributes.get('_route')) %}
@@ -234,14 +225,10 @@
         const timeSlotActiveFilter = document.querySelector('.time-slot-active-filter');
         const merchantReferenceActiveFilter = document.querySelector('.merchant-reference-filter');
         const storeStatusActiveFilter = document.querySelector('.store-status-filter');
-        const filterButton = document.querySelector("#btnSaveFilters");
         const clearAllFiltersDOM = document.querySelector('.clear-all-filters');
         let today = new Date();
-        const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
         let dateFromHTML = document.querySelector('#date_from');
         let dateToHTML = document.querySelector('#date_to');
-        let dateToTime = new Date(dateToHTML.value).getTime();
-        let dateFromTime = new Date(dateFromHTML.value).getTime();
 
         let initialState = {
             merchant: '',
@@ -268,61 +255,26 @@
             if(id === 'state-status-filter') {
                 createActiveFilter('ADD_STORE_STATUS', current.value, false)
                 saveFilterStateToStorage();
-            } else if(id === 'date-from-range-filter') {
-                if(filterState.dateTo !== "") {
-                    let dateToTime = new Date(dateToHTML.value).getTime();
-                    let dateFromTime = new Date(dateFromHTML.value).getTime();
-                    let futureSevenDaysFromMaxDate = dateFromTime + sevenDaysInMs;
-
-                    let timeDiff = dateToTime - dateFromTime;
-
-                    if(timeDiff > sevenDaysInMs) {
-                        dateToHTML.value = new Date(futureSevenDaysFromMaxDate).getFullYear() + '-' + ('0' + (new Date(futureSevenDaysFromMaxDate).getMonth() + 1)).slice(-2)
-                            + '-' + ('0' + new Date(futureSevenDaysFromMaxDate).getDate()).slice(-2);
-                        filterState = { ...filterState, dateFrom: current.value, dateTo: dateToHTML.value };
-                        queryParams.set('date-to-range-filter', filterState.dateTo);
-                    } else if(dateToTime < dateFromTime) {
-                        dateToHTML.value = new Date(dateFromTime).getFullYear() + '-' + ('0' + (new Date(dateFromTime).getMonth() + 1)).slice(-2)
-                            + '-' + ('0' + new Date(dateFromTime).getDate()).slice(-2);
-                        filterState = { ...filterState, dateFrom: current.value, dateTo: dateToHTML.value };
-                        queryParams.set('date-to-range-filter', filterState.dateTo);
-                    } else {
-                        filterState = { ...filterState, dateFrom: current.value, dateTo: dateToHTML.value };
-                        queryParams.set('date-to-range-filter', filterState.dateTo);
-                    }
-                }
-                saveFilterStateToStorage();
                 window.location = location.pathname + '?' + queryParams.toString();
+            } else if(id === 'date-from-range-filter') {
+                filterState = { ...filterState, dateFrom: current.value };
+                saveFilterStateToStorage();
+                if(filterState.dateTo !== "") {
+                    queryParams.set('date-to-range-filter', filterState.dateTo);
+                    window.location = location.pathname + '?' + queryParams.toString();
+                }
             }
             else if(id === 'date-to-range-filter') {
-                if(filterState.dateFrom !== "") {
-                    let dateToTime = new Date(dateToHTML.value).getTime();
-                    let dateFromTime = new Date(dateFromHTML.value).getTime();
-                    let pastSevenDaysFromMaxDate = dateToTime - sevenDaysInMs;
-
-                    let timeDiff = dateToTime - dateFromTime;
-
-                    if(timeDiff > sevenDaysInMs) {
-                        dateFromHTML.value = new Date(pastSevenDaysFromMaxDate).getFullYear() + '-' + ('0' + (new Date(pastSevenDaysFromMaxDate).getMonth() + 1)).slice(-2)
-                            + '-' + ('0' + new Date(pastSevenDaysFromMaxDate).getDate()).slice(-2);
-                        filterState = { ...filterState, dateTo: current.value, dateFrom: dateFromHTML.value };
-                        queryParams.set('date-from-range-filter', filterState.dateFrom);
-                    } else if(dateToTime < dateFromTime) {
-                        dateFromHTML.value = new Date(dateToTime).getFullYear() + '-' + ('0' + (new Date(dateToTime).getMonth() + 1)).slice(-2)
-                            + '-' + ('0' + new Date(dateToTime).getDate()).slice(-2);
-                        filterState = { ...filterState, dateTo: current.value, dateFrom: dateFromHTML.value };
-                        queryParams.set('date-from-range-filter', filterState.dateFrom);
-                    } else {
-                        filterState = { ...filterState, dateTo: current.value, dateFrom: dateFromHTML.value };
-                        queryParams.set('date-from-range-filter', filterState.dateFrom);
-                    }
-                }
+                filterState = { ...filterState, dateTo: current.value };
                 saveFilterStateToStorage();
-                window.location = location.pathname + '?' + queryParams.toString();
+                if(filterState.dateFrom !== "") {
+                    queryParams.set('date-from-range-filter', filterState.dateFrom);
+                    window.location = location.pathname + '?' + queryParams.toString();
+                }
             }
         }
 
-        window.onload = function() {
+            window.onload = function() {
             let locationDropdown = document.querySelector('#location');
             let statusSelect = document.querySelector('#status');
 
