@@ -4,6 +4,9 @@
     @include shop-ui-select($name) {
         line-height: 0;
 
+        width: 100%;
+        background-color: $setting-color-white;
+
         &__select {
             font-size: inherit;
             font-weight: normal;
@@ -41,7 +44,7 @@
         }
 
         .select2-container {
-            width: 180px;
+            width: 100% !important;
             min-width: rem(64);
             max-width: 100%;
         }
@@ -110,8 +113,8 @@
         font-size: rem(16);
         font-weight: fw(regular);
         line-height: rem(26);
-        min-height: rem(38);
-        padding: rem(6) rem(20) rem(6) rem(10);
+        min-height: rem(10);
+        padding: rem(2) rem(10);
     }
 
     .select2-container {
@@ -121,6 +124,22 @@
             box-shadow: rem(10) rem(10) rem(26) 0 $setting-color-alpha-1, 0 0 rem(30) 0 $setting-color-alpha-1;
             position: relative;
             border: rem(1) solid $setting-color-alpha-7;
+
+            ::-webkit-scrollbar {
+                width: rem(5);
+                background: $setting-color-white;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: $setting-color-forest-green;
+                border-radius: rem(10);
+            }
+
+            &-cz {
+                ::-webkit-scrollbar-thumb {
+                    background: $setting-color-globusCZ-main-green;
+                }
+            }
         }
 
         .select2-results__options {

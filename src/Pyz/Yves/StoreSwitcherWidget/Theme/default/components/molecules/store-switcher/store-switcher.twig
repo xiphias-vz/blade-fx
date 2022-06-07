@@ -55,14 +55,14 @@
             {% block icon %}
                 {% if app.currentCodeBucket == 'DE' %}
                     {% include atom('icon') with {
-                        class: config.name ~ '__edit',
+                        class: config.name ~ '__edit store-switcher__edit',
                         data: {
                             name: 'edit'
                         }
                     } only %}
                 {% else %}
                     {% include atom('icon') with {
-                        class: config.name ~ '__edit-cz',
+                        class: config.name ~ '__edit-cz store-switcher__edit',
                         data: {
                             name: 'edit'
                         }
