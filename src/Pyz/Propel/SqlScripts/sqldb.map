@@ -33,3 +33,4 @@ pyzx_check_product_availability_for_recommendations.sql=zed
 pyzx_monitor_scheduled_checks.sql=zed
 pyzx_monitoring_cashier.sql=zed
 pyzx_set_timeslot_exact_date_capacity.sql=zed
+pyzx_update_sales_order_item.sql=zed

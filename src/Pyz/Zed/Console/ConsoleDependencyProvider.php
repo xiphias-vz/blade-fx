@@ -25,6 +25,7 @@ use Pyz\Zed\DataImport\Communication\Console\DataImportExecSqlQueryConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportImagesFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportUpdatePricesConsole;
+use Pyz\Zed\DataImport\Communication\Console\DataImportUpdateSalesOrderItemConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportUpdateStockConsole;
 use Pyz\Zed\DataImport\Communication\Console\DeleteValuesFromPyzImportCsvNewConsole;
 use Pyz\Zed\DataImport\Communication\Console\DeleteValuesFromPyzImportCsvOldConsole;
@@ -278,6 +279,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataImportUpdatePricesConsole(),
             new DataImportCheckImagesConsole(),
             new DataImportUpdateStockConsole(),
+            new DataImportUpdateSalesOrderItemConsole(),
             new UpdateAvailabilityAfterImportConsole(),
             new DataImportCheckProductCsvFileConsole(),
             new FilterEventsAfterProductDataImportConsole(),
