@@ -1,9 +1,0 @@
-User-Agent: *
-Disallow: /cz/wishlist
-Disallow: /cz/customer/
-Disallow: /cz/checkout/
-Disallow: /cz/search/
-Disallow: /cz/login/
-Disallow: /cz/cart
-
-Sitemap: https://shop.iglobus.cz/sitemap.xml

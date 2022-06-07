@@ -156,7 +156,6 @@ groups:
                 endpoints:
                     www.shop.globus.local:
                         store: OST
-                        entry-point: YvesCZ
             Zed:
                 application: zed
                 endpoints:
