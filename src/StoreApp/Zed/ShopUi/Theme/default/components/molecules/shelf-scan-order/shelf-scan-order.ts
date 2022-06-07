@@ -95,7 +95,6 @@ export default class ShelfScanOrder extends Component {
         // force removing of barcode prefix
         const replacedValue = event.target.value.replace(this.barcodePrefix, '');
         event.target.value = replacedValue;
-
         // check if shelf Id starts with capital letter
         const firstChar = (replacedValue.charAt(0));
         const reg = new RegExp (/^[A-Z]+$/g);
@@ -123,6 +122,10 @@ export default class ShelfScanOrder extends Component {
                         this.formItems.forEach(item => {
                             if (item !== element) {
                                 item.focus();
+                                item.inputMode = 'none';
+                                item.addEventListener('touchstart',  () => {
+                                    item.inputMode = 'text';
+                                });
                             }
                         });
                     }
