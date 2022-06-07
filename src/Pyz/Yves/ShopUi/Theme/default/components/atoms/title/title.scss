@@ -234,6 +234,12 @@
             font-family: $setting-font-family;
         }
 
+        &--all--products-CZ {
+            @include helper-breakpoint-media-max($md-max) {
+                margin-top: rem(25);
+            }
+        }
+
         &--padding {
             padding: rem(16);
         }

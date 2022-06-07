@@ -247,7 +247,7 @@
                         {% if data.showNavigation %}
                             <div
                                 class="{{ config.name }}__navigation-main {{ config.jsName }}__navigation-target is-hidden is-hidden-xl-only">
-                                <h4 class="{{ config.name }}__navigation-title title title--{{ app.currentCodeBucket == 'DE' ? 'h6' : 'heading-CZ' }}">
+                                <h4 class="{{ config.name }}__navigation-title title title--{{ app.currentCodeBucket == 'DE' ? 'h6' : 'heading-CZ title--all--products-CZ' }}">
                                     {{- 'global.all_products' | trans -}}
                                     {% block mobileNavigation %}
                                         {% cms_slot 'slt-mobile-header' %}

@@ -7,8 +7,12 @@ $header-sticky-height: rem(130, number);
         position: relative;
         z-index: $setting-zi-header;
         margin-bottom: rem(5);
-        height: rem(130);
+        height: rem(140);
         background-color: $setting-color-white;
+
+        @include helper-breakpoint-media-max($sm-max) {
+            height: rem(150);
+        }
 
         @include helper-breakpoint-media-min($xl-min) {
             height: auto;
