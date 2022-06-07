@@ -109,6 +109,12 @@
                 color: $setting-color-gray-6;
             }
 
+            .link-cursor {
+                text-decoration: underline !important;
+                display: flex;
+                margin: 0 0 -1rem;
+            }
+
             .register-now-link-cz {
                 color: $setting-color-gray-6;
                 display: flex;
