@@ -7,7 +7,7 @@
 
 namespace Pyz\Client\TimeSlot;
 
-use Pyz\Client\MerchantStorage\MerchantStorageClient;
+use Pyz\Client\MerchantStorage\MerchantStorageClientInterface;
 use Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpander;
 use Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface;
 use Pyz\Client\TimeSlot\Expander\ShipmentSlotsExpanderInterface;
@@ -28,9 +28,9 @@ use Spryker\Client\Quote\QuoteClientInterface;
 class TimeSlotFactory extends AbstractFactory
 {
     /**
-     * @return \Pyz\Client\MerchantStorage\MerchantStorageClient
+     * @return \Pyz\Client\MerchantStorage\MerchantStorageClientInterface
      */
-    public function getMerchantStorageClient(): MerchantStorageClient
+    public function getMerchantStorageClient(): MerchantStorageClientInterface
     {
         return $this->getProvidedDependency(TimeSlotDependencyProvider::CLIENT_MERCHANT_STORAGE);
     }
@@ -73,6 +73,7 @@ class TimeSlotFactory extends AbstractFactory
     {
         return new MerchantReader(
             $this->getMerchantSearchClient(),
+            $this->getMerchantStorageClient(),
             $this->getQuoteClient(),
             $this->createMerchantStorageDataExpander()
         );

@@ -9,13 +9,15 @@ namespace Pyz\Client\TimeSlot\Reader;
 
 use Generated\Shared\Transfer\MerchantSearchRequestTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
-use Pyz\Client\TimeSlot\Exception\MerchantNotFound;
+use Pyz\Client\MerchantStorage\MerchantStorageClient;
 use Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface;
 use Spryker\Client\MerchantSearch\MerchantSearchClientInterface;
 use Spryker\Client\Quote\QuoteClientInterface;
 
 class MerchantReader implements MerchantReaderInterface
 {
+    public const FIELD_MERCHANT_REF = 'fillialNumber';
+
     /**
      * @uses \Spryker\Client\MerchantSearch\Plugin\Elasticsearch\ResultFormatter\MerchantSearchResultFormatterPlugin::NAME
      */
@@ -25,6 +27,11 @@ class MerchantReader implements MerchantReaderInterface
      * @var \Spryker\Client\MerchantSearch\MerchantSearchClientInterface
      */
     protected $merchantSearchClient;
+
+    /**
+     * @var \Pyz\Client\MerchantStorage\MerchantStorageClientInterface
+     */
+    protected $merchantClient;
 
     /**
      * @var \Spryker\Client\Quote\QuoteClientInterface
@@ -38,45 +45,42 @@ class MerchantReader implements MerchantReaderInterface
 
     /**
      * @param \Spryker\Client\MerchantSearch\MerchantSearchClientInterface $merchantSearchClient
+     * @param \Pyz\Client\MerchantStorage\MerchantStorageClientInterface $merchantClient
      * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
      * @param \Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface $merchantStorageDataExpander
      */
     public function __construct(
         MerchantSearchClientInterface $merchantSearchClient,
+        MerchantStorageClient $merchantClient,
         QuoteClientInterface $quoteClient,
         MerchantStorageDataExpanderInterface $merchantStorageDataExpander
     ) {
         $this->merchantSearchClient = $merchantSearchClient;
+        $this->merchantClient = $merchantClient;
         $this->quoteClient = $quoteClient;
         $this->merchantStorageDataExpander = $merchantStorageDataExpander;
     }
 
     /**
-     * @throws \Pyz\Client\TimeSlot\Exception\MerchantNotFound
-     *
      * @return \Generated\Shared\Transfer\MerchantTransfer
      */
     public function getCurrentMerchant(): MerchantTransfer
     {
-        $merchantSearchTransfers = $this->getMerchantSearchTransfers();
         $currentMerchantReference = $this->quoteClient->getQuote()->getMerchantReference();
+        $merchantTransfer = new MerchantTransfer();
 
         if (empty($currentMerchantReference)) {
             if (isset($_COOKIE['merchant_switcher_selector-merchant_reference'])) {
                 $currentMerchantReference = $_COOKIE['merchant_switcher_selector-merchant_reference'];
+                $merchantTransfer->setMerchantReference($currentMerchantReference);
+            } elseif (isset($_COOKIE['current_store'])) {
+                $merchantTransfer = $this->setMerchantTransferFromStoreName($_COOKIE['current_store']);
             }
-        }
-        foreach ($merchantSearchTransfers as $merchantTransfer) {
-            if ($merchantTransfer->getMerchantReference() === $currentMerchantReference) {
-                $merchantTransfer = (new MerchantTransfer())->fromArray($merchantTransfer->toArray(), true);
-
-                return $this->merchantStorageDataExpander->expand($merchantTransfer);
-            }
+        } else {
+            $merchantTransfer->setMerchantReference($currentMerchantReference);
         }
 
-        throw new MerchantNotFound(
-            "Current user Merchant with merchantReference: `$currentMerchantReference` wasn't found in the merchant storage"
-        );
+        return $this->merchantStorageDataExpander->expand($merchantTransfer);
     }
 
     /**
@@ -89,5 +93,24 @@ class MerchantReader implements MerchantReaderInterface
 
         return $merchantSearchCollectionTransfer
             ->getMerchants();
+    }
+
+    /**
+     * @param string $storeName
+     *
+     * @return \Generated\Shared\Transfer\MerchantTransfer
+     */
+    public function setMerchantTransferFromStoreName(string $storeName): MerchantTransfer
+    {
+        $merchantTransfer = new MerchantTransfer();
+        $merchantList = $this->merchantClient->getMerchantsList()->getMerchants();
+
+        foreach ($merchantList as $merchant) {
+            if (isset($merchant->getVisibleStoresArray()[$storeName])) {
+                return $merchantTransfer->setMerchantReference($merchant->getVisibleStoresArray()[$storeName]['fillialNumber']);
+            }
+        }
+
+        return $merchantTransfer;
     }
 }

@@ -161,10 +161,9 @@ class FtpChecker
     {
         $i = 0;
         foreach ($this->files as $fileKey => $file) {
-            if(!strpos($path, 'archiv'))
-            {
-                if($i > 0){
-                    $path = substr($path, 0,-5);
+            if (!strpos($path, 'archiv')) {
+                if ($i > 0) {
+                    $path = substr($path, 0, -5);
                 }
                 $path .= '/' . $file[static::FILIAL_NUMBER];
                 $i++;
@@ -230,7 +229,6 @@ class FtpChecker
             $query->save();
         }
     }
-
 
     /**
      * @param string $idSalesOrder
