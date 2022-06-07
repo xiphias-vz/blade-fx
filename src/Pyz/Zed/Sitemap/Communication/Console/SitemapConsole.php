@@ -11,6 +11,7 @@ use Aws\S3\ObjectUploader;
 use Aws\S3\S3Client;
 use Orm\Zed\UrlStorage\Persistence\SpyUrlStorageQuery;
 use Pyz\Shared\S3Constants\S3Constants;
+use Pyz\Zed\Sitemap\SitemapConfig;
 use Spryker\Shared\Config\Config;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -32,6 +33,18 @@ class SitemapConsole extends Console
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
+
+    /**
+     * @var SitemapConfig
+     */
+    private $config;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->config = new SitemapConfig();
+    }
 
     /**
      * @return void
@@ -229,11 +242,12 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
      */
     protected function addUrlsToString(object $url, string $generatedContent): string
     {
+        $baseUrl = $this->config->getSitemapBaseUrl();
         $updatedAtArr = (array)$url->getUpdatedAt();
         $updateDate = explode(" ", $updatedAtArr['date']);
         $generatedContent .= "\n";
         $generatedContent .= "    <url>\n";
-        $generatedContent .= "        <loc>https://shop.globus.de" . $this->customUrlEncode($url->getUrl()) . "</loc>\n";
+        $generatedContent .= "        <loc>" . $baseUrl . $this->customUrlEncode($url->getUrl()) . "</loc>\n";
         $generatedContent .= "        <lastmod>" . $updateDate[0] . "</lastmod>\n";
         $generatedContent .= "    </url>";
 
@@ -279,7 +293,7 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
      */
     protected function getS3Client(): S3Client
     {
-        $credentials = Config::get(S3Constants::S3_CONSTANTS);
+        $credentials = $this->config->getS3Credentials();
         $key = '';
         $secret = '';
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {
@@ -310,7 +324,7 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
      */
     protected function getS3Bucket(): string
     {
-        $credentials = Config::get(S3Constants::S3_CONSTANTS);
+        $credentials = $this->config->getS3Credentials();
         $bucket = '';
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET])) {
             $bucket = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET];

@@ -25,6 +25,7 @@ use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
 use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Shared\TwigCache\TwigCacheConstants;
+use Pyz\Shared\Sitemap\SitemapConstants;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;
 use Spryker\Service\FlysystemFtpFileSystem\Plugin\Flysystem\FtpFilesystemBuilderPlugin;
@@ -1346,6 +1347,9 @@ $config[FactFinderConstants::FACT_FINDER_ROOT_URL] = 'https://globus-sb.fact-fin
 
 $config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = '';
 $config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = '';
+
+// ---------- Sitemap Base URL
+$config[SitemapConstants::SITEMAP_BASE_URL] = 'https://shop.globus.de';
 
 
 // ----------------------------------------------------------------------------

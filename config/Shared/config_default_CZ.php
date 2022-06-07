@@ -10,6 +10,7 @@ use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
+use Pyz\Shared\Sitemap\SitemapConstants;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\ErrorHandler\ErrorHandlerConstants;
 use Spryker\Shared\ErrorHandler\ErrorRenderer\WebHtmlErrorRenderer;
@@ -134,3 +135,5 @@ $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = ''; // This is needed in o
 $config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = '';
 $config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = '';
 
+// ---------- Sitemap Base URL
+$config[SitemapConstants::SITEMAP_BASE_URL] = 'https://shop.iglobus.cz';
