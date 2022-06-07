@@ -224,6 +224,15 @@ $header-sticky-height: rem(130, number);
                 padding: 0 rem(10);
                 transition: top 0.3s;
                 background: $setting-color-white;
+                top: rem(-120);
+
+                &--sticky {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    padding-bottom: rem(20);
+                }
             }
         }
 
