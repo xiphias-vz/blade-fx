@@ -9,20 +9,10 @@
         modifiers: ['stretch'],
         data: {
         product: data.product,
-    },
-        } only %}
+        sku: data.product.sku
+    }, } only %}
         {% block rating %}
-            {% include molecule('rating-selector', 'ProductReviewWidget') ignore missing with {
-                data: {
-                    value: data.product.rating.averageRating | default(0),
-                    reviewCount:  data.product.rating.totalReview | default(0),
-                    useHalfSteps: true,
-                    parentJsName: config.jsName,
-                },
-                attributes: {
-                    readonly: true,
-                },
-            } only %}
+
         {% endblock %}
     {% endembed %}
 {% endblock %}
