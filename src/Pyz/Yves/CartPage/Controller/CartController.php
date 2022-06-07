@@ -14,6 +14,7 @@ use Generated\Shared\Transfer\ProductConcreteAvailabilityTransfer;
 use Generated\Shared\Transfer\ProductViewTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
+use Pyz\Shared\LocalStorageCookie\LocalStorageCookie;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\OrderDetail\OrderDetailConstants;
 use Pyz\Yves\CartPage\Plugin\Router\CartPageRouteProviderPlugin;
@@ -111,6 +112,8 @@ class CartController extends SprykerCartController
         } else {
             $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
         }
+
+        LocalStorageCookie::deleteCookieData();
 
         return $this->redirect($request);
     }

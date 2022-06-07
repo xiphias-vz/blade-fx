@@ -81,26 +81,28 @@ export default class ImageAnimation extends Component {
 
     protected startImageAnimation(imageClass: string): void {
         const image = <HTMLImageElement>document.getElementsByClassName(imageClass)[0];
-        const imageCoordinates = <DOMRect>image.getBoundingClientRect();
-        const clonedImage = <HTMLImageElement>image.cloneNode(true);
+        const imageCoordinates = <DOMRect>image?.getBoundingClientRect();
+        const clonedImage = <HTMLImageElement>image?.cloneNode(true);
 
-        clonedImage.className = `${this.name}__image`;
-        clonedImage.style.cssText = `
+        if (clonedImage !== undefined && clonedImage !== null) {
+            clonedImage.className = `${this.name}__image`;
+            clonedImage.style.cssText = `
             top: ${imageCoordinates.top + pageYOffset}px;
             left: ${imageCoordinates.left + pageXOffset}px;
             width: ${imageCoordinates.width}px;
         `;
 
-        this.clonedImages.push({
-            id: this.clonedImages.length ? this.clonedImages[this.clonedImages.length - 1].id + 1 : 1,
-            element: clonedImage,
-            animationStarted: performance.now(),
-            coordinates: imageCoordinates
-        });
+            this.clonedImages.push({
+                id: this.clonedImages.length ? this.clonedImages[this.clonedImages.length - 1].id + 1 : 1,
+                element: clonedImage,
+                animationStarted: performance.now(),
+                coordinates: imageCoordinates
+            });
 
-        this.cartCoordinates();
-        this.body.appendChild(clonedImage);
-        requestAnimationFrame((time: number) => this.animateImage(time));
+            this.cartCoordinates();
+            this.body.appendChild(clonedImage);
+            requestAnimationFrame((time: number) => this.animateImage(time));
+        }
     }
 
     protected animateImage(time: number): void {

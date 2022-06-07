@@ -30,6 +30,7 @@ use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface;
 use Pyz\Yves\CustomerPage\Processor\Mapper\RecommendationsMapper;
 use Pyz\Yves\CustomerPage\Processor\Mapper\RecommendationsMapperInterface;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiRecommendations;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
@@ -314,5 +315,13 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     public function getStorageClient(): RecommendationsStorageClientInterface
     {
         return $this->getProvidedDependency(CustomerPageDependencyProvider::CLIENT_RECOMMENDATIONS_STORAGE);
+    }
+
+    /**
+     * @return GlobusRestApiClientCookie
+     */
+    public function createGlobusRestApiClientCookie(): GlobusRestApiClientCookie
+    {
+        return new GlobusRestApiClientCookie();
     }
 }

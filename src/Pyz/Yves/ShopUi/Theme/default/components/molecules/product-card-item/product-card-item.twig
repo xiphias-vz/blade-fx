@@ -218,6 +218,8 @@
                 {% endif %}
                 <script>
                     function productRemoveFromCart(productId, productName, productSku, productQuantity, productPrice) {
+                        removeItemFromLocalStorageAndCookie(productSku);
+
                         window.dataLayer = window.dataLayer || [];
                         window.dataLayer.push({
                             'event': 'eec.removeFromCart',
@@ -234,6 +236,33 @@
                                 }
                             },
                         });
+                    }
+
+                    function removeItemFromLocalStorageAndCookie(productSku)
+                    {
+                        const cookieName = 'local_storage_cookie';
+                        const localStorageItemName = 'productItemsForSyncCounter';
+                        let localStorageValue = localStorage.getItem(localStorageItemName);
+
+                        localStorageValue = JSON.parse(localStorageValue);
+
+                        const lengthOfLocalStorageValue = localStorageValue.length;
+
+                        for(let i = 0; i < lengthOfLocalStorageValue; i++) {
+                            if (localStorageValue[i].includes(productSku)) {
+                                localStorageValue.splice(i, 1);
+                            }
+                        }
+
+                        localStorage.setItem(localStorageItemName, JSON.stringify(localStorageValue));
+                        setCookie(cookieName, JSON.stringify(localStorageValue), 1);
+                    }
+
+                    function setCookie(name, value, exdays) {
+                        const date = new Date();
+                        date.setTime(date.getTime() + (exdays*24*60*60*1000));
+                        const expires = 'expires=' + date.toUTCString();
+                        document.cookie = name + '=' + value + ';' + expires + ';path=/';
                     }
                 </script>
             {% endblock %}

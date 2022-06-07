@@ -34,6 +34,8 @@ function isPageWithBreadcrumbs() {
 var indexCatalogPageCounter = 0;
 var productsPerPageCounter = 0;
 document.addEventListener("DOMContentLoaded", function (event) {
+    checkLocalStorageCookie();
+
     let breadCrumbFFElement = document.getElementsByTagName('ff-breadcrumb-trail')[0];
     let breadCrumbUnorderedList = document.querySelectorAll('ul.breadcrumb')[0];
     let breadCrumbChild;
@@ -765,7 +767,6 @@ function createSearchParamsForCustomCategory(arrayOfRecommendedItems) {
 
     var searchParamsUrlPrefix = 'https://globus-sb.fact-finder.de/fact-finder/rest/v4/search/' + channelName.value + '?query=';
     var searchParamsUrlSufix = '&marketId=' + storeId.value + '&endLevel=2&format=json' + '&initialNavigation=true&startLevel=0';
-    ;
 
     let productsForQuery = createQueryForRecommendedProducts(arrayOfRecommendedItems, false);
 
@@ -826,4 +827,31 @@ function redirectToFactFinderSearch(event) {
     const params = factfinder.common.dictToParameterString(dict);
 
     window.location.href = '/de/search' + params;
+}
+
+function checkLocalStorageCookie() {
+    let cookieValue = getCookie('local_storage_cookie');
+    let localStorageValue = localStorage.getItem('productItemsForSyncCounter');
+
+    if (cookieValue !== undefined && (localStorageValue === '' || localStorageValue === null || localStorageValue === undefined || localStorageValue === "undefined")) {
+        localStorage.setItem('productItemsForSyncCounter', cookieValue);
+    }
+}
+
+function getCookie(name) {
+    let cookieName = name + '=';
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let cookieArray = decodedCookie.split(';');
+    const arrayLength = cookieArray.length;
+
+    for (let i = 0; i < arrayLength; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+        }
+
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
 }

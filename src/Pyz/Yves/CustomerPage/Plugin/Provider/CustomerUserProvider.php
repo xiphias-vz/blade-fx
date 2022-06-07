@@ -30,6 +30,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     public const ERROR_NOT_VERIFIED_CUSTOMER = 'ERROR_NOT_VERIFIED_CUSTOMER';
     public const INITIAL_PASSWORD = '$#$%J%R%$)O%t43t';
 
+    public const LOCAL_STORAGE_COOKIE_NAME = 'local_storage_cookie';
+
     /**
      * @param string $email
      *
@@ -54,6 +56,10 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         } else {
             $authCheck = $this->getAccountInfo($uid);
         }
+        if (!str_contains($authCheck, 'id_token')) {
+            $authCheck = $this->addTokenInfo($authCheck);
+        }
+
         $unparsedAuth = $authCheck;
         $authCheck = JSON::parse($authCheck);
 
@@ -114,9 +120,11 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
 
                     $this->getFactory()->getSessionClient()->set("recoData", $customerTransfer->getRecoData());
 
-                    $cook = new GlobusRestApiClientCookie();
+                    $cook = $this->getFactory()->createGlobusRestApiClientCookie();
                     $cook->setLoginCookiePhp($unparsedAuth, $this->getFactory()->getSessionClient());
                     $cook->setLoginConfirmedCookiePhp();
+
+                    $this->createQuoteCookie();
                 }
             } catch (Exception $ex) {
             }
@@ -446,5 +454,41 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     public function globusLoginWithCookie(): string
     {
         return GlobusRestApiClientAccount::loginWithCookie();
+    }
+
+    /**
+     * @return void
+     */
+    protected function createQuoteCookie()
+    {
+        $listOfItemsForCookie = array();
+        $qoute = $this->getFactory()->getQuoteClient()->getQuote();
+        $items = $qoute->getItems() ?? null;
+        if(isset($items)) {
+            foreach ($items as $item) {
+                $listOfItemsForCookie[] = array($item->getSku(), $item->getQuantity(), true);
+            }
+        }
+
+        $cookieData = trim(JSON::stringify($listOfItemsForCookie));
+
+        header("Set-Cookie: " . self::LOCAL_STORAGE_COOKIE_NAME . "=" . $cookieData . "; expires=" . (time() + (86400 * 30)));
+    }
+
+    /**
+     * @param string $authCheck
+     *
+     * @return string
+     */
+    protected function addTokenInfo(string $authCheck): string
+    {
+        $authCheck = trim($authCheck);
+        $authCheck = substr($authCheck, 0, strlen($authCheck) - 1);
+        $authCheck .= ',' . '"id_token":"' . $this->getFactory()->getSessionClient()->get("id_token") . '"';
+        $authCheck .= ',' . '"strongToken":false';
+        $authCheck .= ',' . '"tokenIssuedAt":"2022-06-03T13:30:18.000+0000"';
+        $authCheck .= ',' . '"tokenExpiresAt":"2022-06-03T13:30:18.000+0000"}';
+
+        return $authCheck;
     }
 }

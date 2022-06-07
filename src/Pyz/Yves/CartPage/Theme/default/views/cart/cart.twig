@@ -117,7 +117,7 @@
                                         },
                                     } only %}
                                     <input class="cart-box__quantity link"
-                                           onclick="localStorage.removeItem('productItemsFromCartWithQuantity')"
+                                           onclick="removeLocalStorageAndCookie()"
                                            type="submit" value="{{ 'cart.clear' | trans }}">
                                 </form>
                             </span>
@@ -197,8 +197,11 @@
                         </script>
                     {% endfor %}
                     <script>
-                        const cartItemsSkuWithQuantity = document.querySelector('#productItemsFromCart').value;
-                        localStorage.setItem('productItemsForSyncCounter', cartItemsSkuWithQuantity);
+                        function removeLocalStorageAndCookie()
+                        {
+                            localStorage.removeItem('productItemsForSyncCounter');
+                            document.cookie = "local_storage_cookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                        }
                     </script>
 
                     {% widget 'CartDiscountPromotionProductListWidget' args [data.cart, data.request] only %}{% endwidget %}

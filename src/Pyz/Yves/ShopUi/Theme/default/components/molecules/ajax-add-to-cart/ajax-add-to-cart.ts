@@ -133,6 +133,7 @@ export default class AjaxAddToCart extends Component {
                         return value !== 0;
                     });
                     localStorage.setItem('productItemsForSyncCounter', JSON.stringify(filteredProductItemsFromCart));
+                    this.addlocalStorageInfoToCookie(filteredProductItemsFromCart);
                     if (localStorage.getItem('productItemsForSyncCounter') === '[]') {
                         localStorage.removeItem('productItemsForSyncCounter');
                     }
@@ -207,7 +208,7 @@ export default class AjaxAddToCart extends Component {
                     if(productItemsForSyncCounter[i][2] === false){
                        firstClickFlag = true;
                     } else {
-                        firstClickFlag = false
+                        firstClickFlag = false;
                     }
                 } else {
                     firstClickFlag = true;
@@ -388,8 +389,11 @@ export default class AjaxAddToCart extends Component {
                     productItemsForSyncCounter.push(itemAddedInCartWithQuantity[0]);
                 }
                 localStorage.setItem('productItemsForSyncCounter', JSON.stringify(productItemsForSyncCounter));
+                this.addlocalStorageInfoToCookie(productItemsForSyncCounter);
+
             } else {
                 localStorage.setItem('productItemsForSyncCounter', JSON.stringify(itemAddedInCartWithQuantity));
+                this.addlocalStorageInfoToCookie(itemAddedInCartWithQuantity);
             }
             const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.parentElement.querySelector(CLASS_PREFIX + this.quantityInputField);
             counter.value = String(quantity);
@@ -507,6 +511,18 @@ export default class AjaxAddToCart extends Component {
         counter?.classList.add(HIDDEN_CLASS);
         addAjaxButton?.classList.remove(HIDDEN_CLASS);
         addAjaxButton.removeAttribute('disabled');
+    }
+
+    protected addlocalStorageInfoToCookie(localStorageData): void {
+        const cookieName = 'local_storage_cookie';
+        this.setCookie(cookieName, JSON.stringify(localStorageData), 1);
+    }
+
+    protected setCookie(name, value, exdays) {
+        const date = new Date();
+        date.setTime(date.getTime() + (exdays*24*60*60*1000));
+        const expires = 'expires=' + date.toUTCString();
+        document.cookie = name + '=' + value + ';' + expires + ';path=/';
     }
 
     protected get addToCartLinkClass(): string {
