@@ -60,36 +60,6 @@ sections:
         import-product-price-1006:
             command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1006.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
-        import-product-price-1005:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1005.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1007:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1023:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1023.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1027:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1027.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1030:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1030.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1033:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1033.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1037:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1037.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1043:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1043.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1048:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1048.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-price-1063:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1063.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
         import-product-stock-1004:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1004.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
@@ -222,36 +192,6 @@ sections:
 
         reset-product-price-1057:
             command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1057.csv"
-
-        reset-product-price-1005:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1005.csv"
-
-        reset-product-price-1007:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1007.csv"
-
-        reset-product-price-1023:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1023.csv"
-
-        reset-product-price-1027:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1027.csv"
-
-        reset-product-price-1030:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1030.csv"
-
-        reset-product-price-1033:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1033.csv"
-
-        reset-product-price-1037:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1037.csv"
-
-        reset-product-price-1043:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1043.csv"
-
-        reset-product-price-1048:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1048.csv"
-
-        reset-product-price-1063:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.1063.csv"
 
         reset-product-stock-1004:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1004.csv"
@@ -796,10 +736,6 @@ sections:
         import-update-stock:
             command: "vendor/bin/console import:updateStock"
 
-    update-sales-order-item:
-        import-update-sales-order-item:
-            command: "vendor/bin/console import:updateSalesOrderItem"
-
     update-prices:
         import-update-prices:
             command: "vendor/bin/console import:updatePrices -c EUR"
@@ -826,6 +762,18 @@ sections:
         update-product-label-relation:
             command: "vendor/bin/console product-label:relations:update 'call pyzx_update_product_label'"
 
+        event-filtering:
+            command: "vendor/bin/console import:eventFilter"
+
+        event-purge-old:
+            command: "vendor/bin/console import:eventPurgeOld"
+
+        event-copy:
+            command: "vendor/bin/console import:eventCopy"
+
+        event-purge-new:
+            command: "vendor/bin/console import:eventPurgeNew"
+
         exec-events2:
             command: "vendor/bin/console import:execEvents"
 
@@ -834,3 +782,4 @@ sections:
 
         fact-finder-import:
             command: "vendor/bin/console fact-finder:import"
+

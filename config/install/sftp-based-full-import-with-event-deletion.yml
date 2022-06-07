@@ -732,24 +732,58 @@ sections:
         reset-metzgerei-product-stock-nos-1063:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1063.csv"
 
-    update-prices:
-        import-update-prices:
-            command: "vendor/bin/console import:updatePrices -c EUR"
-
     update-stock:
         import-update-stock:
             command: "vendor/bin/console import:updateStock"
 
+    update-sales-order-item:
+        import-update-sales-order-item:
+            command: "vendor/bin/console import:updateSalesOrderItem"
+
+    update-prices:
+        import-update-prices:
+            command: "vendor/bin/console import:updatePrices -c EUR"
+
     exec-after-import:
         update-availability:
             command: "vendor/bin/console import:updateAvailability"
-        event-filtering:
-            command: "vendor/bin/console import:eventFilter"
-        event-purge-old:
-            command: "vendor/bin/console import:eventPurgeOld"
-        event-copy:
-            command: "vendor/bin/console import:eventCopy"
-        event-purge-new:
-            command: "vendor/bin/console import:eventPurgeNew"
+
         exec-events:
             command: "vendor/bin/console import:execEvents"
+
+        check-scheduled-prices:
+            command: "vendor/bin/console import:execSqlQuery -s 'call pyzx_check_scheduled_prices()'"
+
+        exec-events1:
+            command: "vendor/bin/console import:execEvents"
+
+        exec-apply-price-product-schedule:
+            command: "vendor/bin/console price-product-schedule:apply"
+
+        update-scheduled-weight-prices:
+            command: "vendor/bin/console import:execSqlQuery -s 'call pyzx_update_sceduled_weight_prices()'"
+
+        update-product-label-relation:
+            command: "vendor/bin/console product-label:relations:update 'call pyzx_update_product_label'"
+
+        event-filtering:
+            command: "vendor/bin/console import:eventFilter"
+
+        event-purge-old:
+            command: "vendor/bin/console import:eventPurgeOld"
+
+        event-copy:
+            command: "vendor/bin/console import:eventCopy"
+
+        event-purge-new:
+            command: "vendor/bin/console import:eventPurgeNew"
+
+        exec-events2:
+            command: "vendor/bin/console import:execEvents"
+
+        fact-finder-export:
+            command: "vendor/bin/install -r fact-finder-export"
+
+        fact-finder-import:
+            command: "vendor/bin/console fact-finder:import"
+

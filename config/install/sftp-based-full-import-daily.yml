@@ -796,10 +796,6 @@ sections:
         import-update-stock:
             command: "vendor/bin/console import:updateStock"
 
-    update-sales-order-item:
-        import-update-sales-order-item:
-            command: "vendor/bin/console import:updateSalesOrderItem"
-
     update-prices:
         import-update-prices:
             command: "vendor/bin/console import:updatePrices -c EUR"
