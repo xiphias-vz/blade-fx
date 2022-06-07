@@ -153,13 +153,8 @@
         margin: 0 rem(15);
 
         &:focus {
-            border: solid rem(2) $setting-color-fresh-orange-5;
-            background-color: $setting-color-fresh-orange-4;
-            border-radius: rem(25);
-            padding: rem(2) rem(5);
             text-decoration: none;
             color: $setting-color-tentgray;
-            white-space: nowrap;
         }
 
         &:hover, &:active {
