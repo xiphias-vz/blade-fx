@@ -221,7 +221,7 @@ $header-sticky-height: rem(130, number);
             width: 100%;
 
             @include helper-breakpoint-media-max($lg-max) {
-                padding: 0 rem(10);
+                padding: 0 rem(6);
                 transition: top 0.3s;
                 background: $setting-color-white;
                 top: rem(-120);
