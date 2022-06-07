@@ -39,6 +39,26 @@ class WishlistOverviewController extends SprykerWishlistOverviewController
     }
 
     /**
+     * @param string $wishlistName
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function updateAction($wishlistName, Request $request)
+    {
+        if ($wishlistName === '{{ attributes.ImageUrl }}')
+            $response = [];
+        else {
+            $response = $this->executeUpdateAction($wishlistName, $request);
+
+            if (!is_array($response)) {
+                return $response;
+            }
+        }
+        return $this->view($response, [], '@WishlistPage/views/wishlist-overview-update/wishlist-overview-update.twig');
+    }
+
+    /**
      * @param string $id
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
