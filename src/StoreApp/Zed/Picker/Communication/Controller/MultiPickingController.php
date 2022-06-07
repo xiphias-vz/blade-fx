@@ -90,6 +90,11 @@ class MultiPickingController extends BaseOrderPickingController
             $this->returnOrderByTimeSlotAndMerchant($orderByTimeSlot, $request);
         }
 
+        $idPickingZone = $request->getSession()->getBag('attributes')->all()['picking_zone'] ?? "";
+        if ($idPickingZone === null || $idPickingZone === "") {
+            return $this->redirectResponse(PickerConfig::URL_DIFF_SECTIONS);
+        }
+
         $transfer = $facade->getAllOrdersInStateReadyForPickingByZone();
         $orderByTimeSlot = $transfer->getOrdersByTimeSlot();
 
