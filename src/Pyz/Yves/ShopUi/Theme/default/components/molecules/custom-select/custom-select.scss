@@ -46,11 +46,27 @@
             color: $setting-color-black;
         }
 
+        &__products-per-page-cz {
+            padding: 0 rem(15);
+
+            #{$name}__caret-cz {
+                margin-right: rem(15);
+            }
+
+            .select2-selection--single .select2-selection__rendered {
+                padding: 0 !important;
+            }
+
+            .select2-selection--single {
+                border: none !important;
+            }
+        }
+
         .select2-selection--single {
             background: $setting-color-globus-white;
             height: auto;
             border-radius: rem(24);
-            padding-left: rem(12);
+            padding-left: rem(15);
 
             .select2-selection__rendered {
                 color: $setting-color-light-tentgray-4;
@@ -84,10 +100,11 @@
 
         &--style-CZ {
             min-width: rem(80);
-            border: rem(1) solid $setting-color-globusCZ-main-green;
+            border: rem(2) solid $setting-color-globusCZ-main-green;
             background-color: transparent;
             border-radius: rem(64);
             font: rem(15) $setting-font-family-fira-sans;
+
             .select2-selection--single{
                 min-width: rem(80);
                 border: rem(1) solid $setting-color-globusCZ-main-green;

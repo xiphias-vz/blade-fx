@@ -134,12 +134,12 @@
         }
 
         .select2-results__option--highlighted[aria-selected='true'] {
-            color: $setting-color-globus-lightOrange;
+            color: $setting-color-globusCZ-main-green;
         }
 
         .select2-results__option[aria-selected='true'] {
             background: none;
-            color: $setting-color-globus-lightOrange;
+            color: $setting-color-globusCZ-main-green;
             position: relative;
 
             &::before {
@@ -210,7 +210,8 @@
             }
 
             .select2-dropdown--below {
-                margin-top: 0;
+                //Added margin because of Products Per Page on CZ
+                margin-top: rem(2);
             }
 
             .select2-dropdown--above {

@@ -16,6 +16,9 @@
             flex-direction: row-reverse;
             justify-content: space-between;
         }
+        &--font-CZ {
+            font-family: $setting-font-family;
+        }
     }
 
     &__box {
@@ -59,7 +62,7 @@
         }
 
         &--font-CZ {
-            fill: $setting-color-globusCZ-main-green
+            color: $setting-color-globusCZ-main-green;
         }
     }
 
