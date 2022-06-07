@@ -185,7 +185,7 @@ class CatalogController extends SprykerCatalogController
         $query = $request->query->get("query");
         $filter = [];
         $page = 1;
-        if (isset(parse_url($request->getRequestUri())["query"])) {
+        if (isset(parse_url($request->getRequestUri())["query"]) && parse_url($request->getRequestUri())['query'] !== '') {
             $ff = parse_url($request->getRequestUri())["query"];
             $stringLength = strlen($ff);
             $tmpString = [];
