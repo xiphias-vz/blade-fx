@@ -26,6 +26,13 @@
         }
     }
 
+    &__user-cz {
+        color: $setting-color-globusCZ-main-green;
+        &:hover {
+            color: $setting-color-globusCZ-hover;
+        }
+    }
+
     &__text-cz {
         color: $setting-color-globusCZ-main-green !important;
 
