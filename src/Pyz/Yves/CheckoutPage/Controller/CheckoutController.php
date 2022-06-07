@@ -256,6 +256,12 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $customer = $this->getFactory()->getQuoteClient()->getQuote()->getCustomer();
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
+        if ($customer === null) {
+            $this->addErrorMessage(static::MESSAGE_NO_CUSTOMER);
+
+            return $this->redirectResponseInternal(static::ROUTE_CHECKOUT_CUSTOMER);
+        }
+
         if ($customer->getEmail() !== null && $customer->getIsGuest() !== true && $storeCodeBucket == 'DE') {
             $customerNewPhone = $customer->getPhone();
             $customerNewMobile = $customer->getMobilePhoneNumber();
@@ -275,7 +281,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                 }
             }
 
-            if ($customerNewPhone !== $quoteTransfer->getBillingAddress()->getPhone()) {
+            if ($quoteTransfer->getBillingAddress() != null && $customerNewPhone !== $quoteTransfer->getBillingAddress()->getPhone()) {
                 $this->getFactory()
                     ->getCustomerClient()
                     ->getCustomer()
@@ -292,7 +298,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                     ->setPhone($customerNewPhone);
             }
 
-            if ($customerNewMobile !== $quoteTransfer->getBillingAddress()->getCellPhone()) {
+            if ($quoteTransfer->getBillingAddress() != null && $customerNewMobile !== $quoteTransfer->getBillingAddress()->getCellPhone()) {
                 $this->getFactory()
                     ->getCustomerClient()
                     ->getCustomer()
@@ -327,12 +333,6 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                     ->getShippingAddress()
                     ->setCellPhone($customerNewMobile);
             }
-        }
-
-        if ($customer === null) {
-            $this->addErrorMessage(static::MESSAGE_NO_CUSTOMER);
-
-            return $this->redirectResponseInternal(static::ROUTE_CHECKOUT_CUSTOMER);
         }
 
         $linkAccountWithPayback = $request->get(static::LINK_ACCOUNT_WITH_PAYBACK) == null ?
