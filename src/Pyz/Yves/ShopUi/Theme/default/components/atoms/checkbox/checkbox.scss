@@ -55,6 +55,11 @@
             vertical-align: top;
             cursor: pointer;
             position: relative;
+
+            &:hover {
+                border-color: $setting-color-globus-lightGreen;
+                border-width: 2px;
+            }
         }
 
         &__input {

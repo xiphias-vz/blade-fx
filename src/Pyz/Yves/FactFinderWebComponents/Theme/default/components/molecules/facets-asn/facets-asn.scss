@@ -345,7 +345,8 @@
                     margin-right: rem(8);
 
                     &:hover, &:focus {
-                        outline: $setting-color-gray-13 solid rem(1);
+                        border-color: $setting-color-globus-lightGreen;
+                        border-width: 2px;
                     }
 
                     &::after {
