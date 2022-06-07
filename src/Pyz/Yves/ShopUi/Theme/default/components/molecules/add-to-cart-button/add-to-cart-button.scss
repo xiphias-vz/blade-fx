@@ -16,6 +16,20 @@
             -moz-appearance:textfield;
         }
 
+        &__cart-icon {
+            width: rem(20);
+            height: rem(18);
+            margin-right: rem(5);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                height: rem(30);
+            }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                margin-right: 0;
+            }
+        }
+
         .font-cz {
             font-family: $setting-font-family;
         }
@@ -91,7 +105,7 @@
                 }
 
                 .add-details-to-cart-text-holder {
-                    font-size: rem(12);
+                    font-size: rem(13);
                 }
             }
 
