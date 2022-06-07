@@ -8,6 +8,7 @@ export default class NavigationHeader extends Component
     private categoryClassDiv: string = 'category-filter-style-div';
     private navigationButton: HTMLButtonElement;
     private navigationContainer: HTMLElement;
+    private windowObject: HTMLBodyElement;
 
     protected classData = {
         'Fachtmetzgerei': 'icon-butcher-md',
@@ -57,7 +58,8 @@ export default class NavigationHeader extends Component
                 }
             });
             this.navigationButton = <HTMLButtonElement>document.getElementsByClassName('button__all-products')[0];
-            this.navigationContainer = document.getElementsByClassName('js-header__navigation-target')[0];
+            this.navigationContainer = <HTMLElement>document.getElementsByClassName('js-header__navigation-target')[0];
+            this.windowObject = <HTMLBodyElement>document.body;
             this.addButtonEventListener();
         }
 
@@ -94,6 +96,12 @@ export default class NavigationHeader extends Component
             })
 
             this.navigationContainer.addEventListener('mouseleave', () => {
+                if(!this.navigationContainer.classList.contains('is-hidden')){
+                    this.navigationContainer.classList.add('is-hidden');
+                }
+            })
+
+            this.windowObject.addEventListener('click', () => {
                 if(!this.navigationContainer.classList.contains('is-hidden')){
                     this.navigationContainer.classList.add('is-hidden');
                 }
