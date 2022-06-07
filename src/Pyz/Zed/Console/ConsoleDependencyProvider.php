@@ -61,6 +61,7 @@ use Pyz\Zed\Oms\Communication\Console\CheckTimeoutConsole as OmsCheckTimeoutCons
 use Pyz\Zed\PriceProductSchedule\Communication\Console\PriceProductScheduleApplyConsole;
 use Pyz\Zed\PriceProductScheduleDataImport\PriceProductScheduleDataImportConfig;
 use Pyz\Zed\ProductQuantityDataImport\ProductQuantityDataImportConfig;
+use Pyz\Zed\QrCodeGenerator\Communication\Console\QrCodeGeneratorConsole;
 use Pyz\Zed\RabbitMq\Communication\Console\InitVirtualHostConsole;
 use Pyz\Zed\RabbitMq\Communication\Console\RemoveVirtualHostConsole;
 use Pyz\Zed\SalesOrderSummaryExport\Communication\Console\ProductfeedDeeplinksConsole;
@@ -418,6 +419,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new AdditionalMonitoringProcedure(),
             new ZeroPricesReportMailConsole(),
             new CashierFileFTPConsole(),
+            new QrCodeGeneratorConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();
