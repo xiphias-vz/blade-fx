@@ -45,7 +45,7 @@
         &__select--side-drawer {
             color: $setting-color-black;
         }
-        
+
         .select2-selection--single {
             background: $setting-color-globus-white;
             height: auto;
@@ -110,7 +110,7 @@
 
             .select2-selection--single .select2-selection__rendered {
                 color: $setting-color-globusCZ-main-green;
-                padding: rem(24);
+                padding: rem(16);
                 font: fw(normal) rem(16) $setting-font-family-fira-sans;
             }
 

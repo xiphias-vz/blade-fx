@@ -1,7 +1,7 @@
 @mixin shop-ui-product-item($name: '.product-item') {
     #{$name} {
         position: relative;
-        padding: 0 rem(5);
+        padding: rem(8) rem(5);
         z-index: 0;
         font-family: $setting-font-family-additional;
         display: flex;

@@ -21,6 +21,20 @@
             }
         }
 
+        &__item-cz {
+            display: inline-block;
+            padding: 0 rem(5);
+
+            :hover {
+                text-decoration: none;
+                background: $setting-color-forest-green-light;
+                color: $setting-color-globusCZ-main-green;
+                svg {
+                    background: none;
+                }
+            }
+        }
+
         &__step {
             @include helper-effect-transition(color background);
             display: flex;
@@ -40,6 +54,30 @@
             &:hover {
                 background: $setting-color-forest-green-light;
                 border: rem(2) solid $setting-color-forest-green-light;
+            }
+
+            &-cz {
+                @include helper-effect-transition(color background);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: rem(40);
+                height: rem(40);
+                font-weight: fw(medium);
+                font-size: rem(13);
+                text-align: center;
+                color: $setting-color-globusCZ-main-green;
+                background: $setting-color-white;
+                border: rem(2) solid $setting-color-globusCZ-main-green;
+                border-radius: 100%;
+                text-decoration: none;
+
+                &:hover {
+                    background: $setting-color-globusCZ-secondary-green;
+                    border: rem(2) solid $setting-color-globusCZ-main-green;
+                    color: $setting-color-globusCZ-main-green;
+                    font-weight: fw(bold);
+                }
             }
 
             @include helper-breakpoint-media-max($sm-max) {
@@ -73,15 +111,28 @@
                 font-weight: fw(medium);
                 font-size: rem(13);
                 text-align: center;
-                color: $setting-color-globusCZ-main-green;
+                color: $setting-color-forest-green;
                 background: $setting-color-white;
                 border: rem(2) solid $setting-color-forest-green;
                 border-radius: 100%;
                 text-decoration: none;
             }
 
-            svg {
+            &--previous-cz,
+            &--next-cz {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: rem(40);
+                height: rem(40);
+                font-weight: fw(medium);
+                font-size: rem(13);
+                text-align: center;
                 color: $setting-color-globusCZ-main-green;
+                background: $setting-color-white;
+                border: rem(2) solid $setting-color-globusCZ-main-green;
+                border-radius: 100%;
+                text-decoration: none;
             }
 
             &:hover {
@@ -95,7 +146,6 @@
             &:focus {
                 background: $setting-color-white;
                 color: $setting-color-forest-green;
-                outline: rem(2) solid $setting-color-fresh-orange;
             }
 
             &--current {
@@ -114,16 +164,42 @@
                 &:focus {
                     background: $setting-color-forest-green;
                     color: $setting-color-white;
-                    border: $setting-color-fresh-orange solid rem(1);
+                }
+
+                &-cz {
+                    color: $setting-color-white;
+                    font-weight: fw(bold);
+                    background: $setting-color-globusCZ-main-green;
+                    pointer-events: none;
+
+                    &:hover {
+                        background: $setting-color-globusCZ-hover;
+                        border:  rem(2) solid $setting-color-globusCZ-hover;
+                        svg {
+                            color: $setting-color-white;
+                        }
+                    }
+
+                    &:focus {
+                        background: $setting-color-globusCZ-main-green;
+                        color: $setting-color-white;
+                    }
                 }
 
             }
 
             &--ellipsis,
+            &--ellipsis-cz,
             &--disabled {
                 color: $setting-color-globusCZ-main-green;
                 pointer-events: none;
             }
+
+            &--ellipsis,
+            &--ellipsis-cz, {
+                border: none;
+            }
+
         }
 
         &--search-cms-results {
