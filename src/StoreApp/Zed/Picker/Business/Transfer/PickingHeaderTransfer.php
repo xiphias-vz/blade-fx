@@ -293,6 +293,9 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                 && !$orderItem->getIsCancelled()) {
                 if ($orderItemResult == null) {
                     $orderItemResult = $orderItem;
+                    if ($i > $oldPosition) {
+                        break;
+                    }
                 } else {
                     if ($i > $oldPosition) {
                         $orderItemResult = $orderItem;
