@@ -9,8 +9,10 @@ namespace Pyz\Zed\Sales\Communication\Table;
 
 use DateTime;
 use Generated\Shared\Transfer\UserTransfer;
+use Orm\Zed\Customer\Persistence\Map\SpyCustomerAddressTableMap;
 use Orm\Zed\PickingSalesOrder\Persistence\Map\PyzPickingSalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderAddressTableMap;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Propel\Runtime\Exception\LogicException;
@@ -395,6 +397,10 @@ class OrdersTable extends SprykerOrdersTable
         $searchableFields[] = $this->getTimeSlotSearchableField();
         $searchableFields[] = SpySalesOrderTableMap::COL_MERCHANT_NAME;
         $searchableFields[] = PyzPickingSalesOrderTableMap::COL_CONTAINER_CODE;
+        $searchableFields[] = SpySalesOrderItemTableMap::COL_SKU;
+        $searchableFields[] = SpySalesOrderItemTableMap::COL_NAME;
+        $searchableFields[] = PyzPickingSalesOrderTableMap::COL_SHELF_CODE;
+        $searchableFields[] = SpySalesOrderAddressTableMap::COL_CELL_PHONE;
 
         return $searchableFields;
     }

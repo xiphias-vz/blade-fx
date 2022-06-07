@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Communication\Table;
 
 use DateTime;
+use Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
@@ -32,6 +33,7 @@ class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder implements 
         $query->joinSpySalesShipment();
         $query->joinPyzPickingSalesOrder(null, Criteria::LEFT_JOIN);
         $query->joinWithBillingAddress();
+        $query->joinItem();
         $query = $this->addTimeSlot($query);
 
         return $query;
