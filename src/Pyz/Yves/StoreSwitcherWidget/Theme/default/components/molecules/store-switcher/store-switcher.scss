@@ -1,9 +1,20 @@
 @mixin shop-ui-store-switcher ($name: '.store-switcher') {
     #{$name} {
-        border-bottom: rem(3) solid $setting-color-forest-green;
         display: flex;
         align-items: center;
         margin-left: rem(10);
+
+        &:hover {
+            border-bottom: rem(3) solid $setting-color-forest-green;
+            margin-bottom: rem(-3);
+        }
+
+        &-cz {
+            &:hover {
+                border-bottom: rem(3) solid $setting-color-globusCZ-main-green;
+                margin-bottom: rem(-3);
+            }
+        }
 
         &__edit {
             position: absolute;

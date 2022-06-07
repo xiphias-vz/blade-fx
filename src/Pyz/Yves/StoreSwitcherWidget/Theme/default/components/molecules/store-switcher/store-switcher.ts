@@ -8,9 +8,9 @@ export default class StoreSwitcher extends Component {
     protected storeSwitcherUrl;
     protected selectModalSwitcherDropDown;
     protected selectModalSwitcherSpan;
-    protected select2Results: HTMLElement;
     protected codeBucket: HTMLInputElement;
     protected storeSwitchers: HTMLElement;
+    protected select2Results: HTMLElement;
     protected storeSwitcher: HTMLElement;
 
     protected readyCallback(): void {}
@@ -31,6 +31,7 @@ export default class StoreSwitcher extends Component {
     protected mapEvents(): void {
         this.select.addEventListener('change', (event: Event) => this.onTriggerChange(event));
         this.onStoreSwitcherClick();
+        this.changeOnHoverBorderColor();
     }
 
     protected onStoreSwitcherClick(): void {
@@ -87,6 +88,14 @@ export default class StoreSwitcher extends Component {
         this.select2Results = document.getElementsByClassName('select2-results')[0];
         if(this.codeBucket.value === "CZ" && this.select2Results !== undefined) {
             this.select2Results.classList.add('select2-results-cz');
+        }
+    }
+
+    protected changeOnHoverBorderColor(): void {
+        if (this.codeBucket.value === "CZ") {
+            Array.from(this.storeSwitchers).forEach(storeSwitcher => {
+                storeSwitcher.classList.add('store-switcher-cz');
+            });
         }
     }
 }

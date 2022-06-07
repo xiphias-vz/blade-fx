@@ -127,6 +127,12 @@ $setting-popup-spacing-y: rem(16);
         clear: both;
     }
 
+    .select2-container--border {
+        :hover {
+            border-bottom: rem(3) solid $setting-color-forest-green;
+        }
+    }
+
     .message--shop-switcher-CZ {
         margin-bottom: 1rem;
         font-size: 18px;
@@ -148,7 +154,6 @@ $setting-popup-spacing-y: rem(16);
     }
 
     .select2-container--secondary .select2-results {
-        width: 100% !important;
         transform: translateX(0rem) !important;
     }
 

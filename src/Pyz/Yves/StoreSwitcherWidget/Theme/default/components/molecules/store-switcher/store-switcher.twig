@@ -55,16 +55,16 @@
             {% block icon %}
                 {% if app.currentCodeBucket == 'DE' %}
                     {% include atom('icon') with {
-                        class: config.name ~ '__edit store-switcher__edit',
+                        class: config.name ~ '__caret',
                         data: {
-                            name: 'edit'
+                            name: 'arrow-down'
                         }
                     } only %}
                 {% else %}
                     {% include atom('icon') with {
-                        class: config.name ~ '__edit-cz store-switcher__edit',
+                        class: config.name ~ '__caret-cz',
                         data: {
-                            name: 'edit'
+                            name: 'arrow-down'
                         }
                     } only %}
                 {% endif %}
