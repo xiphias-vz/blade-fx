@@ -41,6 +41,8 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     public const KEY_POSITION = 'position';
     public const KEY_URL_ID = 'url_id';
     public const KEY_LOCALE_ID = 'locale_id';
+    public const KEY_META_TITLE = 'metatitle';
+    public const KEY_META_DESCRIPTION = 'metadescription';
 
     public const NAVIGATION_MODE_MOBILE = 'MAIN_NAVIGATION';
     public const NAVIGATION_MODE_DESKTOP = 'MAIN_NAVIGATION_DESKTOP';
@@ -226,6 +228,8 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
                 ->findOneOrCreate();
 
             $categoryAttributeEntity->setName($dataSet[static::KEY_NAME]);
+            $categoryAttributeEntity->setMetaTitle($dataSet[static::KEY_META_TITLE]);
+            $categoryAttributeEntity->setMetaDescription($dataSet[static::KEY_META_DESCRIPTION]);
 
             if ($categoryAttributeEntity->isNew() || $categoryAttributeEntity->isModified()) {
                 $categoryAttributeEntity->save();

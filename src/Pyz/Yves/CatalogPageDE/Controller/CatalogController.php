@@ -42,7 +42,7 @@ class CatalogController extends SprykerCatalogController
             'sort' => 0,
             'searchString' => '',
             'ffCategoryFilter' => $filter,
-            'category' => ['name' => $categoryNode["name"]],
+            'category' => $categoryNode,
             'pagination' => [
                 'currentPage' => 1,
                 'maxPage' => 999,
