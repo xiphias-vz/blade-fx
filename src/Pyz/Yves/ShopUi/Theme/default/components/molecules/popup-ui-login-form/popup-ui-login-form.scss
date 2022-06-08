@@ -197,8 +197,15 @@
             margin-top: rem(40);
             padding-top: rem(10);
         }
-
-
+        .gigya-valid {
+            background-image: url('../images/checkmarkValid.svg') !important;
+            background-position-x: 100%;
+            background-position-y: 50%;
+            background-position: right rem(7) center;
+            background-repeat: no-repeat;
+            background-size: rem(13);
+            padding-right: rem(25);
+        }
     }
 }
 
