@@ -15,6 +15,7 @@ class PickingZoneOrderExportConfig extends AbstractBundleConfig
 {
     public const DATE_FORMAT = 'd.m.Y';
     public const FILE_NAME_DELIMITER = '-';
+    public const EXTRA_TIMESLOT = '10:00-18:00';
 
     /**
      * @return mixed
@@ -24,5 +25,13 @@ class PickingZoneOrderExportConfig extends AbstractBundleConfig
         $timeSlotConstants = $this->get(TimeSlotConstants::SHIPMENT_TIME_SLOTS);
 
         return $timeSlotConstants[ShipmentConfig::DEFAULT_TIMESLOT_ARRAY_FOR_BO];
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtraTimeslot()
+    {
+        return self::EXTRA_TIMESLOT;
     }
 }

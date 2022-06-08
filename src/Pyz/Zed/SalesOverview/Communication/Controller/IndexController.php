@@ -65,6 +65,7 @@ class IndexController extends SprykerIndexController
             ->getDataByChoiceFilter($choice, $date, $merchant);
 
         $tableTimeSlots = $this->getFactory()->getTimeSlots()->getTimeSlotsArray($merchant);
+        $tableTimeSlots[] = $this->getFactory()->getConfig()->getExtraTimeslot();
         $tableTimeSlots[static::CONST_SUMME] = static::CONST_SUMME;
 
         return [

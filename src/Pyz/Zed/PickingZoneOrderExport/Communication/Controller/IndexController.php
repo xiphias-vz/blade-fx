@@ -77,6 +77,8 @@ class IndexController extends AbstractController
             $result = $this->getFactory()->getConfig()->getTimeSlotConstants();
         }
 
+        $result[] = ['time_slot' => $this->getFactory()->getConfig()->getExtraTimeslot()];
+
         return json_encode($result);
     }
 }

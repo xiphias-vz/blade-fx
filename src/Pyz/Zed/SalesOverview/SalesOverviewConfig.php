@@ -13,6 +13,8 @@ use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class SalesOverviewConfig extends AbstractBundleConfig
 {
+    public const EXTRA_TIMESLOT = '10:00-18:00';
+
     /**
      * @return array
      */
@@ -35,5 +37,13 @@ class SalesOverviewConfig extends AbstractBundleConfig
     public function getTableHeader(): array
     {
         return $this->get(BackofficeOverviewConstants::TABLE_HEADER);
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtraTimeslot()
+    {
+        return self::EXTRA_TIMESLOT;
     }
 }

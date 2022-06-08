@@ -782,6 +782,7 @@ $config[TimeSlotConstants::SHIPMENT_TIME_SLOTS] = [
         ['time_slot' => '14:00-16:00'],
         ['time_slot' => '16:00-18:00'],
         ['time_slot' => '18:00-20:00'],
+        ['time_slot' => '10:00-18:00'],
     ],
 ];
 
