@@ -10,6 +10,9 @@
         }
 
         &-cz {
+
+            width: rem(140);
+
             &:hover {
                 border-bottom: rem(3) solid $setting-color-globusCZ-main-green;
                 margin-bottom: rem(-3);

@@ -76,6 +76,10 @@ $setting-popup-spacing-y: rem(16);
         &__content {
             padding: $setting-popup-spacing-y $setting-popup-spacing-x;
 
+            .store-switcher-cz {
+                width: 100%;
+            }
+
             .horizontal-spacing {
                 p {
                     padding: 0px 35px;
