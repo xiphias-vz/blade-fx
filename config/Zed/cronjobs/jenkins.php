@@ -39,15 +39,6 @@ $jobs[] = [
     'stores' => $allStores,
 ];
 
-/* PriceProductSchedule */
-$jobs[] = [
-    'name' => 'apply-price-product-schedule',
-    'command' => '$PHP_BIN vendor/bin/console price-product-schedule:apply',
-    'schedule' => '5 0,3,4,5,6,22,23 * * *',
-    'enable' => true,
-    'stores' => $allStores,
-];
-
 /* Oms */
 $jobs[] = [
     'name' => 'check-oms-conditions',
@@ -173,6 +164,15 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'data-import-full',
         'command' => 'vendor/bin/install -r gsoa-based-full-import',
         'schedule' => '5 0 * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
+    /* PriceProductSchedule */
+    $jobs[] = [
+        'name' => 'apply-price-product-schedule',
+        'command' => '$PHP_BIN vendor/bin/console scheduled-prices:apply',
+        'schedule' => '5 0,3,4,5,6,22,23 * * *',
         'enable' => true,
         'stores' => ['OST'],
     ];
@@ -325,6 +325,15 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'data-import-full',
         'command' => 'vendor/bin/install -r sftp-based-full-import',
         'schedule' => '30 20 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    /* PriceProductSchedule */
+    $jobs[] = [
+        'name' => 'apply-price-product-schedule',
+        'command' => '$PHP_BIN vendor/bin/console scheduled-prices:apply',
+        'schedule' => '5 0,3,4,5,6,22,23 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];

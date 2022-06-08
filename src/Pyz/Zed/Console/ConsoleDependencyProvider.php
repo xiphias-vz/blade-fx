@@ -59,6 +59,7 @@ use Pyz\Zed\MultipleStatusesFixScript\Communication\Console\MultipleStatusesFixS
 use Pyz\Zed\Oms\Communication\Console\CheckConditionConsole as OmsCheckConditionConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckTimeoutConsole as OmsCheckTimeoutConsole;
 use Pyz\Zed\PriceProductSchedule\Communication\Console\PriceProductScheduleApplyConsole;
+use Pyz\Zed\PriceProductSchedule\Communication\Console\PriceProductScheduleConsole;
 use Pyz\Zed\PriceProductScheduleDataImport\PriceProductScheduleDataImportConfig;
 use Pyz\Zed\ProductQuantityDataImport\ProductQuantityDataImportConfig;
 use Pyz\Zed\QrCodeGenerator\Communication\Console\QrCodeGeneratorConsole;
@@ -287,6 +288,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DeleteValuesFromPyzImportCsvOldConsole(),
             new CopyValuesFromPICOldToPICNewConsole(),
             new DeleteValuesFromPyzImportCsvNewConsole(),
+            new PriceProductScheduleConsole(),
 
             //core data importers
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . PriceProductDataImportConfig::IMPORT_TYPE_PRODUCT_PRICE),

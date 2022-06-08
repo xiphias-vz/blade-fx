@@ -51,22 +51,15 @@ sections:
         import-update-availability:
             command: "vendor/bin/console import:updateAvailability"
 
+    scheduled-prices:
+        apply-scheduled-prices:
+            command: "vendor/bin/console scheduled-prices:apply"
+
+    label-relation:
+        update-product-label-relation:
+            command: "vendor/bin/console product-label:relations:update"
+
     exec-after-import:
         exec-events:
-            command: "vendor/bin/console import:execEvents"
-
-        check-scheduled-prices:
-            command: "vendor/bin/console import:execSqlQuery -s 'call pyzx_check_scheduled_prices()'"
-
-        update-scheduled-weight-prices:
-            command: "vendor/bin/console import:execSqlQuery -s 'call pyzx_update_sceduled_weight_prices()'"
-
-        exec-events1:
-            command: "vendor/bin/console import:execEvents"
-
-        exec-apply-price-product-schedule:
-            command: "vendor/bin/console price-product-schedule:apply"
-
-        exec-events2:
             command: "vendor/bin/console import:execEvents"
 

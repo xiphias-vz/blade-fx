@@ -804,29 +804,20 @@ sections:
         import-update-prices:
             command: "vendor/bin/console import:updatePrices -c EUR"
 
-    exec-after-import:
-        update-availability:
+    update-availability:
+        import-update-availability:
             command: "vendor/bin/console import:updateAvailability"
 
-        exec-events:
-            command: "vendor/bin/console import:execEvents"
+    scheduled-prices:
+        apply-scheduled-prices:
+            command: "vendor/bin/console scheduled-prices:apply"
 
-        check-scheduled-prices:
-            command: "vendor/bin/console import:execSqlQuery -s 'call pyzx_check_scheduled_prices()'"
-
-        exec-events1:
-            command: "vendor/bin/console import:execEvents"
-
-        exec-apply-price-product-schedule:
-            command: "vendor/bin/console price-product-schedule:apply"
-
-        update-scheduled-weight-prices:
-            command: "vendor/bin/console import:execSqlQuery -s 'call pyzx_update_sceduled_weight_prices()'"
-
+    label-relation:
         update-product-label-relation:
-            command: "vendor/bin/console product-label:relations:update 'call pyzx_update_product_label'"
+            command: "vendor/bin/console product-label:relations:update"
 
-        exec-events2:
+    exec-after-import:
+        exec-events:
             command: "vendor/bin/console import:execEvents"
 
         fact-finder-export:
