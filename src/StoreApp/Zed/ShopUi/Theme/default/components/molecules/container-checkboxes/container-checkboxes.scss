@@ -1,11 +1,15 @@
 @mixin shop-ui-container-checkboxes($name: '.container-checkboxes') {
     #{$name} {
         .abbreviation {
-            margin-right: 30px;
+            margin-right: rem(4);
+        }
+
+        .checkbox {
+            margin-bottom: rem(16)
         }
     }
     .substitute-icon {
-        margin-bottom: 12px;
+        margin-bottom: rem(12);
     }
 }
 

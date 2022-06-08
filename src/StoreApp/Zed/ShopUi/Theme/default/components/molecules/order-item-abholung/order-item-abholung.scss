@@ -4,9 +4,22 @@ $setting-item-border-radius: rem(8);
     #{$name} {
         margin-bottom: rem(8);
 
-        .header-content {
+        &__header-content {
             .icon-substitution {
                 float: right;
+            }
+        }
+
+        &__header-content-inner {
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: rem(8) rem(16) 0 rem(16);
+            }
+        }
+
+
+        &__index-page {
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: rem(8) rem(16) 0 rem(16);
             }
         }
 
@@ -79,20 +92,42 @@ $setting-item-border-radius: rem(8);
             padding: 0 0 rem(12);
             line-height: rem(25);
             color: $setting-color-gray-11;
+            font-weight: fw(medium);
+
             span {
                 margin-left: rem(5);
+            }
+        }
+
+        &__details-time {
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: 0;
             }
         }
 
         &__customer-info {
             display: flex;
             justify-content: space-between;
+            font-weight: fw(medium);
+        }
+
+        &__customer-info-details {
+            p {
+                @include helper-breakpoint-media-max($sm-max) {
+                    margin: 0;
+                }
+            }
         }
 
         &__order-reference {
             padding: rem(12) 0 rem(12);
             line-height: rem(25);
             font-size: rem(16);
+            color: #db9d51;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: 0;
+            }
         }
 
         &__collect {
@@ -121,6 +156,26 @@ $setting-item-border-radius: rem(8);
             border-style: solid !important;
             margin-top: 15px;
             margin-bottom: 15px;
+        }
+
+        .box {
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: 0;
+                border-radius: rem(8);
+                background: #ededed;
+            }
+        }
+
+        .box__bottom {
+            @include helper-breakpoint-media-max($sm-max) {
+                margin: rem(16) 0 0;
+            }
+        }
+
+        .details-middle-page {
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: 0 rem(16);
+            }
         }
     }
 }

@@ -121,33 +121,36 @@
 
                 <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
 
-                </div>
-                <div style="font-weight: bold">
-                   {{ embed.containerNumber }} {{ 'picker.collect-by-customer.details.containers' | trans }}
-                </div>
-                <br />
-                <div>
-                    {% include molecule('container-checkboxes') with {
-                        data: {
-                            listContainers: embed.containerInfo
-                        },
-                    } only %}
-                </div>
-                <br />
-                <div>
-                    <label class="label">{{ 'picker.collect-by-customer.details.containers' | trans }}</label>
-                    <input id="containerInput" class="input input--expand" type="text" autofocus />
-                </div>
-                <div>
-                    {% if embed.pickedAndNotFoundItems|length > 0 %}
-                        {% include molecule('missing-articles') with {
+                <div class="details-middle-page">
+                    <div style="font-weight: bold">
+                       {{ embed.containerNumber }} {{ 'picker.collect-by-customer.details.containers' | trans }}
+                    </div>
+                    <br />
+                    <div>
+                        {% set checkboxModifiers = ["checkbox-row"] %}
+                        {% include molecule('container-checkboxes') with {
+                            modifiers: checkboxModifiers,
                             data: {
-                                missingArticles: embed.pickedAndNotFoundItems,
-                                collectOrder: embed.collectOrder
+                                listContainers: embed.containerInfo
                             },
                         } only %}
-                    {% endif %}
+                    </div>
+                    <br />
+                    <div>
+                        <input id="containerInput" class="input input--expand" type="text" autofocus placeholder="{{ 'picker.collect-by-customer.details.containers' | trans }}" />
+                    </div>
+                    <div>
+                        {% if embed.pickedAndNotFoundItems|length > 0 %}
+                            {% include molecule('missing-articles') with {
+                                data: {
+                                    missingArticles: embed.pickedAndNotFoundItems,
+                                    collectOrder: embed.collectOrder
+                                },
+                            } only %}
+                        {% endif %}
+                    </div>
                 </div>
+
 
                 <div>
                     {% include molecule('customer-info') with {
@@ -173,8 +176,9 @@
                             <div class="col col--sm-6 spacing-right spacing-right--inner">
                                 <form action="{{ embed.urlCollectByCustomerCancellation }}" method="POST" class="js-submit-form-handler__form">
                                     <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
-
+                                    {% set boxBottomModifiers = ["box-bottom-details"] %}
                                     {% embed molecule('popup-ui') with {
+                                        modifiers: boxBottomModifiers,
                                         data: {
                                             title: 'Not picked up!' | trans,
                                             buttons: {
@@ -209,6 +213,7 @@
                                     <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
 
                                     {% embed molecule('popup-ui') with {
+                                        modifiers: boxBottomModifiers,
                                         data: {
                                             title: 'Picked up!' | trans,
                                             buttons: {

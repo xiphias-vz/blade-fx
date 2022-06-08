@@ -13,44 +13,44 @@
 {% block body %}
     <div>
         <div class="title">{{ 'storeapp.picking.MissingArticle' | trans }}</div>
-
         <div class="container">
             {% for missingArticle in data.missingArticles %}
-                    <div class="info">
-                            <div class="left-info">
-                                {% if missingArticle.isSubstitutionFound  %}
-                                    <div class="icon-substitution-item-found">
-                                        {% include atom('icon') with {
-                                            modifiers: ['big'],
-                                            class: 'custom__icon',
-                                            data: {
-                                                name: 'icon-substitutes',
-                                            },
-                                        } only %}
-                                    </div>
-                                {% endif %}
-                                <div>
-                                    <span class="product-name">{{ missingArticle.name }}</span>
-                                </div>
+                <div class="info">
+                    <div class="left-info">
+                        {% if missingArticle.isSubstitutionFound %}
+                            <div class="icon-substitution-item-found">
+                                {% include atom('icon') with {
+                                    modifiers: ['big', 'details-icon'],
+                                    class: 'custom__icon',
+                                    data: {
+                                        name: 'icon-substitutes',
+                                    },
+                                } only %}
                             </div>
-                            <div class="right-info">
-                                <table class="quantity" style="width: 100%">
-                                    <tr>
-                                        <td style="width: 20px;text-align: right">{{ missingArticle.imageUrl }}</td>
-                                        <td style="width: 10px;text-align: center">|</td>
-                                        <td class="pickedProducts" style="width:20px;text-align: left">{{ missingArticle.quantity }}</td>
-                                        <td class="item-price">
-                                            {{ missingArticle.itemPrice }} {{ currentCurrencySymbol }}
-                                            {% if missingArticle.isSaleArticle %}
-                                                {% include atom('icon-sale-article') with {
-                                                } only %}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                        {% endif %}
+                        <div>
+                            <span class="product-name">{{ missingArticle.name }}</span>
+                        </div>
                     </div>
-                {% endfor %}
+                    <div class="right-info">
+                        <table class="quantity" style="width: 100%">
+                            <tr>
+                                <td style="width: 20px;text-align: right">{{ missingArticle.imageUrl }}</td>
+                                <td style="width: 10px;text-align: center">|</td>
+                                <td class="pickedProducts"
+                                    style="width:20px;text-align: left">{{ missingArticle.quantity }}</td>
+                                <td class="item-price">
+                                    {{ missingArticle.itemPrice }} {{ currentCurrencySymbol }}
+                                    {% if missingArticle.isSaleArticle %}
+                                        {% include atom('icon-sale-article') with {
+                                        } only %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

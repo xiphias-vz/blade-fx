@@ -1,20 +1,38 @@
 @mixin barcode($name: '.barcode') {
     #{$name} {
+        @include helper-breakpoint-media-max($sm-max) {
+            padding: 0 rem(10) rem(10) rem(10);
+        }
+
         .white--box {
            background-color: white;
             padding-top: rem(20);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                background-color: white;
+                padding: rem(0) rem(10);
+                margin: 0 rem(8);
+            }
         }
 
         .barcode--text {
             font-family: LibreBarcode128;
             text-align: center;
             font-size: rem(72);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                font-size: rem(56);
+            }
         }
 
         .barcode--number {
             text-align: center;
-            margin-top: -42px;
-            padding-bottom: 18px;
+            margin-top: rem(-42);
+            padding-bottom: rem(18);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding-bottom: rem(10);
+            }
         }
 
         .achtung{
@@ -23,6 +41,10 @@
             justify-content: center;
             margin-top: rem(25);
             margin-bottom: rem(25);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-top: rem(20.8);
+            }
         }
 
         & {

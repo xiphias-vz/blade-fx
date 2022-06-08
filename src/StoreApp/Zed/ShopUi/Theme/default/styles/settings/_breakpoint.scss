@@ -1,6 +1,7 @@
 $sm-min: 0;
-$xxsm-max: 320px;
-$xsm-max: 375px;
+$xxsm-max: rem(320);
+$xsm-max: rem(375);
+$sm-min: rem(450);
 
 $sm-max: rem(575);
 $md-min: rem(576);

@@ -106,6 +106,25 @@ $setting-popup-spacing-y: rem(16);
                 border-radius: 0.5rem;
             }
         }
+
+        &--box-bottom-details {
+            @include helper-breakpoint-media-max($xsm-max) {
+                .button--small {
+                    font-size: rem(10);
+                    padding: rem(9) rem(10);
+                }
+            }
+        }
+    }
+
+    .box__bottom {
+        background: #ededed;
+    }
+
+    .containers {
+        @include helper-breakpoint-media-max($sm-max) {
+            padding: 0 rem(16);
+        }
     }
 }
 

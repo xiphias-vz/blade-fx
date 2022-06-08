@@ -11,6 +11,13 @@
 } %}
 
 {% block body %}
+
+    {% if data.isDepositAllowed %}
+        <div class="achtung" >
+            <h2>{{ 'storeapp.picking.warning' | trans }}</h2>
+        </div>
+    {% endif %}
+
     <div class="white--box">
         {% if data.encodedBarcode is not empty %}
             <p class="barcode--text">{{ data.encodedBarcode }}</p>
@@ -19,10 +26,4 @@
             <p>{{ 'storeapp.picking.barcode' | trans }}</p>
         {% endif %}
     </div>
-
-    {% if data.isDepositAllowed %}
-        <div class="achtung" >
-            <h2>{{ 'storeapp.picking.warning' | trans }}</h2>
-        </div>
-    {% endif %}
 {% endblock %}

@@ -390,6 +390,30 @@ class CollectByCustomerController extends AbstractController
 
         $this->updatePerformanceOrderReportPickupStart($idSalesOrder, $containerNumber);
 
+        $withEinGew = [];
+        $pickedWithWeight = [];
+        foreach ($concreteAttributes as $item) {
+            if (isset($item['einzelgewicht'])) {
+                $withEinGew[] = $item['ordernumber'];
+            }
+        }
+        foreach ($pickedItems as $picked) {
+            foreach ($withEinGew as $ge) {
+                if ($ge == $picked['sku']) {
+                    $pickedWithWeight[] = $picked;
+                }
+            }
+        }
+        foreach ($pickedWithWeight as $pickedItem){
+            foreach ($notFound as $keyNotFound => $notFoundItem) {
+                if ($notFoundItem["sku"] === $pickedItem['sku'] && !$notFoundItem["isSubstitutionFound"]) {
+                    unset($notFound[$keyNotFound]);
+                    break;
+                }
+            }
+        }
+
+
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'collectDetailsForm' => $orderItemSelectionForm->createView(),
