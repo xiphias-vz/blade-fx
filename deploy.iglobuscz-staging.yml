@@ -173,7 +173,6 @@ groups:
                 endpoints:
                     shop-t.iglobus.cz:
                         store: OST
-                        entry-point: YvesCZ
                         <<: *frontend-auth
             Glue:
                 application: glue
