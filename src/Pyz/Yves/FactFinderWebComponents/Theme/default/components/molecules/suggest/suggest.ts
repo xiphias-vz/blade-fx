@@ -162,10 +162,24 @@ export default class Suggest extends Component {
         let screenSize = window.matchMedia("(max-width: 575px)");
         if(this.menuButton !== undefined && screenSize.matches) {
             let borderRadius = this.menuButton.style.borderRadius;
-            if(this.searchInput.value)
-                this.menuButton.style.borderBottomLeftRadius = 0;
-            else
+
+            if(!this.searchInput.value) {
                 this.menuButton.style.borderBottomLeftRadius = borderRadius;
+            }
+
+            this.searchInput.addEventListener('click', () => {
+                if(this.searchInput.value) {
+                    this.menuButton.style.borderBottomLeftRadius = 0;
+                }
+            });
+
+            this.searchInput.addEventListener("keypress", (event) => {
+                    this.menuButton.style.borderBottomLeftRadius = 0;
+            });
+
+            this.searchInput.addEventListener("focusout", () => {
+                this.menuButton.style.borderBottomLeftRadius = borderRadius;
+            });
         }
     }
 

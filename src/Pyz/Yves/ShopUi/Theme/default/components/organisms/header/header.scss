@@ -247,6 +247,7 @@ $header-sticky-height: rem(130, number);
                 min-width: unset;
                 display: flex;
                 justify-content: center;
+                transition: all 0.5s;
             }
         }
 
