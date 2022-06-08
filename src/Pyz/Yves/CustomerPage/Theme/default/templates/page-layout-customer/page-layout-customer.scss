@@ -88,6 +88,16 @@
             }
         }
 
+        .gigya-valid {
+            background-image: url('../images/checkmarkValid.svg') !important;
+            background-position-x: 100%;
+            background-position-y: 50%;
+            background-position: right rem(7) center;
+            background-repeat: no-repeat;
+            background-size: rem(13);
+            padding-right: rem(25);
+        }
+
         .title-box {
                 padding: rem(10);
                 background-color: $setting-color-light-tentgray-3;
