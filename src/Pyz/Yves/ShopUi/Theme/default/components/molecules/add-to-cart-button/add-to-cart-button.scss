@@ -197,13 +197,6 @@
                             border: rem(2) solid $setting-color-forest-green;
                             background-color: $setting-color-forest-green-light;
                         }
-
-                        &:focus {
-                            outline-style: solid;
-                            outline-width: rem(1);
-                            outline-color: $setting-color-fresh-orange;
-                            outline-offset: rem(2);
-                        }
                     }
                     &.js-quantity-counter-product__incr_DE {
                         width: rem(40);
@@ -217,13 +210,6 @@
                             color:$setting-color-forest-green;
                             border: rem(2) solid $setting-color-forest-green;
                             background-color: $setting-color-forest-green-light;
-                        }
-
-                        &:focus {
-                            outline-style: solid;
-                            outline-width: rem(1);
-                            outline-color: $setting-color-fresh-orange;
-                            outline-offset: rem(2);
                         }
                     }
 
