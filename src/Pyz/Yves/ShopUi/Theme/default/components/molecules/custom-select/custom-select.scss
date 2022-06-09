@@ -60,6 +60,14 @@
             .select2-selection--single {
                 border: none !important;
             }
+
+            .select--custom-cz {
+                border: unset !important;
+            }
+
+            #{$name}__select {
+                border: unset !important;
+            }
         }
 
         .select2-selection--single {

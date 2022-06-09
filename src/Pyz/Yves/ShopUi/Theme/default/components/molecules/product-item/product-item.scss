@@ -221,6 +221,10 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+
+            @include helper-breakpoint-media-max($md-max) {
+                min-height: unset;
+            }
         }
 
         &__name {
