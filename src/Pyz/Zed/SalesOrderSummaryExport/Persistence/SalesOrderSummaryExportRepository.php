@@ -17,23 +17,21 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
  */
 class SalesOrderSummaryExportRepository extends AbstractRepository implements SalesOrderSummaryExportRepositoryInterface
 {
+    protected const BASE_URL = 'https://';
     /**
      * @var string[]
      */
     protected $stringColumns = ["OrderNr", "store", "OrderDate", "DeliveryDate", "external_customer_identifier", "TimeSlot", "status", "comment"];
-
     /**
      * @var string[]
      */
     protected $stringColumnsDeeplink = ["deeplink"];
 
-    protected const BASE_URL = 'https://';
-
-     /**
-      * getCustomOrderItemData
-      *
-      * @return \Generated\Shared\Transfer\FileSystemContentTransfer
-      */
+    /**
+     * getCustomOrderItemData
+     *
+     * @return \Generated\Shared\Transfer\FileSystemContentTransfer
+     */
     public function getCustomOrderItemData(): FileSystemContentTransfer
     {
         $transfer = new FileSystemContentTransfer();
@@ -81,12 +79,9 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
         $connection = Propel::getConnection();
         $statement = $connection->prepare($qry);
         $statement->execute();
-        $data = $statement->fetchAll(PDO::FETCH_NAMED);
-
         $content = '';
         $header = '';
-
-        foreach ($data as $item) {
+        while ($item = $statement->fetch(PDO::FETCH_ASSOC)) {
             if ($header == '') {
                 foreach ($item as $key => $value) {
                     $header = $header . '"' . $key . '",';
@@ -109,7 +104,6 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
             $content = $content . "\n";
         }
         $content = $header . $content;
-
         $transfer->setContent($content);
 
         return $transfer;
