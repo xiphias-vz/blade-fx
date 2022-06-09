@@ -22,6 +22,8 @@
     queuedTime: '',
     calculatedWaitingTime: '',
     isOrderInQueue: '',
+    numberOfContainers: '',
+    isCollectionOrderFinished: false,
 } %}
 
 {% block body %}
@@ -102,31 +104,29 @@
             <div class="{{ config.name }}__index-page">
                 <div class="{{ config.name }}__holder">
                     <input type="hidden" id="lastOrderInQueue" value="">
-                    {% if data.collectNumber %}
-                        <div class="{{ config.name }}__collect">
-                            {{ 'Collect Number' | trans }}: {{ data.collectNumber }}
-                        </div>
-                        <div class="{{ config.name }}__queued-time">{{ data.queuedTime }}</div>
-                    {% endif %}
-                </div>
-                <div>
                     {% if data.reference %}
-                        <div>
-                            {{ 'picker.picking.order.reference' | trans }}: {{ data.reference }}
+                        <div class="{{ config.name }}__order-reference">
+                            <span class="{{ config.name }}__order-reference-label">Bestellnr: {{ data.reference }}</span>
+                        </div>
+                        <div class="{{ config.name }}__time-and-container">
+                            <div class="{{ config.name }}__queued-time">{{ data.queuedTime }}</div>
+                            <div class="{{ config.name }}__container-number">{{ data.numberOfContainers }}</div>
                         </div>
                     {% endif %}
                 </div>
-                <div class="hr-line-solid"></div>
-                <div class="{{ config.name }}__time">
-                    {% if data.date %}
-                        {{ data.dayOfTheWeek }} {{ data.date | replace('/', '.') }}<br />
-                    {% endif %}
-                    {{ data.deadline }}
+                <div class="hr-line-solid  {{ config.name }}__hr-line"></div>
+                <div class="{{ config.name }}__time {{ config.name }}__time-padding">
+                    <div class="{{ config.name }}__time-deadline">
+                        {% if data.date %}
+                            {{ data.dayOfTheWeek }} {{ data.date | replace('/', '.') }}
+                        {% endif %}
+                        <span class="{{ config.name }}__deadline">{{ data.deadline }}</span>
+                        {% block customerName %}{% endblock %}
+                    </div>
+                    {% block orderDetailsForm %}{% endblock %}
                 </div>
-
+                    {% block additionalContent %}{% endblock %}
             </div>
-            {% block additionalContent %}{% endblock %}
         {% endif %}
-
     </div>
 {% endblock %}

@@ -55,7 +55,14 @@
                     queuedTime: collectionOrder.queuedTime,
                     calculatedWaitingTime: collectionOrder.calculatedWaitingTime,
                     fullName: collectionOrder.fullName,
-                    pickupStatus: collectionOrder.pickupStatus
+                    pickupStatus: collectionOrder.pickupStatus,
+                    numberOfContainers: collectionOrder.numberOfContainersInOrder,
+                    isCollectionOrderFinished: isCollectionOrderFinished,
+                    collectionOrder: collectionOrder,
+                    paramIdSalesOrder: data.paramIdSalesOrder,
+                    urlCollectByCustomerCancellation: data.urlCollectByCustomerCancellation,
+                    urlCollectByCustomerConfirmation: data.urlCollectByCustomerConfirmation,
+                    urlCollectByCustomerDetails: data.urlCollectByCustomerDetails,
                 },
                 attributes: {
                     'data-order': collectionOrder.collectNumber | lower,
@@ -102,39 +109,62 @@
                     </div>
                 {% endblock %}
 
+                {% block orderDetailsForm %}
+                    {% if not embed.isCollectionOrderFinished %}
+                        <div class="grid grid--middle">
+                            <div class="col col--sm-6">
+                                <form action="{{ embed.urlCollectByCustomerDetails }}" method="POST" class="js-submit-form-handler__form">
+                                    <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.collectionOrder.idSalesOrder }}">
+                                    {% block button %}
+                                        <div class="text-center">
+                                            <input type="submit" value=">" class="button button--abholung js-pick-products__submit-button" />
+                                        </div>
+                                    {% endblock %}
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
                 {% block additionalContent %}
-                    <div class="customerInfo">
-                        {% include molecule('customer-info') with {
-                            data: {
-                                fullName: data.fullName,
-                                customerCartNote: embed.collectionOrder.cartNote,
-                                isDetailPage: false
-                            },
-                        } only %}
-                    </div>
+                <div class="{{config.name}}__customer-info">
+                    {% embed molecule('customer-info') with {
+                        modifiers: ['width-100'],
+                        data: {
+                            fullName: data.fullName,
+                            customerCartNote: embed.collectionOrder.cartNote,
+                            isDetailPage: false
+                        },
+                    } only %}
 
-                    <div class="containers">
-                        {{ embed.collectionOrder.numberOfContainersInOrder }} {{ 'picker.collect-by-customer.details.containers' | trans }}
-                    </div>
-
-                    <div class="box__bottom">
-                        {% if not embed.isCollectionOrderFinished %}
-                            <div class="grid grid--middle spacing-y">
-                                <div class="col col--sm-6 spacing-right spacing-right--inner">
-                                    <form action="{{ embed.urlCollectByCustomerDetails }}" method="POST" class="js-submit-form-handler__form">
-                                        <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.collectionOrder.idSalesOrder }}">
-
-                                        {% block button %}
-                                            <div class="text-center">
-                                                <input type="submit" value="{{ 'picker.collect-by-customer.order.open-detail-confirm-collection' | trans }}" class="button button--small button--table button--expand js-pick-products__submit-button" />
-                                            </div>
-                                        {% endblock %}
-
-                                    </form>
+                    {% block body %}
+                        <div class="grid grid--middle width-100">
+                            <input type="hidden" class="detail-page" value="{% if data.isDetailPage == true %}true{% else %}false{% endif %}">
+                            <div class="col {{ config.name }}__content-abholung {{ config.name }}--width-100">
+                                {% if data.isDetailPage == true %}
+                                    <div class="{{ config.name }}__titleDiv"><span class="{{ config.name }}__title">{{ 'customer.comment' | trans }}</span></div>
+                                {% endif %}
+                                <div class="{{ config.name }}__fontColor {{ config.name }}__customer-name">{{ data.fullName }}</div>
+                                <div class="{{ config.name }}__cart-note--info is-hidden with-border-bottom from-bottom">
+                                    <div class="{{ config.name }}__title {{ config.name }}--width-100">{{ 'customer.comment' | trans }}</div>
+                                    <div class="{{ config.name }}__chevron"></div>
+                                </div>
+                                <div class="{{ config.name }}__cart-note from-bottom is-hidden"
+                                     value="{% if data.customerCartNote %}true{% else %}false{% endif %}">
+                                    {{ data.customerCartNote }}
                                 </div>
                             </div>
-                        {% endif %}
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+                </div>
+                    {% if embed.collectionOrder.collected %}
+                        <div class="hr-line-solid {{ config.name }}__hr-line"></div>
+                    {% elseif embed.collectionOrder.cancelled %}
+                        <div class="hr-line-solid {{ config.name }}__hr-line"></div>
+                    {% endif %}
 
+                    <div class="{{ config.name }}__bottom-info">
                         {% if embed.collectionOrder.collected %}
                             <div class="grid grid--justify grid--middle">
                                 <div class="col">
@@ -154,7 +184,7 @@
                                 <div class="col"></div>
                                 <div class="col">
                                     {% include atom('app-label') with {
-                                        modifiers: ['info'],
+                                        modifiers: ['info', 'margin'],
                                         data: {
                                             text: 'picker.collect-by-customer.order.status.cancelled' | trans
                                         }

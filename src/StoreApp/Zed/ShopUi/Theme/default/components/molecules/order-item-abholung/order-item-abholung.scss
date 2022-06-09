@@ -16,16 +16,13 @@ $setting-item-border-radius: rem(8);
             }
         }
 
-
-        &__index-page {
-            @include helper-breakpoint-media-max($sm-max) {
-                padding: rem(8) rem(16) 0 rem(16);
-            }
+        &__container-number {
+            background-color: $setting-color-gray-3;
+            padding: rem(8) rem(16);
+            margin-left: rem(10);
+            border-radius: rem(10);
         }
 
-        &__pickup-alert{
-            background-color: rgba(255, 0, 0, 0.2);
-        }
 
         .greenIcon{
             float: right;
@@ -51,13 +48,28 @@ $setting-item-border-radius: rem(8);
             #{$name} {
                 &__time {
                     padding-bottom: rem(4);
+                    display: flex;
+                    justify-content: space-between;
                 }
             }
         }
 
-        &__holder{
+        &__time-padding {
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: rem(8) rem(16) 0 rem(16) !important;
+            }
+        }
+
+        &__holder, &__time-and-container {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+
+        &__holder {
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: rem(8) rem(8) 0 rem(16);
+            }
         }
 
         &__queued-time {
@@ -69,6 +81,12 @@ $setting-item-border-radius: rem(8);
         &__content {
             &::after {
                 display: none;
+            }
+        }
+
+        &__bottom-info {
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: rem(8) rem(16) rem(8) rem(16);
             }
         }
 
@@ -122,8 +140,8 @@ $setting-item-border-radius: rem(8);
         &__order-reference {
             padding: rem(12) 0 rem(12);
             line-height: rem(25);
-            font-size: rem(16);
-            color: #db9d51;
+            font-size: rem(20);
+            color: $setting-color-orange-font;
 
             @include helper-breakpoint-media-max($sm-max) {
                 padding: 0;
@@ -145,24 +163,43 @@ $setting-item-border-radius: rem(8);
             font-weight: bold;
         }
 
-        &__name
-        {
+        &__name {
             color: $setting-color-gray-11;
         }
 
         .hr-line-solid {
-            border-bottom: 1px solid black;
+            border-bottom: rem(1) solid $setting-color-black;
             background-color: rgba(0, 0, 0, 0);
             border-style: solid !important;
-            margin-top: 15px;
-            margin-bottom: 15px;
+        }
+
+        &__hr-line{
+            margin-top: rem(5);
+            margin-bottom: rem(5);
         }
 
         .box {
             @include helper-breakpoint-media-max($sm-max) {
                 padding: 0;
                 border-radius: rem(8);
-                background: #ededed;
+            }
+        }
+
+        &__pickup {
+            cursor: pointer;
+        }
+
+        &__pickup-alert{
+            background-color: rgba(255, 0, 0, 0.2);
+            @include helper-breakpoint-media-max($sm-max) {
+                background-color: rgba(255, 0, 0, 0.2);
+            }
+        }
+
+        &__pickup-in-queue{
+            background-color: rgba(95, 219, 139, 0.2);
+            @include helper-breakpoint-media-max($sm-max) {
+                background-color: rgba(95, 219, 139, 0.2);
             }
         }
 

@@ -126,6 +126,16 @@ $setting-popup-spacing-y: rem(16);
             padding: 0 rem(16);
         }
     }
+
+    .box__bottom {
+        background: #ededed;
+    }
+
+    .containers {
+        @include helper-breakpoint-media-max($sm-max) {
+            padding: 0 rem(16);
+        }
+    }
 }
 
 @include shop-ui-popup-ui();

@@ -61,8 +61,12 @@
             color: $setting-color-white;
         }
 
+        &--margin {
+            margin: rem(8) rem(16);
+        }
+
         &--info {
-            background: $setting-color-gray-2;
+            background: $setting-color-gray-3;
             color: $setting-color-gray-6;
         }
 

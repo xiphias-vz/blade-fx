@@ -12,6 +12,7 @@
 
 {% block body %}
     <div class="grid grid--middle">
+        <input type="hidden" class="detail-page" value="{% if data.isDetailPage == true %}true{% else %}false{% endif %}">
         <div class="col {{ config.name }}__content">
             {% if data.isDetailPage == true %}
                 <div class="{{ config.name }}__titleDiv"><span class="{{ config.name }}__title">{{ 'customer.comment' | trans }}</span></div>

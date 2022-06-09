@@ -42,6 +42,12 @@ $button-radius: rem(10);
             border-radius: rem(25);
         }
 
+        &--abholung {
+            padding: rem(4) rem(16);
+            font-size: rem(18);
+            z-index: 10;
+        }
+
         &--not-delivered {
             color: $setting-color-green;
             background: $setting-color-white;
