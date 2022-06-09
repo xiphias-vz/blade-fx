@@ -162,9 +162,8 @@ class PickingZoneOrderExportFormDataProvider
         if (empty($choicesDef)) {
             $timeSlotConstants = Config::get(TimeSlotConstants::SHIPMENT_TIME_SLOTS);
             $choicesDef = $timeSlotConstants[ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT];
-            $choicesDef[] = self::EXTRA_TIMESLOT;
         }
-
+        array_push($choicesDef, self::EXTRA_TIMESLOT);
         return $choicesDef;
     }
 }

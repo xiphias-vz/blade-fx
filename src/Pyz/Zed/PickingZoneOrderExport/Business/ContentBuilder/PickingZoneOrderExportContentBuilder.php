@@ -28,6 +28,8 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
     protected const DEFAULT_PRICE_DIVISION = 100;
     protected const DEFAULT_PRICE_CURRENCY = 'EUR';
 
+    public const EXTRA_TIMESLOT = '10:00-18:00';
+
     /**
      * @var \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
      */
@@ -83,6 +85,7 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
         $pickingZoneTransfer = $this->pickingZoneFacade->findPickingZoneById($idPickingZone);
         $merchantReference = $this->timeSlotFacade->getMerchantByStoreName($pickingStore);
         $timeSlotsFromQuery = $this->timeSlotFacade->getTimeSlotsArray($merchantReference);
+        $timeSlotsFromQuery[count($timeSlotsFromQuery)] = self::EXTRA_TIMESLOT;
 
         foreach ($timeSlots as $timeSlotKeyValue) {
                 $timeSlotsArray[] = $timeSlotsFromQuery[$timeSlotKeyValue];
