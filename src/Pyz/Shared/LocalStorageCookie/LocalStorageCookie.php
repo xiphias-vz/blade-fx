@@ -14,6 +14,6 @@ class LocalStorageCookie
      */
     public static function deleteCookieData()
     {
-        setcookie("local_storage_cookie", "", time()-3600);
+        setcookie("local_storage_cookie", "", time() - 3600);
     }
 }

@@ -25,7 +25,6 @@ class QrCodeGeneratorConsole extends Console
     public const COMMAND_DESCRIPTION = 'Generating Qr Codes';
     public const CODE_ERROR_MISSING_SEPARATOR = 'Argument is missing the "-" separator';
 
-
     protected const ARGUMENT_NUMBER = 'ARGUMENT_NUMBER';
 
     /**
@@ -36,8 +35,11 @@ class QrCodeGeneratorConsole extends Console
         $this->setName(static::COMMAND_NAME);
         $this->setDescription(static::COMMAND_DESCRIPTION);
         $this->setHelp('Argument is a number range separated by "-". Example 1-100');
-        $this->addArgument(self::ARGUMENT_NUMBER, InputArgument::REQUIRED,
-            'Argument is a number range separated by "-". Example 1-100');
+        $this->addArgument(
+            self::ARGUMENT_NUMBER,
+            InputArgument::REQUIRED,
+            'Argument is a number range separated by "-". Example 1-100'
+        );
 
         parent::configure();
     }
@@ -50,7 +52,6 @@ class QrCodeGeneratorConsole extends Console
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-
         $argument = $input->getArgument(static::ARGUMENT_NUMBER);
 
         if (!str_contains($argument, "-")) {
@@ -64,7 +65,7 @@ class QrCodeGeneratorConsole extends Console
         $minValue = "";
         $maxValue = "";
 
-        if(count($getNumbers) == 2) {
+        if (count($getNumbers) == 2) {
             for ($i = 0; $i < count($getNumbers); $i++) {
                 if (!is_numeric($getNumbers[$i])) {
                     $this->error(sprintf("%s is not a valid argument.", $getNumbers[$i]));
@@ -74,8 +75,8 @@ class QrCodeGeneratorConsole extends Console
             }
 
             $files = glob('./data/qrCodes/*'); // get all file names
-            foreach($files as $file){ // iterate files
-                if(is_file($file)) {
+            foreach ($files as $file) { // iterate files
+                if (is_file($file)) {
                     unlink($file); // delete file
                 }
             }
@@ -83,7 +84,7 @@ class QrCodeGeneratorConsole extends Console
             $minValue = (int)$getNumbers[0];
             $maxValue = (int)$getNumbers[1];
 
-            for ($i = $minValue; $i <= $maxValue; $i++){
+            for ($i = $minValue; $i <= $maxValue; $i++) {
                 $result = Builder::create()
                     ->writer(new PngWriter())
                     ->writerOptions([])
@@ -95,9 +96,8 @@ class QrCodeGeneratorConsole extends Console
                     ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
                     ->build();
 
-                $result->saveToFile('./data/qrCodes/QrCodeForOrder'. str_pad($i, 9, '0', STR_PAD_LEFT) .'.png');
+                $result->saveToFile('./data/qrCodes/QrCodeForOrder' . str_pad($i, 9, '0', STR_PAD_LEFT) . '.png');
             }
-
         } else {
             $this->error("Format should be: 'number-number'");
 

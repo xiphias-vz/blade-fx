@@ -263,7 +263,6 @@ class DetailController extends SprykerDetailController
 
         $timeSlotsData[] = $hardCodedTimeSlot;
 
-
         foreach ($containers as $container) {
             $idZone = $container->getIdPickingZone();
             $container["zoneName"] = $pickingZonesForContainers[$idZone];

@@ -7,11 +7,11 @@
 
 namespace Pyz\Zed\Sitemap;
 
-use Pyz\Shared\Sitemap\SitemapConstants;
 use Pyz\Shared\S3Constants\S3Constants;
+use Pyz\Shared\Sitemap\SitemapConstants;
 use Spryker\Shared\Kernel\AbstractBundleConfig;
 
-class SitemapConfig  extends AbstractBundleConfig
+class SitemapConfig extends AbstractBundleConfig
 {
     /**
      * @return string
@@ -29,5 +29,3 @@ class SitemapConfig  extends AbstractBundleConfig
         return $this->get(S3Constants::S3_CONSTANTS);
     }
 }
-
-

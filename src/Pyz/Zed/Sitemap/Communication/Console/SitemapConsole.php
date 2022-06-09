@@ -35,7 +35,7 @@ class SitemapConsole extends Console
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
 
     /**
-     * @var SitemapConfig
+     * @var \Pyz\Zed\Sitemap\SitemapConfig
      */
     private $config;
 

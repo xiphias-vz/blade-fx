@@ -46,15 +46,16 @@ class WishlistOverviewController extends SprykerWishlistOverviewController
      */
     public function updateAction($wishlistName, Request $request)
     {
-        if ($wishlistName === '{{ attributes.ImageUrl }}')
+        if ($wishlistName === '{{ attributes.ImageUrl }}') {
             $response = [];
-        else {
+        } else {
             $response = $this->executeUpdateAction($wishlistName, $request);
 
             if (!is_array($response)) {
                 return $response;
             }
         }
+
         return $this->view($response, [], '@WishlistPage/views/wishlist-overview-update/wishlist-overview-update.twig');
     }
 

@@ -55,6 +55,10 @@
             vertical-align: top;
             cursor: pointer;
             position: relative;
+
+            &:hover {
+                background-color: $setting-color-globus-lightGreen;
+            }
         }
 
         &__input {

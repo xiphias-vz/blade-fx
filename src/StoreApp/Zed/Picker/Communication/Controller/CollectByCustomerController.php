@@ -404,7 +404,7 @@ class CollectByCustomerController extends AbstractController
                 }
             }
         }
-        foreach ($pickedWithWeight as $pickedItem){
+        foreach ($pickedWithWeight as $pickedItem) {
             foreach ($notFound as $keyNotFound => $notFoundItem) {
                 if ($notFoundItem["sku"] === $pickedItem['sku'] && !$notFoundItem["isSubstitutionFound"]) {
                     unset($notFound[$keyNotFound]);
@@ -412,7 +412,6 @@ class CollectByCustomerController extends AbstractController
                 }
             }
         }
-
 
         return [
             'merchant' => $this->getMerchantFromRequest($request),

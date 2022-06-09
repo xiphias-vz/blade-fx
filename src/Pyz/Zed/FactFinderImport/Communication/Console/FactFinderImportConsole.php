@@ -7,13 +7,13 @@
 
 namespace Pyz\Zed\FactFinderImport\Communication\Console;
 
+use Exception;
 use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 class FactFinderImportConsole extends Console
 {
@@ -89,7 +89,7 @@ class FactFinderImportConsole extends Console
     }
 
     /**
-     * @param InputInterface $input
+     * @param \Symfony\Component\Console\Input\InputInterface $input
      *
      * @return bool
      */
@@ -103,7 +103,7 @@ class FactFinderImportConsole extends Console
 
     /**
      * @param string $type
-     * @param InputInterface $input
+     * @param \Symfony\Component\Console\Input\InputInterface $input
      *
      * @return int
      */
@@ -138,7 +138,7 @@ class FactFinderImportConsole extends Console
         $previousArg = '';
         foreach (self::LIST_OF_AVAILABLE_ARGUMENTS as $arg) {
             if ($previousArg !== $arg) {
-                $stringToSend .= $arg .  ', ';
+                $stringToSend .= $arg . ', ';
                 $previousArg = $arg;
             }
         }

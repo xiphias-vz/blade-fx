@@ -318,7 +318,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return GlobusRestApiClientCookie
+     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie
      */
     public function createGlobusRestApiClientCookie(): GlobusRestApiClientCookie
     {
