@@ -126,7 +126,7 @@
                     @include helper-breakpoint-media-max($sm-max) {
                         background-color: $setting-color-lighter;
                         padding: rem(5) rem(8);
-                        margin-top: rem(8);
+                        margin-top: rem(45);
                     }
 
                     .ihreArticle {
@@ -161,6 +161,11 @@
                         margin-top: rem(1);
                         margin-bottom: rem(15);
                         font-size: rem(16);
+                    }
+
+                    @include helper-breakpoint-media-max($xxs-max) {
+                        margin-top: rem(27);
+                        margin-bottom: rem(-30);
                     }
                 }
 

@@ -55,6 +55,10 @@
             @include helper-breakpoint-media-min($xl-min) {
                 @include helper-effect-transition(background-color);
             }
+
+            @include helper-breakpoint-media-max($lg-max) {
+                bottom: 0;
+            }
         }
 
         &:active {
