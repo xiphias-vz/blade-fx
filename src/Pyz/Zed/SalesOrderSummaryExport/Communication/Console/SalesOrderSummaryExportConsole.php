@@ -42,9 +42,9 @@ class SalesOrderSummaryExportConsole extends Console
     {
         $output->writeln(static::COMMAND_NAME . " executed");
         $data = $this->getFactory()->createRepository()->getCustomOrderItemData();
+        $output->writeln("generated CSV");
         $this->getFacade()->exportOrders($data->getContent());
-        dump($data->getContent());
-
+        $output->writeln("CSV exported to FTP");
         return null;
     }
 }

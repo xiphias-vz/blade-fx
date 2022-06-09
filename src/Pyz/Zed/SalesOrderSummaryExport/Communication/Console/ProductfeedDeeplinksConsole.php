@@ -43,7 +43,6 @@ class ProductfeedDeeplinksConsole extends Console
         $output->writeln(static::COMMAND_NAME . " executed");
         $data = $this->getFactory()->createRepository()->getProductsDeeplink();
         $this->getFacade()->exportDeeplink($data->getContent());
-        dump($data->getContent());
 
         return null;
     }
