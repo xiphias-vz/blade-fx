@@ -5,7 +5,6 @@ window.addEventListener('DOMContentLoaded', (customEvent) => {
     });
 
     window.onclick = function (event){
-        console.log('click')
         if (!event.target.matches('.js-header__navigation-trigger') &&
             !event.target.matches('.header__products-button-text') &&
             !event.target.matches('.js-header__navigation-target') &&
@@ -15,7 +14,5 @@ window.addEventListener('DOMContentLoaded', (customEvent) => {
                 headerNavigationCz.classList.add('is-hidden');
             }
         }
-
-        console.log(event.target)
     }
 });
