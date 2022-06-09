@@ -24,6 +24,8 @@ use Spryker\Shared\Config\Config;
  */
 class PickingZoneOrderExportFormDataProvider
 {
+    public const EXTRA_TIMESLOT = '10:00-18:00';
+
     /**
      * @var \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
      */
@@ -160,7 +162,7 @@ class PickingZoneOrderExportFormDataProvider
         if (empty($choicesDef)) {
             $timeSlotConstants = Config::get(TimeSlotConstants::SHIPMENT_TIME_SLOTS);
             $choicesDef = $timeSlotConstants[ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT];
-            $choicesDef[] = $this->getFactory()->getConfig()->getExtraTimeslot();
+            $choicesDef[] = self::EXTRA_TIMESLOT;
         }
 
         return $choicesDef;
