@@ -19,6 +19,11 @@
             padding: rem(5) rem(9);
             margin-bottom: rem(25);
             margin-left: rem(17);
+            transition: min-width 0.5s;
+
+            @include helper-breakpoint-media-max($xs-max) {
+                min-width: rem(175);
+            }
 
             .ffw-selected{
                 margin-left: rem(10);
