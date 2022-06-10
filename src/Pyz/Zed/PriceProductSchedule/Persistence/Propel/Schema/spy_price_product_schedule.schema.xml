@@ -6,6 +6,12 @@
           package="src.Orm.Zed.PriceProductSchedule.Persistence">
 
     <table name="spy_price_product_schedule">
+        <index name="index-spy_price_product_schedule-fk_store-fk_product_abstract-active">
+            <index-column name="fk_store"/>
+            <index-column name="fk_product_abstract"/>
+            <index-column name="active_from"/>
+            <index-column name="active_to"/>
+        </index>
         <index name="spy_price_product_schedule_active_from_IDX">
             <index-column name="active_from" />
             <index-column name="active_to" />

@@ -26,7 +26,12 @@
 
     <table name="spy_price_product_store">
         <column name="price_per_kg" type="INTEGER"/>
+        <column name="is_permanent_sale_price" type="BOOLEAN"/>
         <column name="promotion" type="VARCHAR" size="100"/>
+        <index name="spy_price_product_store-index-fk_store-fk_price_product">
+            <index-column name="fk_store"/>
+            <index-column name="fk_price_product"/>
+        </index>
         <behavior name="event">
             <parameter name="spy_price_product_store_all" column="*"/>
         </behavior>

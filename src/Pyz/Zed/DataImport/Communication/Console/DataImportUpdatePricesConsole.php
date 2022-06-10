@@ -8,8 +8,8 @@
 namespace Pyz\Zed\DataImport\Communication\Console;
 
 use Exception;
-use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Propel;
+use Pyz\Shared\PropelExtension\PropelExtension;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -53,10 +53,13 @@ class DataImportUpdatePricesConsole extends Console
         try {
             if ($input->hasParameterOption('--' . static::OPTION_CURRENCY) || $input->hasParameterOption('-' . static::OPTION_CURRENCY_SHORT)) {
                 $currency = $input->getOption(static::OPTION_CURRENCY);
-                $sql = "call pyzx_import_prices('" . $currency . "');";
-                $this->execCommand($sql, $con);
+                $result = PropelExtension::getResultNamed("call pyzx_import_prices('" . $currency . "');", $con);
 
-                return Console::CODE_SUCCESS;
+                if ($result) {
+                    $output->writeln($result[0]["result"]);
+
+                    return static::CODE_SUCCESS;
+                }
             } else {
                 throw new Exception('DEFINE CURRENCY SYMBOL: -c EUR, -c CZK');
             }
@@ -66,19 +69,5 @@ class DataImportUpdatePricesConsole extends Console
         }
 
         return Console::CODE_ERROR;
-    }
-
-    /**
-     * @param string $sql
-     * @param \Propel\Runtime\Connection\ConnectionInterface $connection
-     *
-     * @return bool
-     */
-    private function execCommand(string $sql, ConnectionInterface $connection): bool
-    {
-        $statement = $connection->prepare($sql);
-        $statement->execute();
-
-        return true;
     }
 }

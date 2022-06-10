@@ -171,7 +171,8 @@ if ($storeCodeBucket == 'CZ') {
     /* PriceProductSchedule */
     $jobs[] = [
         'name' => 'apply-price-product-schedule',
-        'command' => '$PHP_BIN vendor/bin/console scheduled-prices:apply',
+        'command' => '$PHP_BIN vendor/bin/console scheduled-prices:apply
+        $PHP_BIN vendor/bin/console import:execEvents',
         'schedule' => '5 0,3,4,5,6,22,23 * * *',
         'enable' => true,
         'stores' => ['OST'],
@@ -341,7 +342,8 @@ if ($storeCodeBucket == 'CZ') {
     /* PriceProductSchedule */
     $jobs[] = [
         'name' => 'apply-price-product-schedule',
-        'command' => '$PHP_BIN vendor/bin/console scheduled-prices:apply',
+        'command' => '$PHP_BIN vendor/bin/console scheduled-prices:apply
+        $PHP_BIN vendor/bin/console import:execEvents',
         'schedule' => '5 0,3,4,5,6,22,23 * * *',
         'enable' => true,
         'stores' => ['EIN'],

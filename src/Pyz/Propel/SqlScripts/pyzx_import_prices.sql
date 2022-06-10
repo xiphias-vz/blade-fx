@@ -24,331 +24,328 @@ BEGIN
     WHERE WEEKDAY(promotionstart) = 0
       AND EXISTS(SELECT * FROM spy_merchant sm WHERE sm.region_name = 'Germany');
 
-    DROP TEMPORARY TABLE IF EXISTS tmp_tbl_price;
-    CREATE TEMPORARY TABLE tmp_tbl_price (
-        id_store int,
-        id_price_product int,
-        fk_price_type int,
-        id_product_abstract int,
-        price int,
-        net_price int,
-        price_per_kg int,
-        taxRate decimal(8,2),
-        weightPerItem decimal(9,4),
-        promotion varchar(255),
-        promotionstart datetime,
-        promotionend datetime,
-        isDefault bit,
-        price_imp decimal(9,2),
-        isChanged bit
-    );
+	DROP TEMPORARY TABLE IF EXISTS tmp_tbl_price;
+	CREATE TEMPORARY TABLE tmp_tbl_price (
+		id int not null AUTO_INCREMENT primary key,
+		fk_store int,
+		fk_price_product int,
+		fk_price_type int,
+		fk_product_abstract int,
+		fk_currency int,
+		price int,
+		net_price int,
+		price_per_kg int,
+		taxRate decimal(8,2),
+		weightPerItem decimal(9,4),
+		promotion varchar(255),
+		promotionstart datetime,
+		promotionend datetime,
+		isDefault bit,
+		price_imp decimal(9,2),
+		isChanged bit,
+		is_permanent_sale_price bit,
+		is_promotion bit,
+		fk_price_product_schedule int
+	);
 
-    /*PRICE TYPES: 1-DEFAULT, 2-ORIGINAL */
-    /*In import table pyz_imp_price_product all default prices are in column price, original price is in column pseudoprice */
-
-    /* insert missing default prices in spy_price_product */
-    insert into spy_price_product
-    (fk_price_type, fk_product_abstract, price)
-    select distinct 1 as fk_price_type, spa.id_product_abstract, 0 as price
+	/* get default prices */
+	insert into tmp_tbl_price
+		(fk_store, fk_price_product, fk_price_type, fk_product_abstract, fk_currency, price, weightPerItem, promotion, promotionstart, promotionend, taxRate, price_imp, is_permanent_sale_price, is_promotion)
+	select distinct ss.id_store, spp.id_price_product, 1 as fk_price_type, spa.id_product_abstract, sc.id_currency, pipp.price * 100 as price
+		, cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
+		, pipp.promotion, pipp.promotionstart, pipp.promotionend
+		, str.rate as taxRate, pipp.price
+		, case when pipp.pseudoprice > 0 and (promotion is null or promotionstart is null) then 1 else 0 end as is_permanent_sale_price
+		, case when (not promotion is null and not promotionstart is null) then 1 else 0 end as is_promotion
     from pyz_imp_price_product pipp
-             inner join spy_product sp on pipp.sapnumber = sp.sap_number and (pipp.gtin = sp.sku or pipp.gtin is null)
-             inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
-             inner join spy_store ss on pipp.store  = ss.name
-             left outer join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
-    where spp.id_price_product is null;
+		inner join spy_product sp on pipp.sapnumber = sp.sap_number
+			and (pipp.gtin = sp.sku or pipp.gtin is null)
+		inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
+		inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
+		inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
+		inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
+		inner join spy_store ss on pipp.store  = ss.name
+		inner join spy_currency sc on sc.code = currencyCode
+		left outer join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract
+			and spp.fk_price_type = 1
+	where pipp.price > 0;
 
-    /*insert of action prices */
-    insert into tmp_tbl_price
-    (id_store, id_price_product, fk_price_type, id_product_abstract, price, weightPerItem, promotion, promotionstart, promotionend, taxRate, price_imp)
-    select distinct ss.id_store, spp.id_price_product, 1 as fk_price_type, spa.id_product_abstract, pipp.price * 100 as price
-                  , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
-                  , pipp.promotion, pipp.promotionstart, pipp.promotionend
-                  , str.rate as taxRate, pipp.price
-    from pyz_imp_price_product pipp
-             inner join spy_product sp on pipp.sapnumber = sp.sap_number and (pipp.gtin = sp.sku or pipp.gtin is null)
-             inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
-             inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
-             inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
-             inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
-             inner join spy_store ss on pipp.store  = ss.name
-             inner join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
-    where pipp.promotion is not null
-      and pipp.price > 0
-      and pipp.promotionstart is not null;
+	/* get original prices */
+	insert into tmp_tbl_price
+		(fk_store, fk_price_product, fk_price_type, fk_product_abstract, fk_currency, price, weightPerItem, promotion, promotionstart, promotionend, taxRate, price_imp, is_permanent_sale_price, is_promotion)
+	select distinct ss.id_store, spp.id_price_product, 2 as fk_price_type, spa.id_product_abstract, sc.id_currency, pipp.pseudoprice * 100 as price
+		, cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
+		, pipp.promotion, pipp.promotionstart, pipp.promotionend
+		, str.rate as taxRate, pipp.pseudoprice
+		, case when pipp.pseudoprice > 0 and (promotion is null or promotionstart is null) then 1 else 0 end as is_permanent_sale_price
+		, case when (not promotion is null and not promotionstart is null) then 1 else 0 end as is_promotion
+	from pyz_imp_price_product pipp
+		inner join spy_product sp on pipp.sapnumber = sp.sap_number
+			and (pipp.gtin = sp.sku or pipp.gtin is null)
+		inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
+		inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
+		inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
+		inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
+		inner join spy_store ss on pipp.store  = ss.name
+		inner join spy_currency sc on sc.code = currencyCode
+		left outer join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract
+			and spp.fk_price_type = 2
+	where pipp.price > 0
+		and (
+				(pipp.pseudoprice > 0 and (promotion is null or promotionstart is null))
+				or
+				(not promotion is null and not promotionstart is null)
+			);
 
-    insert into tmp_tbl_price
-    (id_store, id_price_product, fk_price_type, id_product_abstract, price, weightPerItem, promotion, promotionstart, promotionend, taxRate, price_imp)
-    select distinct ss.id_store, spp.id_price_product, 2 as fk_price_type, spa.id_product_abstract, pipp.pseudoprice * 100 as price
-                  , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
-                  , pipp.promotion, pipp.promotionstart, pipp.promotionend
-                  , str.rate as taxRate, pipp.pseudoprice
-    from pyz_imp_price_product pipp
-             inner join spy_product sp on pipp.sapnumber = sp.sap_number and (pipp.gtin = sp.sku or pipp.gtin is null)
-             inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
-             inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
-             inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
-             inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
-             inner join spy_store ss on pipp.store  = ss.name
-             inner join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
-    where pipp.promotion is not null
-      and pipp.price > 0
-      and pipp.promotionstart is not null;
+	CREATE INDEX ix_tmp_1 ON tmp_tbl_price (fk_store, fk_price_type, fk_product_abstract);
+	CREATE INDEX ix_tmp_2 ON tmp_tbl_price (fk_store, fk_price_product);
+	CREATE INDEX ix_tmp_3 ON tmp_tbl_price (fk_store, fk_product_abstract);
+	CREATE INDEX ix_tmp_4 ON tmp_tbl_price (fk_store, fk_product_abstract, is_promotion, is_permanent_sale_price);
+	CREATE INDEX ix_tmp_5 ON tmp_tbl_price (fk_store, fk_product_abstract, is_promotion);
 
+	/* update price per kg for items without promotion */
+	update tmp_tbl_price
+		set price_per_kg = price
+			, price = cast(weightPerItem * price as int)
+	where weightPerItem > 0.0
+		and is_promotion = 0;
 
-    /* insert default prices in temp table tmp_tbl_price*/
-    insert into tmp_tbl_price
-    (id_store, id_price_product, fk_price_type, id_product_abstract, price, weightPerItem, promotion, promotionstart, promotionend, taxRate, price_imp)
-    select distinct ss.id_store, spp.id_price_product, 1 as fk_price_type, spa.id_product_abstract, pipp.price * 100 as price
-                  , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
-                  , null as promotion, null as promotionstart, null as promotionend
-                  , str.rate as taxRate, pipp.price
-    from pyz_imp_price_product pipp
-             inner join spy_product sp on pipp.sapnumber = sp.sap_number and (pipp.gtin = sp.sku or pipp.gtin is null)
-             inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
-             inner join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
-             inner join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
-             inner join spy_tax_rate str on stst.fk_tax_rate = str.id_tax_rate
-             inner join spy_store ss on pipp.store  = ss.name
-             inner join spy_price_product spp on spa.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 1
-    where pipp.price > 0
-      and ((pipp.pseudoprice = 0 and pipp.promotion is null) or pipp.promotionstart is null);
+	update tmp_tbl_price
+		set net_price = price * (1 - (taxRate / 100));
 
-    CREATE INDEX u ON tmp_tbl_price (fk_price_type, id_product_abstract);
+	/* insert missing spy_price_product */
+	insert into spy_price_product
+		(fk_price_type, fk_product_abstract, price)
+	select distinct fk_price_type, fk_product_abstract, 0
+	from tmp_tbl_price
+	where fk_price_product is null;
 
-    update tmp_tbl_price
-        set net_price = price * (1 - (taxRate / 100));
+	update tmp_tbl_price
+		set isChanged = 1
+	where fk_price_product is null;
 
-    /* populating spy_price_product_schedule data */
-    insert into spy_price_product_schedule_list
-    (name, is_active, created_at)
-    select distinct promotion, 1, now()
-    from tmp_tbl_price
-    where not promotion in(select distinct name from spy_price_product_schedule_list)
-      and not promotion is null;
+	update spy_price_product spp
+		inner join tmp_tbl_price t on spp.fk_product_abstract = t.fk_product_abstract
+			and spp.fk_price_type = t.fk_price_type
+		set t.fk_price_product = spp.id_price_product
+	where t.fk_price_product is null;
+	/* end - insert missing spy_price_product */
 
-    /* update of all overlapping start or end, only one action can be applied in one period */
-    update spy_price_product_schedule spps
-        inner join tmp_tbl_price tmp on tmp.id_store = spps.fk_store
-        and tmp.fk_price_type = spps.fk_price_type
-        and tmp.id_product_abstract = spps.fk_product_abstract
-        inner join spy_price_product_schedule_list sppsl on tmp.promotion = sppsl.name
-        set
-            spps.fk_price_product_schedule_list = sppsl.id_price_product_schedule_list
-            , spps.net_price = tmp.net_price
-            , spps.gross_price = tmp.price
-            , spps.active_from = tmp.promotionstart
-            , spps.active_to = tmp.promotionend
-            , spps.updated_at = now()
-            , spps.is_current = case when spps.gross_price <> tmp.price then 0 else spps.is_current end
-    where
-        not tmp.promotionstart is null
-    and
-    (
-        (tmp.promotionstart between spps.active_from and spps.active_to)
-        or
-        (tmp.promotionend between spps.active_from and spps.active_to)
-    );
+	/* insert new not promotion and permanent prices */
+	update tmp_tbl_price t
+		left outer join spy_price_product_store spps on spps.fk_store = t.fk_store and spps.fk_price_product = t.fk_price_product
+	set isChanged = 1
+	where spps.id_price_product_store is null
+		and t.is_permanent_sale_price = 0
+		and t.is_promotion = 0;
 
-    insert into spy_price_product_schedule
-    (fk_currency, fk_store, fk_price_type, fk_product_abstract, fk_price_product_schedule_list, net_price, gross_price, active_from, active_to, is_current, created_at)
-    select distinct sc.id_currency, tmp.id_store, tmp.fk_price_type, tmp.id_product_abstract, sppsl.id_price_product_schedule_list
-              , tmp.net_price, tmp.price
-              , tmp.promotionstart, tmp.promotionend, 0, now()
-    from tmp_tbl_price tmp
-         inner join spy_price_product_schedule_list sppsl on tmp.promotion = sppsl.name
-         inner join spy_currency sc on sc.code = currencyCode
-         left outer join spy_price_product_schedule spps on tmp.id_store = spps.fk_store
-            and tmp.fk_price_type = spps.fk_price_type
-            and tmp.id_product_abstract = spps.fk_product_abstract
-            and sppsl.id_price_product_schedule_list = spps.fk_price_product_schedule_list
-            and tmp.promotionstart = spps.active_from
-            and tmp.promotionend = spps.active_to
-    where not tmp.promotionstart is null
-      and spps.id_price_product_schedule is null;
-
-    /* delete sceduled prices with out promotion price or promotion */
-
-    delete spps
-       from tmp_tbl_price tmp
-        inner join spy_price_product_schedule spps on spps.fk_store = tmp.id_store
-            and spps.fk_product_abstract = tmp.id_product_abstract
-            and spps.is_current = 1
-       where tmp.isDefault = 1
-        and tmp.promotionstart is null;
-
-   delete spps
-   from tmp_tbl_price tmp
-   	inner join spy_price_product_schedule spps on spps.fk_store = tmp.id_store
-   		and spps.fk_product_abstract = tmp.id_product_abstract
-   where tmp.isDefault = 1
-   	and now() BETWEEN spps.active_from and spps.active_to
-   	and tmp.promotionstart is null;
-
-   delete spps
-   from tmp_tbl_price tmp
-   	inner join spy_price_product spp on tmp.id_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 2
-   	inner join spy_price_product_store spps on spps.fk_store = tmp.id_store
-   		and spp.id_price_product  = spps.fk_price_product
-   where tmp.isDefault = 1
-   	and tmp.promotionstart is null;
-
-    /* on weight article set price_per_kg */
-    update tmp_tbl_price
-    set
-        price_per_kg = price
-      , price = weightPerItem * price
-      , net_price = weightPerItem * price  * (1 - (taxRate / 100))
-    where weightPerItem > 0.0
-      and promotionstart is null;
-
-    /* find out default price per store and article */
-    update tmp_tbl_price tmp1
-        inner join
-        (
-            select id_store, id_price_product, fk_price_type, id_product_abstract,
-            ROW_NUMBER() over (PARTITION BY id_store, id_product_abstract ORDER BY fk_price_type) as priority
-            from tmp_tbl_price tmp
-        ) tmp2 on tmp1.id_store = tmp2.id_store
-            and tmp1.id_price_product = tmp2.id_price_product
-            and tmp1.fk_price_type = tmp2.fk_price_type
-            and tmp1.id_product_abstract = tmp2.id_product_abstract
-        SET
-            isDefault = 1
-    where tmp2.priority = 1
-      and tmp1.promotionstart is null;
-
-    update tmp_tbl_price
-    SET
-        isDefault = 0
-    where isDefault IS NULL;
+	insert into spy_price_product_store
+		(fk_currency, fk_price_product, fk_store, gross_price, is_permanent_sale_price, net_price, price_data, price_data_checksum, price_per_kg, promotion)
+	select t.fk_currency, t.fk_price_product, t.fk_store, t.price, t.is_permanent_sale_price, t.net_price, '[]', t.price, t.price_per_kg, t.promotion
+	from tmp_tbl_price t
+		left outer join spy_price_product_store spps on spps.fk_store = t.fk_store and spps.fk_price_product = t.fk_price_product
+	where spps.id_price_product_store is null
+		and t.is_permanent_sale_price = 0
+		and t.is_promotion = 0;
 
 
-    /* deleting not used price definitions */
+	/* update changed not promotion and permanent prices */
+	update tmp_tbl_price
+		set isChanged = 1
+	where id IN
+	(
+		select t.id
+		from tmp_tbl_price t
+			inner join spy_price_product_store spps on spps.fk_store = t.fk_store
+				and spps.fk_price_product = t.fk_price_product
+				and t.is_permanent_sale_price = 0
+				and t.is_promotion = 0
+		where spps.gross_price <> t.price
+			or ifnull(spps.price_per_kg, 0) <> ifnull(t.price_per_kg, 0)
+			or ifnull(spps.promotion, '') <> ifnull(t.promotion, '')
+			or ifnull(spps.is_permanent_sale_price, 0)  <> ifnull(t.is_permanent_sale_price, 0)
+	);
 
-    delete from spy_price_product_default
-    where fk_price_product_store IN
-      (
-          select id_price_product_store
-          from
-              (
-                  select spps.id_price_product_store,
-                         ROW_NUMBER() over (PARTITION BY spps.fk_store, spps.fk_price_product, spp.fk_price_type ORDER BY spps.id_price_product_store desc) as priority
-                  from spy_price_product_store spps
-                           inner join spy_price_product spp on spps.fk_price_product = spp.id_price_product
-              ) it
-          where it.priority > 1
-      );
+	update tmp_tbl_price t
+	inner join spy_price_product_store spps on spps.fk_store = t.fk_store
+			and spps.fk_price_product = t.fk_price_product
+			and t.is_permanent_sale_price = 0
+			and t.is_promotion = 0
+		set spps.gross_price = t.price
+		, spps.net_price = t.net_price
+		, spps.price_per_kg = t.price_per_kg
+		, spps.promotion = t.promotion
+		, spps.is_permanent_sale_price = t.is_permanent_sale_price
+	where spps.gross_price <> t.price
+		or ifnull(spps.price_per_kg, 0) <> ifnull(t.price_per_kg, 0)
+		or ifnull(spps.promotion, '') <> ifnull(t.promotion, '')
+		or ifnull(spps.is_permanent_sale_price, 0)  <> ifnull(t.is_permanent_sale_price, 0);
 
-    delete from spy_price_product_store
-    where id_price_product_store IN
-      (
-          select id_price_product_store
-          from
-              (
-                  select spps.id_price_product_store,
-                         ROW_NUMBER() over (PARTITION BY spps.fk_store, spps.fk_price_product, spp.fk_price_type ORDER BY spps.id_price_product_store desc) as priority
-                  from spy_price_product_store spps
-                           inner join spy_price_product spp on spps.fk_price_product = spp.id_price_product
-              ) it
-          where it.priority > 1
-      );
+	/* in case when we have active promotion and import is without promotion then set end of promotion */
+	CREATE TEMPORARY TABLE tbl_toDelete AS
+	select spps2.id_price_product_store
+	from spy_price_product_schedule spps
+		inner join tmp_tbl_price t on t.fk_store = spps.fk_store
+			and t.fk_product_abstract = spps.fk_product_abstract
+			and t.is_promotion = 0
+			and t.is_permanent_sale_price = 0
+			and now() between spps.active_from and spps.active_to
+		inner join spy_price_product spp on t.fk_product_abstract = spp.fk_product_abstract and spp.fk_price_type = 2
+		inner join spy_price_product_store spps2 on t.fk_store = spps2.fk_store
+			and spps2.fk_price_product = spp.id_price_product;
 
-    delete from spy_price_product_default
-    where fk_price_product_store IN
-      (
-          select spps.id_price_product_store
-          from spy_price_product spp
-                   inner join spy_price_product_store spps on spp.id_price_product = spps.fk_price_product
-                   left outer join tmp_tbl_price tmp on spp.fk_product_abstract  = tmp.id_product_abstract and spp.fk_price_type = tmp.fk_price_type
-          where tmp.id_price_product is null
-      );
+	update tmp_tbl_price
+		set isChanged = 1
+	where id IN
+	(
+		select t.id
+		from spy_price_product_schedule spps
+			inner join tmp_tbl_price t on t.fk_store = spps.fk_store
+				and t.fk_product_abstract = spps.fk_product_abstract
+				and t.is_promotion = 0
+				and now() between spps.active_from and spps.active_to
+	);
 
-    delete from spy_price_product_offer
-    where fk_price_product_store IN
-      (
-          select spps.id_price_product_store
-          from spy_price_product spp
-                   inner join spy_price_product_store spps on spp.id_price_product = spps.fk_price_product
-                   left outer join tmp_tbl_price tmp on spp.fk_product_abstract  = tmp.id_product_abstract and spp.fk_price_type  = tmp.fk_price_type
-          where tmp.id_price_product is null
-      );
+	update spy_price_product_schedule spps
+		inner join tmp_tbl_price t on t.fk_store = spps.fk_store
+			and t.fk_product_abstract = spps.fk_product_abstract
+			and t.is_promotion = 0
+			and now() between spps.active_from and spps.active_to
+		set spps.active_to = DATE_ADD(DATE_ADD(DATE_ADD(DATE(DATE_ADD(now(), INTERVAL -1 DAY)), INTERVAL DAY(spps.active_to) MINUTE), INTERVAL MONTH(spps.active_to) HOUR), INTERVAL 35 SECOND)
+			, spps.is_current = 0;
 
-    delete from spy_price_product_store
-    where fk_price_product IN
-      (
-          select spp.id_price_product
-          from spy_price_product spp
-                   left outer join tmp_tbl_price tmp on spp.fk_product_abstract  = tmp.id_product_abstract and spp.fk_price_type  = tmp.fk_price_type
-          where tmp.id_price_product is null
-      );
+	/* insert permanent sale prices */
+	update tmp_tbl_price t
+		left outer join spy_price_product_store spps on spps.fk_store = t.fk_store
+			and spps.fk_price_product = t.fk_price_product
+		set t.isChanged = 1
+	where spps.id_price_product_store is null
+		and t.is_permanent_sale_price = 1;
+
+	insert into spy_price_product_store
+		(fk_currency, fk_price_product, fk_store, gross_price, is_permanent_sale_price, net_price, price_data, price_data_checksum, price_per_kg, promotion)
+	select t.fk_currency, t.fk_price_product, t.fk_store, t.price, t.is_permanent_sale_price, t.net_price, '[]', t.price, t.price_per_kg, t.promotion
+	from tmp_tbl_price t
+		left outer join spy_price_product_store spps on spps.fk_store = t.fk_store and spps.fk_price_product = t.fk_price_product
+	where spps.id_price_product_store is null
+		and t.is_permanent_sale_price = 1;
+
+	update tmp_tbl_price t
+		inner join spy_price_product_store spps on spps.fk_store = t.fk_store
+			and spps.fk_price_product = t.fk_price_product
+			and t.is_permanent_sale_price = 1
+	set t.isChanged = 1
+	where spps.gross_price <> t.price
+		or ifnull(spps.price_per_kg, 0)  <> ifnull(t.price_per_kg, 0)
+		or ifnull(spps.promotion, '')  <> ifnull(t.promotion, '')
+		or ifnull(spps.is_permanent_sale_price, 0)  <> ifnull(t.is_permanent_sale_price, 0);
+
+	update tmp_tbl_price t
+		inner join spy_price_product_store spps on spps.fk_store = t.fk_store
+			and spps.fk_price_product = t.fk_price_product
+			and t.is_permanent_sale_price = 1
+		set spps.gross_price = t.price
+			, spps.net_price = t.net_price
+			, spps.price_per_kg = t.price_per_kg
+			, spps.promotion = t.promotion
+			, spps.is_permanent_sale_price = t.is_permanent_sale_price
+	where spps.gross_price <> t.price
+		or ifnull(spps.price_per_kg, 0)  <> ifnull(t.price_per_kg, 0)
+		or ifnull(spps.promotion, '')  <> ifnull(t.promotion, '')
+		or ifnull(spps.is_permanent_sale_price, 0)  <> ifnull(t.is_permanent_sale_price, 0);
+
+	/* end of permanent sale prices */
+
+	/* populating spy_price_product_schedule data */
+	insert into spy_price_product_schedule_list
+		(name, is_active, created_at)
+	select distinct promotion, 1, now()
+	from tmp_tbl_price
+	where not promotion in(select distinct name from spy_price_product_schedule_list)
+		and not promotion is null;
+
+	/* check and update existing action prices */
+	update spy_price_product_schedule spps
+		inner join tmp_tbl_price t on t.fk_store = spps.fk_store
+			and t.fk_price_type = spps.fk_price_type
+			and t.fk_product_abstract = spps.fk_product_abstract
+			and t.promotionstart = spps.active_from
+			and t.promotionend = spps.active_to
+			and t.is_promotion = 1
+		inner join spy_price_product_schedule_list sppsl on t.promotion = sppsl.name
+			and spps.fk_price_product_schedule_list = sppsl.id_price_product_schedule_list
+	set t.fk_price_product_schedule = spps.id_price_product_schedule;
+
+	update spy_price_product_schedule spps
+		inner join tmp_tbl_price t on t.fk_price_product_schedule = spps.id_price_product_schedule
+	set t.isChanged = 1
+	where spps.gross_price <> t.price;
+
+	update spy_price_product_schedule spps
+	inner join tmp_tbl_price t on t.fk_price_product_schedule = spps.id_price_product_schedule
+		set spps.net_price = t.net_price
+			, spps.gross_price = t.price
+			, spps.updated_at = now()
+	where spps.gross_price <> t.price;
+
+	/* if exists overlapping promotion then end this promotion and apply new promotion */
+	update spy_price_product_schedule spps
+		inner join tmp_tbl_price t on t.fk_store = spps.fk_store
+			and t.fk_price_type = spps.fk_price_type
+			and t.fk_product_abstract = spps.fk_product_abstract
+			and (
+				(t.promotionstart between spps.active_from and spps.active_to)
+				or
+				(t.promotionend between spps.active_from and spps.active_to)
+			)
+			and t.is_promotion = 1
+			and t.fk_price_product_schedule is null
+		inner join spy_price_product_schedule_list sppsl on t.promotion = sppsl.name
+			and spps.fk_price_product_schedule_list = sppsl.id_price_product_schedule_list
+	set spps.active_to = DATE_ADD(DATE_ADD(DATE_ADD(DATE(DATE_ADD(t.promotionstart, INTERVAL -1 DAY)), INTERVAL DAY(spps.active_to) MINUTE), INTERVAL MONTH(spps.active_to) HOUR), INTERVAL 35 SECOND);
+
+	/* insert new promotions to table */
+	insert into spy_price_product_schedule
+		(fk_currency, fk_store, fk_price_type, fk_product_abstract, fk_price_product_schedule_list, net_price, gross_price, active_from, active_to, is_current, created_at)
+	select distinct t.fk_currency, t.fk_store, t.fk_price_type, t.fk_product_abstract, sppsl.id_price_product_schedule_list
+		, t.net_price, t.price
+		, t.promotionstart, t.promotionend, 0, now()
+	from tmp_tbl_price t
+		inner join spy_price_product_schedule_list sppsl on t.promotion = sppsl.name
+	where t.is_promotion = 1
+		and t.fk_price_product_schedule is null;
+
+	/* delete on end */
+	delete from spy_price_product_default
+	where fk_price_product_store IN (select distinct id_price_product_store from tbl_toDelete);
+
+	delete from spy_price_product_offer
+	where fk_price_product_store IN (select distinct id_price_product_store from tbl_toDelete);
+
+	delete from spy_price_product_store
+	where id_price_product_store IN (select distinct id_price_product_store from tbl_toDelete);
 
 
-    /* generating events for publish new price data */
-    /* for now we publish all prices again on end
-        INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
-        select DISTINCT tmp.id_product_abstract, 'Price.price_abstract.publish', now()
-        from spy_price_product_store spps
-                 inner join tmp_tbl_price tmp on spps.fk_price_product = tmp.id_price_product and spps.fk_store = tmp.id_store
-        where spps.gross_price <> tmp.price * 100.0 or spps.price_per_kg <> tmp.price_per_kg * 100.0;
+	INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
+	select distinct t.fk_product_abstract, 'Price.price_abstract.publish', now()
+	from tmp_tbl_price t
+	where t.isChanged = 1;
 
-        INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
-        select DISTINCT tmp.id_product_abstract, 'Product.product_abstract.publish', now()
-        from spy_price_product_store spps
-                 inner join tmp_tbl_price tmp on spps.fk_price_product = tmp.id_price_product and spps.fk_store = tmp.id_store
-        where spps.gross_price <> tmp.price * 100.0;
-    */
+	INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
+	select DISTINCT t.fk_product_abstract, 'Product.product_abstract.publish', now()
+	from tmp_tbl_price t
+	where t.isChanged = 1;
 
+	INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
+	select DISTINCT spc.fk_category, 'Entity.spy_category.publish', now()
+	from spy_product_category spc
+		inner join tmp_tbl_price t on spc.fk_product_abstract = t.fk_product_abstract
+	where t.isChanged = 1;
 
-    /* DEFAULT PRICES */
-    update spy_price_product_store spps
-    inner join tmp_tbl_price tmp on spps.fk_price_product = tmp.id_price_product and spps.fk_store = tmp.id_store
-    SET
-        spps.gross_price = tmp.price
-        , spps.net_price = tmp.net_price
-        , spps.price_data_checksum = tmp.price
-        , spps.price_data = '[]'
-        , spps.price_per_kg = tmp.price_per_kg
-        , spps.promotion = null
-        , tmp.isChanged = 1
-    where (spps.gross_price <> tmp.price or ifnull(spps.price_per_kg, 0) <> tmp.price_per_kg)
-      and tmp.isDefault = 1
-      and tmp.promotion is null;
+	select CONCAT('Modified products: ', COUNT(DISTINCT fk_product_abstract)) as result from tmp_tbl_price where isChanged = 1;
 
-    insert into spy_price_product_store
-    (fk_currency, fk_price_product, fk_store, gross_price, net_price, price_data, price_data_checksum, price_per_kg)
-    select sc.id_currency as fk_currency, tmp.id_price_product, tmp.id_store
-     , tmp.price as gross_price, tmp.net_price as net_price
-     , '[]' as price_data, tmp.price as price_data_checksum
-     , tmp.price_per_kg
-    from tmp_tbl_price tmp
-         inner join spy_currency sc on sc.code = currencyCode
-         left outer join spy_price_product_store spps on spps.fk_price_product = tmp.id_price_product and spps.fk_store = tmp.id_store
-    where tmp.isDefault = 1
-      and tmp.promotion is null
-      and spps.id_price_product_store is null;
-
-    /* PRODUCT DEFAULT TABLE */
-    insert into spy_price_product_default
-    (fk_price_product_store)
-    select spps.id_price_product_store
-    from spy_price_product_store spps
-         left outer join spy_price_product_default sppd on spps.id_price_product_store = sppd.fk_price_product_store
-    where sppd.id_price_product_default is null;
-
-    INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
-    select distinct tmp.id_product_abstract , 'Price.price_abstract.publish', now()
-    from tmp_tbl_price tmp
-        left outer join spy_price_product_store spps on spps.fk_price_product = tmp.id_price_product and spps.fk_store = tmp.id_store
-    where tmp.isDefault = 1
-      and tmp.promotion is null
-      and spps.id_price_product_store is null;
-
-    INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
-    select distinct tmp.id_product_abstract , 'Price.price_abstract.publish', now()
-    from tmp_tbl_price tmp
-    where tmp.isChanged = 1;
-
-    DROP TEMPORARY TABLE IF EXISTS tmp_tbl_price;
+	DROP TEMPORARY TABLE IF EXISTS tmp_tbl_price;
+	DROP TEMPORARY TABLE IF EXISTS tbl_toDelete;
 
 END;
 

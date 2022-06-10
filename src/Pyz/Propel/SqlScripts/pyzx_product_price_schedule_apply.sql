@@ -30,7 +30,8 @@ BEGIN
 			where sppsl.is_active = 1
 				and now() BETWEEN spps.active_from AND spps.active_to
 		) valid on spps2.id_price_product_schedule  = valid.id_price_product_schedule
-		inner join spy_price_product spp on spps2.fk_price_type = spp.fk_price_type AND spps2.fk_product_abstract = spp.fk_product_abstract
+		inner join spy_price_product spp on spps2.fk_price_type = spp.fk_price_type
+			AND spps2.fk_product_abstract = spp.fk_product_abstract
 		inner join spy_product_abstract spa on spps2.fk_product_abstract = spa.id_product_abstract
 		left outer join spy_tax_set sts on spa.fk_tax_set = sts.id_tax_set
 		left outer join spy_tax_set_tax stst on sts.id_tax_set = stst.fk_tax_set
@@ -102,6 +103,7 @@ BEGIN
 				and spps.fk_price_product = t.fk_price_product
 				and spps.fk_store = t.fk_store
 		where t.fk_price_product is null
+			and spps.is_permanent_sale_price = 0
 			and spps.gross_price > 0;
 
 		update spy_price_product_store spps
@@ -120,6 +122,7 @@ BEGIN
 				, spps2.price_data_checksum = spps.price_data_checksum
 				, spps2.promotion = null
 		where t.fk_price_product is null
+			and spps.is_permanent_sale_price = 0
 			and spps.gross_price > 0;
 
 		# update promotion name to null for unvalid promotions #
@@ -153,7 +156,8 @@ BEGIN
 			left outer join tbl_prices t on spps.fk_currency = t.fk_currency
 				and spps.fk_price_product = t.fk_price_product
 				and spps.fk_store = t.fk_store
-		where t.fk_price_product is null;
+		where t.fk_price_product is null
+			and spps.is_permanent_sale_price = 0;
 
 		delete from spy_price_product_default
 		where fk_price_product_store in
@@ -166,6 +170,7 @@ BEGIN
 					and spps.fk_price_product = t.fk_price_product
 					and spps.fk_store = t.fk_store
 			where t.fk_price_product is null
+				and spps.is_permanent_sale_price = 0
 		);
 
 		delete spps
@@ -175,7 +180,8 @@ BEGIN
 			left outer join tbl_prices t on spps.fk_currency = t.fk_currency
 				and spps.fk_price_product = t.fk_price_product
 				and spps.fk_store = t.fk_store
-		where t.fk_price_product is null;
+		where t.fk_price_product is null
+			and spps.is_permanent_sale_price = 0;
 
 		## set promotion name to null for prices without origiinal price ##
 		INSERT INTO tbl_modified
