@@ -187,8 +187,10 @@
             display: none;
         }
 
-        #checkoutCustomerRegister {
-            display: flex;
+        @media only screen and (max-width: 769px) {
+            #checkoutCustomerRegister {
+                flex-flow: column;
+            }
         }
 
         #forgotPasswordDiv, #temporarilyLockedOutDiv, #accountDisabledDiv {
@@ -681,7 +683,7 @@
                             </form>
                         </div>
 
-                        <div id="loginAPI" class="form form--login form--checkout-actions register-form">
+                        <div id="loginAPI" class="form form--login form--checkout-actions register-form {{ data.isLogin ? '' : 'is-hidden' }}">
                             <h2 class="stepTitle">{{ 'global.login' | trans }}</h2>
                             <p class="form-desc">{{ 'checkout.step.customer.desc.form' | trans }}</p>
                             <form name="customLoginForm" method="post" novalidate="novalidate">
@@ -770,7 +772,7 @@
 
                         </div>
 
-                        <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }} ">
+                        <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }}">
                             <div class="registrationLeftSideDiv">
                                 {% embed molecule('register-page-left-side') only %}
                                 {% endembed %}
@@ -937,6 +939,15 @@
         </div>
 
         <script type="text/javascript">
+
+            let loginForm = $("#loginAPI");
+            if(loginForm[0].classList.contains('is-hidden')) {
+                if (window.matchMedia('(min-width: 769px)').matches) {
+                    $("#checkoutCustomerRegister").css("display", "flex");
+                } else {
+                    $("#checkoutCustomerRegister").css("display", "block");
+                }
+            }
 
             function showForgotPassword() {
                 $("#loginAPI").css("display", "none");
@@ -1196,12 +1207,8 @@
         });
 
         $("#btnContinueRegistration").click(function(){
+            $("#checkoutCustomerRegister").css("display", "flex");
             $("#additionalLoginForm").css("display", "none");
-            if (window.matchMedia('(min-width: 769px)').matches) {
-                $("#checkoutCustomerRegister").css("display", "flex");
-            } else {
-                $("#checkoutCustomerRegister").css("display", "block");
-            }
             $("#customerRegistrationFormButtons").css("display", "block");
             $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
             $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
