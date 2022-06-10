@@ -6,6 +6,18 @@
         @include helper-media-ie() {
             direction: rtl;
         }
+
+        &__list {
+            ::-webkit-scrollbar {
+                width: rem(5);
+                background: $setting-color-white;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: $setting-color-globusCZ-main-green;
+                border-radius: rem(10);
+            }
+        }
     }
 }
 
