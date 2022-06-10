@@ -805,7 +805,10 @@ class PickingHeaderTransferData
             $transfer->addOrderItemToTransfer($orderItem);
         }
 
-        $transfer->removeNotPausedIfPausedExists();
+        foreach ($transfer->getPickingOrders() as $order) {
+            if(!$order['isChecked'] && $order['isPaused'])
+                $transfer->removeNotPausedIfPausedExists();
+        }
 
         return $transfer;
     }
