@@ -218,6 +218,15 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['OST'],
     ];
 
+    //Optimize db indexes
+    $jobs[] = [
+        'name' => 'db-maintenance',
+        'command' => "vendor/bin/console import:execSqlQuery -s 'call pyzx_db_maintenance()'",
+        'schedule' => '30 19 * * 0',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
     $jobs[] = [
         'name' => 'partial-import-product-prices-stock',
         'command' => 'vendor/bin/install -r gsoa-sceduled-partial-import',
@@ -379,12 +388,19 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
-
-
     $jobs[] = [
         'name' => 'data-import-images',
         'command' => 'vendor/bin/install -r product-images-import',
         'schedule' => '0 20 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    //Optimize db indexes
+    $jobs[] = [
+        'name' => 'db-maintenance',
+        'command' => "vendor/bin/console import:execSqlQuery -s 'call pyzx_db_maintenance()'",
+        'schedule' => '30 19 * * 0',
         'enable' => true,
         'stores' => ['EIN'],
     ];
