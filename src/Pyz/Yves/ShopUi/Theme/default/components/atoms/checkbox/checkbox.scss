@@ -55,10 +55,6 @@
             vertical-align: top;
             cursor: pointer;
             position: relative;
-
-            &:hover {
-                background-color: $setting-color-globus-lightGreen;
-            }
         }
 
         &__input {
@@ -84,7 +80,7 @@
                 background: $setting-color-forest-green;
 
                 &:hover {
-                    background-color: $setting-color-forest-green-3;
+                    background-color: $setting-color-globus-lightGreen;
                 }
 
                 &:focus {
@@ -102,10 +98,27 @@
             }
         }
 
+        &__CZ:checked {
+            & + #{$name}__box {
+                border-color: $setting-color-globusCZ-main-green;
+                background: $setting-color-globusCZ-main-green;
+
+                &:hover {
+                    background-color: $setting-color-globusCZ-hover;
+                    border-color: $setting-color-globusCZ-hover;
+                }
+            }
+        }
+
         &__input-CZ:checked {
             & + #{$name}__box {
                 border-color: $setting-color-globusCZ-main-green;
                 background: $setting-color-globusCZ-main-green;
+
+                &:hover {
+                    background-color: $setting-color-globusCZ-hover;
+                    border-color: $setting-color-globusCZ-hover;
+                }
 
                 #{$name}__check {
                     opacity: 1;
