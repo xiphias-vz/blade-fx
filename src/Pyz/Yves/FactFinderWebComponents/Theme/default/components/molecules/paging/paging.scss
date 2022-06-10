@@ -26,8 +26,7 @@
         }
 
         .ffw-page-item-container:hover {
-            background-color: $setting-color-forest-green-3;
-            color: $setting-color-white;
+            background-color: $setting-color-forest-green-light;
         }
 
         .ffw-selected{
@@ -65,9 +64,9 @@
                 }
             }
             .ffw-page-item-container:hover {
-                background-color: $setting-color-forest-green-3;
+                background-color: $setting-color-forest-green-light;
                 svg{
-                    color: $setting-color-white;
+                    color: $setting-color-forest-green;
                 }
             }
         }
