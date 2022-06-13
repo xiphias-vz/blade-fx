@@ -339,6 +339,14 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
+    $jobs[] = [
+        'name' => 'data-import-full-daily',
+        'command' => 'vendor/bin/install -r sftp-based-full-import-daily',
+        'schedule' => '0 8 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
     /* PriceProductSchedule */
     $jobs[] = [
         'name' => 'apply-price-product-schedule',
