@@ -16,6 +16,10 @@ export default class PopupUiLoginForm extends Component {
     protected closeResetPasswordBtn;
     protected submitButtonResetPassword;
     protected emailOrCardNumber;
+    protected eyeIconDE;
+    protected myAccountDE;
+    protected passwordInputDE;
+    protected popupUiLoginForm;
 
     protected forgotenPassword;
 
@@ -52,7 +56,10 @@ export default class PopupUiLoginForm extends Component {
         this.closeResetPasswordBtn = document.querySelector('.btn-return-sign-in');
         this.submitButtonResetPassword = this.resetPasswordFormHolder.querySelector('.submit-form');
         this.emailOrCardNumber = document.querySelector('#txt_email_or_card');
-
+        this.eyeIconDE = document.getElementById(this.getEyeIconDE);
+        this.passwordInputDE = document.getElementsByClassName(this.getPasswordInputDE)[8];
+        this.popupUiLoginForm = document.getElementsByClassName(this.getPopupUiLoginForm)[0];
+        this.myAccountDE = document.querySelectorAll(this.getMyAccountDE);
 
         // flash message and all related to it
         this.flashMessage = document.getElementById(this.getFlashMessage);
@@ -118,6 +125,27 @@ export default class PopupUiLoginForm extends Component {
         this.closeModalBtn.on('click', () => {
             this.$this.toggleClass(this.showClass);
         });
+
+        this.myAccountDE.forEach(element => element.addEventListener('click', () => {
+            setTimeout(() => {
+                this.eyeIconDE = document.getElementById(this.getEyeIconDE);
+                this.passwordInputDE = document.getElementsByClassName(this.getPasswordInputDE)[8];
+                if (this.eyeIconDE){
+                    this.eyeIconDE.addEventListener('click', () => {
+                        if(this.passwordInputDE.type == "password"){
+                            this.passwordInputDE.type = "textbox";
+                            this.eyeIconDE.classList.add("icon-eyeclosed");
+                        }
+                        else if(this.passwordInputDE.type == "text"){
+                            this.passwordInputDE.type = "password";
+                            this.eyeIconDE.classList.remove("icon-eyeclosed");
+                        }
+                    });
+                }else{
+                    console.log('Can not get eye icon element');
+                }
+            }, 500);
+        }));
     }
 
     protected appendToLoginForm(): void {
@@ -332,5 +360,21 @@ export default class PopupUiLoginForm extends Component {
 
     get getWhichCountry(): string {
         return 'which_country';
+    }
+
+    get getEyeIconDE(): string {
+        return 'popupLoginEyeIconDE';
+    }
+
+    get getPasswordInputDE(): string {
+        return 'gigya-input-password';
+    }
+
+    get getPopupUiLoginForm(): string {
+        return 'popup-ui-login-form';
+    }
+
+    get getMyAccountDE(): string {
+        return '.link-to-login-modal';
     }
 }

@@ -1,6 +1,11 @@
 
 @mixin shop-ui-popup-ui($name: '.popup-ui-login-form-cz') {
     #{$name} {
+
+        ::-ms-reveal {
+            display: none;
+        }
+
         &--show {
             #{$name} {
                 &__overlay {

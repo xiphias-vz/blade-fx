@@ -92,7 +92,7 @@
                         </span>
                     </a>
                 {% else %}
-                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
+                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus link-to-login-modal">
                         {% if app.currentCodeBucket == 'DE' %}
                             {% include atom('icon') with {
                                 class: 'link__icon link__icon--xxl-with-text icon--color-orange',
@@ -142,7 +142,7 @@
                         </span>
                     </a>
                 {% else %}
-                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
+                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus link-to-login-modal">
                         {% if app.currentCodeBucket == 'DE' %}
                             {% include atom('icon') with {
                                 class: 'link__icon link__icon--xxl-with-text icon--color-orange',

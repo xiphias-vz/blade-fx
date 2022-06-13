@@ -59,23 +59,4 @@
         </div>
     </div>
     {% block button %}{% endblock %}
-    <script>
-        let passwordInputField = document.getElementById("loginForm_password");
-        let eyeIcon = document.getElementById("eye-icon-password-cz");
-
-        eyeIcon.addEventListener("click", togglePasswordVisibility);
-
-        function togglePasswordVisibility(){
-            if(passwordInputField != 'undefined'){
-                if(passwordInputField.type == "password"){
-                    passwordInputField.type = "textbox";
-                    document.getElementById("eye-icon-password-cz").classList.add("icon-eyeclosed");
-                }
-                else if(passwordInputField.type == "text"){
-                    passwordInputField.type = "password";
-                    document.getElementById("eye-icon-password-cz").classList.remove("icon-eyeclosed");
-                }
-            }
-        }
-    </script>
 {% endblock %}

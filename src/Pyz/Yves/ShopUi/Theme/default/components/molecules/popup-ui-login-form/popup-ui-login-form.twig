@@ -18,6 +18,10 @@
 
         <style>
 
+            ::-ms-reveal {
+                display: none;
+            }
+
             .gigya-composite-control {
                 padding: 10px 15px 0 15px !important;
             }
@@ -334,34 +338,6 @@
                     checkoutStep('guestCheckout');
                 });
             }
-
-            let passwordInputFieldDE = '';
-            let popupLoginEyeIconDE = '';
-            let myAccount = '';
-
-            window.setTimeout(getGigyaElements,1000);
-
-            function getGigyaElements(){
-                myAccount = document.getElementById("link-to-login-modal");
-
-                myAccount.addEventListener("click", ()=>{
-                    popupLoginEyeIconDE = document.getElementById("popupLoginEyeIconDE");
-                    passwordInputFieldDE = document.getElementsByClassName("gigya-input-password")[8];
-                    popupLoginEyeIconDE.addEventListener("click", togglePasswordVisibilityDE);
-                });
-            }
-
-            function togglePasswordVisibilityDE(){
-                if(passwordInputFieldDE.type == "password"){
-                    passwordInputFieldDE.type = "textbox";
-                    popupLoginEyeIconDE.classList.add("icon-eyeclosed");
-                }
-                else if(passwordInputFieldDE.type == "text"){
-                    passwordInputFieldDE.type = "password";
-                    popupLoginEyeIconDE.classList.remove("icon-eyeclosed");
-                }
-            }
-
         </script>
     {% elseif data.currentCodeBucket == 'CZ' %}
         <div class="{{ config.name }}__overlay">
