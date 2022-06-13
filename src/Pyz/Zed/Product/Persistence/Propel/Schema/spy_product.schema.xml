@@ -27,6 +27,7 @@
         <column name="last_import_at" type="TIMESTAMP"/>
         <column name="file_type" type="INTEGER"/>
         <column name="images" type="VARCHAR" size="4000"/>
+        <column name="is_stock_from_status" type="TINYINT" default="0"/>
         <index>
             <index-column name="sap_number"/>
         </index>

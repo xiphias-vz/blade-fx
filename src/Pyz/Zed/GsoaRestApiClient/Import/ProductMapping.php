@@ -113,6 +113,7 @@ class ProductMapping
         'sortingorder' => '',
         'billName' => '',
         'rlzRegal' => '',
+        'isStockFromStatus' => '',
     ];
 
     /**
@@ -142,6 +143,7 @@ class ProductMapping
         'assortmentZone' => ['assortmentzone'],
         'billName' => ['billName'],
         'rlzRegal' => ['rlzRegal'],
+        'isStockFromStatus' => ['isStockFromStatus'],
     ];
 
     /**
@@ -175,11 +177,17 @@ class ProductMapping
     private static $productList;
 
     /**
+     * @var int[]
+     */
+    private $listOfWrongCodes = [2, 8, 9];
+
+    /**
      * @param array $item
+     * @param string|null $flag
      *
      * @return string[]
      */
-    public function mapValues(array $item)
+    public function mapValues(array $item, ?string $flag = 'general')
     {
         if (static::$productList == null) {
             static::$productList = SpyProductQuery::create()
@@ -239,16 +247,40 @@ class ProductMapping
         if (is_array($item["allergens"])) {
             $d["entallerg"] = $this->trimValue(implode(",", $item["allergens"]));
         }
-        /*if product is active check in product is for online sell*/
-        if ($this->checkIsTrue($d['active'])) {
-            $d['active'] = $this->checkIsTrue($item['activeForOnline']) ? "1" : "0";
-        }
+
+        $d['isStockFromStatus'] = "0";
         /*if product is active for online sell check if product is active for store*/
         if ($this->checkIsTrue($d['active'])) {
-            $d['active'] = $this->checkIsTrue($item['statusOnlineSell']) ? "1" : "0";
+            $d['active'] = $this->checkStatusOnlineSellFlag($item);
+            if ($flag !== 'general') {
+                $d['isStockFromStatus'] = $this->contains($item['statusOnlineSell'], $this->listOfWrongCodes) ? "1" : "0";
+            }
         }
 
         return $d;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return string
+     */
+    protected function checkStatusOnlineSellFlag(array $item): string
+    {
+        return $item['statusOnlineSell'] > 0 && !$this->contains($item['statusOnlineSell'], $this->listOfWrongCodes) ? "1" : "0";
+    }
+
+    /**
+     * @param string $haystack
+     * @param array $needles
+     *
+     * @return int|false
+     */
+    protected function contains(string $haystack, array $needles)
+    {
+        $regex = '/' . str_replace('\|', '|', preg_quote(implode('|', $needles))) . '/i';
+
+        return preg_match($regex, $haystack);
     }
 
     /**

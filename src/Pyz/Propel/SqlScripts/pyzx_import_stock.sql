@@ -51,7 +51,7 @@ BEGIN
               , sss.fk_stock
               , ssp.id_stock_product
               , 0                                         as is_never_out_of_stock
-              , pis.instock
+              , case when ifnull(sp.is_stock_from_status, 0) = 1 then 0 else pis.instock end as instock
               , COALESCE(psd.`sequence`, psd2.`sequence`) as `sequence`
               , COALESCE(pis.shelf, ssp.shelf)            as shelf
               , COALESCE(pis.shelffield, ssp.shelf_field) as shelf_field

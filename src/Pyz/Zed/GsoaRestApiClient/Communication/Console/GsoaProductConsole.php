@@ -157,7 +157,7 @@ class GsoaProductConsole extends Console
                                                         }
                                                     }
                                                     $item["mainEan"] = $ean . "_" . $specific["houseNumber"];
-                                                    $d = $map->mapValues($item);
+                                                    $d = $map->mapValues($item, 'storeSpecific');
                                                     $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
                                                     file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
                                                 }
@@ -266,7 +266,7 @@ class GsoaProductConsole extends Console
                                                 }
                                             }
                                             $item["mainEan"] = $ean . "_" . $specific["houseNumber"];
-                                            $d = $map->mapValues($item);
+                                            $d = $map->mapValues($item, 'storeSpecific');
                                             $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
                                             file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
                                         }

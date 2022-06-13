@@ -34,6 +34,7 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     public const KEY_LOCALES = 'locales';
     public const KEY_IS_ACTIVE = 'active';
     public const ASSORTMENT_ZONE = 'assortmentzone';
+    public const IS_STOCK_FROM_STATUS = 'isStockFromStatus';
 
     public const FILE_TYPE_PRODUCT = 1;
     public const FILE_TYPE_METZGEREI = 2;
@@ -127,6 +128,10 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ->setAttributes(json_encode($attributes))
             ->setImages($this->getImagesJson($dataSet))
             ->setFileType($this->getFileType());
+
+        if (isset($dataSet[static::IS_STOCK_FROM_STATUS])) {
+            $productEntity->setIsStockFromStatus($dataSet[static::IS_STOCK_FROM_STATUS]);
+        }
 
         if ($productEntity->isNew() || $productEntity->isModified()) {
             $productEntity->save();

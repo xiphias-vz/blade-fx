@@ -104,10 +104,11 @@ class ProductCatalogProvider
      * @param bool $baseVariantOnly If true, it returns data for all products that have the activeForOnline = true property and isActive = true at the same time. Otherwise, it will return all products.
      * @param int $page
      * @param int $pageSize
+     * @param bool $activeForOnlineOnly
      *
      * @return array
      */
-    public function getProducts(string $filter = "", bool $baseVariantOnly = false, int $page = 0, int $pageSize = 50): array
+    public function getProducts(string $filter = "", bool $baseVariantOnly = false, int $page = 0, int $pageSize = 50, bool $activeForOnlineOnly = true): array
     {
         $url = $this->url . '/eShop/products';
         $data = [
@@ -115,6 +116,7 @@ class ProductCatalogProvider
             'baseVariantOnly' => $baseVariantOnly,
             'page' => $page,
             'pageSize' => $pageSize,
+            'activeForOnlineOnly' => $activeForOnlineOnly
         ];
 
         return ApiClient::get($url, $this->getBearerToken(), $data);
@@ -126,15 +128,17 @@ class ProductCatalogProvider
      *
      * @param string $modifiedFrom 'yyyy-mm-dd'
      * @param bool $baseVariantOnly If True, it returns data for all products that have the activeForOnline = true property and isActive = true at the same time. Otherwise, it will return all products.
+     * @param bool $activeForOnlineOnly
      *
      * @return array
      */
-    public function getProductsModified(string $modifiedFrom, bool $baseVariantOnly = false): array
+    public function getProductsModified(string $modifiedFrom, bool $baseVariantOnly = false, bool $activeForOnlineOnly = true): array
     {
         $url = $this->url . '/modifiedProducts';
         $data = [
             'baseVariantOnly' => $baseVariantOnly,
             'modifiedFrom' => $modifiedFrom,
+            'activeForOnlineOnly' => $activeForOnlineOnly
         ];
 
         try {
