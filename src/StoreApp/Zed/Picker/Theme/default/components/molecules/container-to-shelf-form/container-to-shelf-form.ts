@@ -166,6 +166,10 @@ export default class ContainerToShelfForm extends Component {
     protected focusShelfId(): void {
         let element = document.getElementById('container_to_shelf_form_shelf_code');
         element.focus();
+        element.inputMode = 'none';
+        element.addEventListener('touchstart',  () => {
+            element.inputMode = 'text';
+        });
     }
 
     get getIsSuccess(): string {
