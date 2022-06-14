@@ -259,11 +259,40 @@
             border-radius: 3px;
         }
 
-        .checkboxError {
-            border: 1px solid grey;
-            width: 12px;
-            height: 15px;
-            border-radius: 3px;
+        .checkmark {
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: transparent;
+            margin-right: 10px;
+            border: 1px solid #cdcfcc;
+            border-radius: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input:checked ~ .checkmark {
+            background-color: #00622C;
+        }
+
+        input:checked ~ .checkmark:hover {
+            background-color: #b9dcc3;
+        }
+
+        .checkmark:after {
+            content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M4 6.78001L1.68667 4.46667C1.42667 4.20667 1.00667 4.20667 0.746666 4.46667C0.486666 4.72667 0.486666 5.14667 0.746666 5.40667L3.53333 8.19334C3.79333 8.45334 4.21333 8.45334 4.47333 8.19334L11.5267 1.14C11.7867 0.880005 11.7867 0.460005 11.5267 0.200005C11.2667 -0.0599951 10.8467 -0.0599951 10.5867 0.200005L4 6.78001Z" fill="white"/></svg>');
+            position: absolute;
+            display: none;
+        }
+
+        input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        #passwordCheckBoxes_digit, #passwordCheckBoxes_length, #passwordCheckBoxes_letter, #passwordCheckBoxes_specChar {
+            display: none;
         }
 
         .page-layout-customer__form-wrap {
@@ -467,19 +496,27 @@
                                             <label for="passwordCheckBoxes" class="password-checkbox-label label">{{ 'register.page.password.checkboxes.label' | trans}}</label>
                                             <div class="checkbox-wrapper">
                                                 <div class="password-checkbox">
+                                                    <input id="passwordCheckBoxes_length" class='myCheckbox' type="checkbox">
+                                                    <span class="checkmark"></span>
                                                     <input id="passwordCheckBoxes_length" name="passwordCheckBoxes[length]" type="checkbox" onclick="return false;" />
                                                     <label for="passwordCheckBoxes_length" class="">{{ 'register.page.password.check.length' | trans }}</label>
                                                 </div>
                                                 <div class="password-checkbox">
                                                     <input id="passwordCheckBoxes_specChar" name="passwordCheckBoxes[specChar]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                    <input id="passwordCheckBoxes_specChar" class='myCheckbox' type="checkbox">
+                                                    <span class="checkmark"></span>
                                                     <label for="passwordCheckBoxes_specChar" class="passwordCheckBoxesSpecChar">{{ 'register.page.password.check.spec.char' | trans }}</label>
                                                 </div>
                                                 <div class="password-checkbox">
                                                     <input id="passwordCheckBoxes_digit" name="passwordCheckBoxes[digit]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                    <input id="passwordCheckBoxes_digit" class='myCheckbox' type="checkbox">
+                                                    <span class="checkmark"></span>
                                                     <label for="passwordCheckBoxes_digit" class="" >{{ 'register.page.password.check.digit' | trans }}</label>
                                                 </div>
                                                 <div class="password-checkbox">
                                                     <input id="passwordCheckBoxes_letter" name="passwordCheckBoxes[letter]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                    <input id="passwordCheckBoxes_letter" class='myCheckbox' type="checkbox">
+                                                    <span class="checkmark"></span>
                                                     <label for="passwordCheckBoxes_letter" class="">{{ 'register.page.password.check.letter' | trans }}</label>
                                                 </div>
                                             </div>
@@ -916,41 +953,33 @@
             $("#startRegister_passwordCheckBoxes").css("display", "block");
             if(pass.length > 8){
                 $("#passwordCheckBoxes_length").prop("checked", "true");
-                $("#passwordCheckBoxes_length").removeClass("checkboxError");
             }
             else {
                 $("#passwordCheckBoxes_length").removeAttr("checked");
-                $("#passwordCheckBoxes_length").addClass("checkboxError");
             }
 
             let regSpecialChars = /\W/;
             if(regSpecialChars.test(pass)){
                 $("#passwordCheckBoxes_specChar").prop("checked", "true");
-                $("#passwordCheckBoxes_specChar").removeClass("checkboxError");
             }
             else {
                 $("#passwordCheckBoxes_specChar").removeAttr("checked");
-                $("#passwordCheckBoxes_specChar").addClass("checkboxError");
             }
 
             let regDigits = /\d/;
             if(regDigits.test(pass)){
                 $("#passwordCheckBoxes_digit").prop("checked", "true");
-                $("#passwordCheckBoxes_digit").removeClass("checkboxError");
             }
             else {
                 $("#passwordCheckBoxes_digit").removeAttr("checked");
-                $("#passwordCheckBoxes_digit").addClass("checkboxError");
             }
 
             let regLetters = /[a-zA-Z]/;
             if(regLetters.test(pass)){
                 $("#passwordCheckBoxes_letter").prop("checked", "true");
-                $("#passwordCheckBoxes_letter").removeClass("checkboxError");
             }
             else {
                 $("#passwordCheckBoxes_letter").removeAttr("checked");
-                $("#passwordCheckBoxes_letter").addClass("checkboxError");
             }
 
             var regPass = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
