@@ -113,6 +113,17 @@ BEGIN
 	update tmp_tbl_price
 		set net_price = price * (1 - (taxRate / 100));
 
+    /* check for duplicated rows */
+    DELETE t
+        FROM tmp_tbl_price t
+        inner join
+        (
+            SELECT MAX(id) AS id
+            FROM tmp_tbl_price
+            GROUP BY fk_store, fk_price_product
+            HAVING COUNT(*) > 1
+        ) t1 on t.id = t1.id;
+
 	/* insert missing spy_price_product */
 	insert into spy_price_product
 		(fk_price_type, fk_product_abstract, price)
@@ -141,7 +152,7 @@ BEGIN
 
 	insert into spy_price_product_store
 		(fk_currency, fk_price_product, fk_store, gross_price, is_permanent_sale_price, net_price, price_data, price_data_checksum, price_per_kg, promotion)
-	select t.fk_currency, t.fk_price_product, t.fk_store, t.price, t.is_permanent_sale_price, t.net_price, '[]', t.price, t.price_per_kg, t.promotion
+	select distinct t.fk_currency, t.fk_price_product, t.fk_store, t.price, t.is_permanent_sale_price, t.net_price, '[]', t.price, t.price_per_kg, t.promotion
 	from tmp_tbl_price t
 		left outer join spy_price_product_store spps on spps.fk_store = t.fk_store and spps.fk_price_product = t.fk_price_product
 	where spps.id_price_product_store is null
@@ -224,7 +235,7 @@ BEGIN
 
 	insert into spy_price_product_store
 		(fk_currency, fk_price_product, fk_store, gross_price, is_permanent_sale_price, net_price, price_data, price_data_checksum, price_per_kg, promotion)
-	select t.fk_currency, t.fk_price_product, t.fk_store, t.price, t.is_permanent_sale_price, t.net_price, '[]', t.price, t.price_per_kg, t.promotion
+	select distinct t.fk_currency, t.fk_price_product, t.fk_store, t.price, t.is_permanent_sale_price, t.net_price, '[]', t.price, t.price_per_kg, t.promotion
 	from tmp_tbl_price t
 		left outer join spy_price_product_store spps on spps.fk_store = t.fk_store and spps.fk_price_product = t.fk_price_product
 	where spps.id_price_product_store is null
