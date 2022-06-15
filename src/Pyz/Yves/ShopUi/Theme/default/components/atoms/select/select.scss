@@ -74,12 +74,8 @@
             min-width: rem(80);
             border: rem(1) solid $setting-color-globusCZ-main-green;
             padding: rem(12) rem(25);
-            background-color: white;
+            background-color: white !important;
             border-radius: rem(64);
-            color: $setting-color-globusCZ-main-green;
-        }
-
-        &--custom-cz {
             color: $setting-color-globusCZ-main-green;
         }
 
