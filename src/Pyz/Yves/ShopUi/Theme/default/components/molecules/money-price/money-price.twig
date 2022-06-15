@@ -44,15 +44,9 @@
                         {{ data.prefix }}{{ data.amount | money }}
                     </span>
                 {%- else -%}
-                    {% if (data.promotion | trim) != '' %}
-                        <span class="{{ component.renderClass(config.name ~ '__amount-red', modifiers) }} {{ config.name }}__amount-red">
+                    <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }}">
                         {{ data.prefix }}{{ data.amount | money }}
-                        </span>
-                    {% else %}
-                        <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }}">
-                        {{ data.prefix }}{{ data.amount | money }}
-                        </span>
-                    {% endif %}
+                    </span>
 
                 {%- endif -%}
 
