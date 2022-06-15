@@ -19,4 +19,23 @@
             <index-column name="fk_store" />
         </index>
     </table>
+
+    <table name="pyz_price_product_schedule_archive">
+        <column name="id_price_product_schedule" type="BIGINT" required="true" primaryKey="true"/>
+        <column name="fk_currency" type="INTEGER" required="true"/>
+        <column name="fk_price_product_schedule_list" type="BIGINT" required="true"/>
+        <column name="fk_price_type" type="INTEGER" required="true"/>
+        <column name="fk_product" type="INTEGER" required="false"/>
+        <column name="fk_product_abstract" type="INTEGER" required="false"/>
+        <column name="fk_store" type="INTEGER" required="true"/>
+        <column name="active_from" type="TIMESTAMP" required="true"/>
+        <column name="active_to" type="TIMESTAMP" required="true"/>
+        <column name="gross_price" type="INTEGER"/>
+        <column name="is_current" required="true" default="false" type="BOOLEAN"/>
+        <column name="net_price" type="INTEGER"/>
+        <column name="price_data" required="false" type="LONGVARCHAR"/>
+        <column name="created_at" type="TIMESTAMP" required="true"/>
+        <column name="updated_at" type="TIMESTAMP" required="true"/>
+        <column name="deleted_at" type="TIMESTAMP" required="true"/>
+    </table>
 </database>
