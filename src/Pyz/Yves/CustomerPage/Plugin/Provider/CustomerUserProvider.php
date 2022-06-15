@@ -16,7 +16,6 @@ use Generated\Shared\Transfer\ScenarioTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
@@ -56,8 +55,10 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         } else {
             $authCheck = $this->getAccountInfo($uid);
         }
-        if (!str_contains($authCheck, 'id_token')) {
-            $authCheck = $this->addTokenInfo($authCheck);
+        if (!is_array($authCheck)) {
+            if (!str_contains($authCheck, 'id_token')) {
+                $authCheck = $this->addTokenInfo($authCheck);
+            }
         }
 
         $unparsedAuth = $authCheck;
@@ -94,7 +95,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                     $recoTransfer = $this->getFactory()->getStorageClient()->getIsRecommendationsEnabled(new RecoTransfer());
                     $recoTransfer->setCustomer($customerTransfer);
 
-                    if ($recoTransfer->getRecommendationsEnabled() === true) {
+                    if ($recoTransfer->getRecommendationsEnabled() === 'true') {
                         $nameActiveScenario = $this->getFactory()->getSessionClient()->get('nameActiveScenario');
                         if ($nameActiveScenario === null) {
                             $scenarioTransfer = $this->getFactory()->getRecommendationsClient()->getActiveScenarioName(new ScenarioTransfer());
@@ -461,18 +462,21 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      */
     protected function createQuoteCookie()
     {
-        $listOfItemsForCookie = array();
-        $qoute = $this->getFactory()->getQuoteClient()->getQuote();
-        $items = $qoute->getItems() ?? null;
-        if(isset($items)) {
-            foreach ($items as $item) {
-                $listOfItemsForCookie[] = array($item->getSku(), $item->getQuantity(), true);
-            }
+        $cookieTransfer = $this->getFactory()->createLocalStorageCookieTransfer();
+
+        $listOfItemsForCookie = [];
+        $items = $this->getFactory()->getQuoteClient()->getQuote()->getItems() ?? null;
+        foreach ($items as $item) {
+            $listOfItemsForCookie[] = [$item->getSku(), $item->getQuantity(), true];
         }
 
-        $cookieData = trim(JSON::stringify($listOfItemsForCookie));
+        $cookieTransfer->setName(static::LOCAL_STORAGE_COOKIE_NAME);
+        $cookieTransfer->setExpires((time() + (86400 * 30)));
+        $cookieTransfer->setPath('/');
+        $cookieTransfer->setData(trim(JSON::stringify($listOfItemsForCookie)));
+        $cookieTransfer->setCookieStringValue("Set-cookie: " . $cookieTransfer->getName() . "=" . $cookieTransfer->getData() . "; expires=" . $cookieTransfer->getExpires() . "; path=" . $cookieTransfer->getPath()/* . "; domain=" . $cookieTransfer->getDomain()*/);
 
-        header("Set-Cookie: " . self::LOCAL_STORAGE_COOKIE_NAME . "=" . $cookieData . "; expires=" . (time() + (86400 * 30)));
+        header($cookieTransfer->getCookieStringValue());
     }
 
     /**
@@ -487,7 +491,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         $authCheck .= ',' . '"id_token":"' . $this->getFactory()->getSessionClient()->get("id_token") . '"';
         $authCheck .= ',' . '"strongToken":false';
         $authCheck .= ',' . '"tokenIssuedAt":"2022-06-03T13:30:18.000+0000"';
-        $authCheck .= ',' . '"tokenExpiresAt":"2022-06-03T13:30:18.000+0000"}';
+        $authCheck .= ',' . '"tokenExpiresAt":"2032-06-03T13:30:18.000+0000"}';
 
         return $authCheck;
     }

@@ -7,6 +7,8 @@
 
 namespace Pyz\Shared\LocalStorageCookie;
 
+use Pyz\Shared\Quote\QuoteConstants;
+
 class LocalStorageCookie
 {
     /**
@@ -14,6 +16,7 @@ class LocalStorageCookie
      */
     public static function deleteCookieData()
     {
-        setcookie("local_storage_cookie", "", time() - 3600);
+        setcookie(QuoteConstants::QUOTE_COOKIE_NAME, "", time() - 3600);
+        unset($_COOKIE[QuoteConstants::QUOTE_COOKIE_NAME]);
     }
 }

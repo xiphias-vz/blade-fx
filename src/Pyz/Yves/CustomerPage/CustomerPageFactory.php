@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\CustomerPage;
 
+use Generated\Shared\Transfer\CookieTransfer;
 use Generated\Shared\Transfer\PdfParametersTransfer;
 use Pyz\Client\Customer\CustomerClientInterface;
 use Pyz\Client\MerchantSearch\MerchantSearchClientInterface;
@@ -323,5 +324,13 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     public function createGlobusRestApiClientCookie(): GlobusRestApiClientCookie
     {
         return new GlobusRestApiClientCookie();
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\CookieTransfer
+     */
+    public function createLocalStorageCookieTransfer(): CookieTransfer
+    {
+        return new CookieTransfer();
     }
 }

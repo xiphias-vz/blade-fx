@@ -357,7 +357,7 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
     /**
      * @param \Spryker\Yves\Kernel\Container $container
      *
-     * @return \Pyz\Client\Merchant\MerchantClientInterface
+     * @return \Spryker\Yves\Kernel\Container
      */
     protected function addMerchantClient(Container $container): Container
     {

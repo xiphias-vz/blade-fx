@@ -22,6 +22,7 @@ use Pyz\Yves\ProductOptionWidget\Widget\ProductOptionConfiguratorWidget;
 use Pyz\Yves\ProductRelationWidget\Widget\UpSellingProductsWidget;
 use Pyz\Yves\ProductSetWidget\Widget\ProductSetIdsWidget;
 use Pyz\Yves\ProductWidget\Widget\CatalogPageProductWidget;
+use Pyz\Yves\Quote\Plugin\Application\QuoteCookieApplicationPlugin;
 use Pyz\Yves\Recommendations\Plugin\Application\RecommendationsApplicationPlugin;
 use Pyz\Yves\Security\Plugin\Application\SecurityApplicationPlugin;
 use Pyz\Yves\StoreSwitcherWidget\Widget\StoreSwitcherWidget;
@@ -164,6 +165,7 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             new CurrentCodeBucketApplicationPlugin(),
             new FactFinderWebComponentsApplicationPlugin(),
             new RecommendationsApplicationPlugin(),
+            new QuoteCookieApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

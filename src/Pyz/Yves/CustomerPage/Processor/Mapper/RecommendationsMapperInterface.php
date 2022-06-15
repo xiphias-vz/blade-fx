@@ -17,7 +17,7 @@ interface RecommendationsMapperInterface
      * @param string $token
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function mapResultAndTokenToRecoTransfer(GlobusRestApiResult $restApiResult, string $token, RecoTransfer $recoTransfer): RecoTransfer;
 }
