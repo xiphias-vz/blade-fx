@@ -99,6 +99,7 @@ commandLineParser
         const modeIndexInArgs = process.argv.findIndex(element => element === modeValue);
         const allowedFlagsData = getAllowedFlagsData(this, scripts);
 
+        // console.log(env);
         validateParameters(env);
 
         argv.forEach((arg, index) => {

@@ -3,12 +3,25 @@ const autoprefixer = require('autoprefixer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const {join} = require("path");
 
 const PATHS = {
     src: path.join(process.cwd(), './frontend/welcome'),
     public: path.join(process.cwd(), './public/Welcome'),
     assets: 'assets/'
 };
+
+const { argv, env } = process;
+let outputObject = {};
+outputObject.filename = `${PATHS.assets}js/bundle.js`;
+outputObject.publicPath = '/';
+
+if (env.SPRYKER_CODE_BUCKET === "CZ") {
+    outputObject.path = PATHS.publicCZ;
+} else {
+    outputObject.path = PATHS.public;
+}
+
 
 module.exports = {
     externals: {
@@ -26,9 +39,9 @@ module.exports = {
         app: PATHS.src
     },
     output: {
-        filename: `${PATHS.assets}js/bundle.js`,
-        path: PATHS.public,
-        publicPath: '/'
+        filename: outputObject.filename,
+        path: outputObject.path,
+        publicPath: outputObject.path
     },
     module: {
         rules: [
@@ -82,13 +95,14 @@ module.exports = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin([`${PATHS.public}/${PATHS.assets}`, `${PATHS.public}/*.html`],
+        new CleanWebpackPlugin([`${outputObject.path}/${PATHS.assets}`, `${outputObject.path}/*.html`],
             {
                 root: process.cwd(),
                 verbose: true,
                 beforeEmit: true
             }
         ),
+
         new MiniCssExtractPlugin({
             filename: `${PATHS.assets}css/welcome-[name].css`
         }),

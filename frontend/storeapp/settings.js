@@ -11,7 +11,7 @@ const globalSettings = {
         watch: 'development-watch',
         prod: 'production'
     },
-    
+
     // build modules
     modules: {
         esm: 'esm',
@@ -106,6 +106,8 @@ const getAppSettingsByTheme = (namespaceConfig, theme, pathToConfig) => {
 
         // current namespace and theme public assets folder
         public: join('./public/StoreApp', urls.assets),
+        // implemented because CZ has different settings in YVES!
+        publicCZ: join('./public/StoreApp', urls.assets),
 
         // core folders
         core: globalSettings.paths.core,

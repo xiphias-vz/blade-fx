@@ -25,6 +25,9 @@ const globalSettings = {
         // locate the typescript configuration json file
         namespaceConfig: './config/Yves/frontend-build-config.json',
 
+        // locate the typescript configuration json file
+        namespaceConfigCZ: './config/YvesCZ/frontend-build-config.json',
+
         // core folders
         core: './vendor/spryker-shop',
 
@@ -35,6 +38,9 @@ const globalSettings = {
         project: './src/Pyz/Yves'
     }
 };
+
+// console.log(globalSettings)
+
 
 const moduleVersionArr = process.argv.filter(argv => argv.includes('module'));
 const moduleVersion = moduleVersionArr.length ? moduleVersionArr[0].replace('module:', '') : '';
@@ -71,6 +77,12 @@ const getAppSettingsByTheme = (namespaceConfig, theme, pathToConfig) => {
             .replace(/%theme%/gi, theme)
     );
 
+    /*console.log("Ispisujemo: ");
+    console.log(getPublicUrl());
+    console.log(namespaceConfig.namespace);
+    console.log(join('./frontend/assets', namespaceConfig.namespace, theme));
+    console.log(join('./public/Yves', urls.assets));*/
+
     const getAllModuleSuffixes = () => namespaceJson.namespaces.map(namespace => namespace.moduleSuffix);
 
     const ignoreModulesCollection = () => {
@@ -95,6 +107,8 @@ const getAppSettingsByTheme = (namespaceConfig, theme, pathToConfig) => {
         assets: getPublicUrl()
     };
 
+
+
     // define project relative paths to context
     const paths = {
         // locate the typescript configuration json file
@@ -109,8 +123,11 @@ const getAppSettingsByTheme = (namespaceConfig, theme, pathToConfig) => {
             currentAssets: join('./frontend/assets', namespaceConfig.namespace, theme)
         },
 
-        // current namespace and theme public assets folder
+        // default namespace and theme public assets folder
         public: join('./public/Yves', urls.assets),
+
+        // namespace for CZ public assets folder
+        publicCZ: join('./public/YvesCZ', urls.assets),
 
         // core folders
         core: globalSettings.paths.core,

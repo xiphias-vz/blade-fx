@@ -23,6 +23,14 @@ const getAssetsConfig = appSettings => [
         }
     ),
 
+    new CleanWebpackPlugin([appSettings.paths.publicCZ],
+        {
+            root: appSettings.context,
+            verbose: true,
+            beforeEmit: true
+        }
+    ),
+
     new CopyWebpackPlugin(getCopyConfig(appSettings), {
         context: appSettings.context
     }),

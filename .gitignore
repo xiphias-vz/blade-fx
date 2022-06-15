@@ -50,6 +50,7 @@ config/Yves/cache_bust.php
 
 # public stuff
 public/Yves/assets/
+public/YvesCZ/assets/
 public/Zed/assets/
 public/StoreApp/assets/
 

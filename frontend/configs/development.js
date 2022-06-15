@@ -20,6 +20,19 @@ const getConfiguration = async appSettings => {
     const utilScss = await findAppEntryPoint(appSettings.find.shopUiEntryPoints, './styles/util.scss');
     const sharedScss = await findAppEntryPoint(appSettings.find.shopUiEntryPoints, './styles/shared.scss');
 
+    const { argv, env } = process;
+    let outputObject = {};
+    outputObject.publicPath = `/${appSettings.urls.assets}/`;
+    outputObject.filename = `./js/${appSettings.name}.[name].${moduleVersion}.js`;
+    outputObject.jsonpFunction = `webpackJsonp_${appSettings.name.replace(/(-|\W)+/gi, '_')}`;
+
+    if (env.SPRYKER_CODE_BUCKET === "CZ") {
+        outputObject.path = join(appSettings.context, appSettings.paths.publicCZ);
+    } else {
+        outputObject.path = join(appSettings.context, appSettings.paths.public);
+    }
+
+
     return {
         namespace: appSettings.namespaceConfig.namespace,
         theme: appSettings.theme,
@@ -50,10 +63,10 @@ const getConfiguration = async appSettings => {
             },
 
             output: {
-                path: join(appSettings.context, appSettings.paths.public),
-                publicPath: `/${appSettings.urls.assets}/`,
-                filename: `./js/${appSettings.name}.[name].${moduleVersion}.js`,
-                jsonpFunction: `webpackJsonp_${appSettings.name.replace(/(-|\W)+/gi, '_')}`,
+                path: outputObject.path,
+                publicPath: outputObject.publicPath,
+                filename: outputObject.filename,
+                jsonpFunction: outputObject.jsonpFunction,
             },
 
             resolve: {

@@ -59,6 +59,7 @@ image:
             "memory_limit": 2048m
     environment:
         SPRYKER_CODE_BUCKET: CZ
+        SPRYKER_HOOK_INSTALL: "vendor/bin/install -r production_CZ --no-ansi -vvv"
 
 composer:
     mode: --dev
@@ -155,6 +156,7 @@ groups:
                 application: yves
                 endpoints:
                     www.shop.globus.local:
+                        entry-point: YvesCZ
                         store: OST
             Zed:
                 application: zed
