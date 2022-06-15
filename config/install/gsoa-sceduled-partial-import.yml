@@ -80,11 +80,11 @@ sections:
         apply-scheduled-prices:
             command: "vendor/bin/console scheduled-prices:apply"
 
-    label-relation:
-        update-product-label-relation:
-            command: "vendor/bin/console product-label:relations:update"
-
     exec-after-import:
         exec-events:
             command: "vendor/bin/console import:execEvents"
+
+    label-relation:
+        update-product-label-relation:
+            command: "vendor/bin/console product-label:relations:update"
 

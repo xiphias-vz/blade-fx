@@ -332,17 +332,49 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     $jobs[] = [
-        'name' => 'data-import-full',
-        'command' => 'vendor/bin/install -r sftp-based-full-import',
+        'name' => 'data-import-full-old',
+        'command' => 'vendor/bin/install -r sftp-based-full-import-old',
+        'schedule' => '0 0 1 1 *',
+        'enable' => false,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'data-import-full-old-with-event-deletion',
+        'command' => 'vendor/bin/install -r sftp-based-full-import-with-event-deletion-old',
+        'schedule' => '0 0 1 1 *',
+        'enable' => false,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'data-import-full-with-shelf-update',
+        'command' => 'vendor/bin/install -r sftp-based-data-import-full-with-shelf-update',
+        'schedule' => '30 20 * * *',
+        'enable' => false,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'data-import-full-with-event-deletion-with-shelf',
+        'command' => 'vendor/bin/install -r sftp-based-full-import-with-event-deletion-with-shelf',
         'schedule' => '30 20 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
 
     $jobs[] = [
-        'name' => 'data-import-full-daily',
-        'command' => 'vendor/bin/install -r sftp-based-full-import-daily',
-        'schedule' => '0 8 * * *',
+        'name' => 'data-import-full-wo-update-shelf',
+        'command' => 'vendor/bin/install -r sftp-based-data-import-full-wo-update-shelf',
+        'schedule' => '0 7 * * *',
+        'enable' => false,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'data-import-full-wo-update-shelf-with-event-deletion',
+        'command' => 'vendor/bin/install -r sftp-based-full-import-with-event-deletion-wo-shelf',
+        'schedule' => '0 7 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];

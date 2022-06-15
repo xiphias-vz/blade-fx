@@ -736,10 +736,6 @@ sections:
         import-update-stock:
             command: "vendor/bin/console import:updateStock"
 
-    update-sales-order-item:
-        import-update-sales-order-item:
-            command: "vendor/bin/console import:updateSalesOrderItem"
-
     update-prices:
         import-update-prices:
             command: "vendor/bin/console import:updatePrices -c EUR"
@@ -753,9 +749,6 @@ sections:
 
         exec-events:
             command: "vendor/bin/console import:execEvents"
-
-        update-product-label-relation:
-            command: "vendor/bin/console product-label:relations:update"
 
         event-filtering:
             command: "vendor/bin/console import:eventFilter"
@@ -777,4 +770,7 @@ sections:
 
         fact-finder-import:
             command: "vendor/bin/console fact-finder:import"
+
+        update-product-label-relation:
+            command: "vendor/bin/console product-label:relations:update"
 
