@@ -18,6 +18,7 @@ use Pyz\Yves\CheckoutPage\Process\Steps\PlaceOrderStep;
 use Pyz\Yves\CheckoutPage\Process\Steps\ShipmentStep\PostConditionChecker as ShipmentStepPostConditionChecker;
 use Pyz\Yves\CheckoutPage\Process\Steps\SuccessStep;
 use Pyz\Yves\CheckoutPage\Process\Steps\SummaryStep;
+use Spryker\Client\Session\SessionClientInterface;
 use Spryker\Yves\StepEngine\Process\StepCollection;
 use SprykerShop\Yves\CheckoutPage\Process\StepFactory as SprykerShopStepFactory;
 use SprykerShop\Yves\CheckoutPage\Process\Steps\AddressStep as SprykerAddressStep;
@@ -153,7 +154,8 @@ class StepFactory extends SprykerShopStepFactory
             $this->getCartClient(),
             $this->getConfig(),
             CheckoutPageRouteProviderPlugin::ROUTE_NAME_CHECKOUT_SUCCESS,
-            $this->getConfig()->getEscapeRoute()
+            $this->getConfig()->getEscapeRoute(),
+            $this->getSessionClient()
         );
     }
 
@@ -171,5 +173,13 @@ class StepFactory extends SprykerShopStepFactory
     public function getTimeSlotClient(): TimeSlotClientInterface
     {
         return $this->getProvidedDependency(CheckoutPageDependencyProvider::CLIENT_TIME_SLOT);
+    }
+
+    /**
+     * @return SessionClientInterface
+     */
+    public function getSessionClient(): SessionClientInterface
+    {
+        return $this->getProvidedDependency(CheckoutPageDependencyProvider::CLIENT_SESSION);
     }
 }

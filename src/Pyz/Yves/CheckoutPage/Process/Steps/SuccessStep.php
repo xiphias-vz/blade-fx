@@ -11,7 +11,11 @@ use Generated\Shared\Transfer\CartOrCheckoutEventTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Pyz\Shared\LocalStorageCookie\LocalStorageCookie;
 use Pyz\Shared\Quote\QuoteConstants;
+use Spryker\Client\Session\SessionClientInterface;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use SprykerShop\Yves\CheckoutPage\CheckoutPageConfig;
+use SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToCartClientInterface;
+use SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToCustomerClientInterface;
 use SprykerShop\Yves\CheckoutPage\Process\Steps\SuccessStep as SprykerSuccessStep;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,6 +30,25 @@ class SuccessStep extends SprykerSuccessStep
     private $copyQuoteTransfer;
 
     /**
+     * @var SessionClientInterface
+     */
+    protected $sessionClient;
+
+    /**
+     * @param CheckoutPageToCustomerClientInterface $customerClient
+     * @param CheckoutPageToCartClientInterface $cartClient
+     * @param CheckoutPageConfig $checkoutPageConfig
+     * @param $stepRoute
+     * @param $escapeRoute
+     * @param SessionClientInterface $sessionClient
+     */
+    public function __construct(CheckoutPageToCustomerClientInterface $customerClient, CheckoutPageToCartClientInterface $cartClient, CheckoutPageConfig $checkoutPageConfig, $stepRoute, $escapeRoute, SessionClientInterface $sessionClient)
+    {
+        parent::__construct($customerClient, $cartClient, $checkoutPageConfig, $stepRoute, $escapeRoute);
+        $this->sessionClient = $sessionClient;
+    }
+
+    /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -36,7 +59,7 @@ class SuccessStep extends SprykerSuccessStep
         $this->copyQuoteTransfer = $quoteTransfer;
 
         if ($this->checkoutPageConfig->cleanCartAfterOrderCreation()) {
-            $this->getFactory()->getSessionClient()->set(QuoteConstants::QUOTE_COOKIE_NAME, '');
+            $this->sessionClient->set(QuoteConstants::QUOTE_COOKIE_NAME, '');
             LocalStorageCookie::deleteCookieData();
         }
 
