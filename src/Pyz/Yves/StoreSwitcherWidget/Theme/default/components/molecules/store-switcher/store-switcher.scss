@@ -4,14 +4,16 @@
         align-items: center;
         margin-left: rem(10);
 
+        .select2-container {
+            width: fit-content !important;
+        }
+
         &:hover {
             border-bottom: rem(3) solid $setting-color-forest-green;
             margin-bottom: rem(-3);
         }
 
         &-cz {
-
-            width: rem(140);
 
             &:hover {
                 border-bottom: rem(3) solid $setting-color-globusCZ-main-green;

@@ -149,14 +149,17 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: rem(140);
 
-            @include helper-breakpoint-media-min($sm-max){
-                width: rem(250);
+            .custom-select__caret {
+                right: 0;
             }
 
             .custom-select__edit {
                 color: $setting-color-forest-green;
+            }
+
+            .select2-selection--single {
+                padding-left: 0;
             }
 
             .select2-selection--single .select2-selection__rendered {
@@ -205,6 +208,10 @@
             box-shadow: rem(10) rem(10) rem(26) 0 $setting-color-alpha-1, 0 0 rem(30) 0 $setting-color-alpha-1;
             position: relative;
             border: rem(1) solid $setting-color-alpha-7;
+        }
+
+        .select2-dropdown {
+            min-width: max-content;
         }
 
         .select2-results__options {
