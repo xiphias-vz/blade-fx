@@ -2,6 +2,7 @@
     #{$name} {
         margin: 0 rem(-15);
         max-width: none;
+        margin-bottom: rem(24);
 
         @content;
     }
