@@ -338,29 +338,31 @@
         }
 
         &--code-x-categories {
+
+            overflow-y: auto;
+            max-height: rem(500);
+
+            &::-webkit-scrollbar {
+                width: rem(7);
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: $setting-color-gray-21;
+                border-radius: rem(10);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: $setting-color-globusCZ-main-green;
+                border-radius: rem(10);
+            }
+
             h3.title--heading-CZ {
                 padding-bottom: rem(10) !important;
             }
 
             div#{$name}__content {
                 padding-top: 0 !important;
-                overflow-y: auto;
-                max-height: rem(500);
                 overflow-x: clip;
-
-                &::-webkit-scrollbar {
-                    width: rem(7);
-                }
-
-                &::-webkit-scrollbar-track {
-                    background-color: $setting-color-gray-21;
-                    border-radius: rem(10);
-                }
-
-                &::-webkit-scrollbar-thumb {
-                    background-color: $setting-color-globusCZ-main-green;
-                    border-radius: rem(10);
-                }
             }
         }
 
