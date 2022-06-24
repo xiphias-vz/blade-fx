@@ -26,6 +26,8 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     public const LINK_ACCOUNT_WITH_PAYBACK = 'linkPayBackInput';
     public const PAYBACK_NUMBER = 'paymentCardNumber';
     public const MESSAGE_NO_CUSTOMER = 'checkout.summary.no.customer';
+    public const REGISTER_FORM_CUSTOMER_EMAIL = 'registerForm_customer_email';
+    public const REGISTER_FORM_CUSTOMER_PASSWORD_PASS = 'registerForm_customer_password_pass';
 
     /**
      * @uses \SprykerShop\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin::CHECKOUT_CUSTOMER
@@ -40,12 +42,6 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     public function customerAction(Request $request)
     {
         $quoteValidationResponseTransfer = $this->canProceedCheckout();
-
-        $this->getFactory()
-            ->getQuoteClient()
-            ->getQuote()
-            ->setCustomer(null);
-
         if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
             $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
 
@@ -61,6 +57,23 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
         if (!is_array($response)) {
             return $response;
+        }
+
+        $email = $request->request->get(static::REGISTER_FORM_CUSTOMER_EMAIL) ?? '';
+        $password = $request->request->get(static::REGISTER_FORM_CUSTOMER_PASSWORD_PASS) ?? '';
+
+        if (isset($response['registerForm'])) {
+            if (isset($response['registerForm']->vars['value']['customer']) && $response['registerForm']->vars['value']['customer'] !== null) {
+                $response['registerForm']->vars['value']['customer']['email'] = $email;
+                $response['registerForm']->vars['value']['customer']['password'] = $password;
+
+                if ($response['registerForm']->vars['value']['customer']['isGuest'] === true) {
+                        $this->getFactory()
+                            ->getQuoteClient()
+                            ->getQuote()
+                            ->setCustomer(null);
+                }
+            }
         }
 
         return $this->view(

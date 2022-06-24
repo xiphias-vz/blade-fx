@@ -58,14 +58,12 @@ class CustomerStep extends SprykerShopCustomerStep
             return true;
         }
 
-        //todo: remove Test guest orders
-        if ($quoteTransfer->getCustomer()->getFirstName() === 'test order') {
-            return true;
-        }
-
         $customerTransfer = $this->customerClient->getCustomer();
         if (!$customerTransfer) {
-            $this->externalRedirect = $this->logoutRoute;
+            $customerTransfer = $quoteTransfer->getCustomer();
+            if (!$customerTransfer) {
+                $this->externalRedirect = $this->logoutRoute;
+            }
 
             return false;
         }

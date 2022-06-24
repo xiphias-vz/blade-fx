@@ -36,6 +36,9 @@
     }
 } %}
 
+{% set userEmail = data.form.vars.value.customer.email | default('') %}
+{% set userPassword = data.form.vars.value.customer.password | default('') %}
+
 {% block body %}
     {% block title %}
         {% if data.title is not empty %}
@@ -54,9 +57,9 @@
 
         {% block fieldset %}
             <div id="register-hidden">
-                <input id="registerForm_customer_email" name="registerForm_customer_email" type="hidden"/>
-                <input id="registerForm_customer_password_pass" name="registerForm_customer_password_pass" type="hidden"/>
-                <input id="registerForm_customer_password_confirm" name="registerForm_customer_password_confirm" type="hidden"/>
+                <input id="registerForm_customer_email" name="registerForm_customer_email" type="hidden" value="{{ userEmail }}"/>
+                <input id="registerForm_customer_password_pass" name="registerForm_customer_password_pass" type="hidden" value="{{ userPassword }}"/>
+                <input id="registerForm_customer_password_confirm" name="registerForm_customer_password_confirm" type="hidden" value="{{ userPassword }}"/>
                 <input id="registerForm_my_globus_card_number" name="registerForm_my_globus_card_number" type="hidden"/>
                 <input id="registerForm_isMyGloubsCardValid" name="registerForm_isMyGloubsCardValid" type="hidden"/>
                 <input id="registerForm_isAdvertise" name="registerForm_isAdvertise" type="hidden"/>
