@@ -34,6 +34,10 @@ BEGIN
     from pyz_import_csv_new
     where created_at < DATE_ADD(ifnull((select max(created_at) from pyz_import_csv_new), now()), INTERVAL -1 MONTH);
 
+    delete
+    from pyz_fact_finder_event
+    where created_at < DATE_ADD(NOW(), INTERVAL -3 DAY);
+
     OPTIMIZE TABLE spy_price_product_schedule;
     OPTIMIZE TABLE spy_sales_order;
     OPTIMIZE TABLE pyz_imp_price_product;

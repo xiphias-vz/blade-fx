@@ -12,10 +12,10 @@ BEGIN
     DROP TEMPORARY TABLE IF EXISTS tmp_category;
     CREATE TEMPORARY TABLE tmp_category(id_category int not null, id_category_child int null, deep int, id_category_node int null);
 
-    INSERT INTO tmp_category (id_category, deep, id_category_node)
-    SELECT sc.id_category, 0, scn.id_category_node
+    INSERT INTO tmp_category (id_category, id_category_child, deep, id_category_node)
+    SELECT sc.id_category, sc.id_category, 0, scn.id_category_node
     FROM spy_category_node scn
-         INNER JOIN spy_category sc on scn.fk_category = sc.id_category
+        INNER JOIN spy_category sc on scn.fk_category = sc.id_category
     WHERE scn.fk_parent_category_node = @id_parent_category_node
         AND sc.is_active = 1;
 
@@ -68,90 +68,43 @@ BEGIN
          INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
     WHERE tc.deep = 6;
 
-    DROP TEMPORARY TABLE IF EXISTS tbl_availability;
+    CREATE INDEX ix_tmp_category ON tmp_category (id_category, id_category_child);
 
-    SELECT @id_store := ss.id_store
-    FROM spy_store ss
-    ORDER BY ss.id_store
-    LIMIT 1;
+    DROP TEMPORARY TABLE IF EXISTS tbl_availability;
 
     CREATE TEMPORARY TABLE tbl_availability AS
     SELECT DISTINCT sp.fk_product_abstract, spas.fk_store as store_related
-                  , spps.gross_price
-                  , stock.quantity, saa.quantity as abs_quantity, sa.quantity as av_quantity
-                  , CAST(json_extract(sas.`data`, '$[0].quantity') as decimal(9,2)) as pub_quantity, sas.`key` as pub_av_key
-                  , ss.name as store_name
-                  , cast(null as varchar(100)) as abstract_search_key
-                  , cast(null as varchar(100)) as abstract_price_key
-                  , cast(null as varchar(100)) as abstract_key
-                  , cast(null as varchar(100)) as abstract_category_key
+        , spps.gross_price
+        , stock.quantity, sa.quantity as abs_quantity, sa.quantity as av_quantity
+        , CAST(json_extract(sas.`data`, '$[0].quantity') as decimal(9,2)) as pub_quantity , sas.`key` as pub_av_key
+        , ss.name as store_name
+        , cast(null as varchar(100)) as abstract_search_key
+        , cast(null as varchar(100)) as abstract_price_key
+        , cast(null as varchar(100)) as abstract_key
+        , cast(null as varchar(100)) as abstract_category_key
     FROM spy_product sp
         INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
+        INNER JOIN spy_merchant sm on sm.is_active = 1 and sm.is_shop_visible = 1 and 1 = 1
         LEFT OUTER JOIN spy_product_abstract_store spas on spa.id_product_abstract = spas.fk_product_abstract
-            AND spas.fk_store = @id_store
-        LEFT OUTER JOIN spy_price_product spp on sp.fk_product_abstract = spp.fk_product_abstract AND spp.fk_price_type = 1
+            AND spas.fk_store = sm.fk_store
+        LEFT OUTER JOIN spy_price_product spp on sp.fk_product_abstract = spp.fk_product_abstract
+            AND spp.fk_price_type = 1
         LEFT OUTER JOIN spy_price_product_store spps on spp.id_price_product = spps.fk_price_product
-            AND spps.fk_store = @id_store
-        LEFT OUTER JOIN spy_stock_store sss on spps.fk_store = sss.fk_store
+            AND spps.fk_store = sm.fk_store
+        LEFT OUTER JOIN spy_stock_store sss on sm.fk_store = sss.fk_store
         LEFT OUTER JOIN spy_store ss on sss.fk_store = ss.id_store
-        LEFT OUTER JOIN spy_stock_product stock on sp.id_product = stock.fk_product AND sss.fk_stock = stock.fk_stock
-        LEFT OUTER JOIN spy_availability_abstract saa on spps.fk_store = saa.fk_store AND spa.sku = saa.abstract_sku
-        LEFT OUTER JOIN spy_availability sa on spps.fk_store = sa.fk_store
+        LEFT OUTER JOIN spy_stock_product stock on sp.id_product = stock.fk_product
+            AND sss.fk_stock = stock.fk_stock
+        LEFT OUTER JOIN spy_availability_abstract saa on spps.fk_store = saa.fk_store
+            AND spa.sku = saa.abstract_sku
+        LEFT OUTER JOIN spy_availability sa on spps.fk_store = sm.fk_store
             AND saa.id_availability_abstract = sa.fk_availability_abstract
             AND sp.sku = sa.sku
         LEFT OUTER JOIN spy_availability_storage sas on sp.fk_product_abstract = sas.fk_product_abstract
             AND saa.id_availability_abstract = sas.fk_availability_abstract
     WHERE sp.is_active = 1
-        AND stock.quantity > 0 AND spps.gross_price > 0;
-
-    SELECT @id_store := ss.id_store
-    from spy_store ss
-    WHERE ss.id_store > @id_store
-    ORDER BY ss.id_store
-    LIMIT 1;
-
-    WHILE IFNULL(@id_store, 0) < 10 DO
-
-        INSERT INTO tbl_availability
-        SELECT DISTINCT sp.fk_product_abstract, spas.fk_store as store_related
-                  , spps.gross_price
-                  , stock.quantity, saa.quantity as abs_quantity, sa.quantity as av_quantity
-                  , CAST(json_extract(sas.`data`, '$[0].quantity') as decimal(9,2)) as pub_quantity, sas.`key` as pub_av_key
-                  , ss.name as store_name
-                  , cast(null as varchar(100)) as abstract_search_key
-                  , cast(null as varchar(100)) as abstract_price_key
-                  , cast(null as varchar(100)) as abstract_key
-                  , cast(null as varchar(100)) as abstract_category_key
-        FROM spy_product sp
-             INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
-             LEFT OUTER JOIN spy_product_abstract_store spas on spa.id_product_abstract = spas.fk_product_abstract
-                AND spas.fk_store = @id_store
-             LEFT OUTER JOIN spy_price_product spp on sp.fk_product_abstract = spp.fk_product_abstract AND spp.fk_price_type = 1
-             LEFT OUTER JOIN spy_price_product_store spps on spp.id_price_product = spps.fk_price_product
-                AND spps.fk_store = @id_store
-             LEFT OUTER JOIN spy_stock_store sss on spps.fk_store = sss.fk_store
-             LEFT OUTER JOIN spy_store ss on sss.fk_store = ss.id_store
-             LEFT OUTER JOIN spy_stock_product stock on sp.id_product = stock.fk_product AND sss.fk_stock = stock.fk_stock
-             LEFT OUTER JOIN spy_availability_abstract saa on spps.fk_store = saa.fk_store AND spa.sku = saa.abstract_sku
-             LEFT OUTER JOIN spy_availability sa on spps.fk_store = sa.fk_store
-                AND saa.id_availability_abstract = sa.fk_availability_abstract
-                AND sp.sku = sa.sku
-             LEFT OUTER JOIN spy_availability_storage sas on sp.fk_product_abstract = sas.fk_product_abstract
-                AND saa.id_availability_abstract = sas.fk_availability_abstract
-        WHERE sp.is_active = 1
-            AND stock.quantity > 0 AND spps.gross_price > 0;
-
-        SELECT @id_store2 := 100;
-
-        SELECT @id_store2 := ss.id_store
-        FROM spy_store ss
-        WHERE ss.id_store > @id_store
-        ORDER BY ss.id_store
-        LIMIT 1;
-
-        SET @id_store = @id_store2;
-
-    END WHILE;
+        AND sa.quantity > 0
+        AND spps.gross_price > 0;
 
     CREATE INDEX ix_av ON tbl_availability (fk_product_abstract, store_name);
 

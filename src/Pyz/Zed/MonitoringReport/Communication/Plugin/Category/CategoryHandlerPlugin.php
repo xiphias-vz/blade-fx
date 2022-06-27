@@ -32,6 +32,7 @@ class CategoryHandlerPlugin extends AbstractPlugin
 {
     public const ROLE_NAME = 'CATEGORY';
     public const NO_CATEGORY = 'NO-CATEGORY';
+    public const TOTAL = 'TOTAL';
 
     /**
      * @return void
@@ -82,11 +83,16 @@ class CategoryHandlerPlugin extends AbstractPlugin
         $activeMerchanList = SpyMerchantQuery::create()->findByIsActive(true);
         foreach ($activeMerchanList as $merchant) {
             $ffData[$merchant->getMerchantShortName()] = $this->getFactFinderCategories($merchant->getMerchantReference());
+            $ffData[$merchant->getMerchantShortName() . "_" . self::TOTAL] = $this->getFactFinderSearch($merchant->getMerchantReference(), "*");
         }
         $data = $this->getRepository()->getCategoryMonitoringData();
         /**@var \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories $item */
         foreach ($data as $item) {
-            if ($item->getCategoryName() != self::NO_CATEGORY) {
+            if ($item->getCategoryName() === self::TOTAL) {
+                $hits = $this->getFactFinderSearchTotalHits($ffData, $item->getStoreName());
+                $item->setNumberOfProductsSearch($hits);
+                $item->save();
+            } elseif ($item->getCategoryName() != self::NO_CATEGORY) {
                 $hits = $this->getFactFinderTotalHits($ffData, $item->getCategoryName(), $item->getStoreName());
                 $item->setNumberOfProductsSearch($hits);
                 $item->save();
@@ -113,6 +119,21 @@ class CategoryHandlerPlugin extends AbstractPlugin
     }
 
     /**
+     * @param array $ffData
+     * @param string $storeName
+     *
+     * @return int|null
+     */
+    protected function getFactFinderSearchTotalHits(array $ffData, string $storeName): ?int
+    {
+        if (isset($ffData[$storeName . "_" . self::TOTAL]["totalHits"])) {
+            return $ffData[$storeName . "_" . self::TOTAL]["totalHits"];
+        }
+
+        return 0;
+    }
+
+    /**
      * @return void
      */
     protected function sendResultsToEmail()
@@ -121,7 +142,7 @@ class CategoryHandlerPlugin extends AbstractPlugin
         if (count($mailsToSend) > 0) {
             $content = $this->getMailContent();
             foreach ($mailsToSend as $mail) {
-                $this->getRepository()->setEmailToSend(CategoryCheckConsole::COMMAND_DESCRIPTION, $mail, '', $content);
+                $this->getRepository()->setEmailToSend(CategoryCheckConsole::COMMAND_DESCRIPTION, $mail, '', $content, true);
             }
         }
     }
@@ -131,14 +152,24 @@ class CategoryHandlerPlugin extends AbstractPlugin
      */
     protected function getMailContent(): string
     {
+        $header = "<table border='1' style='border-collapse: collapse;'>
+        <thead>
+            <tr>
+                <th>store</th>
+                <th>category</th>
+                <th>url</th>
+                <th>products_db</th>
+                <th>products_search</th>
+            </tr>
+        </thead>";
         $data = $this->getRepository()->getCategoryMonitoringData();
         /**@var \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories $item */
-        $content = "store;category;url;products_db;products_search";
+        $content = "";
         foreach ($data as $item) {
             if ($item->getNumberOfProductsDb() !== $item->getNumberOfProductsSearch()) {
                 $content .= PHP_EOL;
                 $content .= sprintf(
-                    '%s;%s;%s;%d;%d',
+                    '<tr><td>%s</td><td>%s</td><td>%s</td><td>%d</td><td>%d</td></tr>',
                     $item->getStoreName(),
                     $item->getCategoryName(),
                     $item->getCategoryUrl(),
@@ -148,7 +179,7 @@ class CategoryHandlerPlugin extends AbstractPlugin
             }
         }
 
-        return $content;
+        return $header . $content . "</table>";
     }
 
     /**
@@ -176,6 +207,17 @@ class CategoryHandlerPlugin extends AbstractPlugin
     protected function getFactFinderCategories(string $merchantReference)
     {
         return FactFinderApiClient::getNavigation($merchantReference);
+    }
+
+    /**
+     * @param string $merchantReference
+     * @param string $searchTerm
+     *
+     * @return array
+     */
+    protected function getFactFinderSearch(string $merchantReference, string $searchTerm)
+    {
+        return FactFinderApiClient::getSearch($merchantReference, $searchTerm);
     }
 
     /**

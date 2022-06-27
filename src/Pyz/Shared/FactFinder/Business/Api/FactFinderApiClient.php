@@ -49,12 +49,7 @@ class FactFinderApiClient
      */
     protected static function getChannel(): string
     {
-        $channel = static::getConfigValue(FactFinderNgConstants::FACT_FINDER_CHANNEL);
-        if (empty($channel)) {
-            $channel = "Spryker";
-        }
-
-        return $channel;
+        return static::getConfigValue(FactFinderNgConstants::FACT_FINDER_CHANNEL);
     }
 
     /**
@@ -312,6 +307,19 @@ class FactFinderApiClient
     public static function getNavigation(string $merchantReference): array
     {
         $url = static::getRootUrl() . 'navigation/category/' . static::getChannel() . '?marketId=' . $merchantReference;
+
+        return static::getData($url, []);
+    }
+
+    /**
+     * @param string $merchantReference
+     * @param string $searchTerm
+     *
+     * @return array
+     */
+    public static function getSearch(string $merchantReference, string $searchTerm): array
+    {
+        $url = static::getRootUrl() . 'search/' . static::getChannel() . '?query=' . $searchTerm . '&marketId=' . $merchantReference;
 
         return static::getData($url, []);
     }

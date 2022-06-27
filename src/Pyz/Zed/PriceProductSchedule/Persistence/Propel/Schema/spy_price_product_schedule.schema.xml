@@ -35,7 +35,7 @@
         <column name="net_price" type="INTEGER"/>
         <column name="price_data" required="false" type="LONGVARCHAR"/>
         <column name="created_at" type="TIMESTAMP" required="true"/>
-        <column name="updated_at" type="TIMESTAMP" required="true"/>
+        <column name="updated_at" type="TIMESTAMP"/>
         <column name="deleted_at" type="TIMESTAMP" required="true"/>
     </table>
 </database>
