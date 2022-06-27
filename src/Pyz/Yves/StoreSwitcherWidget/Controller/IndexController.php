@@ -20,8 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 class IndexController extends AbstractController
 {
     public const URL_PARAM_STORE = 'store';
-    public const URL_PARAM_REFERER_URL = 'referer-url';
-    public const URL_PARAM_PATH = 'path';
     public const FILLIAL_NUMBER = 'fillialNumber';
     public const SHOP_PASSWORD = 'shopPassword';
     public const IS_PASSWORD_PROTECTED = 'isPasswordProtected';
@@ -35,14 +33,12 @@ class IndexController extends AbstractController
     {
         $store = $this->getFactory()->getAntiXss()->xss_clean($request->query->get(static::URL_PARAM_STORE));
         $checkStore = $request->query->get(static::IS_PASSWORD_PROTECTED);
-        $refererUrl = $this->getFactory()->getAntiXss()->xss_clean($request->query->get(static::URL_PARAM_REFERER_URL, ''));
+        $validUrlFields = $this->getFactory()->getStoreSwitcherUrlValidation()->validateUrl($request);
+        $refererUrl = '/';
 
-        if (str_contains($refererUrl, "AND")) {
-            $refererUrl = str_replace("AND", "-&-", $refererUrl);
+        if (isset($validUrlFields['refererUrl'])){
+            $refererUrl = $validUrlFields['refererUrl'];
         }
-
-        $path = $this->getFactory()->getAntiXss()->xss_clean($request->query->get(static::URL_PARAM_PATH));
-        $refererUrl = $refererUrl . $path;
 
         $response = $refererUrl ? $this->redirectResponseExternal($refererUrl) : new RedirectResponse('/');
 

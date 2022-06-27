@@ -10,6 +10,8 @@ namespace Pyz\Yves\StoreSwitcherWidget;
 use Pyz\Client\MerchantStorage\MerchantStorageClient;
 use Pyz\Client\StoreSwitcher\StoreSwitcherClientInterface;
 use Pyz\Yves\StoreSwitcherWidget\StoreSwitcher\StoreSwitcher;
+use Pyz\Yves\StoreSwitcherWidget\StoreSwitcher\StoreSwitcherUrlValidation;
+use Pyz\Yves\StoreSwitcherWidget\StoreSwitcher\StoreSwitcherUrlValidationInterface;
 use Spryker\Client\Quote\QuoteClientInterface;
 use Spryker\Client\Store\StoreClientInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
@@ -38,6 +40,16 @@ class StoreSwitcherWidgetFactory extends AbstractFactory
             $this->getStoreClient(),
             $this->getMerchantStorageClient(),
             $this->getPersistentCartClient()
+        );
+    }
+
+    /**
+     * @return StoreSwitcherUrlValidationInterface
+     */
+    public function getStoreSwitcherUrlValidation(): StoreSwitcherUrlValidationInterface
+    {
+        return new StoreSwitcherUrlValidation(
+            $this->getAntiXss()
         );
     }
 
