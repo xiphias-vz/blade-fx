@@ -240,7 +240,9 @@ class CartController extends SprykerCartController
                 $productPrice = $_REQUEST['productPrice'] ?? $productViewTransfer->getPrice();
                 $productTitle = $_REQUEST['productTitle'] ?? $productViewTransfer->getName();
 
-                $this->cartTrackingEvent($count, $productSku, $productPrice, $productTitle);
+                for($i = 0; $i < $count; $i++){
+                    $this->cartTrackingEvent(1, $productSku, $productPrice, $productTitle);
+                }
             }
         }
 
