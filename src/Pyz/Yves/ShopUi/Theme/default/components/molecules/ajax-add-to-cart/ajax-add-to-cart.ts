@@ -29,10 +29,10 @@ export default class AjaxAddToCart extends Component {
     protected readyCallback(): void {
         this.environment = <HTMLInputElement>document.querySelector('#environment');
         if (this.environment.value === 'DE') {
-            let checkRecordsAreRendered = setInterval(() => {
+            const checkRecordsAreRendered = setInterval(() => {
                 this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
 
-                if(this.links.length > 0) {
+                if (this.links.length > 0) {
                     this.load();
                     clearInterval(checkRecordsAreRendered);
                 }
@@ -62,7 +62,7 @@ export default class AjaxAddToCart extends Component {
             this.getElementsByClassName(this.messagesTextHolderClass)
         );
         this.callBackDelay = 800;
-        if(this.environment.value === 'DE') {
+        if (this.environment.value === 'DE') {
             this.listenForUrlChanges();
             this.url = location.href;
         }
@@ -86,21 +86,21 @@ export default class AjaxAddToCart extends Component {
                 this.syncCounterFromLocalStorage(link);
             }
 
-            if (link.getAttribute('flag') !== "1") {
+            if (link.getAttribute('flag') !== '1') {
                 link.addEventListener('click', (event: Event) => this.linkClickHandler(event, link));
                 link.setAttribute('flag', '1');
             }
         });
 
         this.addToCartIncrementerLinks.forEach((incrementer: HTMLLinkElement, index: number) => {
-            if (incrementer.getAttribute('flag') !== "1") {
+            if (incrementer.getAttribute('flag') !== '1') {
                 incrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToAddItemToCart(event, incrementer));
                 incrementer.setAttribute('flag', '1');
             }
         });
 
         this.addtoCartDecrementerLinks.forEach((decrementer: HTMLLinkElement, index: number) => {
-            if (decrementer.getAttribute('flag') !== "1") {
+            if (decrementer.getAttribute('flag') !== '1') {
                 decrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToRemoveItemFromCart(event, decrementer));
                 decrementer.setAttribute('flag', '1');
             }
@@ -113,23 +113,23 @@ export default class AjaxAddToCart extends Component {
     }
 
     protected syncCounterFromLocalStorage(link): void {
-        let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+        const productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
 
         productItemsForSyncCounter.forEach(([key, value]) => {
             let productSkuFromPOP = link.dataset.productSku;
             if (productSkuFromPOP === '' || productSkuFromPOP === undefined) {
-                let productUrl = link.dataset.productUrl;
+                const productUrl = link.dataset.productUrl;
                 if (productUrl) {
-                    productSkuFromPOP = productUrl.split("/")[3];
+                    productSkuFromPOP = productUrl.split('/')[3];
                 }
             }
             if (key === productSkuFromPOP) {
-                let quantityFromCart = value;
+                const quantityFromCart = value;
                 if (quantityFromCart !== 0) {
                     this.updateItemQuantityInput(link, quantityFromCart);
                     this.showCounterAndHideAjaxButton(link);
                 } else {
-                    let filteredProductItemsFromCart = productItemsForSyncCounter.filter(([key, value]) => {
+                    const filteredProductItemsFromCart = productItemsForSyncCounter.filter(([key, value]) => {
                         return value !== 0;
                     });
                     localStorage.setItem('productItemsForSyncCounter', JSON.stringify(filteredProductItemsFromCart));
@@ -156,6 +156,7 @@ export default class AjaxAddToCart extends Component {
         const quantityInput = <HTMLInputElement>event.target;
         const quantity = quantityInput.value;
         const incrementer: HTMLLinkElement = <HTMLLinkElement>quantityInput.nextElementSibling;
+        clearTimeout(this.timer);
         this.sendRequest(incrementer.href, incrementer, String(quantity), 'ADD_MULTIPLE');
     }
 
@@ -164,10 +165,10 @@ export default class AjaxAddToCart extends Component {
         clearTimeout(this.timer);
         const quantityInput: HTMLInputElement = <HTMLInputElement>incrementer.previousElementSibling;
         let quantity: number = Number(quantityInput.value);
-        quantity++;
-        this.quantityAdded++;
+        quantity += 1;
+        this.quantityAdded += 1;
         quantityInput.value = String(quantity);
-        this.addOrRemoveBinIcon(incrementer.parentElement)
+        this.addOrRemoveBinIcon(incrementer.parentElement);
         this.timer = setTimeout(() => {
             this.sendRequest(incrementer.href, incrementer, String(quantityInput.value), 'ADD');
         }, this.callBackDelay);
@@ -177,9 +178,9 @@ export default class AjaxAddToCart extends Component {
     protected sendAjaxRequestToRemoveItemFromCart(event: Event, decrementer) {
         event.preventDefault();
         clearTimeout(this.timer);
-        let quantityInput: HTMLInputElement = <HTMLInputElement>decrementer.nextElementSibling;
+        const quantityInput: HTMLInputElement = <HTMLInputElement>decrementer.nextElementSibling;
         let quantity: number = Number(quantityInput.value);
-        quantity--;
+        quantity -= 1;
         quantityInput.value = String(quantity);
         this.toggleCounterAndAjaxButtons(decrementer, 'REMOVE', quantity);
         this.addOrRemoveBinIcon(decrementer.parentElement);
@@ -191,21 +192,24 @@ export default class AjaxAddToCart extends Component {
 
     protected linkClickHandler(event: Event, link: HTMLLinkElement): void {
         event.preventDefault();
-        this.sendRequest(link.href, link, String(1), null);
+        clearTimeout(this.timer);
+        $.when(this.checkIfProductExistsInCart(link)).done(() => {
+            this.sendRequest(link.href, link, String(1), null);
+        });
     }
 
     protected async sendRequest(url: string, link: HTMLLinkElement, quantity: string, operation: string): Promise<void> {
-        let productSku = link.dataset.productSku;
-        let productPrice = link.dataset.productPrice * 100;
-        let productTitle = link.dataset.productTitle;
+        const productSku = link.dataset.productSku;
+        const productPrice = link.dataset.productPrice * 100;
+        const productTitle = link.dataset.productTitle;
         let firstClickFlag = false;
 
-        let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+        const productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
 
-        if(productItemsForSyncCounter){
+        if (productItemsForSyncCounter){
             for (let i = 0; i < productItemsForSyncCounter.length; i++) {
                 if (productItemsForSyncCounter[i][0].includes(productSku)) {
-                    if(productItemsForSyncCounter[i][2] === false){
+                    if (productItemsForSyncCounter[i][2] === false){
                        firstClickFlag = true;
                     } else {
                         firstClickFlag = false;
@@ -218,16 +222,16 @@ export default class AjaxAddToCart extends Component {
             firstClickFlag = true;
         }
 
-        let query = "";
-        let page = "1";
+        let query = '';
+        let page = '1';
 
-        let recordList = document.getElementsByTagName('ff-record-list')[0];
-        if(recordList){
-            let baseURI = document.getElementsByTagName('ff-record-list')[0].baseURI;
+        const recordList = document.getElementsByTagName('ff-record-list')[0];
+        if (recordList){
+            const baseURI = document.getElementsByTagName('ff-record-list')[0].baseURI;
 
-            if(baseURI.includes('&page=')) {
+            if (baseURI.includes('&page=')) {
                 let pageNumberString = '';
-                let string = baseURI.split('&page=')[1];
+                const string = baseURI.split('&page=')[1];
                 const lengthOfString = string.length;
                 for (let i = 0; i < lengthOfString; i++) {
                     if (this.checkNumberInString(string[i]) === true) {
@@ -241,9 +245,9 @@ export default class AjaxAddToCart extends Component {
                 page = pageNumberString;
             }
 
-            if(baseURI.includes('query=')) {
+            if (baseURI.includes('query=')) {
                 let queryString = '';
-                let string = baseURI.split('query=')[1];
+                const string = baseURI.split('query=')[1];
                 const lengthOfString = string.length;
                 for (let i = 0; i < lengthOfString; i++) {
                     if (string[i] !== '&') {
@@ -279,9 +283,10 @@ export default class AjaxAddToCart extends Component {
                 productQuery: query
             },
             success(data, status, xhr) {
-                if(data.error !== '') {
+                if (data.error !== '') {
                     that.setMessages(data.error);
                     that.showMessages();
+
                     return;
                 }
 
@@ -305,7 +310,29 @@ export default class AjaxAddToCart extends Component {
                 that.showMessages();
             }
         });
+    }
 
+    protected checkIfProductExistsInCart(link: HTMLLinkElement)
+    {
+        const productSku = JSON.parse(link.dataset?.productSku);
+        const stringArray = link.href.split('/').slice(0,-2);
+        const url = stringArray.join('/') + '/clear-if-exists';
+
+        return new Promise((resolve, reject) => {
+            $.ajax(url, {
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    productSku,
+                },
+                success(data, status, xhr) {
+                    resolve(data);
+                },
+                error(jqXhr, textStatus, errorMessage) {
+                    reject(jqXhr);
+                }
+            });
+        });
     }
 
     protected checkNumberInString(character) {
@@ -371,14 +398,14 @@ export default class AjaxAddToCart extends Component {
         if (quantity !== undefined) {
             let productSkuFromPOP = link.dataset.productSku;
             if (productSkuFromPOP === '' || productSkuFromPOP === undefined) {
-                let productUrl = link.dataset.productUrl;
+                const productUrl = link.dataset.productUrl;
                 if (productUrl) {
-                    productSkuFromPOP = productUrl.split("/")[3];
+                    productSkuFromPOP = productUrl.split('/')[3];
                 }
             }
-            let itemAddedInCartWithQuantity = [[productSkuFromPOP, quantity, true]];
+            const itemAddedInCartWithQuantity = [[productSkuFromPOP, quantity, true]];
             if (localStorage.getItem('productItemsForSyncCounter')) {
-                let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+                const productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
 
                 for (let i = 0; i < productItemsForSyncCounter.length; i++) {
                     if (productItemsForSyncCounter[i][0].includes(productSkuFromPOP) && productItemsForSyncCounter[i][0] !== null) {
@@ -484,23 +511,23 @@ export default class AjaxAddToCart extends Component {
     }
 
     protected addOrRemoveBinIcon(element) {
-        let decreaseButtonElement = element.getElementsByClassName(this.addToCartDecrementer)[0];
-        let quantityElement = element.getElementsByClassName(this.quantityInputField)[0];
-        let codebucket = document.querySelector(this.codeBucket);
+        const decreaseButtonElement = element.getElementsByClassName(this.addToCartDecrementer)[0];
+        const quantityElement = element.getElementsByClassName(this.quantityInputField)[0];
+        const codebucket = document.querySelector(this.codeBucket);
         if (quantityElement.valueAsNumber > 1 && decreaseButtonElement.classList.contains(this.addBinIcon) || decreaseButtonElement.classList.contains(this.addBinIconCz)) {
-            if(codebucket.value === "DE"){
+            if (codebucket.value === 'DE'){
                 decreaseButtonElement.classList.remove(this.addBinIcon);
             } else {
                 decreaseButtonElement.classList.remove(this.addBinIconCz);
             }
-            decreaseButtonElement.innerText = "-";
-        } else if(quantityElement.valueAsNumber === 1) {
-            if(codebucket.value === "DE"){
+            decreaseButtonElement.innerText = '-';
+        } else if (quantityElement.valueAsNumber === 1) {
+            if (codebucket.value === 'DE'){
                 decreaseButtonElement.classList.add(this.addBinIcon);
             } else {
                 decreaseButtonElement.classList.add(this.addBinIconCz);
             }
-            decreaseButtonElement.innerText = "";
+            decreaseButtonElement.innerText = '';
         }
     }
 
@@ -520,7 +547,7 @@ export default class AjaxAddToCart extends Component {
 
     protected setCookie(name, value, exdays) {
         const date = new Date();
-        date.setTime(date.getTime() + (exdays*24*60*60*1000));
+        date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000));
         const expires = 'expires=' + date.toUTCString();
         document.cookie = name + '=' + value + ';' + expires + ';path=/';
     }
@@ -562,7 +589,7 @@ export default class AjaxAddToCart extends Component {
     }
 
     protected get codeBucket(): string {
-        return "input[name=header-codebucket]";
+        return 'input[name=header-codebucket]';
     }
 
     protected get itemAdded(): string {

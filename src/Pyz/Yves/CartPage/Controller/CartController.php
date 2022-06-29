@@ -41,6 +41,9 @@ class CartController extends SprykerCartController
     protected const REQUEST_PARAM_CSRF_TOKEN = 'token';
     protected const REQUEST_PARAMETER_TOKEN = 'token';
     protected const REQUEST_ATTRIBUTE_PRODUCT_ABSTRACT_ID = 'productAbstractId';
+    protected const REQUEST_ATTRIBUTE_PRODUCT_SKU = 'productSku';
+
+    protected const RESPONSE_ATTRIBUTE_DELETED_ITEMS = 'deletedItems';
 
     protected const KEY_ERROR = 'error';
 
@@ -135,12 +138,6 @@ class CartController extends SprykerCartController
      */
     protected function executeAddAjaxAction(Request $request): array
     {
-        if (isset($_POST['myToken']) && isset($_POST['myOperation']) && isset($_POST['myQuantity'])) {
-            $token = $_POST['myToken'];
-            $operation = $_POST['myOperation'];
-            $quantity = $_POST['myQuantity'];
-        }
-
         if (!$this->isCsrfTokenValid(static::ADD_TO_CART_AJAX_CSRF_TOKEN_NAME, $request)) {
             return $this->createAjaxAddErrorResponse(
                 Response::HTTP_BAD_REQUEST,
@@ -672,5 +669,50 @@ class CartController extends SprykerCartController
         ]];
 
         return FactFinderApiClient::postTrackClickData($data);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function clearIfExistsAction(Request $request): JsonResponse
+    {
+        $productSku = $request->request->get(static::REQUEST_ATTRIBUTE_PRODUCT_SKU);
+
+        if (!isset($productSku)) {
+            $response = [
+                static::KEY_CODE => Response::HTTP_BAD_REQUEST,
+                static::RESPONSE_ATTRIBUTE_DELETED_ITEMS => 0,
+            ];
+
+            return $this->jsonResponse($response);
+        }
+
+        $quoteTransfer = $this->getFactory()->getBaseQuoteClient()->getQuote();
+        $strategija = $this->getFactory()->getBaseQuoteClient()->getStorageStrategy();
+
+        $deletedItems = 0;
+
+        foreach ($quoteTransfer->getItems() as $item) {
+            if ($item->getSku() === $productSku) {
+                $deletedItems = $item->getQuantity();
+                $index = array_search($item, $quoteTransfer->getItems()->getArrayCopy());
+                unset($quoteTransfer->getItems()[$index]);
+                break;
+            }
+        }
+
+        if ($deletedItems > 0) {
+            $quoteTransfer->setItems(new \ArrayObject(array_values($quoteTransfer->getItems()->getArrayCopy())));
+            $this->getFactory()->getBaseQuoteClient()->setQuote($quoteTransfer);
+        }
+
+        $response = [
+            static::KEY_CODE => Response::HTTP_OK,
+            static::RESPONSE_ATTRIBUTE_DELETED_ITEMS => $deletedItems,
+        ];
+
+        return $this->jsonResponse($response);
     }
 }

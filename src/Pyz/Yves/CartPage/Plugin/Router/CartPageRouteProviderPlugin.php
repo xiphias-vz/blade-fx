@@ -16,6 +16,7 @@ class CartPageRouteProviderPlugin extends SprykerCartPageRouteProviderPlugin
     public const ROUTE_NAME_CART_ADD_AJAX = 'cart/add-ajax';
     public const ROUTE_NAME_CART_CHANGE_AJAX = 'cart/change-ajax';
     public const ROUTE_NAME_CART_CLEAR = 'cart/clear';
+    public const ROUTE_NAME_CART_CLEAR_IF_EXISTS = 'cart/clear-if-exists';
 
     /**
      * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
@@ -28,6 +29,7 @@ class CartPageRouteProviderPlugin extends SprykerCartPageRouteProviderPlugin
         $routeCollection = $this->addCartAddAjaxRoute($routeCollection);
         $routeCollection = $this->addCartClearRoute($routeCollection);
         $routeCollection = $this->addChangeAjaxRoute($routeCollection);
+        $routeCollection = $this->addCartClearIfExistsRoute($routeCollection);
 
         return $routeCollection;
     }
@@ -70,6 +72,20 @@ class CartPageRouteProviderPlugin extends SprykerCartPageRouteProviderPlugin
         $route = $this->buildRoute('/cart/clear', 'CartPage', 'Cart', 'clearAction');
         $route = $route->setMethods(['POST']);
         $routeCollection->add(static::ROUTE_NAME_CART_CLEAR, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    protected function addCartClearIfExistsRoute(RouteCollection $routeCollection): RouteCollection
+    {
+        $route = $this->buildRoute('/cart/clear-if-exists', 'CartPage', 'Cart', 'clearIfExistsAction');
+        $route = $route->setMethods(['POST']);
+        $routeCollection->add(static::ROUTE_NAME_CART_CLEAR_IF_EXISTS, $route);
 
         return $routeCollection;
     }
