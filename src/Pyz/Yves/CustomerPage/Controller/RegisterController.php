@@ -41,6 +41,9 @@ class RegisterController extends SprykerShopRegisterController
     public const WE = 'we';
     public const MEIN_GLOBUS = 'meinGlobus';
 
+    public const REGISTER_FORM_CUSTOMER_EMAIL = 'registerForm_customer_email';
+    public const REGISTER_FORM_CUSTOMER_PASSWORD_PASS = 'registerForm_customer_password_pass';
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -95,10 +98,24 @@ class RegisterController extends SprykerShopRegisterController
 
         $registerFormView = $registerForm->createView();
 
+        $email = $request->request->get(static::REGISTER_FORM_CUSTOMER_EMAIL) ?? '';
+        $password = $request->request->get(static::REGISTER_FORM_CUSTOMER_PASSWORD_PASS) ?? '';
+
+        if (isset($registerFormView)) {
+            $registerFormView->vars['value']['customer']['email'] = $email;
+            $registerFormView->vars['value']['customer']['password'] = $password;
+        }
+
+        $loginFormDisplay = true;
+        if($registerForm->isSubmitted() && !$registerForm->isValid()) {
+            $loginFormDisplay = false;
+        }
+
         return [
             'loginForm' => $loginForm->createView(),
             'registerForm' => $registerFormView,
             'customer' => $customer,
+            'loginFormDisplay' => $loginFormDisplay,
         ];
     }
 

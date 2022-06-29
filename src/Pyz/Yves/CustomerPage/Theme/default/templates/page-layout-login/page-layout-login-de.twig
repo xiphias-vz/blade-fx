@@ -5,7 +5,8 @@
     reCaptchaKey: app.reCaptchaSiteKey,
     forms: {
         registration: _view.registerForm,
-        customer: _view.customer
+        customer: _view.customer,
+        loginFormDisplay: _view.loginFormDisplay,
     }
 } %}
 
@@ -445,7 +446,6 @@
 
     <div class="page-layout-customer page-layout-customer--login-wrap register-form-tablet-width">
         <div class="page-layout-customer__form-wrap">
-
             <div id="additionalLoginForm" class="form form--login form--checkout-actions">
                 <h2 class="createCustomerTitle">{{ 'checkout.step.customer.login.create_customer_title' | trans }}</h2>
                 <form name="startRegistrationForm" method="post" novalidate="novalidate">
@@ -538,7 +538,7 @@
                 </form>
             </div>
 
-            <div id="loginAPI" class="form form--login form--checkout-actions register-form">
+            <div id="loginAPI" class="form form--login form--checkout-actions register-form {{ data.forms.loginFormDisplay ? '' : 'is-hidden' }}">
                 <h2 class="stepTitle">{{ 'global.login' | trans }}</h2>
                 <p class="form-desc">{{ 'checkout.step.customer.desc.form' | trans }}</p>
                 <form name="customLoginForm" method="post" novalidate="novalidate">
@@ -713,6 +713,16 @@
 
     <script type="text/javascript">
 
+
+        let loginForm = $("#loginAPI");
+        if(loginForm[0].classList.contains('is-hidden')) {
+            if (window.matchMedia('(min-width: 769px)').matches) {
+                $("#checkoutCustomerRegister").css("display", "flex");
+            } else {
+                $("#checkoutCustomerRegister").css("display", "block");
+            }
+        }
+
         function showForgotPassword() {
             $("#loginAPI").css("display", "none");
             $("#passwordForgotFormDiv").removeClass("is-hidden");
@@ -819,7 +829,7 @@
                 var emailOrCardNumber = $("#startRegistrationForm_customer_email").val();
                 const url = "/login/check-availability"
 
-                if(emailOrCardNumber != ""){
+                if(emailOrCardNumber !== ""){
                     $.ajax(url, {
                         type: 'POST',  // http method
                         data: { id: emailOrCardNumber },  // data to submit
@@ -899,7 +909,17 @@
         });
 
         $("#btnCancelRegister").click(function(){
+            $("#loginAPI").css("display", "block");
+            $("#checkoutCustomerRegister").css("display", "none");
+            $("#additionalLoginForm").css("display", "none");
+            $("#checkoutCustomerRegister").trigger('reset');
+            window.history.replaceState( null, null, window.location.href );
             window.location.reload();
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'auto'
+            });
         });
 
         $("#passwordToggleEye").click(function(){

@@ -1128,7 +1128,17 @@
         });
 
         $("#btnCancelRegister").click(function(){
-            window.location.reload();
+            $("#loginAPI").css("display", "block");
+            $("#checkoutCustomerRegister").css("display", "none");
+            $("#additionalLoginForm").css("display", "none");
+            $("#customerRegistrationFormButtons").css("display", "none");
+            $("#checkoutCustomerRegister").trigger('reset');
+            window.history.replaceState( null, null, window.location.href );
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'auto'
+            });
         });
 
         $("#passwordToggleEye").click(function(){
