@@ -544,7 +544,7 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     $jobs[] = [
-        'name' => 'EIN__initiate_fact_finder_import',
+        'name' => 'initiate_fact_finder_import',
         'command' => '$PHP_BIN vendor/bin/console fact-finder:import',
         'schedule' => '* * 1 7 *',
         'enable' => true,
