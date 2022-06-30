@@ -10,14 +10,15 @@ namespace Pyz\Zed\MonitoringReport\Communication\Plugin\Category;
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\Term;
+use Elastica\ResultSet;
 use Generated\Shared\Search\PageIndexMap;
 use Generated\Shared\Transfer\ElasticsearchSearchContextTransfer;
 use Generated\Shared\Transfer\SearchContextTransfer;
 use InvalidArgumentException;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
-use Pyz\Shared\PropelExtension\PropelExtension;
 use Pyz\Zed\MonitoringReport\Communication\Console\CategoryCheckConsole;
+use Pyz\Zed\MonitoringReport\Communication\Plugin\Query\CategoryProductAbstractKeysQuery;
 use Spryker\Client\Search\Dependency\Plugin\QueryInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
@@ -70,9 +71,24 @@ class CategoryHandlerPlugin extends AbstractPlugin
                 $res = $this->getSearchResult($indexNme, $item->getFkCategory());
                 $hits = $res->getTotalHits();
                 $item->setNumberOfProductsSearch($hits);
+                if ($item->getFkCategory() > 0) {
+                    $resKeys = $this->getAbstractKeysByCategory($indexNme, $item->getFkCategory(), $item->getStoreName());
+                    $data = $this->getKeyList($resKeys);
+                    $item->setEsAbstractKeys(json_encode($data));
+                }
                 $item->save();
             }
         }
+    }
+
+    protected function getKeyList(ResultSet $set): array
+    {
+        $data = [];
+        foreach ($set as $result) {
+            $data[] = $result->getHit()["_id"];
+        }
+
+        return $data;
     }
 
     /**
@@ -314,5 +330,21 @@ class CategoryHandlerPlugin extends AbstractPlugin
             $boolQuery->addFilter((new Term())
                 ->setTerm(PageIndexMap::CATEGORY_ALL_PARENTS, $idCategoryNode));
         }
+    }
+
+    /**
+     * @param string $indexName
+     * @param int $idCategory
+     * @param string $storeName
+     *
+     * @return array|\Elastica\ResultSet
+     */
+    protected function getAbstractKeysByCategory(string $indexName, int $idCategory, string $storeName)
+    {
+        $searchSearchContext = $this->createSearchContextTransfer($indexName);
+        $query = new CategoryProductAbstractKeysQuery($idCategory, $storeName);
+        $query->setSearchContext($searchSearchContext);
+
+        return $this->getFactory()->getSearchClient()->search($query);
     }
 }

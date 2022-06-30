@@ -15,6 +15,7 @@
         <column name="number_of_products_db" required="true" type="INTEGER"/>
         <column name="number_of_products_search" required="false" type="INTEGER"/>
         <column name="is_total" required="true" type="BOOLEAN" default="false"/>
+        <column name="es_abstract_keys" type="CLOB"/>
 
         <unique name="pyz_monitor_categories-id_monitor_categories">
             <unique-column name="id_monitor_categories"/>
