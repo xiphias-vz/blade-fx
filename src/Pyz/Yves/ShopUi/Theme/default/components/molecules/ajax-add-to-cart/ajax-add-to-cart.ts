@@ -314,7 +314,13 @@ export default class AjaxAddToCart extends Component {
 
     protected checkIfProductExistsInCart(link: HTMLLinkElement)
     {
-        const productSku = JSON.parse(link.dataset?.productSku);
+        let productSku = '';
+        if (link.dataset?.productSku.includes('_')) {
+            productSku = link.dataset?.productSku;
+        } else {
+            productSku = JSON.parse(link.dataset?.productSku);
+        }
+
         const stringArray = link.href.split('/').slice(0,-2);
         const url = stringArray.join('/') + '/clear-if-exists';
 
