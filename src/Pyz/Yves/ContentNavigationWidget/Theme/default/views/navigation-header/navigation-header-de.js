@@ -156,6 +156,10 @@ document.addEventListener("ffReady", function (event) {
             clearSearchBoxValue();
         }
 
+        if (isMyProducts()) {
+            factfinder.communication.globalSearchParameter["log"] = "my_products";
+        }
+
         if (isSearchEvent && !isSearchPageUrl() && ((!isOutlet() && !isMyProducts()) || (event.query != "" && event.query != "*"))) {
             redirectToFactFinderSearch(event);
         } else {
