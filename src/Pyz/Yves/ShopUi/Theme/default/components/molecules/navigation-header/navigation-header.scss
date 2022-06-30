@@ -8,6 +8,9 @@
         }
 
         &__list {
+            scrollbar-color: $setting-color-globusCZ-main-green white;
+            scrollbar-width: thin;
+
             ::-webkit-scrollbar {
                 width: rem(5);
                 background: $setting-color-white;
