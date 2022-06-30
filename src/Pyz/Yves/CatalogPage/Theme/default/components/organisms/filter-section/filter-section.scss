@@ -8,6 +8,7 @@
         padding: 0 rem(24);
         overflow-y: auto;
         max-height: calc(100% - #{$mobile-sort-and-button-max-height});
+        scrollbar-color: $setting-color-globusCZ-main-green white;
 
         @include helper-breakpoint-media-min($xl-min) {
             margin: 0;
