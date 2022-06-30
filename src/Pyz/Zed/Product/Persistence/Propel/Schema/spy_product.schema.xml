@@ -28,6 +28,9 @@
         <column name="file_type" type="INTEGER"/>
         <column name="images" type="VARCHAR" size="4000"/>
         <column name="is_stock_from_status" type="TINYINT" default="0"/>
+        <index name="index-spy_product-product_number">
+            <index-column name="product_number"/>
+        </index>
         <index>
             <index-column name="sap_number"/>
         </index>

@@ -231,7 +231,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'partial-import-product-prices-stock',
         'command' => 'vendor/bin/install -r gsoa-sceduled-partial-import',
-        'schedule' => '0,15,30,45 02-22 * * *',
+        'schedule' => '10,40 07-22 * * *',
         'enable' => true,
         'stores' => ['OST'],
     ];
@@ -239,7 +239,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'partial-import-categories',
         'command' => 'vendor/bin/install -r gsoa-category-import',
-        'schedule' => '0 02-22/2 * * *',
+        'schedule' => '0 07-22/2 * * *',
         'enable' => true,
         'stores' => ['OST'],
     ];
@@ -247,7 +247,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'update-product-label-relations',
         'command' => '$PHP_BIN vendor/bin/console product-label:relations:update -vvv',
-        'schedule' => '33 0,1,5,6,7,8 * * *',
+        'schedule' => '10 0,3,4,5,6,22,23 * * *',
         'enable' => true,
         'stores' => ['OST'],
     ];

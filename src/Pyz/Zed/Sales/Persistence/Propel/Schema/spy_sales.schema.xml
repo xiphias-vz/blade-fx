@@ -56,6 +56,9 @@
         <index name="index-pick_zone">
             <index-column name="pick_zone"/>
         </index>
+        <index name="index-spy_sales_order_item-product_number">
+            <index-column name="product_number"/>
+        </index>
     </table>
 
     <table name="spy_sales_order_address">
