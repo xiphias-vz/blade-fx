@@ -50,8 +50,17 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
             $pass = $this->getFactory()->getAntiXss()->xss_clean($pass);
         }
         $uid = $this->getFactory()->getSessionClient()->get('cdcUID');
+        if (($this->getFactory()->getSessionClient()->get("id_token") === null ||
+                $this->getFactory()->getSessionClient()->get("id_token") === "") &&
+            $uid !== null) {
+            $uid = null;
+        }
         if ($uid == null) {
             $authCheck = $this->globusLogin($email, $pass);
+            if (str_contains($authCheck, 'id_token')) {
+                $parsed = JSON::parse($authCheck);
+                $this->getFactory()->getSessionClient()->set("id_token", $parsed['id_token']);
+            }
         } else {
             $authCheck = $this->getAccountInfo($uid);
         }
@@ -95,7 +104,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                     $recoTransfer = $this->getFactory()->getStorageClient()->getIsRecommendationsEnabled(new RecoTransfer());
                     $recoTransfer->setCustomer($customerTransfer);
 
-                    if ($recoTransfer->getRecommendationsEnabled() === 'true') {
+                    if ($recoTransfer->getRecommendationsEnabled() === 'true' || $recoTransfer->getRecommendationsEnabled() === true) {
                         $nameActiveScenario = $this->getFactory()->getSessionClient()->get('nameActiveScenario');
                         if ($nameActiveScenario === null) {
                             $scenarioTransfer = $this->getFactory()->getRecommendationsClient()->getActiveScenarioName(new ScenarioTransfer());
@@ -343,9 +352,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         return $urlPrefix;
     }
 
-     /**
-      * @return string
-      */
+    /**
+     * @return string
+     */
     public function getCaptchaSecretKey(): string
     {
         $globus_api_credentials = Config::get(CustomerConstants::GOOGLE_CAPTCHA_CONSTANTS);
