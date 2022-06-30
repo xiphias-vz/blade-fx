@@ -61,7 +61,7 @@ class FactFinderImportConsole extends Console
      *
      * @return int
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $argument = $input->getArgument(static::ARGUMENT_IMPORT_TYPE);
         $resultCodeArray = array();
@@ -70,17 +70,16 @@ class FactFinderImportConsole extends Console
             if ($argument === 'all') {
                 $allTypes = $this->listToArrayWithoutDuplicates();
                 foreach ($allTypes as $type) {
-                    $resultCodeArray[] = $this->doImport($type, $input);
+                    $resultCodeArray[] = $this->doImport($type, $input, $output);
                 }
             } else {
-                $resultCodeArray[] = $this->doImport(self::LIST_OF_AVAILABLE_ARGUMENTS[$argument], $input);
+                $resultCodeArray[] = $this->doImport(self::LIST_OF_AVAILABLE_ARGUMENTS[$argument], $input, $output);
             }
         } else {
             $this->error(sprintf("%s is not a valid argument. Available arguments are: %s", $argument, $this->listToString()));
 
             $resultCodeArray[] = static::CODE_ERROR;
         }
-
         if (!in_array(1, $resultCodeArray)) {
             return self::CODE_SUCCESS;
         } else {
@@ -104,21 +103,22 @@ class FactFinderImportConsole extends Console
     /**
      * @param string $type
      * @param \Symfony\Component\Console\Input\InputInterface $input
-     *
+     * @param OutputInterface $output
      * @return int
      */
-    private function doImport(string $type, InputInterface $input): int
+    private function doImport(string $type, InputInterface $input, OutputInterface $output): int
     {
         try {
             $result = FactFinderApiClient::import($type);
             $result = isset($result[0]) === true ? $result[0] : $result;
 
-            if (isset($result['errorMessages']) && count($result['errorMessages']) > 0) {
-                return self::CODE_ERROR;
+            if ($this->isDetailsOptionProvided($input)) {
+                dump("Importing " . $type);
+                dump($result);
             }
 
-            if ($this->isDetailsOptionProvided($input)) {
-                dump($result);
+            if (isset($result['errorMessages']) && count($result['errorMessages']) > 0) {
+                return self::CODE_ERROR;
             }
         } catch (\Exception $e) {
             dump($e);
