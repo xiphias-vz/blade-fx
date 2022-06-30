@@ -203,6 +203,10 @@ export default class ShelfScanOrder extends Component {
             item.value = '';
         });
         this.formItems[0].focus();
+        this.formItems[0].inputMode = "none";
+        this.formItems[0].addEventListener('touchstart',  () => {
+            this.formItems[0].inputMode = 'text';
+        });
     }
 
     protected checkHowManyContainersAreScanned(): void {

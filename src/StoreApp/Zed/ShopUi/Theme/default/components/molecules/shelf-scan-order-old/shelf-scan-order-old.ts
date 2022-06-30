@@ -89,6 +89,12 @@ export default class ShelfScanOrderOld extends Component {
         let focusInput = <HTMLInputElement>document.getElementById('inputScanningShelf_' + indexId);
         if (focusInput != null) {
             focusInput.focus();
+            if(focusInput.id !== "inputScanningShelf_1"){
+                focusInput.inputMode = 'none';
+                focusInput.addEventListener('touchstart',  () => {
+                    focusInput.inputMode = 'text';
+                });
+            }
         }
     }
 
