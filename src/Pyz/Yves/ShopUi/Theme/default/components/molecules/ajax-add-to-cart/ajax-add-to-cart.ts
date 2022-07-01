@@ -116,7 +116,8 @@ export default class AjaxAddToCart extends Component {
         const productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
 
         productItemsForSyncCounter.forEach(([key, value]) => {
-            let productSkuFromPOP = link.dataset.productSku;
+            let productSkuFromPOP = this.takeSkuFromString(link.dataset?.productSku);
+
             if (productSkuFromPOP === '' || productSkuFromPOP === undefined) {
                 const productUrl = link.dataset.productUrl;
                 if (productUrl) {
@@ -314,12 +315,11 @@ export default class AjaxAddToCart extends Component {
 
     protected checkIfProductExistsInCart(link: HTMLLinkElement)
     {
-        let productSku = '';
-        if (link.dataset?.productSku.includes('_')) {
-            productSku = link.dataset?.productSku;
-        } else {
-            productSku = JSON.parse(link.dataset?.productSku);
+        let productSku = link.dataset?.productSku;
+        if (productSku.includes('_')) {
+            productSku = productSku.split("_")[0];
         }
+        productSku = JSON.parse(productSku);
 
         const stringArray = link.href.split('/').slice(0,-2);
         const url = stringArray.join('/') + '/clear-if-exists';
@@ -402,7 +402,8 @@ export default class AjaxAddToCart extends Component {
 
     protected updateItemQuantityInput(link: HTMLLinkElement, quantity: number) {
         if (quantity !== undefined) {
-            let productSkuFromPOP = link.dataset.productSku;
+            let productSkuFromPOP = this.takeSkuFromString(link.dataset?.productSku);
+
             if (productSkuFromPOP === '' || productSkuFromPOP === undefined) {
                 const productUrl = link.dataset.productUrl;
                 if (productUrl) {
@@ -556,6 +557,14 @@ export default class AjaxAddToCart extends Component {
         date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000));
         const expires = 'expires=' + date.toUTCString();
         document.cookie = name + '=' + value + ';' + expires + ';path=/';
+    }
+
+    protected takeSkuFromString(inputSku: string) {
+        if (!inputSku.includes('_')) {
+            return inputSku;
+        } else {
+            return inputSku.split("_")[0];
+        }
     }
 
     protected get addToCartLinkClass(): string {
