@@ -8,6 +8,7 @@
 namespace Pyz\Zed\MonitoringReport\Business\Model\FtpChecker;
 
 use DateTime;
+use Generated\Shared\Transfer\FileSystemListTransfer;
 use Generated\Shared\Transfer\FileSystemQueryTransfer;
 use Orm\Zed\MonitoringReport\Persistence\PyzMonitorEmailDefinitionQuery;
 use PDO;
@@ -70,21 +71,22 @@ class FtpChecker
     public function checkExportOnFtp()
     {
         $this->files = $this->getFileNames();
-
-        foreach ($this->files as $file) {
-            if ($file[static::IS_XML]) {
+        foreach ($this->files as $key => $files) {
+            if (reset($files)[static::IS_XML]) {
                 $path = '/' . $this->monitoringConfig->getCashierOrderXmlSFTPFolder() . '/archiv';
             } else {
                 $path = '/' . $this->monitoringConfig->getCashierOrderTxtSFTPFolder() . '/archiv';
             }
-            $this->checkIfFileExists($path);
-            if (count($this->files) > 0) {
-                if ($file[static::IS_XML]) {
+            $this->removeFilesFromArray($path, $key, $files);
+        }
+        if (count($this->files) > 0) {
+            foreach ($this->files as $key => $files) {
+                if (reset($files)[static::IS_XML]) {
                     $path = '/' . $this->monitoringConfig->getCashierOrderXmlSFTPFolder();
                 } else {
                     $path = '/' . $this->monitoringConfig->getCashierOrderTxtSFTPFolder();
                 }
-                $this->checkIfFileExists($path);
+                $this->removeFilesFromArray($path, $key, $files);
                 break;
             }
         }
@@ -98,13 +100,17 @@ class FtpChecker
      */
     protected function getFileNames(): array
     {
+        $resultArray = [];
         $sql = 'call pyzx_monitoring_cashier()';
         $propelConnection = Propel::getConnection();
         $preparedStatement = $propelConnection->prepare($sql);
         $preparedStatement->execute();
         $data = $preparedStatement->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($data as $order) {
+            $resultArray[$order[static::FILIAL_NUMBER]][$order[static::ORDER_REFERENCE]] = $order;
+        }
 
-        return (array)$data;
+        return $resultArray;
     }
 
     /**
@@ -195,11 +201,12 @@ class FtpChecker
      */
     protected function sendAlertMail(): void
     {
-        $this->createRoleIfNotSet();
         $subject = 'Cashier export failed to FTP';
         $header = 'Cashier export to the ftp failed for the orders [id_order]: ';
-        foreach ($this->files as $file) {
-            $header = $header . $file[static::ID_ORDER] . ', ';
+        foreach ($this->files as $merchant) {
+            foreach ($merchant as $file) {
+                $header = $header . $file[static::ID_ORDER] . ', ';
+            }
         }
         $mails = PyzMonitorEmailDefinitionQuery::create()
             ->filterByRoleName(static::ROLE_NAME)
@@ -215,6 +222,30 @@ class FtpChecker
     }
 
     /**
+     * @param string $path
+     * @param string $merchant
+     *
+     * @return array
+     */
+    protected function listAllFilesInDirectory(string $path, string $merchant): array
+    {
+        $i = 0;
+        if (!strpos($path, 'archiv')) {
+            if ($i > 0) {
+                $path = substr($path, 0, -5);
+            }
+        }
+        $path .= '/' . $merchant;
+        $i++;
+
+        return $this->fileSystemService->listContents(
+            (new FileSystemListTransfer())
+                ->setPath($path)
+                ->setFileSystemName(static::SFTP_FILE_SYSTEM_NAME)
+        );
+    }
+
+    /**
      * @return void
      */
     protected function createRoleIfNotSet(): void
@@ -223,7 +254,6 @@ class FtpChecker
             ->filterByRoleName(static::ROLE_NAME)
             ->findOneOrCreate();
         $query->setRoleName(static::ROLE_NAME);
-        $query->setSendToEmail(static::DEFAULT_EMAIL);
 
         if ($query->isNew()) {
             $query->save();
@@ -243,5 +273,29 @@ class FtpChecker
         $result .= $idSalesOrder;
 
         return $result;
+    }
+
+    /**
+     * @param string $path
+     * @param string $key
+     * @param array $files
+     *
+     * @return void
+     */
+    protected function removeFilesFromArray(string $path, string $key, array $files): void
+    {
+        $listedFiles = $this->listAllFilesInDirectory($path, $key);
+        foreach ($files as $file) {
+            foreach ($listedFiles as $listedFile) {
+                $fileName = $listedFile->getFilename();
+                if (str_contains($fileName, $file[static::ORDER_REFERENCE])) {
+                    unset($this->files[$file[static::FILIAL_NUMBER]][$file[static::ORDER_REFERENCE]]);
+                    if (count($this->files[$file[static::FILIAL_NUMBER]]) == 0) {
+                        unset($this->files[$file[static::FILIAL_NUMBER]]);
+                    }
+                    break;
+                }
+            }
+        }
     }
 }
