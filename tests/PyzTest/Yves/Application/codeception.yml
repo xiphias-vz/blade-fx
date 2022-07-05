@@ -7,7 +7,7 @@ paths:
     log: _output
 
 coverage:
-    enabled: true
+    enabled: false
     remote: false
     whitelist: { include: ['../../../../src/*'] }
 

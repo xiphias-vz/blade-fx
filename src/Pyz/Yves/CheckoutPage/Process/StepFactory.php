@@ -176,7 +176,7 @@ class StepFactory extends SprykerShopStepFactory
     }
 
     /**
-     * @return SessionClientInterface
+     * @return \Spryker\Client\Session\SessionClientInterface
      */
     public function getSessionClient(): SessionClientInterface
     {

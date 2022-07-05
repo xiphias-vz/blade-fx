@@ -104,7 +104,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                     $recoTransfer = $this->getFactory()->getStorageClient()->getIsRecommendationsEnabled(new RecoTransfer());
                     $recoTransfer->setCustomer($customerTransfer);
 
-                    if ($recoTransfer->getRecommendationsEnabled() === 'true' || $recoTransfer->getRecommendationsEnabled() === true) {
+                    if ($recoTransfer->getRecommendationsEnabled() == 'true' || $recoTransfer->getRecommendationsEnabled() == true) {
                         $nameActiveScenario = $this->getFactory()->getSessionClient()->get('nameActiveScenario');
                         if ($nameActiveScenario === null) {
                             $scenarioTransfer = $this->getFactory()->getRecommendationsClient()->getActiveScenarioName(new ScenarioTransfer());
@@ -402,6 +402,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      * @param string $uid
      * @param bool $remoteTracking
      * @param string $bearerToken
+     * @param string $nameActiveScenario
      *
      * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
      */

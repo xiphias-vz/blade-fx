@@ -45,6 +45,7 @@ class SalesOrderSummaryExportConsole extends Console
         $output->writeln("generated CSV");
         $this->getFacade()->exportOrders($data->getContent());
         $output->writeln("CSV exported to FTP");
+
         return null;
     }
 }

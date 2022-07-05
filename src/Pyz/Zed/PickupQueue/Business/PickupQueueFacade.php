@@ -17,7 +17,7 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class PickupQueueFacade extends AbstractFacade implements PickupQueueBusinessFacadeInterface
 {
     /**
-     * @param string $storeReference
+     * @param \Generated\Shared\Transfer\GetOrdersQueueTransfer $getOrdersQueueTransfer
      *
      * @return mixed
      */
@@ -29,6 +29,8 @@ class PickupQueueFacade extends AbstractFacade implements PickupQueueBusinessFac
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AddToQueueTransfer $addToQueueTransfer
+     *
      * @return mixed
      */
     public function addOrderToQueue(AddToQueueTransfer $addToQueueTransfer)

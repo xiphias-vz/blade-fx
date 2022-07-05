@@ -257,9 +257,9 @@ class DetailController extends SprykerDetailController
         $timeSlotsData = $this->getFactory()
             ->getTimeSlotsFacade()
             ->getTimeslotDefinition($timeslotDefinitionTransfer, "");
-        $hardCodedTimeSlot = array(
-            'time_slot' => '10:00-18:00'
-        );
+        $hardCodedTimeSlot = [
+            'time_slot' => '10:00-18:00',
+        ];
 
         $timeSlotsData[] = $hardCodedTimeSlot;
 
@@ -483,11 +483,11 @@ class DetailController extends SprykerDetailController
     }
 
     /**
-     * @param $orderItem
+     * @param object $orderItem
      *
      * @return void
      */
-    protected function removeHouseNumber($orderItem)
+    protected function removeHouseNumber(object $orderItem)
     {
         $newSku = $orderItem->getSku();
 

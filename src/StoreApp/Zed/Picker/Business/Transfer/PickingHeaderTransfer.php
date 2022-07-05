@@ -838,7 +838,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
-     * @param int|string $container
+     * @param string $container
      *
      * @return array
      */

@@ -9,15 +9,15 @@
     </transfer>
 
     <transfer name="RestAddToQueueAttributes">
-        <property name="orderReference" type="bigint"/>
-        <property name="storeReference" type="bigint"/>
-        <property name="isRemote" type="boolean"/>
+        <property name="orderReference" type="int"/>
+        <property name="storeReference" type="int"/>
+        <property name="isRemote" type="bool"/>
     </transfer>
 
     <transfer name="AddToQueue">
         <property name="orderReference" type="int"/>
         <property name="storeReference" type="int"/>
-        <property name="isRemote" type="tinyint"/>
+        <property name="isRemote" type="int"/>
         <property name="dbResponse" type="array" />
     </transfer>
 

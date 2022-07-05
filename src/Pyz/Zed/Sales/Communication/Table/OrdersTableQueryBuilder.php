@@ -8,7 +8,6 @@
 namespace Pyz\Zed\Sales\Communication\Table;
 
 use DateTime;
-use Orm\Zed\Customer\Persistence\SpyCustomerAddressQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;

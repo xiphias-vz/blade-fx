@@ -16,14 +16,14 @@ interface RecommendationsStubInterface
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
     public function insertRecoData(RecoTransfer $recoTransfer): TransferInterface;
 
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
     public function clearRecoData(RecoTransfer $recoTransfer): TransferInterface;
 

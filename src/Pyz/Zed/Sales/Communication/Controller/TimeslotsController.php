@@ -161,7 +161,7 @@ class TimeslotsController extends AbstractController
     /**
      * @param int|null $currentMerchant
      *
-     * @return \Orm\Zed\TimeSlot\Persistence\PyzTimeSlot[]|\Propel\Runtime\Collection\ObjectCollection
+     * @return array
      */
     public function getCutoffsForDefaultMerchant(?int $currentMerchant)
     {

@@ -75,7 +75,7 @@ class TimeSlotQueryContainer extends AbstractQueryContainer implements TimeSlotQ
     public function getTimeSlotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer): array
     {
         $merchantReference = $timeslotDefinitionTransfer->getMerchantReference();
-        $exactDate = $timeslotDefinitionTransfer->getExactDate() ??  date("Y-m-d");
+        $exactDate = $timeslotDefinitionTransfer->getExactDate() ?? date("Y-m-d");
         $workDay = $timeslotDefinitionTransfer->getWorkDay();
 
         $selectSql = $this->selectSqlQueryForGetTimeslotDefinition($merchantReference, $exactDate, $workDay);

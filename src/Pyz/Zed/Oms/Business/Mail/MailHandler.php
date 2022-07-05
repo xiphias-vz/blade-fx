@@ -368,6 +368,8 @@ class MailHandler extends SprykerMailHandler
      */
     protected function getSalutationParams(string $salutation, string $firstName): array
     {
+        $salutationParams = null;
+
         if ($salutation == 'Mr') {
             $salutationParams = [
                 'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR),

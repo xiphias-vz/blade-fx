@@ -11,7 +11,6 @@ use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Kernel\Communication\Form\FormTypeInterface;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Money\Communication\Plugin\Form\MoneyCollectionFormTypePlugin;
-use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
 use Spryker\Zed\ShipmentGui\ShipmentGuiDependencyProvider as SprykerShipmentGuiDependencyProvider;
 use Spryker\Zed\Store\Communication\Plugin\Form\StoreRelationToggleFormTypePlugin;
 
@@ -20,6 +19,11 @@ class ShipmentGuiDependencyProvider extends SprykerShipmentGuiDependencyProvider
     public const FACADE_ACL = 'FACADE_ACL';
     public const FACADE_USER = 'FACADE_USER';
 
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideCommunicationLayerDependencies($container);
@@ -70,7 +74,7 @@ class ShipmentGuiDependencyProvider extends SprykerShipmentGuiDependencyProvider
     protected function addUserFacade(Container $container)
     {
         $container[static::FACADE_USER] = function (Container $container) {
-            return new SalesToUserBridge($container->getLocator()->user()->facade());
+            return $container->getLocator()->user()->facade();
         };
 
         return $container;

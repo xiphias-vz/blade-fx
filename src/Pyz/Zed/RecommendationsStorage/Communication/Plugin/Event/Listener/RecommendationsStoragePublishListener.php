@@ -20,7 +20,7 @@ class RecommendationsStoragePublishListener extends AbstractPlugin implements Ev
 {
     /**
      * @param array $eventEntityTransfers
-     * @param $eventName
+     * @param string $eventName
      *
      * @return void
      */

@@ -12,6 +12,9 @@ use Spryker\Zed\ShipmentGui\Communication\Controller\SalesController as SprykerS
 use Spryker\Zed\ShipmentGui\Communication\Exception\OrderNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @method \Pyz\Zed\ShipmentGui\Communication\ShipmentGuiCommunicationFactory getFactory()
+ */
 class SalesController extends SprykerSalesController
 {
     /**

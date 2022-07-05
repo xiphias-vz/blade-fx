@@ -18,7 +18,7 @@ class RecommendationFormDataProvider
     protected $recommendationsFacade;
 
     /**
-     * @var \Generated\Shared\Transfer\ScenarioTransfer
+     * @var \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null
      */
     protected $definitionTransfer;
 

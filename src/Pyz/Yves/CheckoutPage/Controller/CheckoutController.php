@@ -439,9 +439,11 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     }
 
     /**
-     * @return mixed
+     * @param array $data
+     *
+     * @return bool|string
      */
-    public function changeAccountData($data)
+    public function changeAccountData(array $data)
     {
         $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
 

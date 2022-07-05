@@ -47,7 +47,8 @@ class MonitoringStorageReader implements MonitoringStorageReaderInterface
         }
 
         $redisKeys = $monitoringTransfer->getRedisKeys();
-        for ($i = 0; $i < count($redisKeys); $i += 2) {
+        $length = count($redisKeys);
+        for ($i = 0; $i < $length; $i += 2) {
             $store = $redisKeys[$i]['store'];
             if ($storeCookie == $store) {
                 $redisResponse[0] = $this->storageClient->get($redisKeys[$i]['key']);

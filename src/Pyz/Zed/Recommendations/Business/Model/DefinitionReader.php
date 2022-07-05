@@ -26,6 +26,9 @@ class DefinitionReader implements DefinitionReaderInterface
         $this->recommendationsRepository = $recommendationsRepository;
     }
 
+    /**
+     * @return \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null
+     */
     public function getRecommendationsDefinition(): ?RecommendationDefinitionTransfer
     {
         return $this->recommendationsRepository->getRecommendationsDefinition();

@@ -61,6 +61,9 @@ class AttributeForm extends SprykerAttributeForm
     }
 
     /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     *
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -69,6 +72,12 @@ class AttributeForm extends SprykerAttributeForm
            $this->addExportToFfField($builder, $options);
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     *
+     * @return $this
+     */
     protected function addExportToFfField(FormBuilderInterface $builder, array $options)
     {
         $builder->add(self::FIELD_EXPORT_TO_FF, CheckboxType::class, [

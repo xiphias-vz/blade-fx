@@ -164,3 +164,8 @@ parameters:
 			message: "#^Call to an undefined method Generated\\\\Zed\\\\Ide\\\\AutoCompletion\\|Spryker\\\\Shared\\\\Kernel\\\\LocatorLocatorInterface\\:\\:picker\\(\\)\\.$#"
 			count: 1
 			path: src/StoreApp/Zed/Picker/PickerDependencyProvider.php
+
+		-
+		    message: "#^Call to an undefined method Spryker\\\\Client\\\\SearchExtension\\\\Dependency\\\\Plugin\\\\QueryInterface\\:\\:setSearchContext\\(\\)\\.$#"
+		    count: 1
+		    path: src/Pyz/Zed/MonitoringReport/Communication/Plugin/Category/CategoryHandlerPlugin.php

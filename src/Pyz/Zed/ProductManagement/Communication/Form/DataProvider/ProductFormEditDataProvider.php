@@ -22,7 +22,7 @@ class ProductFormEditDataProvider extends SpyProductFormEditDataProvider
      *
      * @return array
      */
-    public function getDataExtended(int $idProductAbstract, ?array $priceDimension)
+    public function getData($idProductAbstract, ?array $priceDimension = null): array
     {
         $formData = $this->getDefaultFormFields($priceDimension);
         $productAbstractTransfer = $this->productFacade->findProductAbstractById($idProductAbstract);

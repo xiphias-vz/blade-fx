@@ -69,7 +69,8 @@ if (getenv('SPRYKER_DEBUG_ENABLED')) {
 /* end of ACL */
 
 /* ZED */
-$config[ApplicationConstants::HOST_ZED] = defined('HOST_ZED') ? HOST_ZED : getenv('SPRYKER_ZED_HOST');
+//$config[ApplicationConstants::HOST_ZED] = defined('HOST_ZED') ? HOST_ZED : getenv('SPRYKER_ZED_HOST');
+$config[ZedRequestConstants::HOST_ZED_API] = defined('HOST_ZED') ? HOST_ZED : getenv('SPRYKER_ZED_HOST');
 $config[SessionConstants::ZED_SESSION_COOKIE_NAME] = $config[ApplicationConstants::HOST_ZED];
 $config[SessionConstants::ZED_SESSION_COOKIE_DOMAIN] = getenv('SPRYKER_BE_HOST');
 $config[ApplicationConstants::ZED_TRUSTED_HOSTS]

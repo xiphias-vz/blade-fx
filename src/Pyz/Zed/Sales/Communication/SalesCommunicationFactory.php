@@ -230,7 +230,7 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     /**
      * @return \Propel\Runtime\Connection\ConnectionInterface
      */
-    public function createPropelConnection(): ConnectionInterface
+    public function getPropelConnection(): ConnectionInterface
     {
         return Propel::getConnection();
     }

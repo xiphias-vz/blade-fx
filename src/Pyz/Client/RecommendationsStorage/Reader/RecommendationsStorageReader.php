@@ -28,6 +28,7 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
 
     /**
      * @param \Spryker\Client\Storage\StorageClientInterface $storageClient
+     * @param \Spryker\Client\Store\StoreClientInterface $storeClient
      */
     public function __construct(StorageClientInterface $storageClient, StoreClientInterface $storeClient)
     {

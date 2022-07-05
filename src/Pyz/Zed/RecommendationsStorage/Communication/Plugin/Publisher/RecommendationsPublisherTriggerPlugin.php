@@ -45,6 +45,9 @@ class RecommendationsPublisherTriggerPlugin extends AbstractPlugin implements Pu
         return $eventEntityTransfers;
     }
 
+    /**
+     * @return string
+     */
     public function getResourceName(): string
     {
         return RecommendationsStorageConfig::RECOMMENDATIONS_RESOURCE_NAME;

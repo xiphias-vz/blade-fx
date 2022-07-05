@@ -496,7 +496,7 @@ class OrdersTable extends SprykerOrdersTable
     /**
      * @param string $merchantReference
      *
-     * @return \Orm\Zed\TimeSlot\Persistence\PyzTimeSlot[]|\Propel\Runtime\Collection\ObjectCollection
+     * @return array
      */
     public function getTimeslotsFilterButtonData(string $merchantReference)
     {

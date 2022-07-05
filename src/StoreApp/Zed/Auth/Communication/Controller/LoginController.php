@@ -88,9 +88,7 @@ class LoginController extends SprykerLoginController
      */
     protected function isCsrfTokenValid(string $id, Request $request): bool
     {
-        $tokenInfo = $request->request->get('auth');
-
-        $tokenValue = $tokenInfo['_token'];
+        $tokenValue = $request->get('auth')["_token"];
 
         $csrfToken = new CsrfToken($id, $tokenValue);
 

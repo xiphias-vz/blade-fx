@@ -8,6 +8,7 @@
 namespace Pyz\Yves\CatalogPageDE;
 
 use Pyz\Service\DataDog\DataDogServiceInterface;
+use Pyz\Yves\CatalogPage\CatalogPageDependencyProvider;
 use Pyz\Yves\CatalogPage\Twig\CategoryFilterTwigExtension;
 use Pyz\Yves\CustomerPage\CustomerPageDependencyProvider;
 use Spryker\Service\UtilText\UtilTextServiceInterface;

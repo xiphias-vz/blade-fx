@@ -43,7 +43,7 @@ class PickingStoresReader implements PickingStoresReaderInterface
         $pickingStores = [];
         $isCurrentUserSupervisor = $this->userFacade->isCurrentUserSupervisor();
 
-        if (isset($isCurrentUserSupervisor) && $isCurrentUserSupervisor) {
+        if ($isCurrentUserSupervisor) {
             $currentUser = $this->userFacade->getCurrentUser();
             $merchantByCurrentUser = $this->merchantFacade->findMerchantByUser($currentUser);
             if ($merchantByCurrentUser) {

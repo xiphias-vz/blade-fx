@@ -189,7 +189,7 @@ class GsoaProductConsole extends Console
                     break;
                 case "getProductPricesByHouseModified":
                     if (empty($modifiedFrom)) {
-                        $modifiedFrom = $this->getLastImportDate("product-price");
+                        $modifiedFrom = $this->getLastImportDate("product-price", null);
                     }
                     $result = $client->getProductPricesByHouseModified($store, $modifiedFrom, true);
                     break;
@@ -198,7 +198,7 @@ class GsoaProductConsole extends Console
                     break;
                 case "getProductStocksByHouseModified":
                     if (empty($modifiedFrom)) {
-                        $modifiedFrom = $this->getLastImportDate("product-stock");
+                        $modifiedFrom = $this->getLastImportDate("product-stock", null);
                     }
                     $result = $client->getProductStocksByHouseModified($store, $modifiedFrom, true);
                     break;

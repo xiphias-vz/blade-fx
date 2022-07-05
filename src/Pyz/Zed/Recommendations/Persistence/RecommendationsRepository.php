@@ -42,7 +42,7 @@ class RecommendationsRepository extends AbstractRepository implements Recommenda
     }
 
     /**
-     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
+     * @return \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null
      */
     public function getRecommendationsDefinition(): ?RecommendationDefinitionTransfer
     {

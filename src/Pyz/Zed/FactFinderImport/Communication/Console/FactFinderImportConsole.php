@@ -25,7 +25,7 @@ class FactFinderImportConsole extends Console
 
     protected const ARGUMENT_IMPORT_TYPE = 'ARGUMENT_IMPORT_TYPE';
 
-    private const LIST_OF_AVAILABLE_ARGUMENTS = array(
+    private const LIST_OF_AVAILABLE_ARGUMENTS = [
         'all' => 'all',
         'search' => 'search',
         'suggest' => 'suggest',
@@ -40,7 +40,7 @@ class FactFinderImportConsole extends Console
         'refreshRecommendation' => 'refreshRecommendations',
         'refresh-recommendation' => 'refreshRecommendations',
         'refresh_recommendation' => 'refreshRecommendations',
-    );
+    ];
 
     /**
      * @return void
@@ -64,7 +64,7 @@ class FactFinderImportConsole extends Console
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $argument = $input->getArgument(static::ARGUMENT_IMPORT_TYPE);
-        $resultCodeArray = array();
+        $resultCodeArray = [];
 
         if (array_key_exists($argument, self::LIST_OF_AVAILABLE_ARGUMENTS)) {
             if ($argument === 'all') {
@@ -103,7 +103,8 @@ class FactFinderImportConsole extends Console
     /**
      * @param string $type
      * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param OutputInterface $output
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
      * @return int
      */
     private function doImport(string $type, InputInterface $input, OutputInterface $output): int
@@ -120,7 +121,7 @@ class FactFinderImportConsole extends Console
             if (isset($result['errorMessages']) && count($result['errorMessages']) > 0) {
                 return self::CODE_ERROR;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dump($e);
 
             return self::CODE_ERROR;
@@ -155,7 +156,7 @@ class FactFinderImportConsole extends Console
      */
     private function listToArrayWithoutDuplicates(): array
     {
-        $arrayToSend = array();
+        $arrayToSend = [];
         $previousValue = '';
 
         foreach (self::LIST_OF_AVAILABLE_ARGUMENTS as $value) {

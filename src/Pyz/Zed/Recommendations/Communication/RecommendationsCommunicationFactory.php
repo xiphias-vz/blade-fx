@@ -130,6 +130,11 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
         );
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null $definitionTransfer
+     *
+     * @return \Pyz\Zed\Recommendations\Communication\Form\DataProvider\RecommendationFormDataProvider
+     */
     public function createRecommendationDefinitionFormProvider(?RecommendationDefinitionTransfer $definitionTransfer = null): RecommendationFormDataProvider
     {
         return new RecommendationFormDataProvider(

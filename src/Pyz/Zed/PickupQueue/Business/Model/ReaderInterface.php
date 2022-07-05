@@ -13,13 +13,15 @@ use Generated\Shared\Transfer\GetOrdersQueueTransfer;
 interface ReaderInterface
 {
     /**
-     * @param string $storeReference
+     * @param \Generated\Shared\Transfer\GetOrdersQueueTransfer $getOrdersQueueTransfer
      *
      * @return mixed
      */
     public function getOrdersQueue(GetOrdersQueueTransfer $getOrdersQueueTransfer);
 
     /**
+     * @param \Generated\Shared\Transfer\AddToQueueTransfer $addToQueueTransfer
+     *
      * @return mixed
      */
     public function addOrderToQueue(AddToQueueTransfer $addToQueueTransfer);

@@ -29,7 +29,7 @@ class RecommendationsStorageEntityManager extends AbstractEntityManager implemen
             ->queryRecommendationDefinitionStorageByStore($collectionTransfer->getStore())
             ->findOneOrCreate();
 
-        if ($currentRecommendationDefinitions->getStore() === null || strlen($currentRecommendationDefinitions->getStore()) < 1) {
+        if ($currentRecommendationDefinitions->getStore() == null || strlen($currentRecommendationDefinitions->getStore()) < 1) {
             $currentRecommendationDefinitions->setStore($collectionTransfer->getStore());
         }
 

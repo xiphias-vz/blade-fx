@@ -31,4 +31,17 @@ interface TimeSlotServiceInterface
         string $currentDate,
         string $timeSlot
     ): ?int;
+
+    /**
+     * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     * @param string $currentDate
+     * @param string $timeSlot
+     *
+     * @return int|null
+     */
+    public function getMerchantCutOffTime(
+        MerchantTransfer $merchantTransfer,
+        string $currentDate,
+        string $timeSlot
+    ): ?int;
 }

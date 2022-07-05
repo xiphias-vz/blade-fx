@@ -108,6 +108,7 @@ class ScanningContainerMergeController extends AbstractController
      */
     public function getContainerInfoAction(Request $request): JsonResponse
     {
+        $scannedContainerPickZoneId = null;
         $container = $request->request->get('container');
 
         $container = $this->removeScannerInput($container);

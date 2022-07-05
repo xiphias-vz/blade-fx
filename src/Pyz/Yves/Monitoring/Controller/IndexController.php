@@ -67,7 +67,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     protected function testDatabase(): array
     {
@@ -95,6 +95,7 @@ class IndexController extends AbstractController
      */
     protected function testRedis(): array
     {
+        $redisDB = null;
         try {
             $monitoringTransfer = new MonitoringTransfer();
             $monitoringTransfer->setRedisKeys(['NO_KEYS' => 'NO_KEYS']);

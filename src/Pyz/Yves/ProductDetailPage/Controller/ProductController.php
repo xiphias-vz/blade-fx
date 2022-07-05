@@ -233,16 +233,16 @@ class ProductController extends SprykerShopProductController
     }
 
     /**
-     * @param $productSku
-     * @param $masterId
-     * @param $page
-     * @param $position
-     * @param $query
-     * @param $title
+     * @param string $productSku
+     * @param int $masterId
+     * @param int $page
+     * @param int $position
+     * @param string $query
+     * @param string $title
      *
      * @return array
      */
-    public function clickTrackingEvent($productSku, $masterId, $page, $position, $query, $title): array
+    public function clickTrackingEvent(string $productSku, int $masterId, int $page, int $position, string $query, string $title): array
     {
         $data = [[
             'id' => $productSku,

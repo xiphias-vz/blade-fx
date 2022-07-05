@@ -19,7 +19,6 @@
     "aws/aws-sdk-php": "^3.173",
     "cache/apcu-adapter": "^1.0",
     "datadog/php-datadogstatsd": "1.4.*",
-    "endroid/qr-code": "^4.4",
     "filp/whoops": "^2.11",
     "jakoch/phantomjs-installer": "^3.0",
     "lcobucci/jwt": "^3.4",

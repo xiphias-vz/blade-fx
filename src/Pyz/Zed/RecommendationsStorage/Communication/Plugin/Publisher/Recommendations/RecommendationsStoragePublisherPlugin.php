@@ -21,7 +21,7 @@ class RecommendationsStoragePublisherPlugin extends AbstractPlugin implements Pu
 {
     /**
      * @param array $eventEntityTransfers
-     * @param $eventName
+     * @param string $eventName
      *
      * @return void
      */

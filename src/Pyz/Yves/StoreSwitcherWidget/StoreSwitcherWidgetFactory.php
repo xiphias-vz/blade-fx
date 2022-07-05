@@ -44,7 +44,7 @@ class StoreSwitcherWidgetFactory extends AbstractFactory
     }
 
     /**
-     * @return StoreSwitcherUrlValidationInterface
+     * @return \Pyz\Yves\StoreSwitcherWidget\StoreSwitcher\StoreSwitcherUrlValidationInterface
      */
     public function getStoreSwitcherUrlValidation(): StoreSwitcherUrlValidationInterface
     {

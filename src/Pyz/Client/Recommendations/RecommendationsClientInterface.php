@@ -9,22 +9,23 @@ namespace Pyz\Client\Recommendations;
 
 use Generated\Shared\Transfer\RecoTransfer;
 use Generated\Shared\Transfer\ScenarioTransfer;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 interface RecommendationsClientInterface
 {
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
-    public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer;
+    public function insertRecoData(RecoTransfer $recoTransfer): TransferInterface;
 
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
-    public function clearRecoData(RecoTransfer $recoTransfer): RecoTransfer;
+    public function clearRecoData(RecoTransfer $recoTransfer): TransferInterface;
 
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
@@ -36,7 +37,7 @@ interface RecommendationsClientInterface
     /**
      * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
-     * @return string
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
      */
     public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer;
 }

@@ -16,12 +16,22 @@ use Spryker\Zed\Kernel\Communication\Controller\AbstractGatewayController;
  */
 class GatewayController extends AbstractGatewayController
 {
+    /**
+     * @param \Generated\Shared\Transfer\AddToQueueTransfer $addToQueueTransfer
+     *
+     * @return mixed
+     */
     public function addOrderToQueueAction(AddToQueueTransfer $addToQueueTransfer)
     {
         return $this->getFacade()
             ->addOrderToQueue($addToQueueTransfer);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\GetOrdersQueueTransfer $getOrdersQueueTransfer
+     *
+     * @return mixed
+     */
     public function getOrdersQueueAction(GetOrdersQueueTransfer $getOrdersQueueTransfer)
     {
         return $this->getFacade()

@@ -43,7 +43,7 @@ class ProcessOrderNewItemsConsole extends Console
         try {
             $order = $this->getFacade()->getNewOrderEntity(0);
             while ($order !== null) {
-                if ($order) {
+                if ($order == true) {
                     $itemsList = $this->getFacade()->getOrderItemsIdList($order->getIdSalesOrder());
                     $output->writeln(sprintf("ID: %d, ref: %s, count: %d", $order->getIdSalesOrder(), $order->getOrderReference(), count($itemsList)));
                     $this->getFacade()->getOmsFacade()->triggerEventForNewOrderItems($itemsList);

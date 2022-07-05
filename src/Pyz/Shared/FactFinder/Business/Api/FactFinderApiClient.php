@@ -108,6 +108,8 @@ class FactFinderApiClient
      */
     protected static function getReturnData($ch): array
     {
+        $info = null;
+
         try {
             $output = curl_exec($ch);
             $info = curl_getinfo($ch);

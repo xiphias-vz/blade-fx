@@ -60,11 +60,11 @@ class ScenarioFormDataProvider
     }
 
     /**
-     * @param $idScenario|null
+     * @param int|null $idScenario
      *
      * @return array
      */
-    public function getOptions($idScenario = null): array
+    public function getOptions(?int $idScenario = null): array
     {
         $options = [
             ScenarioForm::OPTION_RECOMMENDATIONS_TYPE_CHOICES => $this->recommendationsFacade->getRecommendationsAvailableTypes(),
@@ -87,11 +87,11 @@ class ScenarioFormDataProvider
     // }
 
     /**
-     * @param $idRecommendationsScenario
+     * @param int $idRecommendationsScenario
      *
      * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenarios
      */
-    protected function getScenarioEntity($idRecommendationsScenario): PyzRecommendationScenarios
+    protected function getScenarioEntity(int $idRecommendationsScenario): PyzRecommendationScenarios
     {
         return $this->recommendationsQueryContainer
             ->getPyzRecommendationsScenarioQuery()

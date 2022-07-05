@@ -15,7 +15,7 @@ interface PickupQueueQueryContainerInterface
     /**
      * @param \Generated\Shared\Transfer\GetOrdersQueueTransfer $getOrdersQueueTransfer
      *
-     * @return mixed
+     * @return \Generated\Shared\Transfer\GetOrdersQueueTransfer
      */
     public function getOrdersQueue(GetOrdersQueueTransfer $getOrdersQueueTransfer): GetOrdersQueueTransfer;
 

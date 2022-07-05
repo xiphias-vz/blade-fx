@@ -383,3 +383,12 @@ $config[QueueConstants::QUEUE_WORKER_MAX_THRESHOLD_SECONDS] = 59;
  *
  */
 $config[QueueConstants::QUEUE_ADAPTER_CONFIGURATION] = [];
+
+$config[PropelConstants::ZED_DB_USERNAME] = 'development';
+$config[PropelConstants::ZED_DB_PASSWORD] = 'mate20mg';
+$config[PropelConstants::ZED_DB_DATABASE] = 'DE_development_zed';
+$config[PropelConstants::ZED_DB_HOST] = '127.0.0.1';
+$config[PropelConstants::ZED_DB_PORT] = 5432;
+$config[PropelConstants::ZED_DB_ENGINE]
+    = $config[\Spryker\Shared\PropelQueryBuilder\PropelQueryBuilderConstants::ZED_DB_ENGINE]
+    = $config[PropelConstants::ZED_DB_ENGINE_PGSQL];

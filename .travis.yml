@@ -9,6 +9,7 @@ env:
         - APPLICATION_STORE=EIN
         - PROJECT=spryker-click-and-collect
         - VALIDATION=1
+        - secure: "d7g/fmV7jG6DoJt9LiLK3yMy96FwO/kfecTEGWoyJU5Q8hXZBeGt2pfqUTOD9vwa5j1zV8JCYXVP82Qefz+wDTYCoj92S16d4/5TVQetHAV4ZA2T9yUcbM7dH9KCVDhlpS0lvRflcc3aMIhyz1JUMlIZJq/hCyXEsKxp6lNPl8L7CpQEViw7ecrXoRPSD5mw1aIyquDrB1sOysZ+lQef0AjzXLBuhEyobW4MZrdhj2UbRsXKP31YDI8MdMr8OR0LKsMH1gW+NrpBYqAoRROFjUvmSfviGhaYtL2O9WpIbFtNyF/IPItJtBcdWdEqQrXOIwRzQshln/hzXV5WVbHyKnLTGG+YrPa6M52vBpFmuSn/vfw/w/fwObmC4kOdR/6+h8F6YdX4YXUj5SVjh8Rf4NKvhcIG8MklOL6mi+hR/dc7Hq3hYzJipcQxb6UlbUJQlGiCKGimnZbyKMPqN5hJ8+PuGu1SLZajx0mqw/44tR47ay38q6NhTjMRil5rb+oHjTKsDNW3stE3v6xYnHH8ORCcI+jUrW7Rj7wjcWwS9zxT7GoqCm1gbTpgTpnnJs6DnkuNPAUr3Rmab8p/fNHRD7AqOIRaxg3vLIXW8lyigs6LN9pVajtEr0H8TFdc3+nRVByQpcpc1398JiuuuV+yhx9dZmKRtLWVzXJvlB5iPeY="
 
 matrix:
     fast_finish: true
@@ -16,7 +17,7 @@ matrix:
         - php: "7.3"
           dist: trusty
 addons:
-    mariadb: 10.4
+    mariadb: "10.4"
 
     apt:
         packages:
@@ -32,9 +33,9 @@ cache:
         - /home/travis/.rvm/gems # Mailcatcher is a ruby gem, takes 5 minutes to install.
 
 services:
-    - mariadb
     - redis
     - rabbitmq
+    - mysql
 
 sudo: required
 
@@ -78,7 +79,17 @@ before_script:
     - vendor/bin/console frontend:yves:install-dependencies
 
 script:
-    - php -d memory_limit=-1 vendor/bin/phpstan analyze -c phpstan.neon src/ -l 4
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/StoreApp/Zed -l 4 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Zed -l 3 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Client -l 4 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Glue -l 4 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Shared -l 4 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Service -l 4 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Yves -l 4 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/SprykerConfig -l 4 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/StoreApp/Shared -l 4 -vvv
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/StoreApp/Yves -l 4 -vvv
+#    - php -d memory_limit=-1 vendor/bin/phpstan analyze -c phpstan.neon src/ -l 4
 #    - vendor/bin/phpstan analyze -c phpstan.neon src/ -l 4
 
     - vendor/bin/console propel:schema:validate-xml-names

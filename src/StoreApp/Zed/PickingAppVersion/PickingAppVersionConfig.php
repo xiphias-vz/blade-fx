@@ -44,7 +44,7 @@ class PickingAppVersionConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public static function getPickingAppNewVersionVisible(): bool
+    public static function getPickingAppNewVersionVisible(): string
     {
         return $_SESSION["pickingAppNewVersionVisible"];
     }

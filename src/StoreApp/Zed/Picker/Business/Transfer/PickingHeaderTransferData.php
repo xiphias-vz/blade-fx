@@ -1194,7 +1194,7 @@ class PickingHeaderTransferData
      */
     private function saveContainerToItems(string $containerCode, ?array $pickedItems)
     {
-        if ($pickedItems && count($pickedItems) > 0) {
+        if ($pickedItems === null && count($pickedItems) > 0) {
             $whereList = implode($pickedItems, ",");
             $sql = "update spy_sales_order_item set container_code = '" . $containerCode . "' where id_sales_order_item in(" . $whereList . ")";
             $this->getResult($sql, false);

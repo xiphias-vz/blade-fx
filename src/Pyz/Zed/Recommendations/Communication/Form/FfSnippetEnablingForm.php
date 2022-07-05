@@ -11,7 +11,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class FfSnippetEnablingForm extends abstractType
+/**
+ * @method \Pyz\Zed\Recommendations\RecommendationsConfig getConfig()
+ * @method \Pyz\Zed\Recommendations\Communication\RecommendationsCommunicationFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface getRepository()
+ * @method \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface getFacade()
+ */
+class FfSnippetEnablingForm extends AbstractType
 {
     public const RECOMMENDATIONS_FF_SNIPPET_ENABLED = "recommendationsFfSnippetEnabled";
 

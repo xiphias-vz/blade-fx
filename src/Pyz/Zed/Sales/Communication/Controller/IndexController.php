@@ -37,11 +37,11 @@ class IndexController extends SprykerIndexController
     }
 
     /**
-     * @param $request
+     * @param array $request
      *
      * @return string
      */
-    public function getMerchantReferenceForFilter($request): string
+    public function getMerchantReferenceForFilter(array $request): string
     {
         if (isset($request['merchant-reference-filter'])) {
             $mercRef = $request['merchant-reference-filter'];

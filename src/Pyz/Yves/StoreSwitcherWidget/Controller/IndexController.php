@@ -36,7 +36,7 @@ class IndexController extends AbstractController
         $validUrlFields = $this->getFactory()->getStoreSwitcherUrlValidation()->validateUrl($request);
         $refererUrl = '/';
 
-        if (isset($validUrlFields['refererUrl'])){
+        if (isset($validUrlFields['refererUrl'])) {
             $refererUrl = $validUrlFields['refererUrl'];
         }
 

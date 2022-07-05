@@ -45,7 +45,7 @@ class MerchantReader implements MerchantReaderInterface
 
     /**
      * @param \Spryker\Client\MerchantSearch\MerchantSearchClientInterface $merchantSearchClient
-     * @param \Pyz\Client\MerchantStorage\MerchantStorageClientInterface $merchantClient
+     * @param \Pyz\Client\MerchantStorage\MerchantStorageClient $merchantClient
      * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
      * @param \Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface $merchantStorageDataExpander
      */

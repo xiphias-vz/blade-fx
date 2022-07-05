@@ -93,11 +93,11 @@ class ScenariosTable extends AbstractTable
     }
 
     /**
-     * @param $item
+     * @param array $item
      *
      * @return array
      */
-    protected function createActionColumn($item): array
+    protected function createActionColumn(array $item): array
     {
         $urls = [];
 

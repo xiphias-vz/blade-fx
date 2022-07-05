@@ -452,6 +452,7 @@ class CollectByCustomerController extends AbstractController
      */
     public function checkContainersAction(Request $request)
     {
+        $containersJson = null;
         $requestDataFromQueuedOrder = $request->request->all();
 
         if (isset($requestDataFromQueuedOrder['flag'])) {
@@ -491,6 +492,7 @@ class CollectByCustomerController extends AbstractController
      */
     public function newQueueCheckAction(Request $request)
     {
+        $responseArray = null;
         $orderCheck = $request->request->all();
 
         if (isset($orderCheck['lastId'])) {

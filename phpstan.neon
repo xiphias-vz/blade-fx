@@ -6,6 +6,7 @@ parameters:
     excludes_analyse:
         - %rootDir%/../../../src/Generated/*
         - %rootDir%/../../../src/Orm/*
+        - %rootDir%/../../../src/Orm/StoreApp/Zed/Picker/Communication/Controller/BaseOrderPickingController.php
 
     bootstrap: %rootDir%/../../../phpstan-bootstrap.php
 
@@ -21,3 +22,7 @@ parameters:
         - APPLICATION
         - APPLICATION_ENV
         - APPLICATION_STORE
+
+    parallel:
+          maximumNumberOfProcesses: 5
+

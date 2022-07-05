@@ -34,7 +34,7 @@ class RecommendationsStorageBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return mixed
+     * @return \Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface
      */
     public function getEventBehaviorFacade(): EventBehaviorFacadeInterface
     {

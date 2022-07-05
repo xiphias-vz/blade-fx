@@ -32,7 +32,7 @@ class PickingZoneOrderExportFormDataProvider
     protected $pickingZoneFacade;
 
     /**
-     * @var \Pyz\Zed\PickingZoneOrderExport\Business\PickingZoneOrderExportFacade
+     * @var \Pyz\Zed\PickingZoneOrderExport\Business\PickingZoneOrderExportFacadeInterface
      */
     protected $pickingZoneOrderExportFacade;
 
@@ -155,7 +155,8 @@ class PickingZoneOrderExportFormDataProvider
         $timeSlotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
         $timeSlotsDef = $this->timeSlotFacade->getTimeslotDefinition($timeSlotDefinitionTransfer, $this->storeName);
         $choicesDef = [];
-        for ($i = 0; $i < count($timeSlotsDef); $i++) {
+        $length = count($timeSlotsDef);
+        for ($i = 0; $i < $length; $i++) {
             array_push($choicesDef, $timeSlotsDef[$i]["time_slot"]);
         }
 
@@ -164,6 +165,7 @@ class PickingZoneOrderExportFormDataProvider
             $choicesDef = $timeSlotConstants[ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT];
         }
         array_push($choicesDef, self::EXTRA_TIMESLOT);
+
         return $choicesDef;
     }
 }

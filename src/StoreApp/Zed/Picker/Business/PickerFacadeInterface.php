@@ -258,4 +258,11 @@ interface PickerFacadeInterface
      * @return \StoreApp\Zed\Picker\Business\PickerBusinessFactory
      */
     public function getBusinessFactory(): PickerBusinessFactory;
+
+    /**
+     * @param int $position
+     *
+     * @return bool
+     */
+    public function setCurrentOrderItemWeightReset(int $position): bool;
 }

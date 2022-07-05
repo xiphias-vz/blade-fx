@@ -157,6 +157,7 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
                 }
             }
 
+            $timeSlotsArray = null;
             if (isset($_REQUEST["orderItemsExport"])) {
                 if (in_array($timeSlotTime, $timeSlotsArray)) {
                     $pickingZoneOrderExportContentsTransfer->addContentItem([

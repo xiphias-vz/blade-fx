@@ -31,7 +31,7 @@ class GlobusRestApiClientAccount
         $result = GlobusRestApiClient::post($url, $data, []);
         $parsed = json_decode($result->result);
         if (isset($parsed->strongToken) && $parsed->strongToken) {
-            $_SESSION["_sf2_attributes"]["id_token_strong"] = $parsed->id_token;
+            $_SESSION["_sf2_attributes"]["id_token_strong"] = $parsed->strongToken;
         }
 
         return $result->result;

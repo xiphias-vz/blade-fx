@@ -22,6 +22,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
      * @var string[]
      */
     protected $stringColumns = ["OrderNr", "store", "OrderDate", "DeliveryDate", "external_customer_identifier", "TimeSlot", "status", "comment"];
+
     /**
      * @var string[]
      */

@@ -11,18 +11,19 @@ use Generated\Shared\Transfer\RecoTransfer;
 use Generated\Shared\Transfer\ScenarioTransfer;
 use Pyz\Client\Recommendations\Zed\RecommendationsStubInterface;
 use Spryker\Client\Kernel\AbstractClient;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 /**
- * @method getFactory()
+ * @method \Pyz\Client\Recommendations\RecommendationsFactory getFactory()
  */
 class RecommendationsClient extends AbstractClient implements RecommendationsClientInterface
 {
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed|void
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
-    public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer
+    public function insertRecoData(RecoTransfer $recoTransfer): TransferInterface
     {
         return $this->getZedStub()->insertRecoData($recoTransfer);
     }
@@ -30,9 +31,9 @@ class RecommendationsClient extends AbstractClient implements RecommendationsCli
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return void
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
-    public function clearRecoData(RecoTransfer $recoTransfer): RecoTransfer
+    public function clearRecoData(RecoTransfer $recoTransfer): TransferInterface
     {
         return $this->getZedStub()->clearRecoData($recoTransfer);
     }
@@ -50,7 +51,7 @@ class RecommendationsClient extends AbstractClient implements RecommendationsCli
     /**
      * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
-     * @return string
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
      */
     public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer
     {

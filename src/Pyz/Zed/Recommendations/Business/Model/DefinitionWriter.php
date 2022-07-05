@@ -27,12 +27,20 @@ class DefinitionWriter implements DefinitionWriterInterface
      */
     protected $recommendationsQueryContainer;
 
+    /**
+     * @var \Spryker\Zed\Event\Business\EventFacadeInterface
+     */
     protected $eventFacade;
 
+    /**
+     * @var \Spryker\Zed\Store\Business\StoreFacadeInterface
+     */
     protected $storeFacade;
 
     /**
      * @param \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface $recommendationsQueryContainer
+     * @param \Spryker\Zed\Event\Business\EventFacadeInterface $eventFacade
+     * @param \Spryker\Zed\Store\Business\StoreFacadeInterface $storeFacade
      */
     public function __construct(
         RecommendationsQueryContainerInterface $recommendationsQueryContainer,
@@ -71,7 +79,7 @@ class DefinitionWriter implements DefinitionWriterInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionTransfer $definitionTransfer
      *
      * @return void
      */

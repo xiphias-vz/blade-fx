@@ -68,7 +68,7 @@ class CustomerTransferCustom
                 ->setGender($this->getMapGender($this->getValue($data["profile"], "gender")))
                 ->setAddress1($street)
                 ->setAddress2($houseNo)
-                ->setCountry($this->getIdCountryFromISO2CodeFromConfig($country));
+                ->setCountry((string)$this->getIdCountryFromISO2CodeFromConfig($country));
 
             $customerTransfer = $this->handleSalutation($customerTransfer, $data);
 
@@ -174,9 +174,9 @@ class CustomerTransferCustom
     }
 
     /**
-     * @param int|string|null $iso2Code
+     * @param string|null $iso2Code
      *
-     * @return string
+     * @return int
      */
     public function getIdCountryFromISO2CodeFromConfig(?string $iso2Code): int
     {
@@ -185,7 +185,7 @@ class CustomerTransferCustom
             return 60;
         } else {
             if ($countries != null) {
-                return array_search($iso2Code, $countries);
+                return (int)array_search($iso2Code, $countries);
             } else {
                 return 60;
             }

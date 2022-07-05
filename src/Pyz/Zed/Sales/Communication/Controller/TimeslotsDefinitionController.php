@@ -20,13 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TimeslotsDefinitionController extends AbstractController
 {
-    private const TIMESLOTS_SIZE = [
-        '15' => '15 min',
-        '30' => '30 min',
-        '60' => '1h',
-        '120' => '2h',
-    ];
-
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *

@@ -13,11 +13,11 @@
         <property name="street" type="string"/>
         <property name="latitude" type="decimal"/>
         <property name="longitude" type="decimal"/>
-        <property name="isPasswordProtected" type="boolean"/>
-        <property name="isShopVisible" type="boolean"/>
+        <property name="isPasswordProtected" type="bool"/>
+        <property name="isShopVisible" type="bool"/>
         <property name="shopPassword" type="string"/>
-        <property name="isCashierTxt" type="boolean" />
-        <property name="isCashierXml" type="boolean" />
+        <property name="isCashierTxt" type="bool" />
+        <property name="isCashierXml" type="bool" />
         <property name="deliveryCapacityPerSlot" type="int"/>
         <property name="pickingCapacityPerSlot" type="int"/>
         <property name="visibleStoresArray" type="array"/>

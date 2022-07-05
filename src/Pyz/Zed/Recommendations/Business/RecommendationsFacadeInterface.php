@@ -16,7 +16,7 @@ interface RecommendationsFacadeInterface
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 
@@ -75,13 +75,21 @@ interface RecommendationsFacadeInterface
     public function updateScenario(ScenarioTransfer $scenarioTransfer): int;
 
     /**
-     * @param $id
+     * @param int $id
      *
      * @return void
      */
-    public function deleteScenario($id): void;
+    public function deleteScenario(int $id): void;
 
+    /**
+     * @return mixed
+     */
     public function getRecommendationsDefinition();
 
+    /**
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionTransfer $definitionTransfer
+     *
+     * @return int
+     */
     public function updateDefinitions(RecommendationDefinitionTransfer $definitionTransfer): int;
 }

@@ -116,7 +116,7 @@ class ProductCatalogProvider
             'baseVariantOnly' => $baseVariantOnly,
             'page' => $page,
             'pageSize' => $pageSize,
-            'activeForOnlineOnly' => $activeForOnlineOnly
+            'activeForOnlineOnly' => $activeForOnlineOnly,
         ];
 
         return ApiClient::get($url, $this->getBearerToken(), $data);
@@ -138,7 +138,7 @@ class ProductCatalogProvider
         $data = [
             'baseVariantOnly' => $baseVariantOnly,
             'modifiedFrom' => $modifiedFrom,
-            'activeForOnlineOnly' => $activeForOnlineOnly
+            'activeForOnlineOnly' => $activeForOnlineOnly,
         ];
 
         try {

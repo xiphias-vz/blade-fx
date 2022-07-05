@@ -45,11 +45,12 @@ class EditController extends SprykerEditController
             return new RedirectResponse('/product-management');
         }
 
+        $priceDimension = $request->query->get(static::PARAM_PRICE_DIMENSION);
         $dataProvider = $this->getFactory()->createProductFormEditDataProvider();
         $form = $this
             ->getFactory()
             ->createProductFormEdit(
-                $dataProvider->getDataExtended($idProductAbstract, $request->query->get(static::PARAM_PRICE_DIMENSION)),
+                $dataProvider->getData($idProductAbstract, (array)$priceDimension),
                 $dataProvider->getOptions($idProductAbstract)
             )->handleRequest($request);
 

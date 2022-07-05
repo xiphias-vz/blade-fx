@@ -12,8 +12,6 @@ use Generated\Shared\Transfer\StoreTransfer;
 interface UserStoreRelationCheckerInterface
 {
     /**
-     * @param int $idProductAbstract
-     *
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function findStoreRelationForSupervisor(): StoreTransfer;

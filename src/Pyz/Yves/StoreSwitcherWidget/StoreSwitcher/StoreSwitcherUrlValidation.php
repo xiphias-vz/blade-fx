@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Yves\StoreSwitcherWidget\StoreSwitcher;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -11,12 +16,12 @@ class StoreSwitcherUrlValidation implements StoreSwitcherUrlValidationInterface
     public const URL_PARAM_PATH = 'path';
 
     /**
-     * @var AntiXSS
+     * @var \voku\helper\AntiXSS
      */
     protected $antiXSS;
 
     /**
-     * @param AntiXSS $antiXSS
+     * @param \voku\helper\AntiXSS $antiXSS
      */
     public function __construct(AntiXSS $antiXSS)
     {
@@ -24,7 +29,8 @@ class StoreSwitcherUrlValidation implements StoreSwitcherUrlValidationInterface
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return array
      */
     public function validateUrl(Request $request): array
@@ -37,24 +43,24 @@ class StoreSwitcherUrlValidation implements StoreSwitcherUrlValidationInterface
             $refererUrl = str_replace("AND", "-&-", $refererUrl);
         }
 
-        if (str_contains($myRequestUri, 'http')){
+        if (str_contains($myRequestUri, 'http')) {
             $refererUrl = '/';
             $path = '';
         }
 
-        if (isset($path) && str_starts_with($path, 'http')){
+        if (isset($path) && str_starts_with($path, 'http')) {
             $path = '';
         }
 
-        if (str_starts_with($refererUrl, '/')){
+        if (str_starts_with($refererUrl, '/')) {
             $refererUrl = $refererUrl . $path;
         } else {
             $refererUrl = '/';
         }
 
         return [
-            'path'  => $path,
-            'refererUrl' => $refererUrl
+            'path' => $path,
+            'refererUrl' => $refererUrl,
         ];
     }
 }

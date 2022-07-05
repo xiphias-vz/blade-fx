@@ -6,7 +6,7 @@
     <transfer name="PickingZone">
         <property name="idPickingZone" type="int"/>
         <property name="name" type="string"/>
-        <property name="isDefault" type="boolean" />
+        <property name="isDefault" type="bool" />
     </transfer>
 
     <transfer name="OrderPickingBlock">

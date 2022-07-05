@@ -15,7 +15,7 @@ use Spryker\Yves\Kernel\AbstractFactory;
 class QuoteFactory extends AbstractFactory
 {
     /**
-     * @return SessionClientInterface
+     * @return \Spryker\Client\Session\SessionClientInterface
      */
     public function getSessionClient(): SessionClientInterface
     {
@@ -23,7 +23,7 @@ class QuoteFactory extends AbstractFactory
     }
 
     /**
-     * @return QuoteClientInterface
+     * @return \Spryker\Client\Quote\QuoteClientInterface
      */
     public function getQuoteClient(): QuoteClientInterface
     {

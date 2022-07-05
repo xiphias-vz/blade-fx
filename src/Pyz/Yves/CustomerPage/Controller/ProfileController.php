@@ -132,9 +132,9 @@ class ProfileController extends SprykerShopProfileController
     }
 
     /**
-     * @param int|string|null $iso2Code
+     * @param string|null $iso2Code
      *
-     * @return string
+     * @return int
      */
     public function getIdCountryFromISO2CodeFromConfig(?string $iso2Code): int
     {
@@ -143,7 +143,7 @@ class ProfileController extends SprykerShopProfileController
             return 60;
         } else {
             if ($countries != null) {
-                return array_search($iso2Code, $countries);
+                return (int)array_search($iso2Code, $countries);
             } else {
                 return 60;
             }

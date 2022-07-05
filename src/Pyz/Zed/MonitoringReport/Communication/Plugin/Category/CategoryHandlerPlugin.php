@@ -17,6 +17,7 @@ use Generated\Shared\Transfer\SearchContextTransfer;
 use InvalidArgumentException;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
+use Pyz\Shared\PropelExtension\PropelExtension;
 use Pyz\Zed\MonitoringReport\Communication\Console\CategoryCheckConsole;
 use Pyz\Zed\MonitoringReport\Communication\Plugin\Query\CategoryProductAbstractKeysQuery;
 use Spryker\Client\Search\Dependency\Plugin\QueryInterface;
@@ -81,6 +82,11 @@ class CategoryHandlerPlugin extends AbstractPlugin
         }
     }
 
+    /**
+     * @param \Elastica\ResultSet $set
+     *
+     * @return array
+     */
     protected function getKeyList(ResultSet $set): array
     {
         $data = [];
@@ -96,6 +102,7 @@ class CategoryHandlerPlugin extends AbstractPlugin
      */
     protected function updateSearchResultsDE()
     {
+        $ffData = null;
         $activeMerchanList = SpyMerchantQuery::create()->findByIsActive(true);
         foreach ($activeMerchanList as $merchant) {
             $ffData[$merchant->getMerchantShortName()] = $this->getFactFinderCategories($merchant->getMerchantReference());

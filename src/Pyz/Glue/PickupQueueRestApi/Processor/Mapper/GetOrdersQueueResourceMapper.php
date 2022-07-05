@@ -8,23 +8,14 @@
 namespace Pyz\Glue\PickupQueueRestApi\Processor\Mapper;
 
 use Generated\Shared\Transfer\GetOrdersQueueTransfer;
-use Generated\Shared\Transfer\RestGetOrdersQueueAttributesTransfer;
 
 class GetOrdersQueueResourceMapper implements GetOrdersQueueResourceMapperInterface
 {
-    public function mapGetOrdersQueueDataToRestGetOrdersQueueAttributesTransfer(array $getOrdersQueueData): RestGetOrdersQueueAttributesTransfer
-    {
-        return (new RestGetOrdersQueueAttributesTransfer())->fromArray($getOrdersQueueData, true);
-    }
-
-    public function mapGetOrdersQueueStoreReferenceToRestGetOrdersQueueAttributesTransfer(int $storeReference): RestGetOrdersQueueAttributesTransfer
-    {
-        $restGetOrdersQueueTransfer = new RestGetOrdersQueueAttributesTransfer();
-        $restGetOrdersQueueTransfer->setMerchantFilialNumber($storeReference);
-
-        return $restGetOrdersQueueTransfer;
-    }
-
+    /**
+     * @param int $storeReference
+     *
+     * @return \Generated\Shared\Transfer\GetOrdersQueueTransfer
+     */
     public function mapGetOrdersQueueStoreReferenceToGetOrdersQueueTransfer(int $storeReference): GetOrdersQueueTransfer
     {
         $getOrdersQueueTransfer = new GetOrdersQueueTransfer();

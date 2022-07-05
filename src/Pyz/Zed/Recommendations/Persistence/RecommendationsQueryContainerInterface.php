@@ -18,7 +18,7 @@ interface RecommendationsQueryContainerInterface
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 

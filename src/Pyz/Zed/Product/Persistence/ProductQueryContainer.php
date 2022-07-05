@@ -14,7 +14,12 @@ use Spryker\Zed\Product\Persistence\ProductQueryContainer as SprykerProductQuery
  */
 class ProductQueryContainer extends SprykerProductQueryContainer implements ProductQueryContainerInterface
 {
-    public function queryProductAbstractPyzStoreWithStoresByFkProductAbstract($idProductAbstract)
+    /**
+     * @param int $idProductAbstract
+     *
+     * @return \Orm\Zed\Product\Persistence\PyzProductAbstractStoreQuery|\Orm\Zed\Product\Persistence\SpyProductAbstractStoreQuery
+     */
+    public function queryProductAbstractPyzStoreWithStoresByFkProductAbstract(int $idProductAbstract)
     {
         // TODO: Implement queryProductAbstractPyzStoreWithStoresByFkProductAbstract() method.
         return $this->getFactory()

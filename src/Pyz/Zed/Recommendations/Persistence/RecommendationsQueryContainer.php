@@ -63,7 +63,7 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     {
         $customerEntity = $this->getCustomerEntity($recoTransfer);
 
-        if (!$customerEntity) {
+        if ($customerEntity == false) {
             $recoTransfer->setIsDeleted(false);
 
             return $recoTransfer;
@@ -137,7 +137,7 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     {
         $customerEntity = $this->getCustomerEntity($recoTransfer);
 
-        if (!$customerEntity) {
+        if ($customerEntity == false) {
             $recoTransfer->setIsInserted(false);
 
             return $recoTransfer;
@@ -198,6 +198,9 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
             ->findOne();
     }
 
+    /**
+     * @return int[]
+     */
     public function getRedisKeys(): array
     {
         return [

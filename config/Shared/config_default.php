@@ -31,6 +31,7 @@ use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;
 use Spryker\Service\FlysystemFtpFileSystem\Plugin\Flysystem\FtpFilesystemBuilderPlugin;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\Acl\AclConstants;
+use Spryker\Shared\Application\ApplicationConstants as ApplicationConstantsAlias;
 use Spryker\Shared\Auth\AuthConstants;
 use Spryker\Shared\CmsGui\CmsGuiConstants;
 use Spryker\Shared\Collector\CollectorConstants;
@@ -91,7 +92,6 @@ use SprykerShop\Shared\ShopUi\ShopUiConstants;
 use StoreApp\Shared\Picker\PickerConstants;
 use Twig\Cache\FilesystemCache;
 use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
-use Pyz\Shared\BladeFx\BladeFxConstants;
 
 
 $CURRENT_STORE = Store::getInstance()->getStoreName();
@@ -859,10 +859,9 @@ $config[ZedRequestConstants::BASE_URL_ZED_API] = $config[ApplicationConstants::B
 $config[ZedRequestConstants::BASE_URL_SSL_ZED_API] = $config[ApplicationConstants::BASE_URL_SSL_ZED];
 
 // ---------- Trusted hosts
-$config[ApplicationConstants::YVES_TRUSTED_HOSTS]
-    = $config[HttpConstants::YVES_TRUSTED_HOSTS]
+$config[HttpConstants::YVES_TRUSTED_HOSTS]
     = [
-    $config[ApplicationConstants::HOST_YVES],
+    $config[ApplicationConstantsAlias::HOST_YVES],
 ];
 
 // ---------- Assets / Media

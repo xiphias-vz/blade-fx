@@ -85,6 +85,12 @@ class GetOrdersQueueReader implements GetOrdersQueueReaderInterface
         return $this->getResponseDataFromTransfer($pickupData, $response);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\GetOrdersQueueTransfer $getOrdersQueueTransfer
+     * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface $restResponse
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
     protected function getResponseDataFromTransfer(GetOrdersQueueTransfer $getOrdersQueueTransfer, RestResponseInterface $restResponse): RestResponseInterface
     {
         $restResponse->addResource($this->getGetOrdersQueueResource($getOrdersQueueTransfer));
@@ -92,6 +98,11 @@ class GetOrdersQueueReader implements GetOrdersQueueReaderInterface
         return $restResponse;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\GetOrdersQueueTransfer $getOrdersQueueTransfer
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceInterface
+     */
     protected function getGetOrdersQueueResource(GetOrdersQueueTransfer $getOrdersQueueTransfer): RestResourceInterface
     {
         return $this->getOrdersQueueRestResponseBuilder->createGetOrdersQueueRestResource($getOrdersQueueTransfer);

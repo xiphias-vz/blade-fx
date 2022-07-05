@@ -30,17 +30,17 @@ class SuccessStep extends SprykerSuccessStep
     private $copyQuoteTransfer;
 
     /**
-     * @var SessionClientInterface
+     * @var \Spryker\Client\Session\SessionClientInterface
      */
     protected $sessionClient;
 
     /**
-     * @param CheckoutPageToCustomerClientInterface $customerClient
-     * @param CheckoutPageToCartClientInterface $cartClient
-     * @param CheckoutPageConfig $checkoutPageConfig
-     * @param $stepRoute
-     * @param $escapeRoute
-     * @param SessionClientInterface $sessionClient
+     * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToCustomerClientInterface $customerClient
+     * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToCartClientInterface $cartClient
+     * @param \SprykerShop\Yves\CheckoutPage\CheckoutPageConfig $checkoutPageConfig
+     * @param string $stepRoute
+     * @param string|null $escapeRoute
+     * @param \Spryker\Client\Session\SessionClientInterface $sessionClient
      */
     public function __construct(CheckoutPageToCustomerClientInterface $customerClient, CheckoutPageToCartClientInterface $cartClient, CheckoutPageConfig $checkoutPageConfig, $stepRoute, $escapeRoute, SessionClientInterface $sessionClient)
     {

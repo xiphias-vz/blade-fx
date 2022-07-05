@@ -68,7 +68,7 @@ class TimeSlotService extends AbstractService implements TimeSlotServiceInterfac
         string $currentDate,
         string $timeSlot
     ): ?int {
-        if ($merchantTransfer->getTimeSlotsCutoffTime()) {
+        if ($merchantTransfer->getTimeSlotsCutoffTime() == true) {
             return $this->getCutoffTimeSlot($merchantTransfer, $currentDate, $timeSlot);
         }
 

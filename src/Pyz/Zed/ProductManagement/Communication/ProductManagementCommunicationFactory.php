@@ -55,7 +55,7 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
     }
 
     /**
-     * @return mixed
+     * @return \Pyz\Zed\User\Business\UserFacadeInterface
      */
     public function getUserFacade(): UserFacadeInterface
     {

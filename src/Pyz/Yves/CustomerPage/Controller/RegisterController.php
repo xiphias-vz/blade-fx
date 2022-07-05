@@ -101,13 +101,11 @@ class RegisterController extends SprykerShopRegisterController
         $email = $request->request->get(static::REGISTER_FORM_CUSTOMER_EMAIL) ?? '';
         $password = $request->request->get(static::REGISTER_FORM_CUSTOMER_PASSWORD_PASS) ?? '';
 
-        if (isset($registerFormView)) {
-            $registerFormView->vars['value']['customer']['email'] = $email;
-            $registerFormView->vars['value']['customer']['password'] = $password;
-        }
+        $registerFormView->vars['value']['customer']['email'] = $email;
+        $registerFormView->vars['value']['customer']['password'] = $password;
 
         $loginFormDisplay = true;
-        if($registerForm->isSubmitted() && !$registerForm->isValid()) {
+        if ($registerForm->isSubmitted() && !$registerForm->isValid()) {
             $loginFormDisplay = false;
         }
 

@@ -27,8 +27,15 @@ class IndexController extends AbstractController
      */
     public function indexAction(Request $request)
     {
+        $storeName = null;
+
         if ($request->request->get('picking_zone_order_export_form') !== null) {
-            $storeName = $request->request->get('picking_zone_order_export_form')['picking_store'];
+            $formArray = $request->request->get('picking_zone_order_export_form', []);
+            if (isset($formArray['picking_store'])) {
+                if (!empty($formArray['picking_store'])) {
+                    $storeName = $formArray['picking_store'];
+                }
+            }
         } else {
             $stores = $this->getFacade()->getPickingStores();
             asort($stores);

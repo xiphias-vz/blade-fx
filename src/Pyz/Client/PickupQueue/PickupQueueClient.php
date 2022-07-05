@@ -27,11 +27,19 @@ class PickupQueueClient extends AbstractClient implements PickupQueueClientInter
         return $this->getZedStub()->addOrderToQueue($addToQueueTransfer);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\GetOrdersQueueTransfer $getOrdersQueueTransfer
+     *
+     * @return mixed
+     */
     public function getOrdersQueued(GetOrdersQueueTransfer $getOrdersQueueTransfer)
     {
         return $this->getZedStub()->getOrdersQueue($getOrdersQueueTransfer);
     }
 
+    /**
+     * @return \Pyz\Client\PickupQueue\Zed\PickupQueueStubInterface
+     */
     protected function getZedStub(): PickupQueueStubInterface
     {
         return $this->getFactory()->createZedStub();

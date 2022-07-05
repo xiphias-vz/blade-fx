@@ -33,7 +33,7 @@ class FtpChecker
     protected $monitoringConfig;
 
     /**
-     * @var
+     * @var array
      */
     protected $files;
 

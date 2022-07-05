@@ -8,6 +8,7 @@
 namespace Pyz\Yves\CustomerCategoryPage\Controller;
 
 use Spryker\Yves\Kernel\Controller\AbstractController;
+use Spryker\Yves\Kernel\View\View;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -17,8 +18,10 @@ class CustomerCategoryController extends AbstractController
 {
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): View
     {
         $viewData = [
             'products' => [],

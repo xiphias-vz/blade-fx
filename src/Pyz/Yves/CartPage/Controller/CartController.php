@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\CartPage\Controller;
 
+use ArrayObject;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderDetailRequestTransfer;
 use Generated\Shared\Transfer\ProductAvailabilityTransfer;
@@ -240,7 +241,7 @@ class CartController extends SprykerCartController
                 $productPrice = $_REQUEST['productPrice'] ?? $productViewTransfer->getPrice();
                 $productTitle = $_REQUEST['productTitle'] ?? $productViewTransfer->getName();
 
-                for($i = 0; $i < $count; $i++){
+                for ($i = 0; $i < $count; $i++) {
                     $this->cartTrackingEvent(1, $productSku, $productPrice, $productTitle);
                 }
             }
@@ -595,7 +596,12 @@ class CartController extends SprykerCartController
         return $messageTransfers;
     }
 
-    public function removeCharsFromString($productTitle)
+    /**
+     * @param string $productTitle
+     *
+     * @return string|string[]
+     */
+    public function removeCharsFromString(string $productTitle)
     {
         $search = [
             "<span",
@@ -609,10 +615,10 @@ class CartController extends SprykerCartController
     }
 
     /**
-     * @param $count
-     * @param $productSku
-     * @param $productPrice
-     * @param $productTitle
+     * @param int $count
+     * @param string $productSku
+     * @param string $productPrice
+     * @param string $productTitle
      *
      * @return array
      */
@@ -631,11 +637,11 @@ class CartController extends SprykerCartController
     }
 
     /**
-     * @param $data
+     * @param array $data
      *
      * @return array
      */
-    public function getProductSkuWithQuantity($data): array
+    public function getProductSkuWithQuantity(array $data): array
     {
         $cartItems = $data['cartItems'];
         $cartItemsSku = [];
@@ -649,16 +655,16 @@ class CartController extends SprykerCartController
     }
 
     /**
-     * @param $productSku
-     * @param $masterId
-     * @param $page
-     * @param $position
-     * @param $query
-     * @param $title
+     * @param string $productSku
+     * @param int $masterId
+     * @param int $page
+     * @param int $position
+     * @param string $query
+     * @param string $title
      *
      * @return array
      */
-    public function clickTrackingEvent($productSku, $masterId, $page, $position, $query, $title): array
+    public function clickTrackingEvent(string $productSku, int $masterId, int $page, int $position, string $query, string $title): array
     {
         $data = [[
             'id' => $productSku,
@@ -674,9 +680,9 @@ class CartController extends SprykerCartController
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function clearIfExistsAction(Request $request): JsonResponse
     {
@@ -706,7 +712,7 @@ class CartController extends SprykerCartController
         }
 
         if ($deletedItems > 0) {
-            $quoteTransfer->setItems(new \ArrayObject(array_values($quoteTransfer->getItems()->getArrayCopy())));
+            $quoteTransfer->setItems(new ArrayObject(array_values($quoteTransfer->getItems()->getArrayCopy())));
             $this->getFactory()->getBaseQuoteClient()->setQuote($quoteTransfer);
         }
 

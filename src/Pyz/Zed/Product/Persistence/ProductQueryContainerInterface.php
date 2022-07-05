@@ -21,5 +21,5 @@ interface ProductQueryContainerInterface extends SprykerProductQueryContainerInt
      *
      * @return \Orm\Zed\Product\Persistence\SpyProductAbstractStoreQuery
      */
-    public function queryProductAbstractPyzStoreWithStoresByFkProductAbstract($idProductAbstract);
+    public function queryProductAbstractPyzStoreWithStoresByFkProductAbstract(int $idProductAbstract);
 }

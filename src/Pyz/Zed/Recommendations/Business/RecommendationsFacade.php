@@ -22,7 +22,7 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer
     {
@@ -127,11 +127,11 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     }
 
     /**
-     * @param $id
+     * @param int $id
      *
      * @return void
      */
-    public function deleteScenario($id): void
+    public function deleteScenario(int $id): void
     {
         $this->getFactory()
             ->createScenarioWriter()
@@ -149,9 +149,9 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     }
 
     /**
-     * @param int $idRecommendationsScenario
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionTransfer $definitionTransfer
      *
-     * @return \Generated\Shared\Transfer\ScenarioTransfer
+     * @return int
      */
     public function updateDefinitions(RecommendationDefinitionTransfer $definitionTransfer): int
     {

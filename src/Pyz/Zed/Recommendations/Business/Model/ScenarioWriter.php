@@ -66,11 +66,11 @@ class ScenarioWriter implements ScenarioWriterInterface
     }
 
     /**
-     * @param $id
+     * @param int $id
      *
      * @return void
      */
-    public function deleteScenario($id): void
+    public function deleteScenario(int $id): void
     {
         $scenarioEntity = $this->recommendationsQueryContainer
             ->queryScenarioWithIdRecommendationScenarios($id)

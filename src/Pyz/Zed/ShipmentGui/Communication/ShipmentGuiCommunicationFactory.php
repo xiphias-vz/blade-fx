@@ -8,8 +8,8 @@
 namespace Pyz\Zed\ShipmentGui\Communication;
 
 use Pyz\Zed\ShipmentGui\ShipmentGuiDependencyProvider;
+use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
-use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
 use Spryker\Zed\ShipmentGui\Communication\ShipmentGuiCommunicationFactory as SprykerShipmentGuiCommunicationFactory;
 
 class ShipmentGuiCommunicationFactory extends SprykerShipmentGuiCommunicationFactory
@@ -23,9 +23,9 @@ class ShipmentGuiCommunicationFactory extends SprykerShipmentGuiCommunicationFac
     }
 
     /**
-     * @return \Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge
+     * @return \Pyz\Zed\User\Business\UserFacadeInterface
      */
-    public function getUserFacade(): SalesToUserBridge
+    public function getUserFacade(): UserFacadeInterface
     {
         return $this->getProvidedDependency(ShipmentGuiDependencyProvider::FACADE_USER);
     }

@@ -157,12 +157,12 @@ $config[LogConstants::LOG_LEVEL] = Logger::CRITICAL;
 $config[EventBehaviorConstants::EVENT_BEHAVIOR_TRIGGERING_ACTIVE] = getenv('TEST_GROUP') === 'acceptance';
 
 // ---------- Trusted hosts
-$config[ApplicationConstants::YVES_TRUSTED_HOSTS]
-    = $config[HttpConstants::YVES_TRUSTED_HOSTS]
+$config[HttpConstants::YVES_TRUSTED_HOSTS]
     = [
         $config[ApplicationConstants::HOST_YVES],
-        $config[ApplicationConstants::HOST_ZED],
+        $config[ZedRequestConstants::HOST_ZED_API],
         'localhost',
+        ''
     ];
 
 // ---------- Guest cart
@@ -188,5 +188,5 @@ $config[ConsoleConstants::ENABLE_DEVELOPMENT_CONSOLE_COMMANDS] = true;
 // ----------- HTTP Security
 $config[KernelConstants::DOMAIN_WHITELIST] = [
     $config[ApplicationConstants::HOST_YVES],
-    $config[ApplicationConstants::HOST_ZED],
+    $config[ZedRequestConstants::HOST_ZED_API],
 ];
