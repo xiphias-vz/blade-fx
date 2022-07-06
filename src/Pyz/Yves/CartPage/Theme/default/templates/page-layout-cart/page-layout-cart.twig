@@ -10,4 +10,49 @@
 
 {% block container %}
     {{ parent() }}
+
+    <script type="text/javascript">
+        function productAddToCart(productId, productName, productPrice, productSku, productBrand, quantity = 1){
+            let selectedElement = document.querySelector(`[data-product-id="${productId}"]`);
+            if (selectedElement !== undefined || selectedElement !== null) {
+                selectedElement.setAttribute("disabled", "true");
+            }
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'eec.addToCart',
+                'ecommerce':{
+                    'add':{
+                        'currencyCode': '{{ data.currencyIsoCode }}',
+                        'products': [{
+                            'id': productId,
+                            'name': productName,
+                            'price': productPrice,
+                            'sku': productSku,
+                            'brand': productBrand,
+                            'quantity': quantity,
+                        }]
+                    }
+                },
+            });
+        }
+
+        function productRemoveFromCart(productId, productName, productSku, productQuantity, productPrice, productBrand) {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'eec.removeFromCart',
+                'ecommerce': {
+                    'remove': {
+                        'products': [{
+                            'id': productId,
+                            'name': productName,
+                            'sku': productSku,
+                            'quantity': productQuantity,
+                            'price': productPrice,
+                            'brand': productBrand
+                        }]
+                    }
+                },
+            });
+        }
+    </script>
 {% endblock %}

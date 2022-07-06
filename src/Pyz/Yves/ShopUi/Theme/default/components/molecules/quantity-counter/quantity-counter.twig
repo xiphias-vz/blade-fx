@@ -13,6 +13,7 @@
     autoUpdate: false,
     decrIconName: null,
     removeUrl: '',
+    productItem: data.productItem
 } %}
 
 {% define attributes = {
@@ -24,7 +25,11 @@
     {% if app.currentCodeBucket == 'DE' %}
         <div class="{{ component.renderClass(config.name ~ '__container', modifiers) }} grid grid--middle grid--no-wrap">
             <div class="col {{ config.name }}__col col-decr">
-                <div class="{{ component.renderClass('button', modifiers) }} button--quantity {{ data.value <= 1 ? 'button--disabled' : '' }} {{ config.name }}__button {{ config.name }}__button--decr {{ config.jsName }}__decr">
+                <div class="{{ component.renderClass('button', modifiers) }} button--quantity {{ data.value <= 1 ? 'button--disabled' : '' }} {{ config.name }}__button {{ config.name }}__button--decr {{ config.jsName }}__decr"
+                     onclick="productRemoveFromCart('{{ data.productItem.id | default(data.productItem.idProductAbstract) }}',
+                         '{{ data.productItem.name }}','{{ data.productItem.sku }}', {{ data.minQuantity }},
+                         '{{ data.productItem.unitPrice is defined ? data.productItem.unitPrice / 100 : null | default(data.productItem.price is defined ? data.productItem.price / 100 : null)}}',
+                         '{{ data.productItem.brand | default(data.productItem.attributes['supplier'] is defined ? data.productItem.attributes['supplier'] : "" )}}')">
                     {% if data.decrIconName %}
                         {% include atom('icon') with {
                             data: {
@@ -51,16 +56,29 @@
                     {% if data.readOnly %}readonly{% endif %}
                     {% if data.autoUpdate %}data-auto-update="true"{% endif %}
                     {% if data.removeUrl %}data-remove-url="{{ data.removeUrl }}"{% endif %}
+                    onchange="productAddToCart('{{ data.productItem.id | default(data.productItem.idProductAbstract) }}',
+                        '{{ data.productItem.name }}','{{ data.productItem.sku }}', 1,
+                        '{{ data.productItem.unitPrice is defined ? data.productItem.unitPrice / 100 : null | default(data.productItem.price is defined ? data.productItem.price / 100 : null) }}',
+                        '{{ data.productItem.brand | default(data.productItem.attributes['supplier'] is defined ? data.productItem.attributes['supplier'] : "" )}}')"
                 />
             </div>
             <div class="col {{ config.name }}__col">
-                <div class="{{ component.renderClass(config.name ~ '__button button', modifiers) }} {{ config.name }}__button {{ config.name }}__button--incr button--quantity button--quantity-incr {{ config.jsName }}__incr">+</div>
+                <div class="{{ component.renderClass(config.name ~ '__button button', modifiers) }} {{ config.name }}__button {{ config.name }}__button--incr button--quantity button--quantity-incr {{ config.jsName }}__incr"
+                onclick="productAddToCart('{{ data.productItem.id | default(data.productItem.idProductAbstract) }}',
+                    '{{ data.productItem.name }}',
+                    '{{ data.productItem.unitPrice is defined ? data.productItem.unitPrice / 100 : null | default(data.productItem.price is defined ? data.productItem.price / 100 : null) }}',
+                    '{{ data.productItem.sku }}',
+                    '{{ data.productItem.brand | default(data.productItem.attributes['supplier'] is defined ? data.productItem.attributes['supplier'] : "" )}}',{{ data.minQuantity }})">+</div>
             </div>
         </div>
     {%  else %}
         <div class="{{ component.renderClass(config.name ~ '__container', modifiers) }} grid grid--middle grid--no-wrap">
             <div class="col {{ config.name }}__col col-decr">
-                <div class="{{ component.renderClass('button', modifiers) }} button--quantity {{ data.value <= 1 ? 'button--disabled' : '' }} {{ config.name }}__button-cz {{ config.name }}__button-cz--decr-cz {{ config.jsName }}__decr">
+                <div class="{{ component.renderClass('button', modifiers) }} button--quantity {{ data.value <= 1 ? 'button--disabled' : '' }} {{ config.name }}__button-cz {{ config.name }}__button-cz--decr-cz {{ config.jsName }}__decr"
+                     onclick="productRemoveFromCart('{{ data.productItem.id | default(data.productItem.idProductAbstract) }}',
+                         '{{ data.productItem.name }}','{{ data.productItem.sku }}', {{ data.minQuantity }},
+                         '{{ data.productItem.unitPrice is defined ? data.productItem.unitPrice / 100 : null | default(data.productItem.price is defined ? data.productItem.price / 100 : null)}}',
+                         '{{ data.productItem.brand | default(data.productItem.attributes['supplier'] is defined ? data.productItem.attributes['supplier'] : "" )}}')">
                     {% if data.decrIconName %}
                         {% include atom('icon') with {
                             data: {
@@ -87,11 +105,22 @@
                     {% if data.readOnly %}readonly{% endif %}
                     {% if data.autoUpdate %}data-auto-update="true"{% endif %}
                     {% if data.removeUrl %}data-remove-url="{{ data.removeUrl }}"{% endif %}
+                    onchange="productAddToCart('{{ data.productItem.id | default(data.productItem.idProductAbstract) }}',
+                        '{{ data.productItem.name }}','{{ data.productItem.sku }}', 1,
+                        '{{ data.productItem.unitPrice is defined ? data.productItem.unitPrice / 100 : null | default(data.productItem.price is defined ? data.productItem.price / 100 : null) }}',
+                        '{{ data.productItem.brand | default(data.productItem.attributes['supplier'] is defined ? data.productItem.attributes['supplier'] : "" )}}')"
                 />
             </div>
             <div class="col {{ config.name }}__col">
-                <div class="{{ component.renderClass(config.name ~ '__button button', modifiers) }} {{ config.name }}__button-cz {{ config.name }}__button-cz--incr-cz button--quantity button--quantity-incr {{ config.jsName }}__incr">+</div>
+                <div class="{{ component.renderClass(config.name ~ '__button button', modifiers) }} {{ config.name }}__button-cz {{ config.name }}__button-cz--incr-cz button--quantity button--quantity-incr {{ config.jsName }}__incr"
+                     onclick="productAddToCart('{{ data.productItem.id | default(data.productItem.idProductAbstract) }}',
+                         '{{ data.productItem.name }}',
+                         '{{ data.productItem.unitPrice is defined ? data.productItem.unitPrice / 100 : null | default(data.productItem.price is defined ? data.productItem.price / 100 : null) }}',
+                         '{{ data.productItem.sku }}',
+                         '{{ data.productItem.brand | default(data.productItem.attributes['supplier'] is defined ? data.productItem.attributes['supplier'] : "" )}}',{{ data.minQuantity }})">+</div>
             </div>
         </div>
     {%  endif %}
 {% endblock %}
+
+
