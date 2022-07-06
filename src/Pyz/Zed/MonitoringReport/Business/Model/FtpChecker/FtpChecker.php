@@ -229,14 +229,10 @@ class FtpChecker
      */
     protected function listAllFilesInDirectory(string $path, string $merchant): array
     {
-        $i = 0;
         if (!strpos($path, 'archiv')) {
-            if ($i > 0) {
-                $path = substr($path, 0, -5);
-            }
+            $path = substr($path, 0, -5);
         }
         $path .= '/' . $merchant;
-        $i++;
 
         return $this->fileSystemService->listContents(
             (new FileSystemListTransfer())

@@ -337,6 +337,7 @@ document.addEventListener("ffReady", function (event) {
         }
     });
 
+
     resultDispatcher.addCallback("navigation", function (navigationData) {
         const channelName = document.querySelector('#ffChannelName');
         const storeId = document.querySelector('#storeId');

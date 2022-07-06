@@ -82,11 +82,15 @@
             <div class="container__inner spacing-bottom spacing-bottom--inner spacing-bottom--bigger is-hidden-lg-only">
                 <div class="box d-flex flex-center is-hidden-sm-md">
                     {% if app.currentCodeBucket == 'DE' %}
-                        <h1 class="spacing-bottom spacing-bottom--inner category-title" id="searchResultCountTitle">{{ data.title }} </h1>
-                        <span class="text-secondary text-medium m-left-m m-bottom-xs category-number-of-products" id="searchResultCount" data-text="{{ 'catalog.itemsFound' | trans }}" data-title="{{ 'global.search.results.for' | trans }}"></span>
+                        <h1 class="spacing-bottom spacing-bottom--inner category-title"
+                            id="searchResultCountTitle">{{ data.title }} </h1>
+                        <span class="text-secondary text-medium m-left-m m-bottom-xs category-number-of-products"
+                              id="searchResultCount" data-text="{{ 'catalog.itemsFound' | trans }}"
+                              data-title="{{ 'global.search.results.for' | trans }}"></span>
                     {% else %}
                         <h1 class="title--heading-CZ spacing-bottom spacing-bottom--inner category-title">{{ data.title }}</h1>
-                        <span class="text-secondary text-medium m-left-m m-bottom-xs category-number-of-products">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
+                        <span
+                            class="text-secondary text-medium m-left-m m-bottom-xs category-number-of-products">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
                     {% endif %}
 
                 </div>
@@ -104,7 +108,8 @@
                         'sort-trigger-class-name': catalogJsName ~ '__sort-trigger',
                     },
                 } only %}
-                <form method="GET" class="grid js-catalog-filter-target js-form-input-default-value-disabler__catalog-form {{ catalogJsName }}__form">
+                <form method="GET"
+                      class="grid js-catalog-filter-target js-form-input-default-value-disabler__catalog-form {{ catalogJsName }}__form">
                     {% block form %}
                         <div class="col col--sm-12 col--xl-3 catalog-left-side">
                             {% if data.currentCodeBucket != 'DE' %}
@@ -133,7 +138,8 @@
                             {% endif %}
                         </div>
                         <div class="col col--sm-12 col--xl-9 catalog-right-side">
-                            <button type="button" class="button button--hollow button--expand spacing-y spacing-y--big is-hidden-xl-only js-catalog-toggler-click__trigger">
+                            <button type="button"
+                                    class="button button--hollow button--expand spacing-y spacing-y--big is-hidden-xl-only js-catalog-toggler-click__trigger">
                                 {%- include atom('icon') with {
                                     class: 'spacing-right',
                                     data: {
@@ -162,7 +168,8 @@
                                             }
                                         } only %}
                                     {% endif %}
-                                    <div id="firstSortElement" class="col col--md-6 col--sm-2 col--right" style="z-index: 10">
+                                    <div id="firstSortElement" class="col col--md-6 col--sm-2 col--right"
+                                         style="z-index: 10">
                                         {% if data.currentCodeBucket != 'DE' %}
                                             {% include molecule('sort-number-products', 'CatalogPage') with {
                                                 data: {
@@ -171,7 +178,7 @@
                                                     parentJsName: catalogJsName,
                                                 },
                                             } only %}
-                                    {% else %}
+                                        {% else %}
                                             {% include molecule('products-per-page', 'FactFinderWebComponents') with {
                                                 class: 'hide',
                                                 data: {
@@ -181,28 +188,32 @@
                                                     },
                                                 }
                                             } only %}
-                                        {% include molecule('products-per-page-custom', 'FactFinderWebComponents') with {
+                                            {% include molecule('products-per-page-custom', 'FactFinderWebComponents') with {
 
-                                        } only %}
+                                            } only %}
                                         {% endif %}
                                     </div>
                                 </div>
 
                                 {% if data.currentCodeBucket != 'DE' %}
-                                    <div class="grid {% if data.viewMode != 'list' %}grid--stretch product-list{% endif %}">
+                                    <div
+                                        class="grid {% if data.viewMode != 'list' %}grid--stretch product-list{% endif %}">
                                         {% if data.products %}
                                             {% for product in data.products %}
-                                                {% if data.pagination.currentPage == 1  %}
+                                                {% if data.pagination.currentPage == 1 %}
                                                     {% widget 'CatalogPageProductWidget' args [product, data.viewMode, loop.index] only %}{% endwidget %}
                                                 {% else %}
                                                     {% set index = loop.index + ((data.pagination.currentPage - 1) * data.pagination.currentItemsPerPage) | default(0) %}
                                                     {% widget 'CatalogPageProductWidget' args [product, data.viewMode, index] only %}{% endwidget %}
-                                             {% endif %}
+                                                {% endif %}
                                             {% endfor %}
                                         {% else %}
-                                            {% block noResults %}{{ parent() }}<input action="action" type="button" value="{{ 'homepage.carousel.previous' | trans}}" class="{{ color }}" style=" color: white;
+                                            {% block noResults %}{{ parent() }}<input action="action" type="button"
+                                                                                      value="{{ 'homepage.carousel.previous' | trans }}"
+                                                                                      class="{{ color }}" style=" color: white;
                                                                                 border-radius: 5px; padding: 5px; margin-left: auto; margin-right: auto; width: 150px; cursor:pointer; font-family: Fira Sans, sans-serif; line-height: 1.7; font-weight: 500;
-                                                                                margin-top: 20px;" onclick="window.history.go(-1); return false;"/>{% endblock %}
+                                                                                margin-top: 20px;"
+                                                                                      onclick="window.history.go(-1); return false;"/>{% endblock %}
 
                                         {% endif %}
                                     </div>
@@ -216,6 +227,40 @@
                                             products: data.products
                                         }
                                     } only %}
+
+                                    {% block feedbackText %}
+                                        {% include atom('campaign', 'FactFinderWebComponents') with {
+                                            data: {
+                                                properties: {
+                                                    feedbacktext: ''
+                                                }
+                                            }
+                                        } only %}
+                                    {% endblock %}
+
+                                    {% block pushedProducts %}
+                                        {% embed molecule('pushed-products', 'FactFinderWebComponents') with {
+                                            data: {
+                                                properties: {
+                                                    component: '',
+                                                    record: ''
+                                                },
+                                                products: data.products
+                                            }
+                                        } only %}
+                                            {% block list %}
+                                                {% include molecule('record-list', 'FactFinderWebComponents') with {
+                                                    data: {
+                                                        properties: {
+                                                            component: '',
+                                                            record: ''
+                                                        },
+                                                        products: data.products
+                                                    }
+                                                } only %}
+                                            {% endblock %}
+                                        {% endembed %}
+                                    {% endblock %}
                                 {% endif %}
 
                                 <div class="col col--sm-12 col--md-9 col--lg-10 menu--inline pagingSmall">
@@ -235,7 +280,9 @@
                                     {% endif %}
                                 </div>
 
-                                <div id="secondSortElement" class="col col--lg-2 col--sm-3 float-right col--md-3 menu--inline" style="z-index: 10">
+                                <div id="secondSortElement"
+                                     class="col col--lg-2 col--sm-3 float-right col--md-3 menu--inline"
+                                     style="z-index: 10">
                                     {% if data.currentCodeBucket != 'DE' %}
                                         {% include molecule('sort-number-products', 'CatalogPage') with {
                                             data: {
@@ -246,18 +293,16 @@
                                         } only %}
                                         <script type="text/javascript">
                                             window.dataLayer = window.dataLayer || [];
-                                            var impressions =  window.catalogList;
+                                            var impressions = window.catalogList;
                                             var searchTerm = window.searchSuggestion || "";
 
-                                            if(!impressions)
-                                            {
+                                            if (!impressions) {
                                                 window.dataLayer.push({
                                                     'event': 'zeroResultsSearch',
                                                     'searchTerm': searchTerm,
                                                     'searchResults': 0,
                                                 });
-                                            }
-                                            else{
+                                            } else {
                                                 window.dataLayer.push({
                                                     'event': 'eec.POP',
                                                     'ecommerce':

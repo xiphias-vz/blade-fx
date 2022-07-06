@@ -1,0 +1,11 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'pushed-products'
+} %}
+
+{% block body %}
+    <ff-campaign-pushed-products {{ data.properties.component|raw }} unresolved>
+        {% block list %}{% endblock %}
+    </ff-campaign-pushed-products>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'campaign'
+} %}
+
+{% define data = {
+    properties: {
+        feedbacktext: ''
+    }
+} %}
+
+{% block body %}
+    <ff-campaign-feedbacktext label="above search result" unresolved>
+        <div class="search--notfound">
+            {% verbatim %}
+                {{{ text }}}
+            {% endverbatim %}
+        </div>
+    </ff-campaign-feedbacktext>
+{% endblock %}
