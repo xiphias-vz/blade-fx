@@ -1,18 +1,39 @@
 {% extends molecule('customer-reorder-form', '@SprykerShop:CustomerReorderWidget') %}
 
-{% block formActions %}
-    <input type="hidden" name="token" value="{{ csrf_token('reorder-items') }}">
-    <div class="grid grid--middle spacing-top spacing-top--biggest">
-        <div class="col col--expand">
-            <a href="{{ url('customer/order') }}" class="button button--hollow-ghost {{ config.name }}__button">
-                {{- 'general.back.button' | trans -}}
-            </a>
-        </div>
-        <button class="col button button--hollow {{ config.name }}__button {{ config.jsName }}__trigger" disabled>
-            {{- 'customer.order.reorder_selected' | trans -}}
-        </button>
-        <a href="{{ path('customer/order/reorder', {'idSalesOrder': data.idSalesOrder}) }}" class="col button {{ config.name }}__button js-form-dynamic-submitter--trigger" data-csrf-token="{{ csrf_token('reorder-cart') }}">
-            {{- 'customer.order.reorder_all' | trans -}}
-        </a>
+{% define config = {
+    name: 'customer-reorder-form',
+    tag: 'customer-reorder-form'
+} %}
+
+{% define data = {
+    idSalesOrder: required
+} %}
+
+{% block body %}
+    {% widget 'CustomerReorderItemsFormWidget'  args [data.order, config] with {
+        embed: {
+            formContent: block('formContent'),
+        },
+    } only %}
+        {% block embeddedData %}
+            <input type="hidden" name="id" value="{{ data.order.idSalesOrder }}">
+            {{ embed.formContent | raw }}
+
+            {% block formActions %}
+                <div class="box text-right">
+                    <button class="button button--hollow{% if app.currentCodeBucket == 'CZ' %}-CZ{% endif %} button--reorder-form-bottom {{ data.config.jsName }}__trigger" disabled>
+                        {{ 'customer.order.reorder_selected' | trans }}
+                    </button>
+                </div>
+            {% endblock %}
+        {% endblock %}
+    {% endwidget %}
+
+    <div class="box text-right">
+        {% widget 'CustomerReorderFormWidget'  args [data.order] only %}
+            {% block embeddedData %}
+                <button class="button">{{ 'customer.order.reorder_all' | trans }}</button>
+            {% endblock %}
+        {% endwidget %}
     </div>
 {% endblock %}

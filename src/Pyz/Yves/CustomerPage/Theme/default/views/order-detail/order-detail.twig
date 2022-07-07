@@ -28,10 +28,10 @@
                 <h1 class="col col--expand title title--general">
                     {{- 'customer.profile.order_details' | trans -}}
                 </h1>
-                <button class="col button button--hollow {{ config.name }}__button {{ config.jsName }}__trigger" disabled>
+                <button class="col button{% if app.currentCodeBucket == 'CZ' %}-cz{% endif %} button--hollow{% if app.currentCodeBucket == 'CZ' %}-CZ{% endif %} {{ config.name }}__button {{ config.jsName }}__trigger" disabled>
                     {{- 'customer.order.reorder_selected' | trans -}}
                 </button>
-                <a href="{{ path('customer/order/reorder', {'idSalesOrder': data.idSalesOrder}) }}" class="col button {{ config.name }}__button js-form-dynamic-submitter--trigger" data-csrf-token="{{ csrf_token('reorder-cart') }}">
+                <a href="{{ path('customer/order/reorder', {'idSalesOrder': data.idSalesOrder}) }}" class="col button{% if app.currentCodeBucket == 'CZ' %}-cz{% endif %} {{ config.name }}__button js-form-dynamic-submitter--trigger" data-csrf-token="{{ csrf_token('reorder-cart') }}">
                     {{- 'customer.order.reorder_all' | trans -}}
                 </a>
             </div>
