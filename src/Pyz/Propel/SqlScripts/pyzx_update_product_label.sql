@@ -68,7 +68,7 @@ BEGIN
              inner join spy_stock_product ssp on sss.fk_stock = ssp.fk_stock and sp.id_product = ssp.fk_product
     where sp.is_active = 1
       and sppsDef.gross_price > 0
-      and sppsDef.gross_price < sppsOrg.gross_price
+      and (sppsDef.gross_price < sppsOrg.gross_price or sppsDef.is_permanent_sale_price = 1 or ifnull(sppsDef.promotion, '') <> '')
       and ssp.quantity > 0
       and splpa.id_product_label_product_abstract is null;
     /*
@@ -111,7 +111,7 @@ BEGIN
                       inner join spy_stock_product ssp on sss.fk_stock = ssp.fk_stock and sp.id_product = ssp.fk_product
              where sp.is_active = 1
                and sppsDef.gross_price > 0
-               and sppsDef.gross_price < sppsOrg.gross_price
+               and (sppsDef.gross_price < sppsOrg.gross_price or sppsDef.is_permanent_sale_price = 1 or ifnull(sppsDef.promotion, '') <> '')
                and ssp.quantity > 0
          ) ss1 on ss1.id_product_label = splpa.fk_product_label and ss1.fk_product_abstract = splpa.fk_product_abstract
     where ss1.fk_product_abstract is null;

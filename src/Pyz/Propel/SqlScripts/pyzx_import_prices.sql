@@ -241,6 +241,24 @@ BEGIN
 	where spps.id_price_product_store is null
 		and t.is_permanent_sale_price = 1;
 
+    update tmp_tbl_price t
+        inner join spy_price_product_store spps on spps.fk_store = t.fk_store
+            and spps.fk_price_product = t.fk_price_product
+        left outer join spy_price_product_default sppd on spps.id_price_product_store = sppd.fk_price_product_store
+        set t.isChanged = 1
+    where sppd.fk_price_product_store is null
+        and t.is_permanent_sale_price = 1;
+
+    insert into spy_price_product_default
+        (fk_price_product_store)
+    select spps.id_price_product_store
+    from tmp_tbl_price t
+        inner join spy_price_product_store spps on spps.fk_store = t.fk_store
+            and spps.fk_price_product = t.fk_price_product
+        left outer join spy_price_product_default sppd on spps.id_price_product_store = sppd.fk_price_product_store
+    where sppd.fk_price_product_store is null
+        and t.is_permanent_sale_price = 1;
+
 	update tmp_tbl_price t
 		inner join spy_price_product_store spps on spps.fk_store = t.fk_store
 			and spps.fk_price_product = t.fk_price_product
@@ -336,6 +354,13 @@ BEGIN
 	delete from spy_price_product_store
 	where id_price_product_store IN (select distinct id_price_product_store from tbl_toDelete);
 
+    /* insert missing default prices */
+    insert into spy_price_product_default
+        (fk_price_product_store)
+    select spps.id_price_product_store
+    from spy_price_product_store spps
+        left outer join spy_price_product_default sppd on spps.id_price_product_store = sppd.fk_price_product_store
+    where sppd.id_price_product_default is null;
 
 	INSERT INTO pyz_data_import_event (entity_id, event_name, created_at)
 	select distinct t.fk_product_abstract, 'Price.price_abstract.publish', now()
