@@ -7,9 +7,9 @@ BEGIN
         (ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice, Promotion, fk_product, dt_created)
     SELECT sp.sku as ean, sm.filial_number as storeID
          , ROUND(sppsDef.gross_price / 100, 2) as price
-         , CASE WHEN sppsDef.gross_price < orig.gross_price THEN ROUND(orig.gross_price / 100, 2) ELSE null end as pseudoPrice
+         , CASE WHEN NOT sppsDef.promotion IS NULL THEN ROUND(orig.gross_price / 100, 2) ELSE null end as pseudoPrice
          , ROUND(sa.quantity) as quantity
-         , CASE WHEN sppsDef.gross_price < orig.gross_price THEN 1 else CASE WHEN prom.name is not null then 1 else 0 end end as sale
+         , CASE WHEN NOT sppsDef.promotion IS NULL THEN 1 else 0 end as sale
          , null as ShelfInfo
          , CASE WHEN sppsDef.gross_price < orig.gross_price THEN
                     CONCAT('-', FLOOR((1 - (sppsDef.gross_price / 100) / (orig.gross_price / 100)) * 100),'%')
@@ -25,7 +25,7 @@ BEGIN
                ELSE
                    REPLACE(CONCAT(ROUND(sppsDef.gross_price / 100, 2), ' ', sc.symbol, '/1 ',  IFNULL(JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]'), '')), '.', ',')
             END as basePrice
-        , prom.name as Promotion
+        , sppsDef.promotion  as Promotion
         , sp.id_product
         , now()
     FROM spy_product sp
@@ -49,15 +49,6 @@ BEGIN
                       INNER JOIN spy_price_product_default sppdOrig on sppdOrig.fk_price_product_store = sppsOrig.id_price_product_store
          ) orig ON orig.fk_store = sa.fk_store
              AND spp.fk_product_abstract = orig.fk_product_abstract
-        LEFT OUTER JOIN
-         (
-             select spps.fk_product_abstract, spps.fk_store, sppsl.name
-             from spy_price_product_schedule_list sppsl
-                      inner join spy_price_product_schedule spps on sppsl.id_price_product_schedule_list = spps.fk_price_product_schedule_list
-             where sppsl.is_active = 1
-               and spps.is_current = 1
-             GROUP BY spps.fk_product_abstract, spps.fk_store, sppsl.name
-         ) prom on spa.id_product_abstract = prom.fk_product_abstract AND sa.fk_store = prom.fk_store
     WHERE IFNULL(sa.quantity, 0) > 0
         AND sppsDef.gross_price > 0
         AND sp.is_active = 1;
