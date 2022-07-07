@@ -6,7 +6,6 @@
     matomoIdSite: matomoIdsite is defined ? matomoIdsite : app['matomo.idsite'],
     currentCookieStore: app.currentStoreCookie,
     currentCodeBucket: app.currentCodeBucket,
-    currencyIsoCode: app.currentCurrencyISOCode,
 } %}
 
 {%- block class -%}page-layout-main js-page-layout-main js-page-layout-main--side-drawer-container js-page-layout-main--block-scroll{%- endblock -%}
@@ -217,46 +216,6 @@
                     }
                 }
             }
-        }
-
-        function productAddToCart(productId, productName, productPrice, productSku, productBrand, quantity = 1)
-        {
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                'event': 'eec.addToCart',
-                'ecommerce':{
-                    'add':{
-                        'currencyCode': '{{ data.currencyIsoCode }}',
-                        'products': [{
-                            'id': productId,
-                            'name': productName,
-                            'price': productPrice,
-                            'sku': productSku,
-                            'brand': productBrand,
-                            'quantity': quantity,
-                        }]
-                    }
-                },
-            });
-        }
-
-        function productRemoveFromCart(productId, productName, productSku, productQuantity, productPrice, productBrand) {
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                'event': 'eec.removeFromCart',
-                'ecommerce': {
-                    'remove': {
-                        'products': [{
-                            'id': productId,
-                            'name': productName,
-                            'sku': productSku,
-                            'quantity': productQuantity,
-                            'price': productPrice,
-                            'brand': productBrand
-                        }]
-                    }
-                },
-            });
         }
     </script>
 

@@ -146,7 +146,6 @@
                                    value="{{ csrf_token('change-cart') }}">
                             {% include molecule('product-quantity-input') with {
                                 data: {
-                                    productItem: data.productItem,
                                     maxQuantity: data.productItem.maxQuantity,
                                     value: data.productItem.quantity,
                                     removeUrl: removeUrl,
@@ -205,8 +204,7 @@
                     <button
                         class="{{ component.renderClass(config.name ~ '__remove', modifiers) }} link link--darkest link--edit __remove_position"
                         value="{{- 'product_cart_item.remove' | trans | raw -}}"
-                        onclick="productRemoveFromCart('{{ data.productItem.id }}','{{ data.productItem.name }}','{{ data.productItem.sku }}','{{ data.productItem.quantity }}','{{ data.productItem.unitGrossPrice is defined ? data.productItem.unitGrossPrice / 100 : null }}',
-                            '{{ data.productItem.brand | default('') }}')">
+                        onclick="productRemoveFromCart('{{ data.productItem.id }}','{{ data.productItem.name }}','{{ data.productItem.sku }}','{{ data.productItem.quantity }}','{{ data.productItem.unitGrossPrice is defined ? data.productItem.unitGrossPrice / 100 : null }}')">
                         <div class="{{ config.name }}__remove-btn-container">
                             {% include atom('icon') with {
                                 modifiers:['dark-bin'] ,
@@ -219,8 +217,9 @@
                 </form>
                 {% endif %}
                 <script>
-                    function productRemoveFromCart(productId, productName, productSku, productQuantity, productPrice, productBrand) {
+                    function productRemoveFromCart(productId, productName, productSku, productQuantity, productPrice) {
                         removeItemFromLocalStorageAndCookie(productSku);
+
                         window.dataLayer = window.dataLayer || [];
                         window.dataLayer.push({
                             'event': 'eec.removeFromCart',
@@ -233,7 +232,6 @@
                                         'sku': productSku,
                                         'quantity': productQuantity,
                                         'price': productPrice,
-                                        'brand': productBrand
                                     }]
                                 }
                             },

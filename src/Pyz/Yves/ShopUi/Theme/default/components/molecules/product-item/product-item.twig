@@ -359,6 +359,7 @@
 
                 {% if app.currentCodeBucket == 'DE' %}
                     <a href="{{ addAjaxUrl }}"
+                       rel="nofollow"
                        onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.sku }}','{{ data.supplier | escape('js') }}')"
                        class="
                                         button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
@@ -381,6 +382,7 @@
                     </a>
                 {% else %}
                     <a href="{{ addAjaxUrl }}"
+                       rel="nofollow"
                        onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.sku }}','{{ data.supplier | escape('js') }}')"
                        class="
                                         button button--with-icon button--middle-icon button_center_align button--backgroundcolor-CZ
@@ -430,11 +432,6 @@
                                     js-quantity-counter-product__decr"
                            data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
                            data-product-sku="{{ data.sku }}"
-                           onclick="productRemoveFromCart('{{ data.idProductAbstract }}',
-                               '{{ data.name }}',
-                               '{{ data.sku }}',1,
-                               '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}',
-                               '{{ data.product.brand | default('') }}')"
                         >
                             -
                         </a>
@@ -447,22 +444,12 @@
                                     js-quantity-counter-product__decr-cz"
                            data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
                            data-product-sku="{{ data.sku }}"
-                           onclick="productRemoveFromCart('{{ data.idProductAbstract }}',
-                               '{{ data.name }}',
-                               '{{ data.sku }}',1,
-                               '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}',
-                               '{{ data.product.brand | default('') }}')"
                         >
                             -
                         </a>
                     {% endif %}
 
-                    <input type="number" class="txt-product-quantity" min="1" max="99" value="1"
-                           onchange="productAddToCart('{{ data.product.id | default(data.product.idProductAbstract) }}',
-                               '{{ data.product.name }}','{{ data.product.sku }}', this.value,
-                               '{{ data.product.unitPrice is defined ? data.product.unitPrice / 100 : null | default(data.product.price is defined ? data.product.price / 100 : null) }}',
-                               '{{ data.product.brand | default(data.product.attributes['supplier'] is defined ? data.product.attributes['supplier'] : "" )}}')">
-
+                    <input type="number" class="txt-product-quantity" min="1" max="99" value="1">
                     {% if app.currentCodeBucket == 'DE' %}
                         <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) }}"
                            class="
@@ -474,11 +461,7 @@
                            data-product-title="{{ data.name }}"
                            data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
                            data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                           onclick="productAddToCart('{{ data.idProductAbstract }}',
-                               '{{ data.name }}',
-                               '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}',
-                               '{{ data.sku }}',
-                               '{{ data.product.brand | default('') }}',1)">
+                        >
                             +
                         </a>
                     {% else %}
@@ -491,11 +474,6 @@
                            data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
                            data-product-sku="{{ data.sku }}"
                            data-product-url="{{ data.product.url }}"
-                           onclick="productAddToCart('{{ data.idProductAbstract }}',
-                               '{{ data.name }}',
-                               '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}',
-                               '{{ data.sku }}',
-                               '{{ data.product.brand | default('') }}',1)"
                         >
                             +
                         </a>
@@ -514,6 +492,28 @@
                     'list': 'POP',
                 });
 
+                function productAddToCart(productId, productName, productPrice, productSku, productBrand) {
+                    let selectedElement = document.querySelector(`[data-product-id="${productId}"]`);
+                    if (selectedElement !== undefined || selectedElement !== null) {
+                        selectedElement.setAttribute("disabled", "true");
+                    }
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'eec.addToCart',
+                        'ecommerce': {
+                            'add': {
+                                'currencyCode': '{{ data.currencyIsoCode }}',
+                                'products': [{
+                                    'id': productId,
+                                    'name': productName,
+                                    'price': productPrice,
+                                    'sku': productSku,
+                                    'brand': productBrand,
+                                }]
+                            }
+                        },
+                    });
+                }
             </script>
         {% endblock %}
         {% endblock %}
