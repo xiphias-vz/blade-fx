@@ -69,13 +69,15 @@ class CategoryHandlerPlugin extends AbstractPlugin
         foreach ($data as $item) {
             if ($item->getCategoryName() != self::NO_CATEGORY) {
                 $indexNme = $this->getIndexName($item->getStoreName());
-                $res = $this->getSearchResult($indexNme, $item->getFkCategory());
-                $hits = $res->getTotalHits();
-                $item->setNumberOfProductsSearch($hits);
                 if ($item->getFkCategory() > 0) {
                     $resKeys = $this->getAbstractKeysByCategory($indexNme, $item->getFkCategory(), $item->getStoreName());
                     $data = $this->getKeyList($resKeys);
+                    $item->setNumberOfProductsSearch(count($data));
                     $item->setEsAbstractKeys(json_encode($data));
+                } else {
+                    $res = $this->getAbstractKeysByCategory($indexNme, 0, $item->getStoreName());
+                    $hits = $res->getTotalHits();
+                    $item->setNumberOfProductsSearch($hits);
                 }
                 $item->save();
             }

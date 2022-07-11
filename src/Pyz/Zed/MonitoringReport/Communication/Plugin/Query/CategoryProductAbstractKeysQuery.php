@@ -61,12 +61,21 @@ class CategoryProductAbstractKeysQuery implements QueryInterface, SearchContextA
                                 ],
                             'filter' =>
                                 [
-                                    ['term' =>
-                                        ['category.all-parents' =>
+                                    [
+                            'nested' =>
+                                        [
+                            "query" =>
                                             [
-                                                'value' => $this->idCategory,
-                                                'boost' => 1,
+                            "term" =>
+                                                [
+                            'integer-facet.facet-name' =>
+                                                    [
+                            'value' => 'price-DEFAULT-CZK-GROSS_MODE',
+                                                        'boost' => 1,
+                                                    ],
+                                                ],
                                             ],
+                                            'path' => 'integer-facet',
                                         ],
                                     ],
                                 ],
@@ -75,6 +84,16 @@ class CategoryProductAbstractKeysQuery implements QueryInterface, SearchContextA
             'stored_fields' => [],
             'size' => 10000,
         ];
+
+        if ($this->idCategory > 0) {
+            $queryData["query"]["bool"]["filter"][1]["term"] =
+                                        ['category.all-parents' =>
+                                            [
+                                                'value' => $this->idCategory,
+                                                'boost' => 1,
+                                            ],
+                                        ];
+        }
 
         return new Query($queryData);
     }

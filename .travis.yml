@@ -79,8 +79,8 @@ before_script:
     - vendor/bin/console frontend:yves:install-dependencies
 
 script:
-    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/StoreApp/Zed -l 4 -vvv
-    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Zed -l 3 -vvv
+#    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/StoreApp/Zed -l 4 --debug
+    - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Zed -l 3 --debug
     - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Client -l 4 -vvv
     - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Glue -l 4 -vvv
     - php -d memory_limit=5376M vendor/bin/phpstan analyze -c phpstan.neon src/Pyz/Shared -l 4 -vvv
