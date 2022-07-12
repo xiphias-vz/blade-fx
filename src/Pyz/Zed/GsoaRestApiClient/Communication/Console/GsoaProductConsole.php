@@ -242,7 +242,7 @@ class GsoaProductConsole extends Console
                             }
                             $result["products"] = $this->getPlacementsInStock($output, $client, $result["products"], 0, $store);
                             foreach ($result["products"] as $item) {
-                                if (count($item["eshopCategories"]) > 0 && !empty($item["vatRate"])) {
+                                if (count($item["eshopCategories"]) > 0 && $item["vatRate"] !== null) {
                                     $counter++;
                                     $this->setReturnablePackagins($item, $returnablePackagingsPrices, $client, $store);
                                     $d = $map->mapValues($item);
@@ -491,7 +491,7 @@ class GsoaProductConsole extends Console
         $sortOrderFilter = [];
         $productCount = count($products);
         for ($i = $index; $i < $productCount; $i++) {
-            if (count($products[$i]["eshopCategories"]) > 0 && !empty($products[$i]["vatRate"])) {
+            if (count($products[$i]["eshopCategories"]) > 0 && $products[$i]["vatRate"] !== null) {
                 $sortOrderFilter[] = $products[$i]['wamasNr'];
                 $counter++;
                 if ($counter > $limit) {

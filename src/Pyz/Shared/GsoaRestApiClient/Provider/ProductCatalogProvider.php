@@ -119,7 +119,11 @@ class ProductCatalogProvider
             'activeForOnlineOnly' => $activeForOnlineOnly,
         ];
 
-        return ApiClient::get($url, $this->getBearerToken(), $data);
+        try {
+            return ApiClient::get($url, $this->getBearerToken(), $data);
+        } catch (Exception $ex) {
+            return [];
+        }
     }
 
     /**

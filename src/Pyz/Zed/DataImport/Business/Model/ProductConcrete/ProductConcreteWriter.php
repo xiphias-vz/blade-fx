@@ -80,7 +80,7 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     {
         $productEntity = $this->importProduct($dataSet);
 
-        $this->productRepository->addProductConcrete($productEntity, $dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
+        $this->productRepository->addProductConcrete($productEntity, $dataSet[static::KEY_PRODUCT_NUMBER]);
 
         $this->importProductLocalizedAttributes($dataSet, $productEntity);
 
@@ -120,9 +120,9 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
         $productEntity
             ->setIsActive($dataSet[static::KEY_IS_ACTIVE])
             ->setFkProductAbstract($idAbstract)
-            ->setProductNumber($dataSet[static::KEY_PRODUCT_NUMBER])
+            ->setProductNumber($dataSet[ProductConfig::KEY_PRODUCT_NUMBER])
             ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
-            ->setSku($dataSet[static::KEY_PRODUCT_NUMBER])
+            ->setSku($dataSet[ProductConfig::KEY_PRODUCT_NUMBER])
             ->setLastImportAt(static::$lastImportTime->format('Y-m-d H:i:s'))
             ->setAssortmentZone($dataSet[static::ASSORTMENT_ZONE])
             ->setAttributes(json_encode($attributes))
@@ -156,8 +156,7 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
         unset($attributes[ProductConfig::KEY_TAX]);
         unset($attributes[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
         unset($attributes[ProductConfig::KEY_DESCRIPTION]);
-        unset($attributes[ProductConfig::KEY_PRODUCT_NUMBER]);
-        unset($attributes[ProductConfig::KEY_PRODUCT_NUMBER]);
+        unset($attributes[static::KEY_PRODUCT_NUMBER]);
         unset($attributes[ProductConfig::KEY_SAP_NUMBER]);
 
         return $attributes;

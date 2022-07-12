@@ -7,12 +7,14 @@
 
 namespace Pyz\Zed\DataImportCZ\Business\Model\ProductAbstract;
 
+use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep as PyzProductAbstractWriterStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 
 class ProductAbstractWriterStep extends PyzProductAbstractWriterStep
 {
     protected const SHIPMENT_TAX_RATE_NAME = 'CZ Shipment Tax';
+    public const KEY_PRODUCT_NUMBER = ProductConfig::KEY_SAP_NUMBER;
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet

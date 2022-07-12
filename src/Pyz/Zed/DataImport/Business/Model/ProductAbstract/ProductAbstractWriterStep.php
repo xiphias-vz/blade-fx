@@ -108,7 +108,12 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      */
     public static function getAbstractSku(DataSetInterface $dataSet): string
     {
-        $sku = $dataSet[static::KEY_PRODUCT_NUMBER];
+        if (getenv('SPRYKER_CODE_BUCKET') === 'CZ') {
+            $sku = $dataSet[ProductConfig::KEY_SAP_NUMBER];
+        } else {
+            $sku = $dataSet[static::KEY_PRODUCT_NUMBER];
+        }
+
         $pos = strpos($sku, '_');
         if ($pos > 0) {
             $sku = substr($sku, 0, $pos);
@@ -128,7 +133,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
             ->filterBySku(static::getAbstractSku($dataSet))
             ->findOneOrCreate();
 
-        if (preg_match_all("/(.*?)_\d{4}$/", $dataSet[ProductConfig::KEY_PRODUCT_NUMBER], $out) < 1) {
+        if (preg_match_all("/(.*?)_\d{4}$/", $dataSet[static::KEY_PRODUCT_NUMBER], $out) < 1) {
             $productAttributes = $this->removeUnnecessaryAttributes($dataSet[AttributesExtractorStep::KEY_ATTRIBUTES]);
 
             $productAbstractEntity
@@ -158,8 +163,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         unset($productAttributes[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
         unset($productAttributes[ProductConfig::KEY_ARTIKELNAME_SPRYKER]);
         unset($productAttributes[ProductConfig::KEY_DESCRIPTION]);
-        unset($productAttributes[ProductConfig::KEY_PRODUCT_NUMBER]);
-        unset($productAttributes[ProductConfig::KEY_PRODUCT_NUMBER]);
+        unset($productAttributes[static::KEY_PRODUCT_NUMBER]);
 
         return $productAttributes;
     }

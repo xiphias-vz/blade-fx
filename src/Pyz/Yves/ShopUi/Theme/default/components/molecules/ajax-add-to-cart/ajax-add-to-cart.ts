@@ -319,7 +319,6 @@ export default class AjaxAddToCart extends Component {
         if (productSku.includes('_')) {
             productSku = productSku.split("_")[0];
         }
-        productSku = JSON.parse(productSku);
 
         const stringArray = link.href.split('/').slice(0,-2);
         const url = stringArray.join('/') + '/clear-if-exists';

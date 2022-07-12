@@ -43,6 +43,7 @@
 {% set productSaleVolume = data.product.attributes['grundpreisinhalt'] | default(null) %}
 
 {% block body %}
+    <!--- id_product_concrete: {{ data.product.idProductConcrete }}, available: {{ data.product.available }}, price: {{ data.product.price }} -->
     <script type="text/javascript">
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({

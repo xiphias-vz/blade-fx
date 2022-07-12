@@ -40,6 +40,8 @@ BEGIN
       and (in_fk_product_abstract is null or sp.fk_product_abstract = in_fk_product_abstract)
       and (sa.id_availability is null or saa.id_availability_abstract is null or sas.id_availability_storage is null);
 
+    CREATE INDEX ix_tbl_availability3 ON tbl_availability (id_store, sku);
+
     INSERT INTO tbl_availability
     (id_store, store_name, stock_is_active, fk_product, is_never_out_of_stock, quantity,
      sku, product_is_active, reservation_quantity, id_availability, av_is_never_out_of_stock, av_quantity,
@@ -57,28 +59,29 @@ BEGIN
            case when sa.id_availability is null then 1 else 0 end as isNew,
            0 as isModified
     FROM spy_store s
-             LEFT JOIN spy_stock_store sss ON (s.id_store = sss.fk_store)
-             LEFT JOIN spy_stock ss ON (sss.fk_stock = ss.id_stock)
-             LEFT JOIN spy_stock_product ssp on (ss.id_stock = ssp.fk_stock)
-             LEFT JOIN spy_product sp ON (ssp.fk_product=sp.id_product)
-             LEFT JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
-             LEFT JOIN spy_availability_abstract saa on sss.fk_store = saa.fk_store AND spa.sku = saa.abstract_sku
-             LEFT JOIN spy_availability sa on saa.id_availability_abstract = sa.fk_availability_abstract AND sp.sku = sa.sku
-             LEFT JOIN spy_availability_storage sas on sa.fk_availability_abstract = sas.fk_availability_abstract
-             LEFT JOIN spy_oms_product_reservation sopr on s.id_store = sopr.fk_store AND sp.sku = sopr.sku
+        LEFT JOIN spy_stock_store sss ON (s.id_store = sss.fk_store)
+        LEFT JOIN spy_stock ss ON (sss.fk_stock = ss.id_stock)
+        LEFT JOIN spy_stock_product ssp on (ss.id_stock = ssp.fk_stock)
+        LEFT JOIN spy_product sp ON (ssp.fk_product=sp.id_product)
+        LEFT JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
+        LEFT JOIN spy_availability_abstract saa on sss.fk_store = saa.fk_store AND spa.sku = saa.abstract_sku
+        LEFT JOIN spy_availability sa on saa.id_availability_abstract = sa.fk_availability_abstract AND sp.sku = sa.sku
+        LEFT JOIN spy_availability_storage sas on sa.fk_availability_abstract = sas.fk_availability_abstract
+        LEFT JOIN spy_oms_product_reservation sopr on s.id_store = sopr.fk_store AND sp.sku = sopr.sku
+        LEFT JOIN tbl_availability t on s.id_store = t.id_store AND t.sku = sp.sku
     WHERE (
-                  (ssp.is_never_out_of_stock <> sa.is_never_out_of_stock)
-                  or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(sa.quantity, 0.0))
-                  or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(saa.quantity, 0.0))
-              )
-      and (in_fk_product_abstract is null or sp.fk_product_abstract = in_fk_product_abstract);
+            (ssp.is_never_out_of_stock <> sa.is_never_out_of_stock)
+            or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(sa.quantity, 0.0))
+            or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(saa.quantity, 0.0))
+        )
+        AND (in_fk_product_abstract is null or sp.fk_product_abstract = in_fk_product_abstract)
+        AND t.id_store is null;
 
     CREATE INDEX ix_tbl_availability ON tbl_availability (id_availability_abstract);
     CREATE INDEX ix_tbl_availability2 ON tbl_availability (id_store, abstract_sku);
-    CREATE INDEX ix_tbl_availability3 ON tbl_availability (id_store, sku);
 
     insert into spy_availability_abstract
-    (fk_store, abstract_sku, quantity)
+        (fk_store, abstract_sku, quantity)
     select id_store, abstract_sku, max(real_quantity)
     from tbl_availability
     where id_availability_abstract is null
@@ -89,8 +92,13 @@ BEGIN
         set ta.id_availability_abstract = saa.id_availability_abstract
     where ta.id_availability_abstract is null;
 
+    update tbl_availability ta
+        inner join spy_availability sa on ta.id_store = sa.fk_store AND ta.sku = sa.sku
+            set ta.id_availability = sa.id_availability
+    where ta.id_availability is null;
+
     insert into spy_availability
-    (fk_availability_abstract, fk_store, is_never_out_of_stock, quantity, sku)
+        (fk_availability_abstract, fk_store, is_never_out_of_stock, quantity, sku)
     select ta.id_availability_abstract, ta.id_store
          , case when ta.real_quantity = 999999.0 then 1 else 0 end as is_never_out_of_stock
          , max(ta.real_quantity) as quantity, ta.sku
