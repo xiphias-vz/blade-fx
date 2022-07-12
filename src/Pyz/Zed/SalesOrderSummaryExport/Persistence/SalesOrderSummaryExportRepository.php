@@ -37,75 +37,78 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
     {
         $transfer = new FileSystemContentTransfer();
 
-        $qry = "select sso.order_reference as OrderNr
-	, sso.store
-	, date_format(CONVERT_TZ(sso.created_at, '+00:00', '+01:00'),  '%d.%m.%Y %T') as OrderDate
-	, date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as DeliveryDate
-    , sum(ssoi.gross_price) as ItemValueGross
-    , round(sum(round(ssoi.gross_price / ((100 + str.rate)/100), 2)), 0) as ItemValueNet
-    , sum(ssoi.quantity) as ItemQuantity
-    , count(distinct ssoi.product_number) as ItemsCount
-    , sc.id_customer as external_customer_identifier
-    , sc.my_globus_card as loyalty_number
-    , right(sss.requested_delivery_date, 11) as TimeSlot
-    , max(sit.name) as status
-    , case when sum(ssoi.gross_price) - sum(case when ifnull(ssoi.canceled_amount, 0) > 0 then ssoi.gross_price else 0 end) > 0 then sum(ssoi.gross_price) - sum(case when ifnull(ssoi.canceled_amount, 0) > 0 then ssoi.gross_price else 0 end) else 0 end as Delivered_ItemValueGross
-    , round(sum(case when sit.name like '%cancelled%' then 0 else round(ssoi.gross_price / ((100 + str.rate)/100), 2) end), 0) as Delivered_ItemValueNet
-    , sum(case when sit.name in ('cancellation process', 'cancelled', 'cancelled due to not in stock')  then 0 else
-        	case when ssoi.new_weight is not null and sit.name not in ('ready for picking', 'ready for selecting shelves') then round(ssoi.new_weight / ssoi.weight_per_unit, 0) else 1 end
-        	end) as Delivered_ItemsQuantity,
-        count(distinct case when sit.name like '%cancelled%' then 0 else ssoi.product_number end) - sign(sum(case when sit.name like '%cancelled%' then 1 else 0 end)) as Delivered_ItemsCount
-    , case when sso.cart_note in ('null', '\"null\"') then null else sso.cart_note end as comment
-    , ssot.order_expense_total as ShippingValueGross
-    from spy_sales_order sso
-        inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
-        inner join spy_product sp on sp.sku = ssoi.product_number
-		inner join spy_product_abstract spa on spa.id_product_abstract = sp.fk_product_abstract
-		inner join spy_tax_set sts on sts.id_tax_set = spa.fk_tax_set
-		inner join spy_tax_set_tax stst on stst.fk_tax_set = sts.id_tax_set
-		inner join spy_tax_rate str ON str.id_tax_rate = stst.fk_tax_rate
-        left outer join spy_customer sc on sso.customer_reference = sc.customer_reference
-        left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
-        left outer join spy_sales_order_item_bundle ssoib on ssoi.fk_sales_order_item_bundle = ssoib.id_sales_order_item_bundle
-        inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
-        left outer join spy_sales_order_totals ssot on ssot.fk_sales_order = sso.id_sales_order
-    where ssoi.created_at > '2021-01-01'
-        or ssoi.updated_at > '2021-01-01'
-    group by
-        sso.order_reference, sso.store, sso.created_at,
-        sss.requested_delivery_date, ssoib.gross_price, sso.customer_reference, sso.cart_note
-        , ssot.canceled_total, ssot.order_expense_total
-    ";
+        $qry = "SELECT
+		'\"OrderNr\",\"store\",\"OrderDate\",\"DeliveryDate\",\"ItemValueGross\",\"ItemValueNet\",\"ItemQuantity\",\"ItemsCount\",\"external_customer_identifier\",\"loyalty_number\",\"TimeSlot\",\"status\",\"Delivered_ItemValueGross\",\"Delivered_ItemValueNet\",\"Delivered_ItemsQuantity\",\"Delivered_ItemsCount\",\"comment\",\"ShippingValueGross\"'
+            UNION
+            SELECT
+            CONCAT(
+            '\"', sso.order_reference, '\",'
+            ,'\"', sso.store, '\",'
+            ,'\"', date_format(CONVERT_TZ(sso.created_at, '+00:00', '+01:00'),  '%d.%m.%Y %T'), '\",'
+            ,'\"', date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y'), '\",'
+            , sum(ssoi.gross_price), ','
+            , round(sum(round(ssoi.gross_price / ((100 + str.rate)/100), 2)), 0), ','
+            , sum(ssoi.quantity), ','
+            , count(distinct ssoi.product_number), ','
+            ,'\"', IFNULL(sc.id_customer,''), '\",'
+            , IFNULL(sc.my_globus_card,''), ','
+            ,'\"', right(sss.requested_delivery_date, 11), '\",'
+            ,'\"', max(sit.name), '\",'
+            , case when sum(ssoi.gross_price) - sum(case when ifnull(ssoi.canceled_amount, 0) > 0 then ssoi.gross_price else 0 end) > 0 then sum(ssoi.gross_price) - sum(case when ifnull(ssoi.canceled_amount, 0) > 0 then ssoi.gross_price else 0 end) else 0 end, ','
+            , round(sum(case when sit.name like '%cancelled%' then 0 else round(ssoi.gross_price / ((100 + str.rate)/100), 2) end), 0), ','
+            , sum(case when sit.name in ('cancellation process', 'cancelled', 'cancelled due to not in stock')  then 0 else
+                    case when ssoi.new_weight is not null and sit.name not in ('ready for picking', 'ready for selecting shelves') then round(ssoi.new_weight / ssoi.weight_per_unit, 0) else 1 end
+                    end), ',',
+                count(distinct case when sit.name like '%cancelled%' then 0 else ssoi.product_number end) - sign(sum(case when sit.name like '%cancelled%' then 1 else 0 end)), ','
+            ,'\"', IFNULL(case when sso.cart_note in ('null', '\"null\"') then '' else sso.cart_note end,''), '\",'
+            , ssot.order_expense_total)
+            from spy_sales_order sso
+                inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
+                inner join spy_product sp on sp.sku = ssoi.product_number
+                inner join spy_product_abstract spa on spa.id_product_abstract = sp.fk_product_abstract
+                inner join spy_tax_set sts on sts.id_tax_set = spa.fk_tax_set
+                inner join spy_tax_set_tax stst on stst.fk_tax_set = sts.id_tax_set
+                inner join spy_tax_rate str ON str.id_tax_rate = stst.fk_tax_rate
+                left outer join spy_customer sc on sso.customer_reference = sc.customer_reference
+                left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
+                left outer join spy_sales_order_item_bundle ssoib on ssoi.fk_sales_order_item_bundle = ssoib.id_sales_order_item_bundle
+                inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
+                left outer join spy_sales_order_totals ssot on ssot.fk_sales_order = sso.id_sales_order
+            where ssoi.created_at > '2021-01-01'
+                or ssoi.updated_at > '2021-01-01'
+            group by
+                sso.order_reference, sso.store, sso.created_at,
+                sss.requested_delivery_date, ssoib.gross_price, sso.customer_reference, sso.cart_note
+                , ssot.canceled_total, ssot.order_expense_total";
 
         $connection = Propel::getConnection();
         $statement = $connection->prepare($qry);
+
+        $timeStart = microtime(true);
+
         $statement->execute();
+
+        $timeEnd = microtime(true);
+        $executionTime = ($timeEnd - $timeStart);
+        $transfer['query_time'] = $executionTime;
+
         $content = '';
         $header = '';
+
+        $timeStart = microtime(true);
         while ($item = $statement->fetch(PDO::FETCH_ASSOC)) {
-            if ($header == '') {
-                foreach ($item as $key => $value) {
-                    $header = $header . '"' . $key . '",';
-                }
-                $header = mb_substr($header, 0, -1);
-                $header = $header . "\n";
+            if ($header = '') {
+                $header = key($item) . "\n";
             }
-            foreach ($item as $key => $value) {
-                if ($key == "DeliveryDate") {
-                    $value = explode('_', $value)[0];
-                    $content = $content . '"' . $value . '",';
-                } elseif (in_array($key, $this->stringColumns)) {
-                    $value = str_replace(['"', ","], [' ', ' '], $value);
-                    $content = $content . '"' . $value . '",';
-                } else {
-                    $content = $content . $value . ',';
-                }
-            }
-            $content = mb_substr($content, 0, -1);
-            $content = $content . "\n";
+            $content .= reset($item) . "\n";
         }
+
         $content = $header . $content;
         $transfer->setContent($content);
+
+        $timeEnd = microtime(true);
+        $executionTime = ($timeEnd - $timeStart);
+        $transfer['csv_time'] = $executionTime;
 
         return $transfer;
     }

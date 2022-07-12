@@ -42,9 +42,13 @@ class SalesOrderSummaryExportConsole extends Console
     {
         $output->writeln(static::COMMAND_NAME . " executed");
         $data = $this->getFactory()->createRepository()->getCustomOrderItemData();
-        $output->writeln("generated CSV");
+        $output->writeln("Query executed in " . $data['query_time'] . " seconds");
+        $output->writeln("CSV generated in " . $data['csv_time'] . " seconds");
+        $timeStart = microtime(true);
         $this->getFacade()->exportOrders($data->getContent());
-        $output->writeln("CSV exported to FTP");
+        $timeEnd = microtime(true);
+        $executionTime = ($timeEnd - $timeStart);
+        $output->writeln("CSV exported to FTP in " . $executionTime . " seconds");
 
         return null;
     }
