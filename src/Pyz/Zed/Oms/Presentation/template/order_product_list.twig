@@ -41,7 +41,15 @@
                                                         <td style="padding:0;Margin:0;width:100px;text-align:center" class="orderSumPrice">
                                                             {{ orderItem.quantity }}
                                                         </td>
-                                                        <td style="padding:0;Margin:0;text-align:center" class="orderSumPrice">
+                                                        <td style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;Margin:0;text-align:center" class="orderSumPrice">
+                                                            {% if orderItem.originalPrice %}
+                                                                <div style="padding:0;Margin:0;display:flex;flex-direction:row;" class="orderSumPrice">
+                                                                        {% if orderItem.promotion == "UVP" %}
+                                                                            <span style="padding-right: 5px">UVP</span>
+                                                                        {% endif %}
+                                                                    <span style="text-decoration:line-through;">{{ orderItem.originalPrice | money(true, order.currencyIsoCode) }}</span>
+                                                                </div>
+                                                            {% endif %}
                                                             {{ orderItem.unitGrossPrice | money(true, order.currencyIsoCode) }}
                                                         </td>
                                                         <td style="padding:0;Margin:0;width:80px;text-align:right" class="orderSumPrice">

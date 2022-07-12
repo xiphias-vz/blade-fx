@@ -68,10 +68,13 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         $priceProductAbstractData = $this->getPriceProductByProductFromAbstractStorageEntity($priceProductAbstractStorageEntity, $productConcreteTransfer, $currentStoreName);
         $originalPrice = null;
         $grossPriceData = null;
+        $promotion = null;
         if (isset($priceProductAbstractData['prices']->EUR->GROSS_MODE)) {
             $grossPriceData = $priceProductAbstractData['prices']->EUR->GROSS_MODE;
+            $promotion = $priceProductAbstractData["prices"]->EUR->PROMOTION;
         } elseif (isset($priceProductAbstractData['prices']->CZK->GROSS_MODE)) {
             $grossPriceData = $priceProductAbstractData['prices']->CZK->GROSS_MODE;
+            $promotion = $priceProductAbstractData["prices"]->CZK->PROMOTION;
         }
         if (isset($grossPriceData->ORIGINAL)) {
             $originalPrice = $grossPriceData->ORIGINAL;
@@ -110,7 +113,8 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
             ->setDiscountedPriceFrom($priceActiveFrom)
             ->setDiscountedPriceTo($priceActiveTo)
             ->setBillName($billName)
-            ->setRlzRegal($rlzRegal);
+            ->setRlzRegal($rlzRegal)
+            ->setPromotion($promotion);
     }
 
     /**

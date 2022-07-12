@@ -13,5 +13,6 @@
         <column name="container_code" type="VARCHAR" size="20"/>
         <column name="current_picker_first_name" type="VARCHAR" size="100"/>
         <column name="current_picker_last_name" type="VARCHAR" size="100"/>
+        <column name="promotion" type="VARCHAR" size="100"/>
     </table>
 </database>
