@@ -41,10 +41,11 @@ class TokenProvider
 
     /**
      * @param array|mixed $tokenScope
+     * @param int $counter
      *
      * @return string
      */
-    public function getBearerToken($tokenScope): string
+    public function getBearerToken($tokenScope, int $counter = 0): string
     {
         $scope = is_array($tokenScope) ? implode(" ", $tokenScope) : $tokenScope;
         $data = [
@@ -55,16 +56,30 @@ class TokenProvider
         ];
         $result = ApiClient::post($this->url, "", $data);
 
+        if (!isset($result["access_token"]) || $result['access_token'] === '' || array_key_exists("error", $result)) {
+            if ($counter >= 2) {
+                if (array_key_exists("error", $result)) {
+                    return "ERROR: " . $result["error_description"];
+                } else {
+                    return '';
+                }
+            }
+            $counter++;
+
+            $this->getBearerToken($tokenScope, $counter);
+        }
+
         return $result["access_token"];
     }
 
     /**
      * @param string $userName
      * @param string $password
+     * @param int $counter
      *
      * @return string
      */
-    public function getBearerTokenByUser(string $userName, string $password): string
+    public function getBearerTokenByUser(string $userName, string $password, int $counter = 0): string
     {
         $scope = TokenScope::CUSTOMER_PROFILE;
         $data = [
@@ -76,8 +91,18 @@ class TokenProvider
             'client_secret' => $this->getClientSecret(),
         ];
         $result = ApiClient::post($this->url, "", $data);
-        if (array_key_exists("error", $result)) {
-            return "ERROR: " . $result["error_description"];
+
+        if (!isset($result["access_token"]) || $result['access_token'] === '' || array_key_exists("error", $result)) {
+            if ($counter >= 2) {
+                if (array_key_exists("error", $result)) {
+                    return "ERROR: " . $result["error_description"];
+                } else {
+                    return '';
+                }
+            }
+            $counter++;
+
+            $this->getBearerTokenByUser($userName, $password, $counter);
         }
 
         return $result["access_token"];
