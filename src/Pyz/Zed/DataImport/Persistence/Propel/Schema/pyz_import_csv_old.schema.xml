@@ -13,6 +13,11 @@
         <column name="created_at" required="true" type="TIMESTAMP"/>
         <column name="sku" type="VARCHAR" size="50"/>
         <column name="sap_number" type="VARCHAR" size="50"/>
+
+        <index name="pyz_import_csv_old-index_sku">
+            <index-column name="sku"/>
+        </index>
+
     </table>
 
 </database>

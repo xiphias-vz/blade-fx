@@ -61,7 +61,7 @@ class OrderChangeSaver
      *
      * @return bool
      */
-    public function saveOrderChange(OrderChangeRequestTransfer $orderChangeRequestTransfer)
+    public function saveOrderChange(OrderChangeRequestTransfer $orderChangeRequestTransfer): bool
     {
         if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() === 0) {
             return false;
@@ -69,15 +69,22 @@ class OrderChangeSaver
 
         $this->salesQueryContainer->getConnection()->beginTransaction();
 
+        $arrayIdSalesOrderItem = [];
         foreach ($orderChangeRequestTransfer->getOrderItemChangeRequest() as $orderItemChangeRequest) {
-            $salesOrderItemEntity = $this->salesQueryContainer
-                ->querySalesOrderItem()
-                ->findOneByIdSalesOrderItem($orderItemChangeRequest->getIdSalesOrderItem());
+            $arrayIdSalesOrderItem[] = $orderItemChangeRequest->getIdSalesOrderItem();
+        }
 
-            $oldPrice = $salesOrderItemEntity->getGrossPrice();
+        $salesOrderItemEntities = $this->salesQueryContainer
+            ->querySalesOrderItem()
+            ->filterByIdSalesOrderItem_In($arrayIdSalesOrderItem)
+            ->find();
 
-            $this->updateOrderItem($salesOrderItemEntity, $orderItemChangeRequest);
-            $this->storeOrderChange($oldPrice, $orderItemChangeRequest);
+        $length = count($salesOrderItemEntities);
+        for ($i = 0; $i < $length; $i++) {
+            $oldPrice = $salesOrderItemEntities[$i]->getGrossPrice();
+
+            $this->updateOrderItem($salesOrderItemEntities[$i], $orderChangeRequestTransfer->getOrderItemChangeRequest()[$i]);
+            $this->storeOrderChange($oldPrice, $orderChangeRequestTransfer->getOrderItemChangeRequest()[$i]);
         }
 
         $this->recalculateOrder($orderChangeRequestTransfer);

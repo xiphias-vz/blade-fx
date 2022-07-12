@@ -12,6 +12,11 @@
         <column name="shelffloor" type="VARCHAR" size="50"/>
         <column name="filename" type="VARCHAR" size="200"/>
         <column name="dtImported" type="TIMESTAMP"/>
+
+        <index name="pyz_imp_stock-index_store">
+            <index-column name="store"/>
+        </index>
+
     </table>
 
 </database>

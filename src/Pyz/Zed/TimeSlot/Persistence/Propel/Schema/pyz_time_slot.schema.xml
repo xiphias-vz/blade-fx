@@ -14,6 +14,13 @@
         <column name="cut_off_time" type="INTEGER" required="false" />
         <column name="capacity" type="INTEGER" defaultValue="0" required="true"/>
         <column name="created_at" required="false" type="TIMESTAMP"/>
+
+        <index name="pyz_imp_stock-index_merchant_reference_time_slot_date">
+            <index-column name="merchant_reference"/>
+            <index-column name="time_slot"/>
+            <index-column name="date"/>
+        </index>
+
     </table>
 
 </database>

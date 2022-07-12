@@ -11,6 +11,11 @@
         <column name="scenario_id" type="VARCHAR" />
         <column name="hash_id" type="VARCHAR" />
         <column name="active" type="BOOLEAN" />
+
+        <index name="pyz_recommendation_scenarios-index_scenario_id">
+            <index-column name="scenario_id"/>
+        </index>
+
     </table>
 
     <table name="pyz_recommendation_definition">
@@ -24,6 +29,11 @@
         <column name="fk_id_recommendation_scenarios" type="INTEGER" />
         <column name="leading_object_type" type="VARCHAR" />
         <column name="leading_object_id" type="VARCHAR" />
+
+        <index name="pyz_recommendation_leading_objects-index_fk_id_recommendation_scenarios">
+            <index-column name="fk_id_recommendation_scenarios"/>
+        </index>
+
     </table>
 
     <table name="pyz_recommendation_basket_objects">
@@ -31,6 +41,11 @@
         <column name="fk_id_recommendation_scenarios" type="INTEGER" />
         <column name="basket_object_type" type="VARCHAR" />
         <column name="basket_object_id" type="VARCHAR" />
+
+        <index name="pyz_recommendation_basket_objects-index_fk_id_recommendation_scenarios">
+            <index-column name="fk_id_recommendation_scenarios"/>
+        </index>
+
     </table>
 
 

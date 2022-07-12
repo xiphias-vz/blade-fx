@@ -13,6 +13,11 @@
         <column name="class_name" type="VARCHAR" size="100"/>
         <column name="event_data" type="VARCHAR" size="1000"/>
         <column name="created_at" required="true" type="TIMESTAMP"/>
+
+        <index name="pyz_fact_finder_event-index_fk_product_abstract">
+            <index-column name="fk_product_abstract"/>
+        </index>
+
     </table>
 
 </database>
