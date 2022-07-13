@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\ShipmentGui\Communication;
 
+use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Pyz\Zed\ShipmentGui\ShipmentGuiDependencyProvider;
 use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
@@ -28,5 +29,13 @@ class ShipmentGuiCommunicationFactory extends SprykerShipmentGuiCommunicationFac
     public function getUserFacade(): UserFacadeInterface
     {
         return $this->getProvidedDependency(ShipmentGuiDependencyProvider::FACADE_USER);
+    }
+
+    /**
+     * @return \Pyz\Zed\Sales\Business\SalesFacadeInterface
+     */
+    public function getFacadeSales(): SalesFacadeInterface
+    {
+        return $this->getProvidedDependency(ShipmentGuiDependencyProvider::FACADE_SALES);
     }
 }

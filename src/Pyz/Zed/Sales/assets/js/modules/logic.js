@@ -106,6 +106,7 @@ $(document).ready(function () {
 
 });
 window.addEventListener('DOMContentLoaded', () => {
+    const queryParams = new URLSearchParams(window.location.search);
     const table = document.querySelector('#order-item-list');
     const pickingZoneHeaders = document.querySelectorAll('.pickingZoneHeader');
     const headers = document.querySelectorAll('#order-item-list th[data-pickzone]')
@@ -128,6 +129,44 @@ window.addEventListener('DOMContentLoaded', () => {
     removeNotNeededRows();
     if(parseInt(isCurrentUserSupervisorOrAdmin) === 1) {
         showResetFunctionality(visibleHeader);
+    }
+
+    let pageSwitcher = document.querySelector("#page_switcher")
+    pageSwitcher.addEventListener('change', changeOrderItemsPerPage)
+
+    let buttonNext = document.getElementsByClassName('js-paginate_button next')[0]
+    buttonNext.addEventListener('click', onNextButtonClick)
+
+    let buttonPrevious = document.getElementsByClassName('js-paginate_button previous')[0]
+    buttonPrevious.addEventListener('click', onPreviousButtonClick)
+
+    function changeOrderItemsPerPage(e) {
+        let itemsPerPage = e.target.value;
+        queryParams.set("items-per-page", itemsPerPage);
+       if (queryParams.has('page')) {
+           queryParams.set('page', '1');
+       }
+        window.location = window.location.pathname + '?' + queryParams.toString();
+    }
+
+    function onNextButtonClick(e) {
+        let pageCounter = document.querySelector('#page_number')
+        if (!buttonNext.classList.contains('disabled')) {
+            let currentPageNumber = pageCounter.children[0].innerText
+            let nextPageNumber = parseInt(currentPageNumber) + 1
+            queryParams.set('page', nextPageNumber);
+            window.location = window.location.pathname + '?' + queryParams.toString();
+        }
+    }
+
+    function onPreviousButtonClick(e) {
+        let pageCounter = document.querySelector('#page_number')
+        if (!buttonPrevious.classList.contains('disabled')) {
+            let currentPageNumber = pageCounter.children[0].innerText
+            let nextPageNumber = parseInt(currentPageNumber) - 1
+            queryParams.set('page', nextPageNumber);
+            window.location = window.location.pathname + '?' + queryParams.toString();
+        }
     }
 
     function showResetFunctionality() {

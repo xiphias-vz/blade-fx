@@ -16,10 +16,10 @@ use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Shared\Acl\AclConstants;
 use Pyz\Shared\S3Constants\S3Constants;
+use Pyz\Zed\Sales\SalesConfig;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Shared\Config\Config;
 use Spryker\Zed\Sales\Communication\Controller\DetailController as SprykerDetailController;
-use Spryker\Zed\Sales\SalesConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,8 +55,16 @@ class DetailController extends SprykerDetailController
                 $this->getFactory()->setZoneContainerShelf($_POST['frmContainerShelf_idSalesOrder'], $_POST['pickingZones'], $_POST['inputContainer'], $_POST['inputShelf']);
             }
         }
+        $itemsPerPage = $request->query->getInt(SalesConfig::PARAM_ID_ITEMS_PER_PAGE, SalesConfig::DEFAULT_ITEMS_PER_PAGE);
+        $pageNumber = $request->query->getInt(SalesConfig::PARAM_ID_PAGE_NUMBER, 1);
+        $maxId = $itemsPerPage * $pageNumber;
+        $minId = ($maxId - $itemsPerPage) + 1;
+        $salesOrderIdFilterRange = ['min' => $minId, 'max' => $maxId];
 
-        $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+        $orderTransfer = $this
+            ->getFacade()
+            ->findOrderWithPickingSalesOrdersByIdSalesOrderFilterByItemId($idSalesOrder, $salesOrderIdFilterRange);
+
         if ($orderTransfer === null) {
             $this->addErrorMessage('Sales order #%d not found.', ['%d' => $idSalesOrder]);
 

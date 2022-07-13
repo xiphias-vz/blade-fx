@@ -277,6 +277,25 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
     public function findOrderWithPickingSalesOrdersByIdSalesOrder(int $idSalesOrder): ?OrderTransfer;
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param array $itemIdRange
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderWithPickingSalesOrdersByIdSalesOrderFilterByItemId(int $idSalesOrder, array $itemIdRange): ?OrderTransfer;
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return int
+     */
+    public function getOrderItemsCount(int $idSalesOrder): int;
+
+    /**
      * Specification:
      *  - Returns persisted order information for the given sales order id.
      *
@@ -286,7 +305,7 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function getOrderByIdSalesOrderWithoutExpand($idSalesOrder);
+    public function getOrderByIdSalesOrderWithoutExpand(int $idSalesOrder);
 
     /**
      * @return string

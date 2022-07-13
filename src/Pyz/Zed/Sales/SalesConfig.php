@@ -19,6 +19,9 @@ use Spryker\Zed\Sales\SalesConfig as SprykerSalesConfig;
 class SalesConfig extends SprykerSalesConfig
 {
     public const DEFAULT_OMS_PROCESS_WORKER_NUMBER = 10;
+    public const PARAM_ID_PAGE_NUMBER = 'page';
+    public const PARAM_ID_ITEMS_PER_PAGE = 'items-per-page';
+    public const DEFAULT_ITEMS_PER_PAGE = 100;
 
     protected const DEFAULT_ORDER_CANCELLATION_ALLOWED_PERIOD = '+1 day';
     protected const DEFAULT_ORDER_REFERENCE_PADDING = 9;

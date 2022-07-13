@@ -9,6 +9,7 @@ namespace Pyz\Zed\Sales\Persistence;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
+use Spryker\Zed\PropelOrm\Business\Runtime\ActiveQuery\Criteria as SprykerCriteria;
 use Spryker\Zed\Sales\Persistence\SalesQueryContainer as SprykerSalesQueryContainer;
 
 /**
@@ -91,7 +92,7 @@ class SalesQueryContainer extends SprykerSalesQueryContainer implements SalesQue
      *
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
      */
-    public function querySalesOrderDetailsWithPickingSalesOrder($idSalesOrder): SpySalesOrderQuery
+    public function querySalesOrderDetailsWithPickingSalesOrder(int $idSalesOrder): SpySalesOrderQuery
     {
         $query = $this->getFactory()->createSalesOrderQuery()
             ->setModelAlias('order')
@@ -109,6 +110,56 @@ class SalesQueryContainer extends SprykerSalesQueryContainer implements SalesQue
                         ->orderByIdOmsOrderItemStateHistory(Criteria::DESC)
                 ->endUse()
             ->endUse();
+
+        return $query;
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param array $itemIdRange
+     *
+     * @throws \Spryker\Zed\Propel\Business\Exception\AmbiguousComparisonException
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function querySalesOrderDetailsWithPickingSalesOrderFilterByItemId(int $idSalesOrder, array $itemIdRange): SpySalesOrderQuery
+    {
+        $query = $this->getFactory()->createSalesOrderQuery()
+            ->setModelAlias('order')
+            ->filterByIdSalesOrder($idSalesOrder)
+            ->leftJoinWithPyzPickingSalesOrder()
+            ->innerJoinWith('order.BillingAddress billingAddress')
+            ->innerJoinWith('billingAddress.Country billingCountry')
+            ->leftJoinWith('order.ShippingAddress shippingAddress')
+            ->leftJoinWith('shippingAddress.Country shippingCountry')
+            ->joinWithItem()
+                ->useItemQuery()
+                    ->filterByIdSalesOrderItem($itemIdRange, SprykerCriteria::BETWEEN)
+                    ->leftJoinWithStateHistory()
+                    ->useStateHistoryQuery(null, Criteria::LEFT_JOIN)
+                        ->leftJoinWithState()
+                        ->orderByIdOmsOrderItemStateHistory(Criteria::DESC)
+                ->endUse()
+            ->endUse();
+
+        return $query;
+    }
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return int
+     */
+    public function querySalesOrderItemCount(int $idSalesOrder): int
+    {
+        $query = $this->getFactory()->createSalesOrderQuery()
+            ->setModelAlias('order')
+            ->filterByIdSalesOrder($idSalesOrder)
+            ->joinWithItem()
+                ->useItemQuery()
+                    ->count();
 
         return $query;
     }

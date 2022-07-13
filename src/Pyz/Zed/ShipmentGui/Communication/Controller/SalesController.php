@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SalesController extends SprykerSalesController
 {
+    protected const MAX_ITEMS_PER_PAGE = 100;
+    protected const ITEMS_PER_PAGE_VALUES = [50, 100, 500];
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -28,6 +31,7 @@ class SalesController extends SprykerSalesController
     {
         /** @var \Generated\Shared\Transfer\OrderTransfer|null $orderTransfer */
         $orderTransfer = $request->attributes->get('orderTransfer');
+        $orderItemsCount = $this->getFactory()->getFacadeSales()->getOrderItemsCount($orderTransfer->getIdSalesOrder());
 
         if ($orderTransfer === null) {
             throw new OrderNotFoundException();
@@ -48,6 +52,7 @@ class SalesController extends SprykerSalesController
             'eventsGroupedByShipment' => $request->attributes->get('eventsGroupedByShipment', []),
             'eventsGroupedByItem' => $request->attributes->get('eventsGroupedByItem', []),
             'order' => $orderTransfer,
+            'orderItemsCount' => $orderItemsCount,
             'groupedOrderItemsByShipment' => $shipmentGroupsCollection,
             'changeStatusRedirectUrl' => $request->attributes->get('changeStatusRedirectUrl'),
             'itemGroups' => $itemGroups,
@@ -55,6 +60,8 @@ class SalesController extends SprykerSalesController
             'tableColumnCellsContent' => $request->attributes->get('tableColumnCellsContent'),
             'templates' => $this->getFactory()->createShipmentOrderItemTemplateProvider()->provide($orderTransfer->getItems()),
             'isAdmin' => $this->isCurrentUserAdmin(),
+            'maxItemsPerPage' => static::MAX_ITEMS_PER_PAGE,
+            'itemsPerPageValues' => static::ITEMS_PER_PAGE_VALUES,
         ]);
     }
 

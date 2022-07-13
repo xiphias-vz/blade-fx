@@ -1,5 +1,43 @@
 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Order Items' } %}
     {% block widget_content %}
+        {% set maxItemsPerPage = app.request.get("items-per-page") ?? maxItemsPerPage %}
+        {% set maxNumPages = (orderItemsCount / maxItemsPerPage) | round(0, 'ceil') %}
+
+        <div class="dataTables_length">
+            <label>
+                {{ 'Show Entries' | trans }}
+                <select class="form-control input-sm" id="page_switcher">
+                    {% for value in itemsPerPageValues %}
+                        {% if maxItemsPerPage == value %}
+                            <option selected value={{ value }}> {{ value }} </option>
+                        {% else %}
+                            <option value={{ value }}> {{ value }} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+        {% set pageNumber = app.request.get("page") ?? 1 %}
+        {% set isDisabledNext = pageNumber >= maxNumPages ? "disabled" : "" %}
+        {% set isDisabledPrevious = pageNumber == 1 ? "disabled" : "" %}
+
+        <div class="col-sm-5">
+            <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination">
+                    <li class="js-paginate_button paginate_button previous {{ isDisabledPrevious }}" id="button_previous">
+                        <a> {{ 'Back' | trans }} </a>
+                    </li>
+                    <li class="paginate_button active" id="page_number">
+                        <a> {{ pageNumber }} </a>
+                    </li>
+                    <li class="js-paginate_button paginate_button next {{ isDisabledNext }}" id="button_next">
+                        <a> {{ 'Next' | trans }} </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         {% for shipmentOrderItems in groupedOrderItemsByShipment %}
             <table id="order-item-list" class="footable table toggle-arrow-tiny order-group-items-table-{{ shipmentOrderItems.shipment.idSalesShipment }}" data-qa="order-item-list">
                 <thead>

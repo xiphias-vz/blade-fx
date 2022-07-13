@@ -76,6 +76,39 @@ class OrderReader extends SprykerOrderReader implements OrderReaderInterface
 
     /**
      * @param int $idSalesOrder
+     * @param array $itemIdRange
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderWithPickingSalesOrdersByIdSalesOrderFilterByItemId(int $idSalesOrder, array $itemIdRange): ?OrderTransfer
+    {
+        $orderEntity = $this->pyzQueryContainer
+            ->querySalesOrderDetailsWithPickingSalesOrderFilterByItemId($idSalesOrder, $itemIdRange)
+            ->find()
+            ->getFirst();
+
+        if ($orderEntity === null) {
+            return null;
+        }
+
+        return $this->orderHydrator->hydrateOrderTransferFromPersistenceBySalesOrder($orderEntity);
+    }
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return int
+     */
+    public function getOrderItemCount(int $idSalesOrder): int
+    {
+        $orderItemCount = $this->pyzQueryContainer
+            ->querySalesOrderItemCount($idSalesOrder);
+
+        return $orderItemCount;
+    }
+
+    /**
+     * @param int $idSalesOrder
      * @param string $pickingZoneName
      *
      * @return \Generated\Shared\Transfer\OrderTransfer|null

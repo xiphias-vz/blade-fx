@@ -18,6 +18,7 @@ class ShipmentGuiDependencyProvider extends SprykerShipmentGuiDependencyProvider
 {
     public const FACADE_ACL = 'FACADE_ACL';
     public const FACADE_USER = 'FACADE_USER';
+    public const FACADE_SALES = 'FACADE_SALES';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -30,6 +31,7 @@ class ShipmentGuiDependencyProvider extends SprykerShipmentGuiDependencyProvider
 
         $container = $this->addAclFacade($container);
         $container = $this->addUserFacade($container);
+        $container = $this->addFacadeSales($container);
 
         return $container;
     }
@@ -75,6 +77,20 @@ class ShipmentGuiDependencyProvider extends SprykerShipmentGuiDependencyProvider
     {
         $container[static::FACADE_USER] = function (Container $container) {
             return $container->getLocator()->user()->facade();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addFacadeSales(Container $container)
+    {
+        $container[static::FACADE_SALES] = function (Container $container) {
+            return $container->getLocator()->sales()->facade();
         };
 
         return $container;
