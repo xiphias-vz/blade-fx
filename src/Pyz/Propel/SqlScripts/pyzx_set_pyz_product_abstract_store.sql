@@ -42,7 +42,7 @@ BEGIN
         inner join pyz_imp_stock pis on ss.name = pis.store
         and sp.sap_number = pis.sapnumber
         and (sp.sku = pis.gtin or pis.gtin is null)
-        set ssp.is_never_out_of_stock = case when pis.filename like '%NOS%' then 1 else 0 end,
+        set ssp.is_never_out_of_stock = case when pis.instock = 999999 then 1 else 0 end,
             ssp.quantity = pis.instock
         where sp.fk_product_abstract = fk_product_abstract;
 

@@ -18,6 +18,11 @@ BEGIN
         ) lastImp on pipp.id = lastImp.id
         WHERE lastImp.rowNr > 1;
 
+    update pyz_imp_price_product
+        set pseudoprice = price
+    where not promotion is null
+      and pseudoprice = 0;
+
     /* for Germany set Monday to Sunday */
     update pyz_imp_price_product
     set promotionstart = DATE_ADD(promotionstart, INTERVAL -1 DAY)

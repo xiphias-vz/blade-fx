@@ -5,7 +5,7 @@ BEGIN
 
     INSERT INTO pyz_monitor_ff_export_prices
         (ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice, Promotion, fk_product, dt_created)
-    SELECT sp.sku as ean, sm.filial_number as storeID
+    SELECT DISTINCT sp.sku as ean, sm.filial_number as storeID
          , ROUND(sppsDef.gross_price / 100, 2) as price
          , CASE WHEN NOT sppsDef.promotion IS NULL THEN ROUND(orig.gross_price / 100, 2) ELSE null end as pseudoPrice
          , ROUND(sa.quantity) as quantity

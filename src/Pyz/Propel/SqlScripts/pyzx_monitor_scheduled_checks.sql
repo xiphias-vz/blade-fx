@@ -182,7 +182,7 @@ BEGIN
              , cast(JSON_VALUE(spaps.`data`, '$.search-result-data.prices.*.GROSS_MODE.DEFAULT') as int) as gross_price_search
              , cast(JSON_VALUE(sppas.`data`, '$.prices.*.PRICE_PER_KG.DEFAULT') as int) as price_per_kg_pdp
              , cast(JSON_VALUE(sppas.`data`, '$.prices.*.GROSS_MODE.DEFAULT') as int) as gross_price_pdp
-             , cast(pipp.price * 100 as int) as imp_price
+             , cast(case when ifnull(pipp.promotionend, '2040-01-01') < now() then pipp.pseudoprice else pipp.price end * 100 as int) as imp_price
              , cast(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,4)) as weightPerItem
              , sp.id_product
              , sp.sku
