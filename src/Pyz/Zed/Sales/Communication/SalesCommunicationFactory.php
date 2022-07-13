@@ -30,6 +30,7 @@ use Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilder;
 use Pyz\Zed\Sales\SalesDependencyProvider;
 use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Pyz\Zed\User\UserDependencyProvider;
+use Spryker\Shared\Config\Config;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Sales\Communication\SalesCommunicationFactory as SprykerSalesCommunicationFactory;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
@@ -57,7 +58,8 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
             $this->getPickingZoneFacade(),
             $this->getFacade(),
             $this->getSalesTablePlugins(),
-            $this->getProvidedDependency(PickingZoneOrderExportDependencyProvider::FACADE_TIME_SLOTS)
+            $this->getProvidedDependency(PickingZoneOrderExportDependencyProvider::FACADE_TIME_SLOTS),
+            $this->getGlobalConfig()
         );
     }
 
@@ -241,5 +243,13 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     public function getCodeBucket(): string
     {
         return getenv('SPRYKER_CODE_BUCKET');
+    }
+
+    /**
+     * @return \Spryker\Shared\Config\Config
+     */
+    public function getGlobalConfig(): Config
+    {
+        return Config::getInstance();
     }
 }

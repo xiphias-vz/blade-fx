@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Communication\Table;
 
 use DateTime;
+use DateTimeZone;
 use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\PickingSalesOrder\Persistence\Map\PyzPickingSalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderAddressTableMap;
@@ -20,6 +21,7 @@ use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\SalesConfig;
 use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
+use Spryker\Shared\Config\Config;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
@@ -47,7 +49,8 @@ class OrdersTable extends SprykerOrdersTable
     protected const TIMESLOT_DELIMITER_REPLACEMENT = ' ';
     protected const TIMESLOT_SEARCHABLE_FIELD_PATTERN = 'REPLACE(%s, \'%s\', \'%s\')';
     protected const COL_CUSTOMER_CELL_PHONE = 'customer_cell_phone';
-    protected const TIMEZONE = 'Europe/Berlin';
+    protected const DEFAULT_TIMEZONE = 'Europe/Berlin';
+    protected const DATE_TIME_ZONE = 'DATE_TIME_ZONE';
 
     /**
      * @var \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface
@@ -90,6 +93,11 @@ class OrdersTable extends SprykerOrdersTable
     protected $timeSlotFacade;
 
     /**
+     * @var \Spryker\Shared\Config\Config
+     */
+    protected $globalConfig;
+
+    /**
      * @param \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface $queryBuilder
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToMoneyInterface $moneyFacade
      * @param \Spryker\Zed\Sales\Dependency\Service\SalesToUtilSanitizeInterface $sanitizeService
@@ -102,6 +110,7 @@ class OrdersTable extends SprykerOrdersTable
      * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      * @param array $salesTablePlugins
      * @param \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface $timeSlotsFacade
+     * @param \Spryker\Shared\Config\Config $globalConfig
      */
     public function __construct(
         OrdersTableQueryBuilderInterface $queryBuilder,
@@ -115,7 +124,8 @@ class OrdersTable extends SprykerOrdersTable
         PickingZoneFacadeInterface $pickingZoneFacade,
         SalesFacadeInterface $salesFacade,
         array $salesTablePlugins,
-        TimeSlotFacadeInterface $timeSlotsFacade
+        TimeSlotFacadeInterface $timeSlotsFacade,
+        Config $globalConfig
     ) {
         parent::__construct(
             $queryBuilder,
@@ -132,6 +142,7 @@ class OrdersTable extends SprykerOrdersTable
         $this->pickingZoneFacade = $pickingZoneFacade;
         $this->salesFacade = $salesFacade;
         $this->timeSlotFacade = $timeSlotsFacade;
+        $this->globalConfig = $globalConfig;
     }
 
     /**
@@ -330,8 +341,8 @@ class OrdersTable extends SprykerOrdersTable
         if ($dateFrom && $dateTo) {
             $query = $this->queryBuilder->applyFilterDateBetween($query, new DateTime($dateFrom), new DateTime($dateTo));
         } elseif ($dateFrom == '' && $dateTo == '') {
-            date_default_timezone_set(static::TIMEZONE);
-            $query = $this->queryBuilder->applyFilterDateBetween($query, new DateTime(), new DateTime());
+            $timezone = new DateTimeZone($this->globalConfig::get(static::DATE_TIME_ZONE, static::DEFAULT_TIMEZONE));
+            $query = $this->queryBuilder->applyFilterDateBetween($query, new DateTime('', $timezone), new DateTime('', $timezone));
         }
 
         if ($storeStatus === "paused") {
