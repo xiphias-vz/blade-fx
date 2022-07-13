@@ -95,6 +95,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
     public const FACADE_TRANSLATOR = 'FACADE_TRANSLATOR';
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
+    public const FACADE_MERCHANT = 'FACADE_MERCHANT';
 
     /**
      * @uses \Spryker\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin::SERVICE_TWIG
@@ -118,6 +119,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
         $container = $this->addTranslatorsFacade($container);
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addTwigEnvironment($container);
+        $container = $this->addStoreFacade($container);
 
         return $container;
     }

@@ -99,4 +99,49 @@ class OmsConfig extends SprykerOmsConfig
     {
         return 'oms.state.';
     }
+
+    /**
+     * @return string
+     */
+    public function getFooterAddressEinIssGen(): string
+    {
+        return 'GLOBUS Handelshof GmbH & Co. KG <br>
+                Neunmorgenstraße 8 – 12 <br>
+                66424 Homburg-Einöd <br>
+                Amtsgericht Saarbrücken: HRB 80397 <br>';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFooterAddressRest(): string
+    {
+        return 'GLOBUS Handelshof St. Wendel GmbH & Co. KG <br>
+                Am Wirthembösch <br>
+                66606 St. Wendel <br>
+                Amtsgericht Saarbrücken, HRA 80636 <br>';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFooterInfoEinIss(): string
+    {
+        return 'Persönlich haftende Gesellschafterin:<br>
+                GLOBUS Markthallen Geschäftsführungs-GmbH<br>
+                Geschäftsführer: Jochen Baab, Dr. Michael Karrenbauer, Prof. Dr. Silvia Martin<br>
+                Amtsgericht Saarbrücken, HRB 80383, Sitz: St. Wendel<br></td>';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFooterInfoRest(): string
+    {
+        return 'Persönlich haftende Gesellschafterin:<br>
+                GLOBUS Handelshof St. Wendel<br>
+                Geschäftsführungsgesellschaft mit beschränkter Haftung<br>
+                Geschäftsführer: Jochen Baab (Sprecher)<br>
+                Amtsgericht Saarbrücken, HRB 80383, Sitz: St. Wendel<br></td>';
+    }
 }

@@ -28,6 +28,7 @@ use Spryker\Zed\Oms\Business\Mail\MailHandler as SprykerMailHandler;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderShippedMailTypePlugin;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface;
+use Spryker\Zed\Oms\Dependency\Facade\OmsToStoreFacadeInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Twig\Environment;
@@ -87,6 +88,11 @@ class MailHandler extends SprykerMailHandler
     private $translatorFacade;
 
     /**
+     * @var \Spryker\Zed\Oms\Dependency\Facade\OmsToStoreFacadeInterface
+     */
+    protected $storeFacade;
+
+    /**
      * @param \Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface $salesFacade
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface $mailFacade
@@ -99,6 +105,7 @@ class MailHandler extends SprykerMailHandler
      * @param \Twig\Environment $twigEnvironment
      * @param \Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface $dateTimeWithZoneService
      * @param \Spryker\Zed\Translator\Business\TranslatorFacadeInterface $translatorFacade
+     * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToStoreFacadeInterface $storeFacade
      */
     public function __construct(
         OmsQueryContainerInterface $queryContainer,
@@ -112,7 +119,8 @@ class MailHandler extends SprykerMailHandler
         SalesFacadeInterface $pyzSalesFacade,
         Environment $twigEnvironment,
         DateTimeWithZoneServiceInterface $dateTimeWithZoneService,
-        TranslatorFacadeInterface $translatorFacade
+        TranslatorFacadeInterface $translatorFacade,
+        OmsToStoreFacadeInterface $storeFacade
     ) {
         parent::__construct($salesFacade, $mailFacade, $orderMailExpanderPlugins);
 
@@ -125,6 +133,7 @@ class MailHandler extends SprykerMailHandler
         $this->dateTimeWithZoneService = $dateTimeWithZoneService;
         $this->translatorFacade = $translatorFacade;
         $this->queryContainer = $queryContainer;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -139,6 +148,8 @@ class MailHandler extends SprykerMailHandler
         }
         $orderTransfer = $this->getOrderTransfer($salesOrderEntity);
         $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+
+        $storeName = $this->storeFacade->getCurrentStore()->getName();
 
         $mailTransfer = new MailTransfer();
         $mailTransfer->setOrder($orderTransfer);
@@ -339,12 +350,24 @@ class MailHandler extends SprykerMailHandler
 
         if ($orderTransfer->getMerchantReference() == 1004 || $orderTransfer->getMerchantReference() == 1021 || $orderTransfer->getMerchantReference() == 1003) {
             $merchantReference = [
-                'footerAddress' => 'GLOBUS Handelshof GmbH & Co. KG <br> Neunmorgenstraße 8 – 12 <br> 66424 Homburg-Einöd <br> Amtsgericht Saarbrücken: HRB 80397 <br>',
+                'footerAddress' => $this->config->getFooterAddressEinIssGen(),
             ];
             $params = array_merge($params, $merchantReference);
         } else {
             $merchantReference = [
-                'footerAddress' => 'GLOBUS Handelshof St. Wendel GmbH & Co. KG <br> Am Wirthembösch <br> 66606 St. Wendel <br> Amtsgericht Saarbrücken, HRA 80636 <br>',
+                'footerAddress' => $this->config->getFooterAddressRest(),
+            ];
+            $params = array_merge($params, $merchantReference);
+        }
+
+        if ($orderTransfer->getMerchantReference() == 1004 || $orderTransfer->getMerchantReference() == 1021) {
+            $merchantReference = [
+                'footerInfo' => $this->config->getFooterInfoEinIss(),
+            ];
+            $params = array_merge($params, $merchantReference);
+        } else {
+            $merchantReference = [
+                'footerInfo' => $this->config->getFooterInfoRest(),
             ];
             $params = array_merge($params, $merchantReference);
         }
