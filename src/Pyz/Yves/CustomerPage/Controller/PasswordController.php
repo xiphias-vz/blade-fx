@@ -7,7 +7,7 @@
 
 namespace Pyz\Yves\CustomerPage\Controller;
 
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use SprykerShop\Yves\CustomerPage\Controller\PasswordController as SprykerPasswordController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

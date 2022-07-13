@@ -8,12 +8,12 @@
 namespace Pyz\Yves\CustomerPage\Processor\Mapper;
 
 use Generated\Shared\Transfer\RecoTransfer;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult;
 
 class RecommendationsMapper implements RecommendationsMapperInterface
 {
     /**
-     * @param \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult $restApiResult
+     * @param \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult $restApiResult
      * @param string $token
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *

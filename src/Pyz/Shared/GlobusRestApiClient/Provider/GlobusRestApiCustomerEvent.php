@@ -5,13 +5,13 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Yves\GlobusRestApiClient\Provider;
+namespace Pyz\Shared\GlobusRestApiClient\Provider;
 
 use Generated\Shared\Transfer\CustomerEventProductTransfer;
 use Generated\Shared\Transfer\CustomerEventTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
-use Pyz\Yves\GlobusRestApiClient\GlobusRestApiClient;
-use Pyz\Yves\GlobusRestApiClient\GlobusRestApiConfig;
+use Pyz\Shared\GlobusRestApiClient\GlobusRestApiClient;
+use Pyz\Shared\GlobusRestApiClient\GlobusRestApiConfig;
 use Spryker\Service\UtilEncoding\Model\Json;
 
 class GlobusRestApiCustomerEvent
@@ -91,7 +91,7 @@ class GlobusRestApiCustomerEvent
     }
 
     /**
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public function postEvent(): GlobusRestApiResult
     {

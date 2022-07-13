@@ -18,6 +18,8 @@ use Pyz\Client\RecommendationsStorage\RecommendationsStorageClientInterface;
 use Pyz\Client\SalesOrderActions\SalesOrderActionsClientInterface;
 use Pyz\Service\DataDog\DataDogServiceInterface;
 use Pyz\Service\User\UserServiceInterface;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiRecommendations;
 use Pyz\Shared\Pdf\PdfConfig;
 use Pyz\Yves\CustomerPage\Authenticator\CustomerAuthenticator;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
@@ -31,8 +33,6 @@ use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface;
 use Pyz\Yves\CustomerPage\Processor\Mapper\RecommendationsMapper;
 use Pyz\Yves\CustomerPage\Processor\Mapper\RecommendationsMapperInterface;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiRecommendations;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use Spryker\Client\Session\SessionClientInterface;
@@ -303,7 +303,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiRecommendations
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiRecommendations
      */
     public function createGlobusRestApiRecommendations(): GlobusRestApiRecommendations
     {
@@ -319,7 +319,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientCookie
      */
     public function createGlobusRestApiClientCookie(): GlobusRestApiClientCookie
     {

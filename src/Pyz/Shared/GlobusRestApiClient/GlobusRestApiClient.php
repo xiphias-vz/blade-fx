@@ -5,11 +5,11 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Yves\GlobusRestApiClient;
+namespace Pyz\Shared\GlobusRestApiClient;
 
 use Elastica\JSON;
 use Exception;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult;
 
 class GlobusRestApiClient
 {
@@ -18,7 +18,7 @@ class GlobusRestApiClient
      * @param array $params $params = ['id' => 1, 'name' => 'spry']
      * @param string|null $idToken
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public static function get(string $url, array $params, ?string $idToken = null): GlobusRestApiResult
     {
@@ -61,7 +61,7 @@ class GlobusRestApiClient
      * @param string|null $bearerToken
      * @param int $timeOutSecond
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public static function post(string $url, $data, array $params, ?string $bearerToken = null, int $timeOutSecond = 0): GlobusRestApiResult
     {
@@ -111,7 +111,7 @@ class GlobusRestApiClient
      * @param array $params $params = ['id' => 1, 'name' => 'spry']
      * @param string|null $bearerToken
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public static function patch(string $url, $data, array $params, ?string $bearerToken = null): GlobusRestApiResult
     {
@@ -157,7 +157,7 @@ class GlobusRestApiClient
     /**
      * @param mixed $curl
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     private static function getResult($curl): GlobusRestApiResult
     {

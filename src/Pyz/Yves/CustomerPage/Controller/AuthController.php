@@ -7,9 +7,9 @@
 
 namespace Pyz\Yves\CustomerPage\Controller;
 
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use Pyz\Yves\CustomerPage\Form\LoginForm;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use SprykerShop\Yves\CustomerPage\Controller\AuthController as SprykerAuthControllerAlias;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -7,8 +7,8 @@
 
 namespace Pyz\Yves\CheckoutPageDE\Controller;
 
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiCustomerEvent;
 use Pyz\Yves\CheckoutPage\Controller\CheckoutController as IntCheckoutController;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiCustomerEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 class CheckoutController extends IntCheckoutController

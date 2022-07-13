@@ -550,4 +550,12 @@ if ($storeCodeBucket == 'CZ') {
         'enable' => true,
         'stores' => ['EIN']
     ];
+
+    $jobs[] = [
+        'name' => 'check-api-endpoint-status',
+        'command' => '$PHP_BIN vendor/bin/console check-api-endpoint-status',
+        'schedule' => 'H * * * *',
+        'enable' => true,
+        'stores' => $allStores,
+    ];
 }

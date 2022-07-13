@@ -5,11 +5,11 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Yves\GlobusRestApiClient\Provider;
+namespace Pyz\Shared\GlobusRestApiClient\Provider;
 
 use Pyz\Shared\Customer\CustomerConstants;
-use Pyz\Yves\GlobusRestApiClient\GlobusRestApiClient;
-use Pyz\Yves\GlobusRestApiClient\GlobusRestApiConfig;
+use Pyz\Shared\GlobusRestApiClient\GlobusRestApiClient;
+use Pyz\Shared\GlobusRestApiClient\GlobusRestApiConfig;
 
 class GlobusRestApiClientDigitalCard
 {

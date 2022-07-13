@@ -11,9 +11,9 @@ use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientDigitalCard;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientDigitalCard;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler as SprykerAuthenticationHandler;
 

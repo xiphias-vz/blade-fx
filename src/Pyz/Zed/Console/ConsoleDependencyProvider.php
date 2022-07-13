@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Console;
 
 use Pyz\Zed\Acl\Communication\Console\AclInstallConsole;
+use Pyz\Zed\APIEndpointStatus\Communication\Console\APIEndpointStatusConsole;
 use Pyz\Zed\Cache\Communication\Console\DirectoryCacheCleanerConsole;
 use Pyz\Zed\CashierOrderExport\Communication\Console\CashierOrderExportConsole;
 use Pyz\Zed\CategoryDataImport\CategoryDataImportConfig;
@@ -420,6 +421,8 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new AdditionalMonitoringProcedure(),
             new ZeroPricesReportMailConsole(),
             new CashierFileFTPConsole(),
+
+            new APIEndpointStatusConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

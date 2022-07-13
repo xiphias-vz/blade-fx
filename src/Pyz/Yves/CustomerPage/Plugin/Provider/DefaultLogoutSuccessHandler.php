@@ -8,10 +8,10 @@
 namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 
 use Pyz\Shared\DataDog\DataDogConfig;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use Pyz\Shared\LocalStorageCookie\LocalStorageCookie;
 use Pyz\Shared\Quote\QuoteConstants;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use Spryker\Yves\Kernel\AbstractPlugin;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\HttpUtils;

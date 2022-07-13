@@ -5,11 +5,11 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Yves\GlobusRestApiClient\Provider;
+namespace Pyz\Shared\GlobusRestApiClient\Provider;
 
 use Pyz\Shared\Customer\CustomerConstants;
-use Pyz\Yves\GlobusRestApiClient\GlobusRestApiClient;
-use Pyz\Yves\GlobusRestApiClient\GlobusRestApiConfig;
+use Pyz\Shared\GlobusRestApiClient\GlobusRestApiClient;
+use Pyz\Shared\GlobusRestApiClient\GlobusRestApiConfig;
 use voku\helper\AntiXSS;
 
 class GlobusRestApiClientAccount
@@ -73,7 +73,7 @@ class GlobusRestApiClientAccount
     /**
      * @param string $uid
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public static function logout(string $uid): GlobusRestApiResult
     {
@@ -84,7 +84,7 @@ class GlobusRestApiClientAccount
     }
 
     /**
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public static function logoutWithCookie(): GlobusRestApiResult
     {
@@ -175,7 +175,7 @@ class GlobusRestApiClientAccount
      * @param array $data
      * @param string $idToken
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public static function changeAccountData(string $uid, array $data, string $idToken): GlobusRestApiResult
     {
@@ -191,7 +191,7 @@ class GlobusRestApiClientAccount
     /**
      * @param string $data
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public static function registrationFull(string $data): GlobusRestApiResult
     {

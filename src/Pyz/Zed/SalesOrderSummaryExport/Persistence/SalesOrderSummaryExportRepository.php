@@ -97,7 +97,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
 
         $timeStart = microtime(true);
         while ($item = $statement->fetch(PDO::FETCH_ASSOC)) {
-            if ($header = '') {
+            if ($header == '') {
                 $header = key($item) . "\n";
             }
             $content .= reset($item) . "\n";

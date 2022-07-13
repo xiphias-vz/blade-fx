@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Yves\GlobusRestApiClient;
+namespace Pyz\Shared\GlobusRestApiClient;
 
 use Pyz\Shared\Customer\CustomerConstants;
 use Spryker\Shared\Config\Config;

@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Yves\GlobusRestApiClient\Provider;
+namespace Pyz\Shared\GlobusRestApiClient\Provider;
 
 class GlobusRestApiAddressResult
 {
@@ -25,7 +25,7 @@ class GlobusRestApiAddressResult
      */
 
     /**
-     * @param \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult $result
+     * @param \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult $result
      * @param bool $mainGlobus
      * @param bool $we
      *

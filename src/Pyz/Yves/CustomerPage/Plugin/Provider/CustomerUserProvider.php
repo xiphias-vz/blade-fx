@@ -14,9 +14,9 @@ use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\RecoTransfer;
 use Generated\Shared\Transfer\ScenarioTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -404,7 +404,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      * @param string $bearerToken
      * @param string $nameActiveScenario
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public function globusRecommendationsData(string $uid, bool $remoteTracking, string $bearerToken, string $nameActiveScenario): GlobusRestApiResult
     {
@@ -423,7 +423,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     }
 
     /**
-     * @param \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult $result
+     * @param \Pyz\Shared\GlobusRestApiClient\Provider\GlobusRestApiResult $result
      * @param string $token
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
