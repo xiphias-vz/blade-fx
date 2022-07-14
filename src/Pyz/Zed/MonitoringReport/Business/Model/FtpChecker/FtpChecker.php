@@ -37,6 +37,11 @@ class FtpChecker
      */
     protected $files;
 
+    /**
+     * @var int
+     */
+    protected $counter = 0;
+
     protected const SFTP_FILE_SYSTEM_NAME = 'globus_sftp';
     protected const IS_XML = 'xml_file';
     protected const FILIAL_NUMBER = 'merchant_filial_number';
@@ -230,9 +235,14 @@ class FtpChecker
     protected function listAllFilesInDirectory(string $path, string $merchant): array
     {
         if (!strpos($path, 'archiv')) {
-            $path = substr($path, 0, -5);
+            if ($this->counter > 0) {
+                $path = substr($path, 0, -5);
+                $this->counter++;
+            }
         }
         $path .= '/' . $merchant;
+        dump("Looking in path: ");
+        dump($path);
 
         return $this->fileSystemService->listContents(
             (new FileSystemListTransfer())
@@ -284,7 +294,7 @@ class FtpChecker
         foreach ($files as $file) {
             foreach ($listedFiles as $listedFile) {
                 $fileName = $listedFile->getFilename();
-                if (str_contains($fileName, $file[static::ORDER_REFERENCE])) {
+                if (str_contains($fileName, $this->calculateOrderNumberInFileName($file[static::ID_ORDER]))) {
                     unset($this->files[$file[static::FILIAL_NUMBER]][$file[static::ORDER_REFERENCE]]);
                     if (count($this->files[$file[static::FILIAL_NUMBER]]) == 0) {
                         unset($this->files[$file[static::FILIAL_NUMBER]]);
