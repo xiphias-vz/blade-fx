@@ -14,23 +14,31 @@
     {% set backgroundImage = data.banner.imageUrl ? 'background-image: url(' ~ data.banner.imageUrl ~ ');' %}
     {% set backgroundImageMobile = data.banner.imageUrl ? 'background-image: url(' ~ data.banner.imageUrl | replace({".jpg": "-mobile.jpg"}) | raw ~ ');' %}
 
-    <a href={{ data.banner.clickUrl }}>
+    {% if data.banner.clickUrl | length > 4 %}
+        <a href={{ data.banner.clickUrl }}>
+    {% endif %}
         <div class=" grid {{ config.name }}__desktop" style="{{ backgroundImage }}">
             <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col col--sm-12 spacing-y spacing-y--inner spacing-y--big">
                 <h1 class="{{ config.name }}__title">{{ data.banner.title | raw }}</h1>
                 <p class="{{ config.name }}__text">{{ data.banner.subtitle | raw }}</p>
             </div>
         </div>
+    {% if data.banner.clickUrl | length > 4 %}
     </a>
+    {% endif %}
 
-    <a href={{ data.banner.clickUrl }}>
+    {% if data.banner.clickUrl | length > 4 %}
+        <a href={{ data.banner.clickUrl }}>
+    {% endif %}
         <div class=" grid {{ config.name }}__mobile" style="{{ backgroundImageMobile }}">
             <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col col--sm-12 spacing-y spacing-y--inner spacing-y--big">
                 <h1 class="{{ config.name }}__title">{{ data.banner.title | raw }}</h1>
                 <p class="{{ config.name }}__text">{{ data.banner.subtitle | raw }}</p>
             </div>
         </div>
-    </a>
+    {% if data.banner.clickUrl | length > 4 %}
+        </a>
+    {% endif %}
     <script>
         window.addEventListener('load', function() {
             document.getElementsByClassName("jumbotron-slider-mobile")[0].style.display = "block";
