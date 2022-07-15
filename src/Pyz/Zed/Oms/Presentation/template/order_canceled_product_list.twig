@@ -78,7 +78,10 @@
                                                             </td>
                                                             <td style="padding:0;Margin:0;text-align:center" class="orderSumPrice">
                                                                 {% if orderItem.originalPrice %}
-                                                                        <span style="text-decoration:line-through;">{{ orderItem.originalPrice | money(true, order.currencyIsoCode) }}</span>
+                                                                    {% if orderItem.promotion == "UVP" %}
+                                                                        <span style="padding-right: 5px">UVP</span>
+                                                                    {% endif %}
+                                                                        <span style="text-decoration:line-through;">{{ orderItem.originalPrice | money(true, order.currencyIsoCode) }}</span><br>
                                                                 {% endif %}
                                                                 {% if orderItem.canceledAmount > 0 %}
                                                                 {% set availableItems =  orderItem.canceledAmount - orderItem.quantity  %}
