@@ -14,19 +14,23 @@
     {% set backgroundImage = data.banner.imageUrl ? 'background-image: url(' ~ data.banner.imageUrl ~ ');' %}
     {% set backgroundImageMobile = data.banner.imageUrl ? 'background-image: url(' ~ data.banner.imageUrl | replace({".jpg": "-mobile.jpg"}) | raw ~ ');' %}
 
-    <div class=" grid {{ config.name }}__desktop" style="{{ backgroundImage }}">
-        <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col col--sm-12 spacing-y spacing-y--inner spacing-y--big">
-            <h1 class="{{ config.name }}__title">{{ data.banner.title | raw }}</h1>
-            <p class="{{ config.name }}__text">{{ data.banner.subtitle | raw }}</p>
+    <a href={{ data.banner.clickUrl }}>
+        <div class=" grid {{ config.name }}__desktop" style="{{ backgroundImage }}">
+            <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col col--sm-12 spacing-y spacing-y--inner spacing-y--big">
+                <h1 class="{{ config.name }}__title">{{ data.banner.title | raw }}</h1>
+                <p class="{{ config.name }}__text">{{ data.banner.subtitle | raw }}</p>
+            </div>
         </div>
-    </div>
+    </a>
 
-    <div class=" grid {{ config.name }}__mobile" style="{{ backgroundImageMobile }}">
-        <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col col--sm-12 spacing-y spacing-y--inner spacing-y--big">
-            <h1 class="{{ config.name }}__title">{{ data.banner.title | raw }}</h1>
-            <p class="{{ config.name }}__text">{{ data.banner.subtitle | raw }}</p>
+    <a href={{ data.banner.clickUrl }}>
+        <div class=" grid {{ config.name }}__mobile" style="{{ backgroundImageMobile }}">
+            <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col col--sm-12 spacing-y spacing-y--inner spacing-y--big">
+                <h1 class="{{ config.name }}__title">{{ data.banner.title | raw }}</h1>
+                <p class="{{ config.name }}__text">{{ data.banner.subtitle | raw }}</p>
+            </div>
         </div>
-    </div>
+    </a>
     <script>
         window.addEventListener('load', function() {
             document.getElementsByClassName("jumbotron-slider-mobile")[0].style.display = "block";
