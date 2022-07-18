@@ -57,9 +57,13 @@ class DetailController extends SprykerDetailController
         }
         $itemsPerPage = $request->query->getInt(SalesConfig::PARAM_ID_ITEMS_PER_PAGE, SalesConfig::DEFAULT_ITEMS_PER_PAGE);
         $pageNumber = $request->query->getInt(SalesConfig::PARAM_ID_PAGE_NUMBER, 1);
-        $maxId = $itemsPerPage * $pageNumber;
-        $minId = ($maxId - $itemsPerPage) + 1;
-        $salesOrderIdFilterRange = ['min' => $minId, 'max' => $maxId];
+
+        $minId = min($this->getFacade()->findIdOrderItemsByIdSalesOrders([$idSalesOrder]));
+
+        $startingPoint = $minId + (($pageNumber - 1) * $itemsPerPage);
+        $endPoint = $startingPoint + $itemsPerPage - 1;
+
+        $salesOrderIdFilterRange = ['min' => $startingPoint, 'max' => $endPoint];
 
         $orderTransfer = $this
             ->getFacade()
