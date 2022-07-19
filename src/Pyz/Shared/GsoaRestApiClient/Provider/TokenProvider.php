@@ -55,6 +55,7 @@ class TokenProvider
             'client_secret' => $this->getClientSecret(),
         ];
         $result = ApiClient::post($this->url, "", $data);
+        dump("Try #" . ($counter + 1));
 
         if (!isset($result["access_token"]) || $result['access_token'] === '' || array_key_exists("error", $result)) {
             if ($counter >= 2) {
@@ -91,6 +92,7 @@ class TokenProvider
             'client_secret' => $this->getClientSecret(),
         ];
         $result = ApiClient::post($this->url, "", $data);
+        dump("Try #" . ($counter + 1));
 
         if (!isset($result["access_token"]) || $result['access_token'] === '' || array_key_exists("error", $result)) {
             if ($counter >= 2) {
