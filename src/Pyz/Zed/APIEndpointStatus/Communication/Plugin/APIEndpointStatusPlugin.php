@@ -45,6 +45,7 @@ class APIEndpointStatusPlugin extends AbstractPlugin
      */
     protected function createApiEndpointList()
     {
+        $codeBucket = getenv('SPRYKER_CODE_BUCKET');
         $listOfGlobusApiFields = [
             CustomerConstants::GLOBUS_API_END_POINT_NEXT_CARD_NUMBER,
             CustomerConstants::GLOBUS_API_END_POINT_ACCOUNT_AVAILABLE,
@@ -69,13 +70,17 @@ class APIEndpointStatusPlugin extends AbstractPlugin
             "url" => Config::get(CustomerConstants::CDC_CONSTANTS)['globus_cdc_credentials']['cdcApiUrl'],
             "ApiKey" => Config::get(CustomerConstants::CDC_CONSTANTS)['globus_cdc_credentials']['cdcApiKey'], "ApiSecret" => Config::get(CustomerConstants::CDC_CONSTANTS)['globus_cdc_credentials']['cdcApiSecretKey']];
 
-        $apiEndpoint[] = [
-            "url" => Config::get(FactFinderNgConstants::FACT_FINDER_URL),
-            "Username" => Config::get(FactFinderNgConstants::FACT_FINDER_USERNAME), "Password" => Config::get(FactFinderNgConstants::FACT_FINDER_PASSWORD)];
+        if ($codeBucket === 'DE') {
+            $apiEndpoint[] = [
+                "url" => Config::get(FactFinderNgConstants::FACT_FINDER_URL),
+                "Username" => Config::get(FactFinderNgConstants::FACT_FINDER_USERNAME), "Password" => Config::get(FactFinderNgConstants::FACT_FINDER_PASSWORD)];
+        }
 
-        $apiEndpoint[] = [
-            "url" => Config::get(ApiClient::GSOA_ROOT_URL) . '/ProductCatalog/2/productCategoriesEshop',
-            "BearerToken" => $this->getBearerToken()];
+        if ($codeBucket === 'CZ') {
+            $apiEndpoint[] = [
+                "url" => Config::get(ApiClient::GSOA_ROOT_URL) . '/ProductCatalog/2/productCategoriesEshop',
+                "BearerToken" => $this->getBearerToken()];
+        }
 
         return $apiEndpoint;
     }
