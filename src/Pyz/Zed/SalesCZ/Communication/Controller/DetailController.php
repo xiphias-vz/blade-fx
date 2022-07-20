@@ -12,8 +12,8 @@ use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Zed\Sales\Communication\Controller\DetailController as IntDetailController;
+use Pyz\Zed\Sales\SalesConfig;
 use Spryker\Service\UtilText\Model\Url\Url;
-use Spryker\Zed\Sales\SalesConfig;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -50,7 +50,20 @@ class DetailController extends IntDetailController
             }
         }
 
-        $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+        $itemsPerPage = $request->query->getInt(SalesConfig::PARAM_ID_ITEMS_PER_PAGE, SalesConfig::DEFAULT_ITEMS_PER_PAGE);
+        $pageNumber = $request->query->getInt(SalesConfig::PARAM_ID_PAGE_NUMBER, 1);
+
+        $minId = min($this->getFacade()->findIdOrderItemsByIdSalesOrders([$idSalesOrder]));
+
+        $startingPoint = $minId + (($pageNumber - 1) * $itemsPerPage);
+        $endPoint = $startingPoint + $itemsPerPage - 1;
+
+        $salesOrderIdFilterRange = ['min' => $startingPoint, 'max' => $endPoint];
+
+        $orderTransfer = $this
+            ->getFacade()
+            ->findOrderWithPickingSalesOrdersByIdSalesOrderFilterByItemId($idSalesOrder, $salesOrderIdFilterRange);
+
         $merchantTransfer = $this->getFactory()
             ->getMerchantFacade()
             ->findMerchantTransferFromMerchantReference($orderTransfer->getMerchantReference());
