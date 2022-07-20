@@ -158,8 +158,9 @@ class SalesQueryContainer extends SprykerSalesQueryContainer implements SalesQue
             ->setModelAlias('order')
             ->filterByIdSalesOrder($idSalesOrder)
             ->joinWithItem()
-                ->useItemQuery()
-                    ->count();
+            ->useItemQuery()
+            ->endUse()
+            ->count();
 
         return $query;
     }
