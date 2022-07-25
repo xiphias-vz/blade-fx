@@ -17,7 +17,7 @@
     <!doctype html>
     <html lang="{{ data.locale }}">
     <head>
-        <script id="Cookiebot" src="https://consent.cookiebot.eu/uc.js" data-cbid="{{ data.cookieBotId }}" type="text/javascript" async></script>
+{#        <script id="Cookiebot" src="https://consent.cookiebot.eu/uc.js" data-cbid="{{ data.cookieBotId }}" type="text/javascript" async></script>#}
 
         {% if data.currentCodeBucket == 'CZ' %}
             {% include molecule('webchat-cz') only %}
