@@ -23,6 +23,7 @@ use Pyz\Zed\DataImport\Business\Model\CountryLocalized\CountryLocalizedWriterSte
 use Pyz\Zed\DataImport\Business\Model\Currency\CurrencyWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Customer\CustomerWriterStep;
 use Pyz\Zed\DataImport\Business\Model\DataImporterCollection;
+use Pyz\Zed\DataImport\Business\Model\DataReader\CsvReader\CsvReader;
 use Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader;
 use Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPImagesDataImportFileDownloader;
 use Pyz\Zed\DataImport\Business\Model\Glossary\GlossaryWriterStep;
@@ -86,6 +87,7 @@ use Spryker\Zed\DataImport\Business\DataImportBusinessFactory as SprykerDataImpo
 use Spryker\Zed\DataImport\Business\Model\DataImporterInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
+use Spryker\Zed\DataImport\Business\Model\DataReader\CsvReader\CsvReaderConfigurationInterface;
 use Spryker\Zed\DataImport\Dependency\Plugin\DataImportPluginInterface;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
@@ -1376,5 +1378,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
 
         return $dataImporter;
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataReader\CsvReader\CsvReaderConfigurationInterface $csvReaderConfiguration
+     *
+     * @return \Pyz\Zed\DataImport\Business\Model\DataReader\CsvReader\CsvReader|\Spryker\Zed\DataImport\Business\Model\DataReader\DataReaderInterface
+     */
+    public function createCsvReader(CsvReaderConfigurationInterface $csvReaderConfiguration)
+    {
+        $csvReader = new CsvReader($csvReaderConfiguration, $this->createDataSet());
+
+        return $csvReader;
     }
 }
