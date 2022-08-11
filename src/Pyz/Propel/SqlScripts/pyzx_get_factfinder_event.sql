@@ -1,6 +1,11 @@
 delimiter //
 create or replace procedure pyzx_get_factfinder_event(IN eventName varchar(100))
 BEGIN
+    DELETE pffe
+    FROM pyz_fact_finder_event pffe
+	    INNER JOIN spy_product sp ON pffe.fk_product_abstract = sp.fk_product_abstract
+    WHERE sp.is_active = 0;
+
 	IF eventName LIKE 'records.%' THEN
         SELECT JSON_SET(CONCAT('{"CategoryPath":[["', CONCAT_WS( '","', cat.c5, cat.c4, cat.c3, cat.c2, cat.c1), '"]]}')
            , '$.MasterArticleNumber', sp.product_number

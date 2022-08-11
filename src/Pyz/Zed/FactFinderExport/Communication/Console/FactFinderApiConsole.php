@@ -54,6 +54,11 @@ class FactFinderApiConsole extends Console
                             $results[$key]["deleteList"][] = $item["fk_product_abstract"];
                         }
                     } else {
+                        if (isset($item["error"]["name"])) {
+                            if ($item["error"]["name"] === "IllegalArgumentException") {
+                                $results[$key]["deleteList"][] = $item["fk_product_abstract"];
+                            }
+                        }
                         $output->writeln($key . ": " . JSON::stringify($item));
                     }
                 }

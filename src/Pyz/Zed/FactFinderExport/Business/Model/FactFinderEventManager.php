@@ -91,7 +91,12 @@ class FactFinderEventManager
                 $result[$event] = FactFinderApiClient::execByEventName($event, $data);
                 for ($i = 0; $i < $itemsCount; $i++) {
                     $result[$event][$i]["fk_product_abstract"] = $dataDb[$i]["fk_product_abstract"];
-                    if (!$result[$event][$i]["success"]) {
+                    if (isset($result[$event][$i]["success"])) {
+                        if (!$result[$event][$i]["success"]) {
+                            $result[$event][$i]["data"] = $data[$i];
+                        }
+                    } else {
+                        $result[$event][$i]["success"] = false;
                         $result[$event][$i]["data"] = $data[$i];
                     }
                 }
