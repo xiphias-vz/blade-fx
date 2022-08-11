@@ -70,6 +70,7 @@ use Pyz\Zed\SalesOrderSummaryExport\Communication\Console\SalesOrderSummaryExpor
 use Pyz\Zed\SalesOrderThresholdDataImport\SalesOrderThresholdDataImportConfig;
 use Pyz\Zed\Sitemap\Communication\Console\SitemapConsole;
 use Pyz\Zed\TimeSlot\Communication\Console\TimeSlotCheckerConsole;
+use Pyz\Zed\UrlStorage\Communication\Console\UrlStorageConsole;
 use Spryker\Shared\Config\Environment;
 use Spryker\Zed\Cache\Communication\Console\EmptyAllCachesConsole;
 use Spryker\Zed\CodeGenerator\Communication\Console\BundleClientCodeGeneratorConsole;
@@ -423,6 +424,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new CashierFileFTPConsole(),
 
             new APIEndpointStatusConsole(),
+            new UrlStorageConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();
