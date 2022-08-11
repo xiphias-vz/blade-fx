@@ -26,6 +26,15 @@ BEGIN
              left outer join spy_stock_store sss on sss.fk_store = ss.id_store
     where sss.id_stock_store is null;
 
+    INSERT INTO	spy_product_abstract_store (fk_product_abstract, fk_store)
+    SELECT DISTINCT spas.fk_product_abstract, spas.fk_store
+    FROM pyz_import_csv_new picn
+             INNER JOIN spy_product sp ON picn.sap_number = sp.sap_number AND picn.sku = sp.sku
+             INNER JOIN spy_merchant sm ON 1 = 1	AND sm.is_shop_visible = 1
+             LEFT OUTER JOIN spy_product_abstract_store spas ON sp.fk_product_abstract = spas.fk_product_abstract AND sm.fk_store = spas.fk_store
+    WHERE picn.created_at > DATE_ADD(ifnull((SELECT MAX(created_at) FROM pyz_import_csv_new), now()), INTERVAL -1 DAY)
+      AND spas.id_product_abstract_store IS NULL;
+
     DROP TEMPORARY TABLE IF EXISTS tmp_stock;
 	CREATE TEMPORARY TABLE tmp_stock (
         id bigint,
@@ -97,7 +106,7 @@ BEGIN
 
     insert into pyz_product_abstract_store
         (fk_product_abstract, fk_store)
-    select sp.fk_product_abstract, ss.id_store
+    select distinct sp.fk_product_abstract, ss.id_store
     from spy_product sp
          inner join spy_store ss on 1 = 1
          inner join spy_merchant sm on ss.name = sm.merchant_short_name
@@ -145,7 +154,9 @@ BEGIN
         ssp.shelf_floor = ts.shelf_floor
     where ssp.quantity is null
        or ssp.quantity <> ts.instock
-       or IFNULL(ssp.shelf, '') <> IFNULL(ts.shelf, '');
+       or IFNULL(ssp.shelf, '') <> IFNULL(ts.shelf, '')
+       or IFNULL(ssp.shelf_field, '') <> IFNULL(ts.shelf_field, '')
+       or IFNULL(ssp.shelf_floor, '') <> IFNULL(ts.shelf_floor, '');
 
     update spy_stock_product ssp
     left outer join tmp_stock ts on ssp.id_stock_product = ts.id_stock_product
