@@ -7,7 +7,7 @@ BEGIN
         (ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice, Promotion, fk_product, dt_created)
     SELECT DISTINCT sp.sku as ean, sm.filial_number as storeID
          , ROUND(sppsDef.gross_price / 100, 2) as price
-         , CASE WHEN NOT sppsDef.promotion IS NULL THEN ROUND(orig.gross_price / 100, 2) ELSE null end as pseudoPrice
+         , CASE WHEN NOT sppsDef.promotion IS NULL AND orig.gross_price > 0 THEN ROUND(orig.gross_price / 100, 2) ELSE null end as pseudoPrice
          , ROUND(sa.quantity) as quantity
          , CASE WHEN NOT sppsDef.promotion IS NULL THEN 1 else 0 end as sale
          , null as ShelfInfo
