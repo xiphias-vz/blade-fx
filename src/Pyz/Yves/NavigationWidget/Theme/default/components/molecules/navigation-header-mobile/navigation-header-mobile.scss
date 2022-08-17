@@ -1,8 +1,0 @@
-@mixin shop-ui-navigation-header-mobile($name: '.navigation-header-mobile') {
-    #{$name} {
-        position: relative;
-        border-bottom: rem(1) dotted $setting-color-gray-3;
-    }
-}
-
-@include shop-ui-navigation-header-mobile();

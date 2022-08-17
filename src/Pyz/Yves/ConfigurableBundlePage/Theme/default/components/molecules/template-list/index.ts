@@ -1,1 +1,0 @@
-import './template-list.scss';

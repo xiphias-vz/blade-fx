@@ -1,4 +1,4 @@
-config:
+onfig:
   phpstan:
     level: 4
     config: phpstan.neon

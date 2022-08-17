@@ -1,1 +1,0 @@
-import './inspirational-block.scss';

@@ -1,1 +1,0 @@
-import './return-total.scss';

@@ -1,1 +1,0 @@
-import './suggestion-block.scss';

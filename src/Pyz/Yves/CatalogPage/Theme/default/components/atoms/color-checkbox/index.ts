@@ -1,1 +1,0 @@
-import './color-checkbox.scss';

@@ -1,1 +1,0 @@
-import './variant.scss';
