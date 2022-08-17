@@ -5,5 +5,8 @@
             "name": "DajtiEmanuel",
             "email": "edajtixiphias@gmail.com"
         }
-    ]
+    ],
+    "require": {
+         "spryker/price-product": "^2.1.0 || ^4.0.0",
+    }
 }
