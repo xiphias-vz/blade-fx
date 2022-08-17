@@ -1,4 +1,7 @@
 {
     "name": "xiphias/blade-fx",
-    "description": "Blade Fx reports"
+    "description": "Blade Fx reports",
+    "require": {
+        "php": ">=7.4"
+    }
 }
