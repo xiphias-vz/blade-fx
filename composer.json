@@ -6,5 +6,7 @@
             "email": "edajtixiphias@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "xiphias-vz/blade-fx": "dev-master"
+    }
 }
