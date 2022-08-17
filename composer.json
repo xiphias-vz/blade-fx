@@ -5,8 +5,5 @@
             "name": "DajtiEmanuel",
             "email": "edajtixiphias@gmail.com"
         }
-    ],
-    "require": {
-        "xiphias-vz/blade-fx": "dev-master"
-    }
+    ]
 }
