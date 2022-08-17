@@ -1,7 +1,11 @@
 {
     "name": "xiphias/blade-fx",
-    "description": "Blade Fx reports",
-    "require": {
-        "php": ">=7.4"
-    }
+    "type": "project",
+    "authors": [
+        {
+            "name": "DajtiEmanuel",
+            "email": "edajtixiphias@gmail.com"
+        }
+    ],
+    "require": {}
 }
