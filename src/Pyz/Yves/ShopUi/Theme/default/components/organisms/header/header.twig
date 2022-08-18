@@ -9,7 +9,6 @@
     channelName: app.factFinderChannel,
     ffSnippetEnabled: app.ffSnippetEnabled,
     customerUserRecoData: app.customerUserRecoData,
-    quoteCookie: app.quoteCookieApplicationPluginId
 } %}
 
 {% define hamburgerIcon = {
@@ -37,7 +36,6 @@
     <input type="hidden" id="ffChannelName" value="{{ data.channelName }}" />
     <input type="hidden" id="storeId" value="{{ data.storeId }}" />
     <input type="hidden" name="header-codebucket" value="{{ app.currentCodeBucket }}">
-    <input type="hidden" name="localStorageCookie" value="{{ data.quoteCookie }}">
 
 
     {% embed molecule('popup-ui-shipment-form') with {} only %}{% endembed %}

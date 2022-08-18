@@ -26,23 +26,23 @@ export default class AjaxAddToCart extends Component {
     protected environment: HTMLInputElement;
     protected url: string;
 
-    protected readyCallback(): void {
+    protected async readyCallback(): Promise<void> {
         this.environment = <HTMLInputElement>document.querySelector('#environment');
         if (this.environment.value === 'DE') {
-            const checkRecordsAreRendered = setInterval(() => {
+            const checkRecordsAreRendered = setInterval(async() => {
                 this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
 
                 if (this.links.length > 0) {
-                    this.load();
+                    await this.load();
                     clearInterval(checkRecordsAreRendered);
                 }
             }, 500);
         } else {
-            this.load();
+            await this.load();
         }
     }
 
-    public load() {
+    public async load() {
         this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
         this.addToCartIncrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartIncrementer));
         this.addtoCartDecrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartDecrementer));
@@ -66,24 +66,25 @@ export default class AjaxAddToCart extends Component {
             this.listenForUrlChanges();
             this.url = location.href;
         }
-        this.mapEvents();
+        await this.mapEvents();
     }
 
     protected listenForUrlChanges() {
-        setInterval(() =>
+        setInterval(async() =>
         {
             if (this.url != location.href)
             {
                 this.url = location.href;
-                this.load();
+                await this.load();
             }
         }, 500);
     }
 
-    protected mapEvents(): void {
-        this.links.forEach((link: HTMLLinkElement) => {
+    protected async mapEvents(): Promise<void> {
+        await document.loadCartItemsList();
+        this.links.forEach(async (link: HTMLLinkElement) => {
             if (localStorage.getItem('productItemsForSyncCounter')) {
-                this.syncCounterFromLocalStorage(link);
+                await this.syncCounterFromLocalStorage(link);
             }
 
             if (link.getAttribute('flag') !== '1') {
@@ -112,29 +113,29 @@ export default class AjaxAddToCart extends Component {
         });
     }
 
-    protected syncCounterFromLocalStorage(link): void {
+    protected async syncCounterFromLocalStorage(link): Promise<void> {
+        let productSkuFromPOP = this.takeSkuFromString(link.dataset?.productSku);
+        if (productSkuFromPOP === '' || productSkuFromPOP === undefined) {
+            const productUrl = link.dataset.productUrl;
+            if (productUrl) {
+                productSkuFromPOP = productUrl.split('/')[3];
+            }
+        }
+        let cartCount = await document.getCartItemCount(productSkuFromPOP);
+        if (cartCount !== 0) {
+            this.updateItemQuantityInput(link, cartCount);
+            this.showCounterAndHideAjaxButton(link);
+        }
+
         const productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
 
         productItemsForSyncCounter.forEach(([key, value]) => {
-            let productSkuFromPOP = this.takeSkuFromString(link.dataset?.productSku);
-
-            if (productSkuFromPOP === '' || productSkuFromPOP === undefined) {
-                const productUrl = link.dataset.productUrl;
-                if (productUrl) {
-                    productSkuFromPOP = productUrl.split('/')[3];
-                }
-            }
             if (key === productSkuFromPOP) {
-                const quantityFromCart = value;
-                if (quantityFromCart !== 0) {
-                    this.updateItemQuantityInput(link, quantityFromCart);
-                    this.showCounterAndHideAjaxButton(link);
-                } else {
+                if (cartCount === 0) {
                     const filteredProductItemsFromCart = productItemsForSyncCounter.filter(([key, value]) => {
                         return value !== 0;
                     });
                     localStorage.setItem('productItemsForSyncCounter', JSON.stringify(filteredProductItemsFromCart));
-                    this.addlocalStorageInfoToCookie(filteredProductItemsFromCart);
                     if (localStorage.getItem('productItemsForSyncCounter') === '[]') {
                         localStorage.removeItem('productItemsForSyncCounter');
                     }
@@ -422,11 +423,9 @@ export default class AjaxAddToCart extends Component {
                     productItemsForSyncCounter.push(itemAddedInCartWithQuantity[0]);
                 }
                 localStorage.setItem('productItemsForSyncCounter', JSON.stringify(productItemsForSyncCounter));
-                this.addlocalStorageInfoToCookie(productItemsForSyncCounter);
 
             } else {
                 localStorage.setItem('productItemsForSyncCounter', JSON.stringify(itemAddedInCartWithQuantity));
-                this.addlocalStorageInfoToCookie(itemAddedInCartWithQuantity);
             }
             const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.parentElement.querySelector(CLASS_PREFIX + this.quantityInputField);
             counter.value = String(quantity);
@@ -544,18 +543,6 @@ export default class AjaxAddToCart extends Component {
         counter?.classList.add(HIDDEN_CLASS);
         addAjaxButton?.classList.remove(HIDDEN_CLASS);
         addAjaxButton.removeAttribute('disabled');
-    }
-
-    protected addlocalStorageInfoToCookie(localStorageData): void {
-        const cookieName = 'local_storage_cookie';
-        this.setCookie(cookieName, JSON.stringify(localStorageData), 1);
-    }
-
-    protected setCookie(name, value, exdays) {
-        const date = new Date();
-        date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        const expires = 'expires=' + date.toUTCString();
-        document.cookie = name + '=' + value + ';' + expires + ';path=/';
     }
 
     protected takeSkuFromString(inputSku: string) {

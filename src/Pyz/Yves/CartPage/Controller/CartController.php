@@ -15,7 +15,6 @@ use Generated\Shared\Transfer\ProductConcreteAvailabilityTransfer;
 use Generated\Shared\Transfer\ProductViewTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
-use Pyz\Shared\LocalStorageCookie\LocalStorageCookie;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\OrderDetail\OrderDetailConstants;
 use Pyz\Yves\CartPage\Plugin\Router\CartPageRouteProviderPlugin;
@@ -45,6 +44,7 @@ class CartController extends SprykerCartController
     protected const REQUEST_ATTRIBUTE_PRODUCT_SKU = 'productSku';
 
     protected const RESPONSE_ATTRIBUTE_DELETED_ITEMS = 'deletedItems';
+    protected const RESPONSE_ATTRIBUTE_CART_ITEMS = 'cartItems';
 
     protected const KEY_ERROR = 'error';
 
@@ -116,8 +116,6 @@ class CartController extends SprykerCartController
         } else {
             $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
         }
-
-        LocalStorageCookie::deleteCookieData();
 
         return $this->redirect($request);
     }
@@ -722,5 +720,30 @@ class CartController extends SprykerCartController
         ];
 
         return $this->jsonResponse($response);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getCartItemsAction(Request $request): JsonResponse
+    {
+        $listOfItems = [];
+        $items = $this->getFactory()->getBaseQuoteClient()->getQuote()->getItems() ?? null;
+        foreach ($items as $item) {
+            $sapNumber = str_replace("_abstract", "", $item->getAbstractSku());
+            if ($sapNumber !== $item->getSku()) {
+                $listOfItems[$item->getSku()] = $item->getQuantity();
+            }
+            $listOfItems[$sapNumber] = $item->getQuantity();
+        }
+
+         $response = [
+            static::KEY_CODE => Response::HTTP_OK,
+            static::RESPONSE_ATTRIBUTE_CART_ITEMS => $listOfItems,
+         ];
+
+         return $this->jsonResponse($response);
     }
 }

@@ -1,28 +1,44 @@
-window.addEventListener('DOMContentLoaded', (myEvent) => {
-    let cookieInputField = document.querySelector('input[name="localStorageCookie"]');
-    let cookieValue = getCookie('local_storage_cookie');
-    let localStorageValue = localStorage.getItem('productItemsForSyncCounter');
+document.getCartItemsListinProgress = false;
+document.loadCartItemsList = async function() {
+    if(document.CartItemsList === undefined && !document.getCartItemsListinProgress) {
+        document.getCartItemsListinProgress = true;
+        var url = document.location.origin + '/cart/get-cart-items';
+        let response = await fetch(url);
+        let json = await response.json();
+        document.CartItemsList = json.cartItems;
+        let products = [];
+        const productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+        Object.entries(document.CartItemsList).forEach((key, value) => {
+            let isFF = false;
+            if(productItemsForSyncCounter !== null) {
+                const p = productItemsForSyncCounter.find(el => el[0] === key[0]);
+                if(p !== undefined) {
+                    isFF = p[2];
+                }
+            }
+            products.push([key[0], key[1], isFF]);
+        });
 
-    if (cookieValue === cookieInputField.value && localStorageValue !== cookieInputField.value) {
-        localStorageValue = cookieInputField.value;
-        localStorage.setItem('productItemsForSyncCounter', localStorageValue);
-    }
-});
-
-function getCookie(name: string) {
-    let cookieName: string = name + '=';
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let cookieArray = decodedCookie.split(';');
-    const arrayLength = cookieArray.length;
-
-    for (let i = 0; i < arrayLength; i++) {
-        let cookie = cookieArray[i];
-        while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1);
-        }
-
-        if (cookie.indexOf(cookieName) === 0) {
-            return cookie.substring(cookieName.length, cookie.length);
-        }
+        localStorage.setItem('productItemsForSyncCounter', JSON.stringify(products));
     }
 }
+
+async function checkCartItemsIsLoaded(_callback) {
+    if(await _callback()) {
+        return true;
+    }
+    return await checkCartItemsIsLoaded(async function() { return document.CartItemsList !== undefined});
+}
+
+document.getCartItemCount = async function(sku) {
+    if(!document.getCartItemsListinProgress) {
+        await document.loadCartItemsList();
+    }
+    await checkCartItemsIsLoaded(async function() { return document.CartItemsList !== undefined});
+
+    if(document.CartItemsList[sku] === undefined) {
+        return 0;
+    }
+    return document.CartItemsList[sku];
+}
+

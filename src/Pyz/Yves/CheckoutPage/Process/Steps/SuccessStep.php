@@ -9,8 +9,6 @@ namespace Pyz\Yves\CheckoutPage\Process\Steps;
 
 use Generated\Shared\Transfer\CartOrCheckoutEventTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Pyz\Shared\LocalStorageCookie\LocalStorageCookie;
-use Pyz\Shared\Quote\QuoteConstants;
 use Spryker\Client\Session\SessionClientInterface;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerShop\Yves\CheckoutPage\CheckoutPageConfig;
@@ -59,8 +57,6 @@ class SuccessStep extends SprykerSuccessStep
         $this->copyQuoteTransfer = $quoteTransfer;
 
         if ($this->checkoutPageConfig->cleanCartAfterOrderCreation()) {
-            $this->sessionClient->set(QuoteConstants::QUOTE_COOKIE_NAME, '');
-            LocalStorageCookie::deleteCookieData();
         }
 
         return parent::execute($request, $quoteTransfer);

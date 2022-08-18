@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         let footer = document.querySelector('footer');
         let contactStoreInfo = footer.querySelector('.contact-store-info');
         slot.style.display = 'none';
-        contactStoreInfo.prepend(slotInfo);
+        contactStoreInfo?.prepend(slotInfo);
         checkAndSetFooter();
     }
     checkAndSetFooter();

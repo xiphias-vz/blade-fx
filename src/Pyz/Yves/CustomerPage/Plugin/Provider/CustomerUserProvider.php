@@ -29,8 +29,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     public const ERROR_NOT_VERIFIED_CUSTOMER = 'ERROR_NOT_VERIFIED_CUSTOMER';
     public const INITIAL_PASSWORD = '$#$%J%R%$)O%t43t';
 
-    public const LOCAL_STORAGE_COOKIE_NAME = 'local_storage_cookie';
-
     /**
      * @param string $email
      *
@@ -133,8 +131,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                     $cook = $this->getFactory()->createGlobusRestApiClientCookie();
                     $cook->setLoginCookiePhp($unparsedAuth, $this->getFactory()->getSessionClient());
                     $cook->setLoginConfirmedCookiePhp();
-
-                    $this->createQuoteCookie();
                 }
             } catch (Exception $ex) {
             }
@@ -465,28 +461,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     public function globusLoginWithCookie(): string
     {
         return GlobusRestApiClientAccount::loginWithCookie();
-    }
-
-    /**
-     * @return void
-     */
-    protected function createQuoteCookie()
-    {
-        $cookieTransfer = $this->getFactory()->createLocalStorageCookieTransfer();
-
-        $listOfItemsForCookie = [];
-        $items = $this->getFactory()->getQuoteClient()->getQuote()->getItems() ?? null;
-        foreach ($items as $item) {
-            $listOfItemsForCookie[] = [$item->getSku(), $item->getQuantity(), true];
-        }
-
-        $cookieTransfer->setName(static::LOCAL_STORAGE_COOKIE_NAME);
-        $cookieTransfer->setExpires((time() + (86400 * 30)));
-        $cookieTransfer->setPath('/');
-        $cookieTransfer->setData(trim(JSON::stringify($listOfItemsForCookie)));
-        $cookieTransfer->setCookieStringValue("Set-cookie: " . $cookieTransfer->getName() . "=" . $cookieTransfer->getData() . "; expires=" . $cookieTransfer->getExpires() . "; path=" . $cookieTransfer->getPath()/* . "; domain=" . $cookieTransfer->getDomain()*/);
-
-        header($cookieTransfer->getCookieStringValue());
     }
 
     /**
