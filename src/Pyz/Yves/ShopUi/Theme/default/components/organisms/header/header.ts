@@ -23,22 +23,18 @@ document.loadCartItemsList = async function() {
     }
 }
 
-async function checkCartItemsIsLoaded(_callback) {
-    if(await _callback()) {
-        return true;
-    }
-    return await checkCartItemsIsLoaded(async function() { return document.CartItemsList !== undefined});
-}
-
 document.getCartItemCount = async function(sku) {
-    if(!document.getCartItemsListinProgress) {
-        await document.loadCartItemsList();
+    if(document.CartItemsList === undefined) {
+        const productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+        const filteredProductItemsFromCart = productItemsForSyncCounter?.find(el => el[0] === sku);
+        if(filteredProductItemsFromCart !== undefined) {
+            return filteredProductItemsFromCart[1];
+        }
+    } else {
+        if(document.CartItemsList[sku] !== undefined) {
+            return document.CartItemsList[sku];
+        }
     }
-    await checkCartItemsIsLoaded(async function() { return document.CartItemsList !== undefined});
-
-    if(document.CartItemsList[sku] === undefined) {
-        return 0;
-    }
-    return document.CartItemsList[sku];
+    return 0;
 }
 
