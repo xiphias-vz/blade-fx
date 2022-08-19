@@ -38,3 +38,9 @@ document.getCartItemCount = async function(sku) {
     return 0;
 }
 
+if(document.URL.indexOf('checkout/success') > 0 || document.URL.indexOf('/logout') > 0) {
+    addEventListener('load', async () => {await document.loadCartItemsList();});
+}
+
+
+
