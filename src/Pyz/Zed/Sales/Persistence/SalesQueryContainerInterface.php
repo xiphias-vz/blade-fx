@@ -25,13 +25,12 @@ interface SalesQueryContainerInterface extends SprykerSalesQueryContainerInterfa
 
     /**
      * @param int $idSalesOrder
-     * @param array $itemIdRange
      *
      * @throws \Spryker\Zed\Propel\Business\Exception\AmbiguousComparisonException
      *
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
      */
-    public function querySalesOrderDetailsWithPickingSalesOrderFilterByItemId(int $idSalesOrder, array $itemIdRange): SpySalesOrderQuery;
+    public function querySalesOrderDetailsWithPickingSalesOrderFilterByItemId(int $idSalesOrder): SpySalesOrderQuery;
 
     /**
      * @param int $idSalesOrder

@@ -9,7 +9,6 @@ namespace Pyz\Zed\Sales\Persistence;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
-use Spryker\Zed\PropelOrm\Business\Runtime\ActiveQuery\Criteria as SprykerCriteria;
 use Spryker\Zed\Sales\Persistence\SalesQueryContainer as SprykerSalesQueryContainer;
 
 /**
@@ -115,16 +114,11 @@ class SalesQueryContainer extends SprykerSalesQueryContainer implements SalesQue
     }
 
     /**
-     * @api
-     *
      * @param int $idSalesOrder
-     * @param array $itemIdRange
-     *
-     * @throws \Spryker\Zed\Propel\Business\Exception\AmbiguousComparisonException
      *
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
      */
-    public function querySalesOrderDetailsWithPickingSalesOrderFilterByItemId(int $idSalesOrder, array $itemIdRange): SpySalesOrderQuery
+    public function querySalesOrderDetailsWithPickingSalesOrderFilterByItemId(int $idSalesOrder): SpySalesOrderQuery
     {
         $query = $this->getFactory()->createSalesOrderQuery()
             ->setModelAlias('order')
@@ -136,7 +130,7 @@ class SalesQueryContainer extends SprykerSalesQueryContainer implements SalesQue
             ->leftJoinWith('shippingAddress.Country shippingCountry')
             ->joinWithItem()
                 ->useItemQuery()
-                    ->filterByIdSalesOrderItem($itemIdRange, SprykerCriteria::BETWEEN)
+                    ->orderByPickZone()
                     ->leftJoinWithStateHistory()
                     ->useStateHistoryQuery(null, Criteria::LEFT_JOIN)
                         ->leftJoinWithState()
