@@ -35,6 +35,10 @@ use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Sales\Communication\SalesCommunicationFactory as SprykerSalesCommunicationFactory;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
 use Spryker\Zed\Sales\SalesDependencyProvider as SprykerSalesDependencyProvider;
+use Pyz\Zed\BladeFx\Business\BladeFxFacadeInterface;
+use Pyz\Zed\Sales\Communication\Table\SalesOrderBladeFxReportsTable;
+use Pyz\Zed\Sales\Communication\Tabs\SalesOrderFormTabs;
+use Spryker\Zed\Gui\Communication\Tabs\TabsInterface;
 
 /**
  * @method \Pyz\Zed\Sales\SalesConfig getConfig()
@@ -227,6 +231,37 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
             ->find();
 
         return $containerEntity->getData();
+    }
+
+    /**
+     * @return \Pyz\Zed\BladeFx\Business\BladeFxFacadeInterface
+     */
+    public function getBladeFxFacade(): BladeFxFacadeInterface
+    {
+        return $this->getProvidedDependency(SalesDependencyProvider::BLADE_FX_FACADE);
+    }
+
+    /**
+     * @return \Spryker\Zed\Gui\Communication\Tabs\TabsInterface
+     */
+    public function createSalesOrderFormTabs(): TabsInterface
+    {
+        return new SalesOrderFormTabs();
+    }
+
+    /**
+     * @param string $orderReference
+     * @param int $idSalesOrder
+     *
+     * @return \Pyz\Zed\Sales\Communication\Table\SalesOrderBladeFxReportsTable
+     */
+    public function createSalesOrderBladeFxReportsTable(string $orderReference, int $idSalesOrder): SalesOrderBladeFxReportsTable
+    {
+        return new SalesOrderBladeFxReportsTable(
+            $this->getBladeFxFacade(),
+            $orderReference,
+            $idSalesOrder
+        );
     }
 
     /**

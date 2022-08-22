@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="UserBladeFx">
+        <property name="id" type="int"/>
+        <property name="username" type="string"/>
+        <property name="fullname" type="string"/>
+        <property name="description" type="string"/>
+        <property name="userData" type="string"/>
+        <property name="serverID" type="string"/>
+        <property name="reportId" type="string"/>
+    </transfer>
+
+    <transfer name="BladeFxReportsCollection">
+        <property name="reports" type="BladeFxReport[]"/>
+    </transfer>
+
+    <transfer name="BladeFxReport">
+        <property name="catId" type="string"/>
+        <property name="catParentId" type="string"/>
+        <property name="catName" type="string"/>
+        <property name="catSort" type="string"/>
+        <property name="repId" type="string"/>
+        <property name="repName" type="string"/>
+        <property name="repDesc" type="string"/>
+        <property name="canView" type="string"/>
+        <property name="layoutId" type="string"/>
+        <property name="isDef" type="string"/>
+        <property name="isMetro" type="string"/>
+    </transfer>
+
+    <transfer name="OrderData">
+        <property name="orderReference" type="int"/>
+        <property name="idReport" type="int"/>
+    </transfer>
+
+</transfers>

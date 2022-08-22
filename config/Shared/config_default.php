@@ -92,7 +92,7 @@ use SprykerShop\Shared\ShopUi\ShopUiConstants;
 use StoreApp\Shared\Picker\PickerConstants;
 use Twig\Cache\FilesystemCache;
 use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
-
+use Pyz\Shared\BladeFx\BladeFxConstants;
 
 $CURRENT_STORE = Store::getInstance()->getStoreName();
 $AVAILABLE_STORES = Store::getInstance()->getAllowedStores();
@@ -1351,4 +1351,16 @@ $config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = '';
 // ---------- Sitemap Base URL
 $config[SitemapConstants::SITEMAP_BASE_URL] = 'https://shop.globus.de';
 
+// ----------------------------------------------------------------------------
+// ------------------------------ Blade-FX ------------------------------------
+// ----------------------------------------------------------------------------
+$config[BladeFxConstants::BLADE_FX_REPORTS_HOST] = 'https://saas-reports.blade-fx.com';
+$config[BladeFxConstants::BLADE_FX_X_THIS_HOST] = "http://x-this.com/";
 
+$config[BladeFxConstants::BLADE_FX_SERVICE] = [
+    BladeFxConstants::BLADE_FX_WEB_SERVICE_FILE => $config[BladeFxConstants::BLADE_FX_REPORTS_HOST] . '/Servisi/WebData.asmx',
+    BladeFxConstants::BLADE_FX_USER_INFO => $config[BladeFxConstants::BLADE_FX_X_THIS_HOST] . 'GetUserInfo',
+    BladeFxConstants::BLADE_FX_REPORT_LIST => $config[BladeFxConstants::BLADE_FX_X_THIS_HOST] . 'GetReportListNAtt',
+    BladeFxConstants::BLADE_FX_URL_PRINT_OUT_FILE => '/out/Printout.aspx',
+    BladeFxConstants::BLADE_FX_URL_MOBILE_FILE => '/out/Mobile.aspx'
+];

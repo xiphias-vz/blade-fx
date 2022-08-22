@@ -1,0 +1,19 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Reports' %}
+
+{% block head_title widget_title | trans %}
+
+{% block section_title widget_title | trans %}
+
+{% block action %}
+
+{% endblock %}
+
+{% block content %}
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Reports'} %}
+        {% block widget_content %}
+            {{ bladeFxReports | raw }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

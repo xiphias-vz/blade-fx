@@ -1,0 +1,25 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% block content %}
+    <a href="{{ url('/blade-fx') }}" class="btn btn-outline safe-submit btn-back space-15">{{ 'Back to Reports' | trans }}</a>
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Reports'} %}
+        {% block widget_content %}
+            <div class="row">
+                <div class="iframe-loader col-lg-12">
+                    <iframe width="100%" height="800" src="{{ webPageUrl }}" title="FreeXReports Iframe"></iframe>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block footer_js %}
+    {{ parent() }}
+    <script src="{{ assetsPath('js/spryker-zed-sales-main.js') }}"></script>
+{% endblock %}
+
+{% block head_css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-sales-main.css') }}">
+{% endblock %}

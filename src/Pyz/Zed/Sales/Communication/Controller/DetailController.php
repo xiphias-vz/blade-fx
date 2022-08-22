@@ -313,7 +313,26 @@ class DetailController extends SprykerDetailController
             'phone' => $phone,
             'cellPhone' => $cellPhone,
             'isTransportBoxEnabled' => $isDepositAllowed,
+            'orderTabs' => $this->getFactory()->createSalesOrderFormTabs()->createView(),
+            'salesOrderBladeFxReportsTable' => $this->getFactory()->createSalesOrderBladeFxReportsTable($orderReference, $idSalesOrder)->render(),
         ], $blockResponseData);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function orderBladeFxTableAction(Request $request): JsonResponse
+    {
+        $orderReference = $request->query->get(SalesConfig::PARAM_ORDER_REFERENCE);
+        $idSalesOrder = $this->castId($request->query->get(SalesConfig::PARAM_ID_SALES_ORDER));
+
+        $table = $this->getFactory()->createSalesOrderBladeFxReportsTable($orderReference, $idSalesOrder);
+
+        return $this->jsonResponse(
+            $table->fetchData()
+        );
     }
 
     /**

@@ -7,11 +7,13 @@
 
 namespace Pyz\Zed\SalesOverview\Communication\Controller;
 
+use Spryker\Zed\Sales\Communication\Controller\IndexController as SprykerIndexController;
+
 /**
  * @method \Pyz\Zed\SalesOverview\Communication\SalesOverviewCommunicationFactory getFactory()
  * @method \Pyz\Zed\SalesOverview\Business\SalesOverviewFacadeInterface getFacade()
  */
-class IndexController
+class IndexController extends SprykerIndexController
 {
     protected const CONST_SUMME = 'Total';
     protected const CONST_MERCHANT = '1004';
