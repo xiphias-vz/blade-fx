@@ -336,7 +336,8 @@
     "spryker/zed-navigation": "^1.12.0",
     "swiftmailer/swiftmailer": "^5.4.12",
     "twig/cache-extension": "^1.4",
-    "twig/twig": "1.44.2"
+    "twig/twig": "1.44.2",
+    "ext-simplexml": "*"
   },
   "require-dev": {
     "codeception/codeception": "^2.3.8",
