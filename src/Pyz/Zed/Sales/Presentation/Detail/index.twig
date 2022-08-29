@@ -1,0 +1,50 @@
+{% extends '@Sales/Layout/layout.twig' %}
+
+{% block action %}
+    {{ backActionButton('/sales', 'Back to Orders' | trans) }}
+{% endblock %}
+
+{% block section_title %}
+    {{ 'View Order:' | trans }} {{ order.idSalesOrder }}
+{% endblock %}
+
+{% block content %}
+    {{ tabs(orderTabs, {
+        'order': order,
+        'changeStatusRedirectUrl': changeStatusRedirectUrl,
+        'blocks': blocks,
+        'groupedOrderItems': groupedOrderItems,
+        'events': events,
+        'eventsGroupedByShipment': eventsGroupedByShipment,
+        'eventsGroupedByItem': eventsGroupedByItem,
+        'tableColumnHeaders': tableColumnHeaders,
+        'tableColumnCellsContent': tableColumnCellsContent,
+        'add_comments': add_comments,
+        'salesOrderBladeFxReportsTable': salesOrderBladeFxReportsTable,
+        'cellPhone' :  cellPhone,
+        'orderItemSplitFormCollection': orderItemSplitFormCollection,
+        'distinctOrderStates': distinctOrderStates,
+        'customerTransfer': customerTransfer,
+        'shipping': shipping,
+        'address': address,
+        'payments': payments,
+        'isCurrentUserSupervisor': isCurrentUserSupervisor,
+        'isCurrentUserSupervisorOrAdmin': isCurrentUserSupervisorOrAdmin,
+        'blocksToRenderForCustomer': blocksToRenderForCustomer,
+        'requestDeliveryDate': requestDeliveryDate,
+        'deliveryDate': deliveryDate,
+        'deliveryTimeSlot': deliveryTimeSlot,
+        'pickZones': pickZones,
+        'itemStatusArray': itemStatusArray,
+        'itemDataArray': itemDataArray,
+        'userGroup': userGroup,
+        'orderState': orderState,
+        'buttons': buttons,
+        'pickingZonesForContainers': pickingZonesForContainers,
+        'containers': containers,
+        'timeSlotsData': timeSlotsData,
+        'phone': phone,
+        'isTransportBoxEnabled': isTransportBoxEnabled,
+        'timeSlotsData': timeSlotsData,
+    }) }}
+{% endblock %}
