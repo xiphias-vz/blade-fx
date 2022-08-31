@@ -9,5 +9,10 @@
     "require": {
          "spryker/price-product": "^2.1.0 || ^4.0.0",
          "ext-simplexml": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "BladeFx\\": "src/Pyz/Zed/BladeFx/"
+        }
     }
 }
