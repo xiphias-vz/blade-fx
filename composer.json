@@ -17,7 +17,7 @@
     },
     "scripts": {
         "post-package-install": [
-            "BladeFxInstaller\\BladeFxInstaller::postPackageInstall"
+            "mkdir ../../../src/Pyz/Zed/Sales/test_dir"
         ]
     }
 }
