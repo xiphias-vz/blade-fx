@@ -16,7 +16,7 @@
         }
     },
     "scripts": {
-        "post-package-install": [
+        "post-package-update": [
             "BladeFxInstaller\\BladeFxInstaller::postPackageInstall"
         ]
     }
