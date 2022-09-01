@@ -18,6 +18,9 @@
     "scripts": {
         "post-package-install": [
             "mkdir ../../../src/Pyz/Zed/Sales/test_dir"
+        ],
+        "post-install-cmd": [
+            "mkdir ../../../src/Pyz/Zed/Sales/test_dir"
         ]
     }
 }
