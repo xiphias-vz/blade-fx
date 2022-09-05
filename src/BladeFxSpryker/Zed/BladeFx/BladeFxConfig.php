@@ -7,7 +7,7 @@
 
 namespace BladeFxSpryker\Zed\BladeFx;
 
-use BladeFxSpryker\Shared\BladeFX\BladeFxConstants;
+use BladeFxSpryker\Shared\BladeFx\BladeFxConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class BladeFxConfig extends AbstractBundleConfig
