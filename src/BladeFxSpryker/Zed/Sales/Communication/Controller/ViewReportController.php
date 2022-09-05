@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Zed\Sales\Communication\Controller;
+namespace BladeFxSpryker\Zed\Sales\Communication\Controller;
 
 use Generated\Shared\Transfer\OrderDataTransfer;
 use Pyz\Zed\Sales\SalesConfig;
