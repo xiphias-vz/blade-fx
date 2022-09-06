@@ -33,9 +33,10 @@ composer update xiphias-vz/blade-fx
 \
 If the installation was successful, you should now see *xiphias-vz/blade-fx* in the *vendor* folder of your project.
 
-You can run the following command to generate IDE auto-completion.
-```bash    
-console dev:ide-auto-completion:generate    
+You can run the following command to generate IDE auto-completion and transfer objects.
+```bash
+console dev:ide-auto-completion:generate
+console transfer:generate
 ```
 ### Step 2: Configuration
 In *config_default.php* file register BladeFxSpryker namespace
@@ -177,8 +178,10 @@ public function getControllerDirectories(): array
   return array_filter($controllerDirectories, 'glob');  
 }
 ```
-and run the command
+and run the commands
 ```bash
+console cache:empty-all
+console cache:class-resolver:build
 console router:cache:warm-up:backoffice
 ```
 
