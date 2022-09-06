@@ -1,5 +1,5 @@
 
-# BLADAE FX
+# BLADE FX
 
 ## Spryker Integration Guide
 
