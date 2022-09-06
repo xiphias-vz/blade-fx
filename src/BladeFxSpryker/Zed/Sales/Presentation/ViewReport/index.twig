@@ -1,4 +1,4 @@
-% extends '@Gui/Layout/layout.twig' %}
+{% extends '@Gui/Layout/layout.twig' %}
 
 {% block action %}
     {{ backActionButton(url('/sales/detail?id-sales-order=' ~ idSalesOrder ~ '#tab-content-reports'), 'Back to Order Reports List' | trans) }}
