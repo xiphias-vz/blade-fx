@@ -17,7 +17,7 @@ Alternatively, you can add the following lines to the root *composer.json* file 
   },      
   "repositories": [      
     {      
-      "type": "vsc",      
+      "type": "vcs",      
       "url": "https://github.com/xiphias-vz/blade-fx.git"      
     }      
   ]      
