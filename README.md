@@ -274,7 +274,7 @@ return array_merge([
   'orderItemSplitFormCollection' => $orderItemSplitFormCollection,  
   'groupedOrderItems' => $groupedOrderItems,  
   'changeStatusRedirectUrl' => $this->createRedirectLink($idSalesOrder),  
-  'tableColumnHeaders' => $this->getFactory()->createOrderItemsTableExpander()->getColumnHeaders(),  
+  'tableColumnHeaders' => $this->getFactory()->createOrderItemsTableExpander()->getColumnHeaders(),
   'tableColumnCellsContent' => $this->getFactory()->createOrderItemsTableExpander()->getColumnCellsContent($orderTransfer->getItems()),
   'orderTabs'  =>  $this->getFactory()->createSalesOrderFormTabs()->createView(),  'salesOrderBladeFxReportsTable'  =>  $this->getFactory()->createSalesOrderBladeFxReportsTable($orderReference,  $idSalesOrder)->render(),
 ], $blockResponseData);
