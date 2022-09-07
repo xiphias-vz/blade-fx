@@ -90,8 +90,8 @@ protected function addBladeFxFacade(Container $container): Container
 ```
 In *Pyz/Sales/Communication/SalesCommunicationFactory.php* import required classes
 ```php
-use BladeFxSpryker\Zed\Sales\Communication\Tabs\SalesOrderFormTabs
-use BladeFxSpryker\Zed\Sales\Communication\Table\SalesOrderBladeFxReportsTable
+use BladeFxSpryker\Zed\Sales\Communication\Tabs\SalesOrderFormTabs;
+use BladeFxSpryker\Zed\Sales\Communication\Table\SalesOrderBladeFxReportsTable;
 ```
 and add following methods
 ```php
