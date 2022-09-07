@@ -1,4 +1,5 @@
 
+
 # BLADE FX
 
 ## Spryker Integration Guide
@@ -87,7 +88,12 @@ protected function addBladeFxFacade(Container $container): Container
   return $container;      
 }    
 ```
-In *Pyz/Sales/Communication/SalesCommunicationFactory.php* add following methods
+In *Pyz/Sales/Communication/SalesCommunicationFactory.php* import required classes
+```php
+use BladeFxSpryker\Zed\Sales\Communication\Tabs\SalesOrderFormTabs
+use BladeFxSpryker\Zed\Sales\Communication\Table\SalesOrderBladeFxReportsTable
+```
+and add following methods
 ```php
 /**      
  * @return \BladeFxSpryker\Zed\BladeFx\Business\BladeFxFacadeInterface      
@@ -158,8 +164,7 @@ public function orderBladeFxTableAction(Request $request): JsonResponse
   $table->fetchData()      
  );    
 }    
-```  
-
+```
 ### Step 4: Adding BladeFx Reports to Back Office Navigation
 Before building navigation in Back Office, you should first build routes that were added in newly installed package. By default, Spryker can not use Controllers that are part of 3rd party packages so you need to add the path where the controller can be found. In *Pyz/Zed/Router/RouterConfig::getControllerDirectories()*
 add the path to BladeFx:
@@ -236,7 +241,7 @@ To add Reports tab to order overview page in Back Office few adjustments to Sale
   <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-sales-main.css') }}">  
 {% endblock %}
 ```
-Then remove the content block form *Pyz/Sales/Presentation/Detail/index.twig* that was just added to *order_details.twig* and replace it with following:
+Note that depending on your project, the content block will look differently then provided example. After pasting the content block in *order-details.twig*, remove it form *Pyz/Sales/Presentation/Detail/index.twig* and replace it with following:
 ```twig
 {% block content %}  
  {{ tabs(orderTabs, {  
@@ -257,7 +262,24 @@ Then remove the content block form *Pyz/Sales/Presentation/Detail/index.twig* th
   }) }}  
 {% endblock %}
 ```
-All the values in snippet above should be returned by  *Pyz/Sales/Communication/Controller/DetailContoller::indexAction()* so change the values accordingly.
+All the values in object provided as a second argument to *tabs()* in snippet above should be returned by  *Pyz/Sales/Communication/Controller/DetailContoller::indexAction()* so change the values accordingly.
+For example, *indexAction()* of *DetailController* paired with snippet above returns the following array:
+```php
+return array_merge([  
+  'eventsGroupedByItem' => $eventsGroupedByItem,  
+  'events' => $events,  
+  'eventsGroupedByShipment' => $eventsGroupedByShipment,  
+  'distinctOrderStates' => $distinctOrderStates,  
+  'order' => $orderTransfer,  
+  'orderItemSplitFormCollection' => $orderItemSplitFormCollection,  
+  'groupedOrderItems' => $groupedOrderItems,  
+  'changeStatusRedirectUrl' => $this->createRedirectLink($idSalesOrder),  
+  'tableColumnHeaders' => $this->getFactory()->createOrderItemsTableExpander()->getColumnHeaders(),  
+  'tableColumnCellsContent' => $this->getFactory()->createOrderItemsTableExpander()->getColumnCellsContent($orderTransfer->getItems()),
+  'orderTabs'  =>  $this->getFactory()->createSalesOrderFormTabs()->createView(),  'salesOrderBladeFxReportsTable'  =>  $this->getFactory()->createSalesOrderBladeFxReportsTable($orderReference,  $idSalesOrder)->render(),
+], $blockResponseData);
+```
+Keys of that array are keys and values of object that is passed as second argument to *tabs()* function in *Pyz/Sales/Presentation/Detail/index.twig.*
 \
 After adjusting the twigs, run the following command to generate cache for twig templates:
 ```bash
