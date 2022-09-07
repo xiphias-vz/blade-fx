@@ -276,7 +276,8 @@ return array_merge([
   'changeStatusRedirectUrl' => $this->createRedirectLink($idSalesOrder),  
   'tableColumnHeaders' => $this->getFactory()->createOrderItemsTableExpander()->getColumnHeaders(),
   'tableColumnCellsContent' => $this->getFactory()->createOrderItemsTableExpander()->getColumnCellsContent($orderTransfer->getItems()),
-  'orderTabs'  =>  $this->getFactory()->createSalesOrderFormTabs()->createView(),  'salesOrderBladeFxReportsTable'  =>  $this->getFactory()->createSalesOrderBladeFxReportsTable($orderReference,  $idSalesOrder)->render(),
+  'orderTabs'  =>  $this->getFactory()->createSalesOrderFormTabs()->createView(),
+  'salesOrderBladeFxReportsTable'  =>  $this->getFactory()->createSalesOrderBladeFxReportsTable($orderReference,  $idSalesOrder)->render(),
 ], $blockResponseData);
 ```
 Keys of that array are keys and values of object that is passed as second argument to *tabs()* function in *Pyz/Sales/Presentation/Detail/index.twig.*
